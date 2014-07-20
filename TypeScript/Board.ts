@@ -1,0 +1,163 @@
+﻿interface point { x: number; y: number }
+
+class Board extends createjs.Container {
+
+    public boardWidth: number;
+    public boardHeight: number;
+    public tiles: Array<Tile>;
+
+    private tileSize: number;
+
+    private touchDictionary: Array<Tile> = new Array();
+
+    constructor(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
+        super()
+
+        this.tileSize = tileSize;
+
+        this.tiles = [];
+        this.boardHeight = boardHeight;
+        this.boardWidth = boardWidth;
+
+        //this.addBackground(boardWidth, boardHeight, tileSize, img);
+        this.addTiles(boardWidth, boardHeight, tileSize, img);
+
+    }
+
+    //----------------------------------------------------------------------------------
+
+    private getTileIdByPos(rawx: number, rawy: number, tileSize: number): string {
+        var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
+        return coords.x + "-" + coords.y;
+    }
+
+    private getTileByRawPos(rawx: number, rawy: number, tileSize: number): Tile {
+        var id = this.getTileIdByPos(rawx, rawy, tileSize);
+        return this.getTileById(id);
+    }
+
+    private getTileCoordsByRawPos(x: number, y: number, tileSize: number): point{
+        var x = Math.floor(x / tileSize);
+        var y = Math.floor(y / tileSize);
+        return { x: x, y: y };
+    }
+
+    private getTilePositionByCoords(x: number, y: number, tileSize: number): point {
+        return {
+            x: (x + 1 / 2) * tileSize + (Math.random() - 0.5)*tileSize/5,
+            y: (y + 1 / 2) * tileSize + (Math.random() - 0.5)*tileSize/5
+        }
+    }
+
+    public getTileById(id: string): Tile {
+        return <Tile> this.getChildByName(id);
+    }
+
+    public getTile(x, y): Tile {
+        return <Tile> this.getChildByName(x + "-" + y);
+    }
+
+    //----------------------------------------------------------------------------------
+
+
+    private addTiles(boardWidth: number, boardHeight: number, tileSize:number, img: boolean) {
+
+        for (var x = 0; x < boardWidth; x++) {
+            for (var y = 0; y < boardHeight; y++) {
+                var t = new Tile(x, y, tileSize);
+
+                //tile funcionar
+                this.tiles.push(t);
+                this.addChild(t);
+                t.setNumber(0);
+
+                //this.tilesPosition[t.name]=
+                t.set(this.getTilePositionByCoords(x, y, tileSize));
+
+                this.addEventListener("mousedown", (e: createjs.MouseEvent) => {
+                    var tile = this.getTileByRawPos(e.localX, e.localY, tileSize);
+
+                    if (tile) {
+                        this.touchDictionary[e.pointerID] = tile;
+                        tile.executeAnimationHold();
+                        createjs.Tween.get(tile).to({ x: e.localX, y: e.localY},100,createjs.Ease.quadInOut)
+                        //bring to front
+                        this.setChildIndex(tile, this.getNumChildren() - 1);
+                    }
+                    
+                });
+
+                //Press Move
+                this.addEventListener("pressmove", (e: createjs.MouseEvent) => {
+
+                    //get tile by touch
+                    var tile = this.touchDictionary[e.pointerID];
+                    if (tile) {
+
+                        tile.x = e.localX;
+                        tile.y = e.localY;
+                        tile.locked = true;
+
+                        var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
+
+                        if (targetName != tile.name) {
+                           this.dispatchEvent("tileDrop", { origin: tile.name, target: targetName });
+                        }
+                    }
+                });
+
+                //Press Up
+                this.addEventListener("pressup", (e: createjs.MouseEvent) => {
+                    var tile = this.touchDictionary[e.pointerID];
+                    if (tile) {
+                        tile.locked = false;
+                        this.releaseDrag(tile, false);
+                        tile.executeAimationRelease();
+                    }
+                });
+            }
+        }
+    }
+
+    //---------------------------------------------------------------------------------
+
+    private releaseDrag(tile: Tile,match:boolean=true) {
+        var index = this.touchDictionary.indexOf(tile);
+        delete this.touchDictionary[index];
+
+        createjs.Tween.removeTweens(tile);
+        tile.scaleY = tile.scaleX = 1;
+        tile.locked = false;
+        if (match)
+            tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
+        else
+            createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut);
+    }
+
+    public match(origin:string, target: string) {
+
+        this.releaseDrag(this.getTileById(origin));
+
+        var tile = this.getTileById(target);
+
+        this.releaseDrag(tile);
+
+        tile.set({ scaleX: 1.8, scaleY: 1.8, alpha:1 });
+        createjs.Tween.get(tile).to({scaleX:1,scaleY:1}, 140, createjs.Ease.cubicOut);
+    }
+
+    //---------------------------------------------------------------------------------
+
+    public sumAll(): number {
+        var sum = 0;
+        for (var t in this.tiles)
+            sum += this.tiles[t].getNumber();
+        return sum;
+    }
+
+    public clean() {
+        for (var t in this.tiles)
+            this.tiles[t].setNumber(0);
+    }
+}
+ 
