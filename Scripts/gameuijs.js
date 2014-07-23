@@ -224,6 +224,7 @@ var gameui;
         var ImageButton = (function (_super) {
             __extends(ImageButton, _super);
             function ImageButton(image, event) {
+                var _this = this;
                 _super.call(this);
 
                 if (event != null)
@@ -231,21 +232,26 @@ var gameui;
 
                 //adds image into it
                 if (image != null) {
-                    //TODO tirar createjs ASSETS daqui.
                     this.background = gameui.AssetsManager.getBitmap(image);
                     this.addChildAt(this.background, 0);
 
                     //Sets the image into the pivot center.
                     if (this.background.getBounds()) {
-                        this.width = this.background.getBounds().width;
-                        this.height = this.background.getBounds().height;
-                        this.background.regX = this.width / 2;
-                        this.background.regY = this.height / 2;
-                        this.centered = true;
-                        this.createHitArea();
-                    }
+                        this.centralizeImage();
+                    } else if (this.background["image"])
+                        this.background["image"].onload = function () {
+                            _this.centralizeImage();
+                        };
                 }
             }
+            ImageButton.prototype.centralizeImage = function () {
+                this.width = this.background.getBounds().width;
+                this.height = this.background.getBounds().height;
+                this.background.regX = this.width / 2;
+                this.background.regY = this.height / 2;
+                this.centered = true;
+                this.createHitArea();
+            };
             return ImageButton;
         })(Button);
         ui.ImageButton = ImageButton;
@@ -282,6 +288,7 @@ var gameui;
                 if (typeof icon === "undefined") { icon = ""; }
                 if (typeof text === "undefined") { text = ""; }
                 if (typeof font === "undefined") { font = null; }
+                var _this = this;
                 //add space before text
                 if (text != "")
                     text = " " + text;
@@ -295,6 +302,11 @@ var gameui;
 
                 if (this.icon.getBounds())
                     this.icon.regY = this.icon.getBounds().height / 2;
+                else if (this.icon["image"])
+                    this.icon["image"].onload = function () {
+                        _this.icon.regY = _this.icon.getBounds().height / 2;
+                    };
+
                 this.updateLabel(text);
             }
             IconButton.prototype.updateLabel = function (value) {
@@ -303,6 +315,9 @@ var gameui;
                     this.icon.x = -(this.icon.getBounds().width + 10 + this.text.getMeasuredWidth()) / 2;
                     this.text.x = this.icon.x + this.icon.getBounds().width + 10;
                 }
+            };
+
+            IconButton.prototype.centralizeIcon = function () {
             };
             return IconButton;
         })(TextButton);
@@ -618,8 +633,9 @@ var gameui;
         //gets a image from assets
         AssetsManager.getBitmap = function (name) {
             //if image id is described in spritesheets
-            if (this.spriteSheets[name])
-                return this.getSprite(name, false);
+            if (this.spriteSheets)
+                if (this.spriteSheets[name])
+                    return this.getSprite(name, false);
 
             //if image is preloaded
             var image = this.getLoadedImage(name);
@@ -632,7 +648,10 @@ var gameui;
 
         //Get a preloaded Image from assets
         AssetsManager.getLoadedImage = function (name) {
-            return this.loader.getResult(name);
+            if (this.loader)
+                return this.loader.getResult(name);
+
+            return null;
         };
 
         //DEPRECIATED

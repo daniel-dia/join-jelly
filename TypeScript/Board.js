@@ -54,16 +54,16 @@ var Board = (function (_super) {
     //----------------------------------------------------------------------------------
     Board.prototype.addTiles = function (boardWidth, boardHeight, tileSize, img) {
         var _this = this;
+        var touchOffset = [];
+
         for (var x = 0; x < boardWidth; x++) {
             for (var y = 0; y < boardHeight; y++) {
                 var t = new Tile(x, y, tileSize);
 
-                //tile funcionar
                 this.tiles.push(t);
                 this.addChild(t);
                 t.setNumber(0);
 
-                //this.tilesPosition[t.name]=
                 t.set(this.getTilePositionByCoords(x, y, tileSize));
 
                 this.addEventListener("mousedown", function (e) {
@@ -71,8 +71,10 @@ var Board = (function (_super) {
 
                     if (tile) {
                         _this.touchDictionary[e.pointerID] = tile;
+
+                        //store offset mouse position
+                        touchOffset[e.pointerID] = { x: tile.x - e.localX, y: tile.y - e.localY };
                         tile.executeAnimationHold();
-                        createjs.Tween.get(tile).to({ x: e.localX, y: e.localY }, 100, createjs.Ease.quadInOut);
 
                         //bring to front
                         _this.setChildIndex(tile, _this.getNumChildren() - 1);
@@ -84,8 +86,8 @@ var Board = (function (_super) {
                     //get tile by touch
                     var tile = _this.touchDictionary[e.pointerID];
                     if (tile) {
-                        tile.x = e.localX;
-                        tile.y = e.localY;
+                        tile.x = e.localX + touchOffset[e.pointerID].x;
+                        tile.y = e.localY + touchOffset[e.pointerID].y;
                         tile.locked = true;
 
                         var targetName = _this.getTileIdByPos(e.localX, e.localY, tileSize);
@@ -110,7 +112,8 @@ var Board = (function (_super) {
     };
 
     //---------------------------------------------------------------------------------
-    Board.prototype.releaseDrag = function (tile, match) {
+    Board.prototype.releaseDrag = function (tile, match, target) {
+        var _this = this;
         if (typeof match === "undefined") { match = true; }
         var index = this.touchDictionary.indexOf(tile);
         delete this.touchDictionary[index];
@@ -118,21 +121,26 @@ var Board = (function (_super) {
         createjs.Tween.removeTweens(tile);
         tile.scaleY = tile.scaleX = 1;
         tile.locked = false;
-        if (match)
-            tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
-        else
+
+        if (match) {
+            var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
+            createjs.Tween.get(tile).to({ x: pos.x, y: pos.y, alpha: 0 }, 100, createjs.Ease.quadInOut).call(function () {
+                tile.set(_this.getTilePositionByCoords(tile.posx, tile.posy, _this.tileSize));
+            });
+        } else {
             createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut);
+        }
     };
 
     Board.prototype.match = function (origin, target) {
-        this.releaseDrag(this.getTileById(origin));
-
+        //this.releaseDrag(this.getTileById(origin));
         var tile = this.getTileById(target);
+        var old = this.getTileById(origin);
 
-        this.releaseDrag(tile);
+        this.releaseDrag(old, true, tile);
 
-        tile.set({ scaleX: 1.8, scaleY: 1.8, alpha: 1 });
-        createjs.Tween.get(tile).to({ scaleX: 1, scaleY: 1 }, 140, createjs.Ease.cubicOut);
+        tile.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
+        createjs.Tween.get(tile).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
     };
 
     //---------------------------------------------------------------------------------

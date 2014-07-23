@@ -105,16 +105,15 @@ var Tile = (function (_super) {
             scaleY: 0
         });
 
-        createjs.Tween.get(this.imageContainer).to({
-            alpha: 1,
-            scaleX: 0.8,
-            scaleY: 1.2
-        }, 200, createjs.Ease.sineOut).to({
-            scaleX: 1,
-            scaleY: 1
-        }, 2000, createjs.Ease.elasticOut).call(function () {
+        this.shadowContainer.set({
+            alpha: 0,
+            scaleX: 0
+        });
+
+        createjs.Tween.get(this.imageContainer).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1 }, 2000, createjs.Ease.elasticOut).call(function () {
             _this.executeIdle1();
         });
+        createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 200, createjs.Ease.sineOut);
     };
 
     Tile.prototype.executeAnimationHold = function () {
@@ -141,6 +140,9 @@ var Tile = (function (_super) {
         });
 
         createjs.Tween.get(this.shadowContainer).to({ alpha: 1 }, 200);
+    };
+
+    Tile.prototype.executeAnimationMatch = function (x, y) {
     };
 
     Tile.prototype.executeAnimation3 = function () {
@@ -179,15 +181,16 @@ var Tile = (function (_super) {
 
         createjs.Tween.get(this.imageContainer).to({
             skewX: 0,
-            scaleX: 1 + scale, scaleY: 1 - scale
+            scaleX: 1 + scale,
+            scaleY: 1 - scale
         }, 400, createjs.Ease.quadInOut).call(function () {
             createjs.Tween.get(_this.imageContainer, { loop: true }).to({ skewX: skew * 10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn).to({ skewX: skew * -10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn);
 
             createjs.Tween.get(_this.imageContainer, { loop: true }).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut);
+        });
 
-            _this.shadowContainer.skewX = 0;
-            _this.shadowContainer.alpha = 1;
-            createjs.Tween.get(_this.shadowContainer, { loop: true }).to({ skewX: -5 * skew }, f, createjs.Ease.quadInOut).to({ skewX: 0 * skew }, f, createjs.Ease.quadInOut).to({ skewX: 5 * skew }, f, createjs.Ease.quadInOut).to({ skewX: 0 * skew }, f, createjs.Ease.quadInOut);
+        createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleY: 1, scaleX: 1, skewX: 0 }, 400, createjs.Ease.quadInOut).call(function () {
+            createjs.Tween.get(_this.shadowContainer, { loop: true }).to({ skewX: -5 * skew }, f, createjs.Ease.quadOut).to({ skewX: 0 * skew }, f, createjs.Ease.quadIn).to({ skewX: 5 * skew }, f, createjs.Ease.quadOut).to({ skewX: 0 * skew }, f, createjs.Ease.quadIn);
         });
     };
 

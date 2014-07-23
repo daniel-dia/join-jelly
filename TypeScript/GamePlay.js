@@ -24,22 +24,49 @@ var GamePlayScreen = (function (_super) {
 
     GamePlayScreen.prototype.createBoard = function () {
         var _this = this;
-        this.board = new Board(this.boardSize, this.boardSize, 768 * 2 / 5, true);
+        this.board = new Board(this.boardSize, this.boardSize, 1536 / 5, true);
         this.board.addEventListener("tile", function (e) {
             _this.setInput(e.target);
         });
         this.board.addEventListener("tileDrop", function (e) {
             _this.dragged(e.target.origin, e.target.target);
         });
+        this.board.y = (2048 - 1536) / 2;
         this.content.addChild(this.board);
     };
 
     GamePlayScreen.prototype.createHeader = function () {
-        //TODO Add menu here
+        //add background
+        var bg = gameui.AssetsManager.getBitmap("assets/header.png");
+        this.header.addChild(bg);
+        bg.x = 35;
+
+        //add pause button
+        var pauseButton = new gameui.ui.IconButton("assets/iconPause.png", "", "", "", "assets/bt.png", function () {
+            gameScreen.switchScreen(new MainScreen(null));
+        });
+        pauseButton.x = 150;
+        pauseButton.y = 150;
+
+        this.header.addChild(pauseButton);
+
+        //add pause menu
+        //add scores text
+        var score = new createjs.Text("score: ?????", "60px Arial", "black");
+        score.textBaseline = "middle";
+        score.x = 500;
+        score.y = 100;
+        this.header.addChild(score);
     };
 
     //create a score indicator footer
     GamePlayScreen.prototype.createFooter = function () {
+        //add background
+        var bg = gameui.AssetsManager.getBitmap("assets/footer.png");
+        this.footer.addChild(bg);
+        bg.x = 35;
+        bg.y = -148;
+
         this.scoreText = new createjs.Text("teste", "40px Arial", "white");
         this.scoreText.textAlign = "right";
         this.scoreText.x = 450;
@@ -133,13 +160,14 @@ var GamePlayScreen = (function (_super) {
     GamePlayScreen.prototype.match = function (tileOrigin, tileTarget) {
         //check if match is correct
         if (tileOrigin.getNumber() != 0 && tileOrigin && tileTarget && tileTarget != tileOrigin && tileTarget.getNumber() == tileOrigin.getNumber() && !tileTarget.locked) {
-            //sim the tiles values
+            //sum the tiles values
             tileTarget.setNumber(tileTarget.getNumber() + tileOrigin.getNumber());
 
             //reset the previous tile
-            tileOrigin.setNumber(0);
+            setTimeout(function () {
+                tileOrigin.setNumber(0);
+            }, 200);
 
-            //tileOrigin.unHighlight();
             //animate the mach
             this.board.match(tileOrigin.name, tileTarget.name);
         }
