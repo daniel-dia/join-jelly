@@ -39,8 +39,17 @@
         button.y = 768;
         button.x = 768;
         //button.centralize();
-
         this.content.addChild(button);
+
+
+
+        // adds jelly
+        var j = new Tile(0, 0, 500);
+        this.content.addChild(j);
+        j.setNumber(1);
+        j.x = 768;
+        j.y = 1000;
+
     }
 
     private createBackground() {

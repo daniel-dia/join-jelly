@@ -90,7 +90,7 @@
     // Starts the game
     private start() {
         this.board.clean();
-        this.time = 800;
+        this.time = 400;
         this.step();
         this.board.mouseEnabled = true;
     }

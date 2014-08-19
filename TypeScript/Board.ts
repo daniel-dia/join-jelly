@@ -130,6 +130,7 @@ class Board extends createjs.Container {
 
         createjs.Tween.removeTweens(tile);
         tile.scaleY = tile.scaleX = 1;
+
         tile.locked = false;
 
         
@@ -137,7 +138,6 @@ class Board extends createjs.Container {
         if (match) {
             var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
             createjs.Tween.get(tile).to({x:pos.x, y:pos.y,alpha:0}, 100, createjs.Ease.quadInOut).call(() => {
-
                 tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
             })
         }
@@ -151,11 +151,11 @@ class Board extends createjs.Container {
         //this.releaseDrag(this.getTileById(origin));
 
         var tile = this.getTileById(target);
-        var old  = this.getTileById(origin)
+        var old = this.getTileById(origin);
 
-      
-      this.releaseDrag(old,true,tile);
-      
+
+        this.releaseDrag(old, true, tile);
+
 
         tile.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
         createjs.Tween.get(tile).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);

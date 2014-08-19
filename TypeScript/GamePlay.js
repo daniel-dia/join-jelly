@@ -81,7 +81,7 @@ var GamePlayScreen = (function (_super) {
     // Starts the game
     GamePlayScreen.prototype.start = function () {
         this.board.clean();
-        this.time = 800;
+        this.time = 400;
         this.step();
         this.board.mouseEnabled = true;
     };

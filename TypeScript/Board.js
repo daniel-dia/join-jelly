@@ -120,6 +120,7 @@ var Board = (function (_super) {
 
         createjs.Tween.removeTweens(tile);
         tile.scaleY = tile.scaleX = 1;
+
         tile.locked = false;
 
         if (match) {
