@@ -4,27 +4,37 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var Message = (function (_super) {
-    __extends(Message, _super);
-    function Message() {
-        var _this = this;
-        _super.call(this);
+var fpair;
+(function (fpair) {
+    (function (gameplay) {
+        (function (view) {
+            var Message = (function (_super) {
+                __extends(Message, _super);
+                function Message() {
+                    var _this = this;
+                    _super.call(this);
 
-        this.addChild(new createjs.Shape(new createjs.Graphics().beginFill("darkGray").beginStroke("black").drawRect(-200, -60, 400, 120)));
-        var t = new createjs.Text("", "60px Arial", "white");
-        t.textAlign = "center";
-        t.textBaseline = "middle";
-        this.addChild(t);
-        this.text = t;
+                    this.addChild(new createjs.Shape(new createjs.Graphics().beginFill("darkGray").beginStroke("black").drawRect(-200, -60, 400, 120)));
+                    var t = new createjs.Text("", "60px Arial", "white");
+                    t.textAlign = "center";
+                    t.textBaseline = "middle";
+                    this.addChild(t);
+                    this.text = t;
 
-        this.addEventListener("click", function () {
-            _this.fadeOut();
-        });
-    }
-    Message.prototype.showMessage = function (message) {
-        this.text.text = message;
-        this.fadeIn();
-    };
-    return Message;
-})(gameui.ui.Button);
+                    this.addEventListener("click", function () {
+                        _this.fadeOut();
+                    });
+                }
+                Message.prototype.showMessage = function (message) {
+                    this.text.text = message;
+                    this.fadeIn();
+                };
+                return Message;
+            })(gameui.ui.Button);
+            view.Message = Message;
+        })(gameplay.view || (gameplay.view = {}));
+        var view = gameplay.view;
+    })(fpair.gameplay || (fpair.gameplay = {}));
+    var gameplay = fpair.gameplay;
+})(fpair || (fpair = {}));
 //# sourceMappingURL=Message.js.map

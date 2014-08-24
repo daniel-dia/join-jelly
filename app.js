@@ -5,7 +5,7 @@ window.onload = function () {
     gameScreen.stage.mouseMoveOutside = true;
 
     var userData = new UserData();
-    var mainScreen = new MainScreen(userData);
+    var mainScreen = new fpair.MainScreen(userData);
 
     gameScreen.switchScreen(mainScreen);
 };

@@ -6,7 +6,7 @@ window.onload = () => {
     gameScreen.stage.mouseMoveOutside = true;
 
     var userData: UserData = new UserData();
-    var mainScreen = new MainScreen (userData);
+    var mainScreen = new fpair.MainScreen (userData);
 
     gameScreen.switchScreen(mainScreen);
 
