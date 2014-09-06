@@ -18,22 +18,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.css" />
-    <Content Include="assets\0.png" />
-    <Content Include="assets\1.png" />
     <Content Include="assets\1024.png" />
-    <Content Include="assets\128.png" />
-    <Content Include="assets\16.png" />
-    <Content Include="assets\2.png" />
     <Content Include="assets\2048.png" />
-    <Content Include="assets\256.png" />
-    <Content Include="assets\32.png" />
-    <Content Include="assets\4.png" />
     <Content Include="assets\4096.png" />
-    <Content Include="assets\512.png" />
-    <Content Include="assets\64.png" />
-    <Content Include="assets\8.png" />
     <Content Include="assets\8192.png" />
     <Content Include="assets\Background.jpg" />
+    <Content Include="assets\ChubbyFont.png" />
     <Content Include="index.html" />
     <Content Include="resources\jpg\background.jpg" />
     <Content Include="resources\jpg\candy_animated_2D_set_for_match3_game.jpg" />
@@ -111,9 +101,11 @@
     <TypeScriptCompile Include="Scripts\typings\preloadjs\preloadjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\soundjs\soundjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\tweenjs\tweenjs.d.ts" />
+    <TypeScriptCompile Include="TypeScript\Definitions.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\GameScreen.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Board.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\GameMenu.ts" />
+    <TypeScriptCompile Include="TypeScript\gameplay\view\LevelIndicator.ts" />
     <TypeScriptCompile Include="TypeScript\menus\FinishMenu.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\GamePlay.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Jelly.ts" />
@@ -130,6 +122,7 @@
     <Content Include="resources\eps\background.eps" />
     <Content Include="resources\eps\candy_animated_2D_set_for_match3_game.eps" />
     <Content Include="resources\graphicriver-7784810-candy-animated-2d-set-for-match-3-game.zip" />
+    <Content Include="assets\ChubbyFont.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

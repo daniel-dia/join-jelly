@@ -82,33 +82,37 @@
                 this.visible = true;
                 this.alpha = 1;
                 //load image bg
-                var img = new createjs.Bitmap("assets/" + value + ".png");
+                var img = new createjs.Bitmap("assets/j" + value + ".png");
                 img.scaleX = img.scaleY = this.tileSize / (220);
 
                 //centralize
                 img.image.onload = () => {
                     img.regX = img.image.width / 2;
                     img.regY = img.image.height;
-                }
+                };
 
-            this.imageContainer.addChild(img);
+                this.imageContainer.addChild(img);
 
                 //add Eyes
                 var eye = new createjs.Container();
-                var eyeImg = new createjs.Bitmap("assets/eyes.png");
+                var eyeImg = new createjs.Bitmap("assets/e" + value + ".png");
                 eyeImg.regY = 20;
                 createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
                 eye.addChild(eyeImg);
                 eye.regX = 133 / 2;
-                eye.scaleX = eye.scaleY = img.scaleX * 0.7
-            eye.y = -this.tileSize / 4;
+                eyeImg.image.onload = () => {
+                    eye.regX = eyeImg.image.width / 2;
+                }
+                eye.scaleX = eye.scaleY = img.scaleX ;
+                eye.y = -this.tileSize / 4;
                 this.imageContainer.addChild(eye)
         }
 
-
+            
             this.executeAnimationIn();
         }
 
+       
         //#region animations =============================================
 
 
