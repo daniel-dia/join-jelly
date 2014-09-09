@@ -81,11 +81,8 @@ module fpair.gameplay{
         //time step for adding tiles.
         private step() {
             
-            // get score
-            var score = this.sumAll();
-
             // updates the level
-            this.updateInfors(score);
+            this.updateInfos();
             
             // add a new tile  on board
             this.addTileOnBoard();
@@ -95,7 +92,7 @@ module fpair.gameplay{
 
             // do a next step
             if(!loose)
-                setTimeout(() => { this.step(); }, this.getTimeIntervalByScore(score))
+                setTimeout(() => { this.step(); }, this.getTimeIntervalByScore(this.sumAll()))
 
         }
 
@@ -145,7 +142,9 @@ module fpair.gameplay{
             return false;
         }
 
-        private updateInfors(score:number) {
+        private updateInfos() {
+
+            var score = this.sumAll();
 
             var level = this.getLevelByScore(score);
             
@@ -212,7 +211,11 @@ module fpair.gameplay{
 
                 //animate the mach
                 this.board.match(origin, target);
+
+                this.updateInfos();
             }
+
+
         }
 
         //get currentScore
