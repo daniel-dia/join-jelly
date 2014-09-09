@@ -22,8 +22,8 @@
         }
 
         private createContent() {
-            var title = new createjs.Text("Fast Pair", "80px Arial", "white");
-            title.textAlign = "center";
+            var title = new createjs.BitmapText("Fast Pair", new createjs.SpriteSheet(Chubbyfont));
+            //title.textAlign = "center";
             title.y = 768 - 300;
             title.x = 768;
             this.content.addChild(title);

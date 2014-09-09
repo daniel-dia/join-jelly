@@ -1,4 +1,5 @@
-﻿module fpair.gameplay{
+﻿declare var Chubbyfont;
+module fpair.gameplay{
 
     export class GamePlayScreen extends gameui.ScreenState {
 
@@ -7,16 +8,15 @@
 
         private board: view.Board;
 
-        private scoreText: createjs.Text;
-        private levelText: createjs.Text;
-
         private finishMenu: FinishMenu;
 
         private tiles: Array<number>
 
         private currentLevel: number;
+        
 
-        private levelIndicator: view.LevelIndicator;
+        private gameHeader: view.GameHeader;
+        private gameLevelIndicator: view.LevelIndicator;
 
         //#region =================================== initialization ==========================================================//
 
@@ -41,45 +41,14 @@
             this.board = new view.Board(this.boardSize, this.boardSize, 1536 / 5, true);
             ////this.board.addEventListener("tile", (e: createjs.MouseEvent) => { this.setInput(e.target); });
             this.board.addEventListener("tileDrop", (e: createjs.MouseEvent) => { this.dragged(e.target.origin, e.target.target); });
-            this.board.y = (2048 - 1536) / 2;
+            this.board.y = (2048 - 1536) / 2+100;
             this.content.addChild(this.board);
         }
 
         // creates the game header
         private createHeader() {
-            //add background
-            var bg = gameui.AssetsManager.getBitmap("assets/header.png");
-            this.header.addChild(bg);
-            bg.x = 35;
-
-            //add pause button
-            var pauseButton = new gameui.ui.IconButton("assets/iconPause.png", "", "", "", "assets/bt.png", () => {
-                gameScreen.switchScreen(new MainScreen(null));
-            });
-
-            pauseButton.x = 150;
-            pauseButton.y = 150;
-
-            this.header.addChild(pauseButton);
-
-            //add pause menu
-
-            //add scores text
-            var score = new createjs.Text("score: ?????", "60px Arial", "black");
-            score.textBaseline = "middle";
-            score.x = 500;
-            score.y = 100;
-            this.scoreText = score;
-            this.header.addChild(score);
-
-            //add scores text
-            var level = new createjs.Text("Level: ?????", "60px Arial", "black");
-            level.textBaseline = "middle";
-            level.x = 500;
-            level.y = 300;
-            this.levelText = level;
-            this.header.addChild(level);
-
+            this.gameHeader = new view.GameHeader();
+            this.header.addChild(this.gameHeader);
         }
 
         // create a score indicator footer
@@ -94,8 +63,8 @@
 
         // create screen elements
         private createUI() {
-            this.levelIndicator = new view.LevelIndicator();
-            this.content.addChild(this.levelIndicator);
+            this.gameLevelIndicator = new view.LevelIndicator();
+            this.content.addChild(this.gameLevelIndicator);
         }
 
         //#endregion
@@ -116,12 +85,8 @@
             var score = this.sumAll();
 
             // updates the level
-            var level = this.getLevelByScore(score);
-            this.updateLevel(level);
-
-            // updates the score
-            this.updateInfo(score);
-
+            this.updateInfors(score);
+            
             // add a new tile  on board
             this.addTileOnBoard();
 
@@ -180,21 +145,26 @@
             return false;
         }
 
-        private updateInfo(score: number) {
-            this.scoreText.text = "Score: " + score.toString();
-        }
+        private updateInfors(score:number) {
 
-        private updateLevel(level:number) {
-            this.levelText.text = "level: " + level.toString();
+            var level = this.getLevelByScore(score);
+            
+            // updates the header
+            this.gameHeader.updateStatus(score, level, score%10*10);
 
             if (this.currentLevel != level)
-                this.levelIndicator.showLevel(level);
+                this.gameLevelIndicator.showLevel(level);
 
             this.currentLevel = level;
         }
 
+
         private getLevelByScore(score: number): number {
             return Math.floor((score)/10)+1;
+        }
+        
+        private getToNextLevelByScore(score: number): number {
+            return Math.floor((score+10) / 10) + 1;
         }
 
         private getTimeIntervalByScore(score: number): number {
@@ -248,8 +218,10 @@
         //get currentScore
         private sumAll(): number {
             var sum = 0;
-            for (var t in this.tiles)
-                sum += this.tiles[t];
+            for (var t in this.tiles) {
+                if(this.tiles[t]!=1)
+                    sum += this.tiles[t];
+            }
             return sum;
         }
 
