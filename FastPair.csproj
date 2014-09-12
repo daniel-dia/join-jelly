@@ -165,6 +165,7 @@
     <TypeScriptCompile Include="TypeScript\gameplay\GamePlay.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Jelly.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Thorns.ts" />
+    <TypeScriptCompile Include="TypeScript\menus\LoadingScreen.ts" />
     <TypeScriptCompile Include="TypeScript\menus\MainScreen.ts" />
     <TypeScriptCompile Include="TypeScript\Message.ts" />
     <TypeScriptCompile Include="TypeScript\UserData.ts" />
