@@ -13,7 +13,8 @@ module fpair.gameplay{
         private tiles: Array<number>
 
         private currentLevel: number;
-        
+
+        private score: number;        
 
         private gameHeader: view.GameHeader;
         private gameLevelIndicator: view.LevelIndicator;
@@ -22,6 +23,8 @@ module fpair.gameplay{
 
         constructor() {
             super();
+
+            this.score = 0;
 
             this.tiles = new Array();
             this.createBackground();
@@ -144,12 +147,16 @@ module fpair.gameplay{
 
         private updateInfos() {
 
-            var score = this.sumAll();
+            var score = this.score;
 
             var level = this.getLevelByScore(score);
-            
+
+            var nextLevelScore = this.getScoreByLevel(level);
+            var previousLevelScore = this.getScoreByLevel(level-1);
+            var percent = (score-previousLevelScore)/ (nextLevelScore-previousLevelScore)*100
+
             // updates the header
-            this.gameHeader.updateStatus(score, level, score%10*10);
+            this.gameHeader.updateStatus(score, level, percent);
 
             if (this.currentLevel != level)
                 this.gameLevelIndicator.showLevel(level);
@@ -157,9 +164,13 @@ module fpair.gameplay{
             this.currentLevel = level;
         }
 
+        private getScoreByLevel(level: number): number {
+            return 100* level*level 
+        }
+        
 
         private getLevelByScore(score: number): number {
-            return Math.floor((score)/10)+1;
+            return Math.floor(Math.sqrt(score)/10)+1;
         }
         
         private getToNextLevelByScore(score: number): number {
@@ -213,9 +224,9 @@ module fpair.gameplay{
                 this.board.match(origin, target);
 
                 this.updateInfos();
+
+                this.score += this.tiles[target] + Math.floor(Math.random() * this.tiles[target]);
             }
-
-
         }
 
         //get currentScore
