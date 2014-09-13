@@ -79,13 +79,14 @@ module fpair.gameplay{
             this.board.clean();
             this.step();
             this.board.mouseEnabled = true;
+            this.updateInfos();
         }
         
         //time step for adding tiles.
         private step() {
             
             // updates the level
-            this.updateInfos();
+            // this.updateInfos();
             
             // add a new tile  on board
             this.addTileOnBoard();
@@ -165,18 +166,16 @@ module fpair.gameplay{
         }
 
         private getScoreByLevel(level: number): number {
-            return 100* level*level 
+            if (level==0) return 0;
+            return 50 * Math.pow(2,level);
         }
         
 
         private getLevelByScore(score: number): number {
-            return Math.floor(Math.sqrt(score)/10)+1;
+            if (!score) score = 1;
+            return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2))+1
         }
         
-        private getToNextLevelByScore(score: number): number {
-            return Math.floor((score+10) / 10) + 1;
-        }
-
         private getTimeIntervalByScore(score: number): number {
             var startTime = 1000;
             var step = 4;

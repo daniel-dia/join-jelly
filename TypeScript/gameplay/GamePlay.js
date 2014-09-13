@@ -15,6 +15,8 @@ var fpair;
                 this.timeStep = 2;
                 this.boardSize = 5;
 
+                this.score = 0;
+
                 this.tiles = new Array();
                 this.createBackground();
                 this.createBoard();
@@ -68,14 +70,14 @@ var fpair;
                 this.board.clean();
                 this.step();
                 this.board.mouseEnabled = true;
+                this.updateInfos();
             };
 
             //time step for adding tiles.
             GamePlayScreen.prototype.step = function () {
-                var _this = this;
                 // updates the level
-                this.updateInfos();
-
+                // this.updateInfos();
+                var _this = this;
                 // add a new tile  on board
                 this.addTileOnBoard();
 
@@ -131,12 +133,16 @@ var fpair;
             };
 
             GamePlayScreen.prototype.updateInfos = function () {
-                var score = this.sumAll();
+                var score = this.score;
 
                 var level = this.getLevelByScore(score);
 
+                var nextLevelScore = this.getScoreByLevel(level);
+                var previousLevelScore = this.getScoreByLevel(level - 1);
+                var percent = (score - previousLevelScore) / (nextLevelScore - previousLevelScore) * 100;
+
                 // updates the header
-                this.gameHeader.updateStatus(score, level, score % 10 * 10);
+                this.gameHeader.updateStatus(score, level, percent);
 
                 if (this.currentLevel != level)
                     this.gameLevelIndicator.showLevel(level);
@@ -144,12 +150,16 @@ var fpair;
                 this.currentLevel = level;
             };
 
-            GamePlayScreen.prototype.getLevelByScore = function (score) {
-                return Math.floor((score) / 10) + 1;
+            GamePlayScreen.prototype.getScoreByLevel = function (level) {
+                if (level == 0)
+                    return 0;
+                return 50 * Math.pow(2, level);
             };
 
-            GamePlayScreen.prototype.getToNextLevelByScore = function (score) {
-                return Math.floor((score + 10) / 10) + 1;
+            GamePlayScreen.prototype.getLevelByScore = function (score) {
+                if (!score)
+                    score = 1;
+                return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2)) + 1;
             };
 
             GamePlayScreen.prototype.getTimeIntervalByScore = function (score) {
@@ -195,6 +205,8 @@ var fpair;
                     this.board.match(origin, target);
 
                     this.updateInfos();
+
+                    this.score += this.tiles[target] + Math.floor(Math.random() * this.tiles[target]);
                 }
             };
 
