@@ -109,7 +109,8 @@ var fpair;
                     this.imageContainer.set({
                         alpha: 0,
                         scaleX: 0,
-                        scaleY: 0
+                        scaleY: 0,
+                        y: -40
                     });
 
                     this.shadowContainer.set({
@@ -117,10 +118,11 @@ var fpair;
                         scaleX: 0
                     });
 
-                    createjs.Tween.get(this.imageContainer).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1 }, 2000, createjs.Ease.elasticOut).call(function () {
+                    createjs.Tween.get(this.imageContainer).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut);
+                    createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 200, createjs.Ease.sineOut).call(function () {
                         _this.executeIdle();
                     });
-                    createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 200, createjs.Ease.sineOut);
+                    ;
                 };
 
                 Jelly.prototype.executeAnimationHold = function () {

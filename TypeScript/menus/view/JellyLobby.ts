@@ -20,7 +20,7 @@
                 jellys.push(j)
 
             for (var j = 0; j < jellys.length; j++)
-                this.dropJelly(jellys[j], j);
+                setTimeout((j) => { this.dropJelly(jellys[j], j); }, j * 200,j);
 
         }
 
