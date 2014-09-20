@@ -590,6 +590,7 @@ var gameui;
         function AssetsManager() {
         }
         AssetsManager.loadAssets = function (assetsManifest, spriteSheets, imagesArray) {
+            var _this = this;
             //cleans previous loaded assets.
             this.cleanAssets();
 
@@ -599,7 +600,7 @@ var gameui;
             this.assetsManifest = assetsManifest;
 
             //creates a preload queue
-            this.loader = new createjs.LoadQueue(true);
+            this.loader = new createjs.LoadQueue(false);
 
             //install sound plug-in for sounds format
             this.loader.installPlugin(createjs.Sound);
@@ -607,7 +608,7 @@ var gameui;
             //create eventListeners
             this.loader.addEventListener("fileload", function (evt) {
                 if (evt.item.type == "image")
-                    imagesArray[evt.item.id] = evt.result;
+                    _this.imagesArray[evt.item.id] = evt.result;
                 return true;
             });
 

@@ -204,9 +204,9 @@ var fpair;
                     //animate the mach
                     this.board.match(origin, target);
 
-                    this.updateInfos();
-
                     this.score += this.tiles[target] + Math.floor(Math.random() * this.tiles[target]);
+
+                    this.updateInfos();
                 }
             };
 

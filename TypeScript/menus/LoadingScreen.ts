@@ -16,7 +16,7 @@
             //var loader = Assets.loadAssets();
             var text = new createjs.Text("", "600 90px Arial", "#FFF");
             text.x = defaultWidth / 2;
-            text.y = defaultHeigth / 2;
+            text.y = defaultHeight / 2;
             text.textAlign = "center"
 
             this.content.addChild(text);
@@ -81,5 +81,7 @@
                 { id: "time_border", src: "assets/time_border.png" },
             ]
         }
+
+
     }
 }

@@ -61,7 +61,9 @@ var fpair;
                     this.addChild(level);
                 };
 
+                // updates level ad score status
                 GameHeader.prototype.updateStatus = function (score, level, percent) {
+                    var _this = this;
                     this.scoreText.text = "SCORE " + score.toString();
 
                     var value = 1;
@@ -73,8 +75,14 @@ var fpair;
                             createjs.Tween.get(this.levelBar).to({ scaleX: value }, 1000, createjs.Ease.elasticOut);
                         }
 
-                    this.levelText.text = level.toString();
+                    if (this.lastLevel != level) {
+                        createjs.Tween.removeTweens(this.levelBar);
+                        createjs.Tween.get(this.levelBar).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () {
+                            _this.levelBar.scaleX = 0;
+                        });
+                    }
 
+                    this.levelText.text = level.toString();
                     this.lastLevel = level;
                     this.lastScore = score;
                 };

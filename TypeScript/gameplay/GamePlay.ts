@@ -176,6 +176,7 @@ module fpair.gameplay{
             return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2))+1
         }
         
+
         private getTimeIntervalByScore(score: number): number {
             var startTime = 1000;
             var step = 4;
@@ -222,9 +223,11 @@ module fpair.gameplay{
                 //animate the mach
                 this.board.match(origin, target);
 
+                this.score += this.tiles[target] + Math.floor(Math.random() * this.tiles[target]);
+
                 this.updateInfos();
 
-                this.score += this.tiles[target] + Math.floor(Math.random() * this.tiles[target]);
+                
             }
         }
 

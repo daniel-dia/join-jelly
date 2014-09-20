@@ -60,6 +60,7 @@ module fpair.gameplay.view {
         }
 
 
+        // updates level ad score status
         public updateStatus(score: number,level:number,percent?:number) {
             this.scoreText.text = "SCORE " + score.toString();
 
@@ -71,13 +72,13 @@ module fpair.gameplay.view {
                     createjs.Tween.removeTweens(this.levelBar);
                     createjs.Tween.get(this.levelBar).to({ scaleX:value},1000,createjs.Ease.elasticOut)
                 }
-            
-                
 
-
+            if (this.lastLevel != level) {
+                createjs.Tween.removeTweens(this.levelBar);
+                createjs.Tween.get(this.levelBar).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(() => { this.levelBar.scaleX=0 })
+            }
 
             this.levelText.text = level.toString();
-            
             this.lastLevel = level;
             this.lastScore = score;
         }
