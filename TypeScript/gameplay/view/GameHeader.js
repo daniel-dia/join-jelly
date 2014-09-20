@@ -22,7 +22,7 @@ var fpair;
 
                     //add pause button
                     var pauseButton = new gameui.ui.ImageButton("assets/pause.png", function () {
-                        gameScreen.switchScreen(new fpair.MainScreen(null));
+                        fpair.FasPair.showMainMenu();
                     });
 
                     pauseButton.x = 141;

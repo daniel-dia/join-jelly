@@ -22,7 +22,7 @@ module fpair.gameplay.view {
 
             //add pause button
             var pauseButton = new gameui.ui.ImageButton("assets/pause.png", () => {
-                gameScreen.switchScreen(new MainScreen(null));
+                FasPair.showMainMenu();
             });
 
             pauseButton.x = 141;

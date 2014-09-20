@@ -20,10 +20,14 @@ module fpair.gameplay{
         private gameHeader: view.GameHeader;
         private gameLevelIndicator: view.LevelIndicator;
 
+        private UserData: UserData;
+
         //#region =================================== initialization ==========================================================//
 
-        constructor() {
+        constructor(userData:UserData) {
             super();
+
+            this.UserData = userData;
 
             this.score = 0;
 
@@ -211,9 +215,12 @@ module fpair.gameplay{
             //check if match is correct
             if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin] ){//&&!tileTarget.locked) {
 
+                //calculate new value
+                var newValue = this.tiles[target] + this.tiles[origin];
+
                 //sum the tiles values
-                this.tiles[target] = this.tiles[target] + this.tiles[origin];
-                this.board.setTileValue(target,this.tiles[target]);
+                this.tiles[target] = newValue;
+                this.board.setTileValue(target,newValue);
                 this.tiles[origin] = 0;
 
                 //reset the previous tile
@@ -224,9 +231,10 @@ module fpair.gameplay{
                 //animate the mach
                 this.board.match(origin, target);
 
-                this.score += this.tiles[target] + Math.floor(Math.random() * this.tiles[target]);
+                this.score += newValue + Math.floor(Math.random() * newValue);
 
-                
+                this.UserData.setScore(this.score);
+                this.UserData.setLastJelly(newValue);
 
                 this.updateInfos();
 

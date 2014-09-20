@@ -29,7 +29,7 @@
             this.content.addChild(title);
 
             var button = new gameui.ui.ImageButton("assets/PlayBt.png", () => {
-                gameScreen.switchScreen(new gameplay.GamePlayScreen());
+                FasPair.startLevel();
             });
 
             button.y = 768;
@@ -40,11 +40,10 @@
 
 
             // adds jelly
-            var j = new gameplay.view.Jelly(0, 0, 500);
-            this.content.addChild(j);
-            j.setNumber(1);
-            j.x = 768;
-            j.y = 1000;
+            var lobby = new menus.view.JellyLobby(this.userData.getLastJelly());
+            lobby.x = defaultWidth / 2;
+            lobby.y = 1000;
+            this.content.addChild(lobby);
 
         }
 

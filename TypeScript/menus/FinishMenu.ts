@@ -1,4 +1,5 @@
-﻿class FinishMenu extends gameui.ui.MenuContainer {
+﻿
+class FinishMenu extends gameui.ui.MenuContainer {
 
     constructor(score:number,highScore:number) {
         super();

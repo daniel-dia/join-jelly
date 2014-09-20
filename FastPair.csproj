@@ -156,6 +156,7 @@
     <TypeScriptCompile Include="Scripts\typings\soundjs\soundjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\tweenjs\tweenjs.d.ts" />
     <TypeScriptCompile Include="TypeScript\Definitions.ts" />
+    <TypeScriptCompile Include="TypeScript\FastPair.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\GameScreen.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Board.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\GameHeader.ts" />
@@ -167,6 +168,7 @@
     <TypeScriptCompile Include="TypeScript\gameplay\view\Thorns.ts" />
     <TypeScriptCompile Include="TypeScript\menus\LoadingScreen.ts" />
     <TypeScriptCompile Include="TypeScript\menus\MainScreen.ts" />
+    <TypeScriptCompile Include="TypeScript\menus\view\JellyLobby.ts" />
     <TypeScriptCompile Include="TypeScript\Message.ts" />
     <TypeScriptCompile Include="TypeScript\UserData.ts" />
     <TypeScriptCompile Include="_references.ts" />
@@ -219,7 +221,6 @@
     <Folder Include="resources\eps\" />
     <Folder Include="resources\jpg\" />
     <Folder Include="resources\png\separate\" />
-    <Folder Include="TypeScript\menus\view\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

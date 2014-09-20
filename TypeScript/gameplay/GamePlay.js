@@ -10,10 +10,12 @@ var fpair;
         var GamePlayScreen = (function (_super) {
             __extends(GamePlayScreen, _super);
             //#region =================================== initialization ==========================================================//
-            function GamePlayScreen() {
+            function GamePlayScreen(userData) {
                 _super.call(this);
                 this.timeStep = 2;
                 this.boardSize = 5;
+
+                this.UserData = userData;
 
                 this.score = 0;
 
@@ -191,9 +193,12 @@ var fpair;
                 var _this = this;
                 //check if match is correct
                 if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin]) {
+                    //calculate new value
+                    var newValue = this.tiles[target] + this.tiles[origin];
+
                     //sum the tiles values
-                    this.tiles[target] = this.tiles[target] + this.tiles[origin];
-                    this.board.setTileValue(target, this.tiles[target]);
+                    this.tiles[target] = newValue;
+                    this.board.setTileValue(target, newValue);
                     this.tiles[origin] = 0;
 
                     //reset the previous tile
@@ -204,7 +209,10 @@ var fpair;
                     //animate the mach
                     this.board.match(origin, target);
 
-                    this.score += this.tiles[target] + Math.floor(Math.random() * this.tiles[target]);
+                    this.score += newValue + Math.floor(Math.random() * newValue);
+
+                    this.UserData.setScore(this.score);
+                    this.UserData.setLastJelly(newValue);
 
                     this.updateInfos();
                 }

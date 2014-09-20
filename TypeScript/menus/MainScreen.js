@@ -28,7 +28,7 @@ var fpair;
             this.content.addChild(title);
 
             var button = new gameui.ui.ImageButton("assets/PlayBt.png", function () {
-                gameScreen.switchScreen(new fpair.gameplay.GamePlayScreen());
+                fpair.FasPair.startLevel();
             });
 
             button.y = 768;
@@ -38,11 +38,10 @@ var fpair;
             this.content.addChild(button);
 
             // adds jelly
-            var j = new fpair.gameplay.view.Jelly(0, 0, 500);
-            this.content.addChild(j);
-            j.setNumber(1);
-            j.x = 768;
-            j.y = 1000;
+            var lobby = new fpair.menus.view.JellyLobby(this.userData.getLastJelly());
+            lobby.x = defaultWidth / 2;
+            lobby.y = 1000;
+            this.content.addChild(lobby);
         };
 
         MainScreen.prototype.createBackground = function () {
