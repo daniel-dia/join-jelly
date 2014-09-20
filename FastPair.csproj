@@ -161,10 +161,11 @@
     <TypeScriptCompile Include="TypeScript\gameplay\view\Board.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\GameHeader.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\GameMenu.ts" />
+    <TypeScriptCompile Include="TypeScript\gameplay\view\Jelly.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\LevelIndicator.ts" />
     <TypeScriptCompile Include="TypeScript\menus\FinishMenu.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\GamePlay.ts" />
-    <TypeScriptCompile Include="TypeScript\gameplay\view\Jelly.ts" />
+    <TypeScriptCompile Include="TypeScript\gameplay\view\Tile.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Thorns.ts" />
     <TypeScriptCompile Include="TypeScript\menus\LoadingScreen.ts" />
     <TypeScriptCompile Include="TypeScript\menus\MainScreen.ts" />

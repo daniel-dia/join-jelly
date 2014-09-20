@@ -4,7 +4,7 @@
         constructor(lastJelly:number) {
             super();
 
-
+            // drop all jellies
             this.dropAllJellys(lastJelly);
         }
 
@@ -26,17 +26,17 @@
 
         //adds a single jelly to the container
         private dropJelly(value: number,position:number) {
-            var jelly = new gameplay.view.Jelly(0, 0, 500);
+            var jelly = new gameplay.view.Tile(0, 0, 500);
 
             // adds jelly
             this.addChildAt(jelly,0);
             jelly.setNumber(value);
 
+            // set jelly positions and scale
             if(position%2==0)
                 jelly.x = position * 120;
             else
                 jelly.x = -1 * (position+1) * 120;
-
             jelly.y = 40*(14 - position);
             jelly.scaleX = jelly.scaleY = 1-position/10;
 

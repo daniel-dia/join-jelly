@@ -5,10 +5,10 @@
 
         public boardWidth: number;
         public boardHeight: number;
-        private tiles: Array<Jelly>;
+        private tiles: Array<Tile>;
 
         private tileSize: number;
-        private touchDictionary: Array<Jelly> = new Array();
+        private touchDictionary: Array<Tile> = new Array();
 
         //----------------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@
             return (this.boardWidth * coords.y + coords.x).toString();
         }
 
-        private getTileByRawPos(rawx: number, rawy: number, tileSize: number): Jelly {
+        private getTileByRawPos(rawx: number, rawy: number, tileSize: number): Tile {
             var id = this.getTileIdByPos(rawx, rawy, tileSize);
             return this.getTileById(id);
         }
@@ -55,8 +55,8 @@
             }
         }
 
-        public getTileById(id: string): Jelly {
-            return <Jelly> this.getChildByName(id);
+        public getTileById(id: string): Tile {
+            return <Tile> this.getChildByName(id);
         }
 
         //----------------------------------------------------------------------------------
@@ -66,7 +66,7 @@
 
             for (var x = 0; x < boardWidth; x++) {
                 for (var y = 0; y < boardHeight; y++) {
-                    var t = new Jelly(x, y, tileSize);
+                    var t = new Tile(x, y, tileSize);
 
                     this.tiles.push(t);
                     this.addChild(t);
@@ -82,7 +82,7 @@
 
                             //store offset mouse position
                             touchOffset[e.pointerID] = { x: tile.x - e.localX, y: tile.y - e.localY };
-                            tile.executeAnimationHold();
+                            tile.drag();
 
                             //bring to front
                             this.setChildIndex(tile, this.getNumChildren() - 1);
@@ -114,7 +114,7 @@
                         if (tile) {
                             tile.locked = false;
                             this.releaseDrag(tile, false);
-                            tile.executeAimationRelease();
+                            tile.release();
                         }
                     });
                 }
@@ -123,7 +123,7 @@
 
         //---------------------------------------------------------------------------------
 
-        private releaseDrag(tile: Jelly, match: boolean= true, target?: Jelly) {
+        private releaseDrag(tile: Tile, match: boolean= true, target?: Tile) {
             var index = this.touchDictionary.indexOf(tile);
             delete this.touchDictionary[index];
 

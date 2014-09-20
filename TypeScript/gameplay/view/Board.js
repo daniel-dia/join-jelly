@@ -65,7 +65,7 @@ var fpair;
 
                     for (var x = 0; x < boardWidth; x++) {
                         for (var y = 0; y < boardHeight; y++) {
-                            var t = new view.Jelly(x, y, tileSize);
+                            var t = new view.Tile(x, y, tileSize);
 
                             this.tiles.push(t);
                             this.addChild(t);
@@ -81,7 +81,7 @@ var fpair;
 
                                     //store offset mouse position
                                     touchOffset[e.pointerID] = { x: tile.x - e.localX, y: tile.y - e.localY };
-                                    tile.executeAnimationHold();
+                                    tile.drag();
 
                                     //bring to front
                                     _this.setChildIndex(tile, _this.getNumChildren() - 1);
@@ -111,7 +111,7 @@ var fpair;
                                 if (tile) {
                                     tile.locked = false;
                                     _this.releaseDrag(tile, false);
-                                    tile.executeAimationRelease();
+                                    tile.release();
                                 }
                             });
                         }
