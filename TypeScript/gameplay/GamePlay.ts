@@ -4,6 +4,7 @@ module fpair.gameplay{
     export class GamePlayScreen extends gameui.ScreenState {
 
         private timeStep = 2;
+
         private boardSize = 5;
 
         private board: view.Board;
@@ -224,6 +225,8 @@ module fpair.gameplay{
                 this.board.match(origin, target);
 
                 this.score += this.tiles[target] + Math.floor(Math.random() * this.tiles[target]);
+
+                
 
                 this.updateInfos();
 

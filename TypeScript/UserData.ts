@@ -1,30 +1,37 @@
 ﻿class UserData {
 
-
     public setScore(score) {
         var highscore = this.getHighScore();
-        if (score > highscore) this.saveValue("highscore", score);
+        if (score > highscore) UserData.saveValue("highscore", score);
     }
 
     public getHighScore(): number{
-        var highscore = <number>this.loadValue("highscore");
-        if (highscore) return highscore;
-
+        var value = <number>UserData.loadValue("highscore");
+        if (value) return value;
         return 0;
     }
 
-
-    //=========================//
-    private prefix = "FastPair_";
-
-    private saveValue(key: string, value: any) {
-        var serialized = JSON.stringify(this.prefix + value);
-        //localStorage.setItem(key, serialized);
+    public getLastJelly(): number {
+        var value = UserData.loadValue("highscore");
+        if (value) return value;
+        return 0;
     }
 
-    private loadValue(key: string): any {
-        //var value = localStorage.getItem(this.prefix + key);
-        return 10//JSON.parse(value);
+    public setLastJelly(value: number) {
+        UserData.saveValue("highscore", value);
+    }
+
+    //=========================//
+    private static prefix = "FastPair_";
+
+    private static saveValue(key: string, value: any) {
+        var serialized = JSON.stringify(UserData.prefix + value);
+        localStorage.setItem(key, serialized);
+    }
+
+    private static loadValue(key: string): any {
+        var value = localStorage.getItem(UserData.prefix + key);
+        return JSON.parse(value);
     }
 
 }

@@ -14,5 +14,4 @@ window.onload = () => {
         var mainScreen = new fpair.MainScreen(userData);
         gameScreen.switchScreen(mainScreen);
     }
-
 };

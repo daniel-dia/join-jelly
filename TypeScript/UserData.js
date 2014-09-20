@@ -1,31 +1,40 @@
 ﻿var UserData = (function () {
     function UserData() {
-        //=========================//
-        this.prefix = "FastPair_";
     }
     UserData.prototype.setScore = function (score) {
         var highscore = this.getHighScore();
         if (score > highscore)
-            this.saveValue("highscore", score);
+            UserData.saveValue("highscore", score);
     };
 
     UserData.prototype.getHighScore = function () {
-        var highscore = this.loadValue("highscore");
-        if (highscore)
-            return highscore;
-
+        var value = UserData.loadValue("highscore");
+        if (value)
+            return value;
         return 0;
     };
 
-    UserData.prototype.saveValue = function (key, value) {
-        var serialized = JSON.stringify(this.prefix + value);
-        //localStorage.setItem(key, serialized);
+    UserData.prototype.getLastJelly = function () {
+        var value = UserData.loadValue("highscore");
+        if (value)
+            return value;
+        return 0;
     };
 
-    UserData.prototype.loadValue = function (key) {
-        //var value = localStorage.getItem(this.prefix + key);
-        return 10;
+    UserData.prototype.setLastJelly = function (value) {
+        UserData.saveValue("highscore", value);
     };
+
+    UserData.saveValue = function (key, value) {
+        var serialized = JSON.stringify(UserData.prefix + value);
+        localStorage.setItem(key, serialized);
+    };
+
+    UserData.loadValue = function (key) {
+        var value = localStorage.getItem(UserData.prefix + key);
+        return JSON.parse(value);
+    };
+    UserData.prefix = "FastPair_";
     return UserData;
 })();
 //# sourceMappingURL=UserData.js.map
