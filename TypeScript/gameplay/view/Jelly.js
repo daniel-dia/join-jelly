@@ -10,7 +10,7 @@ var fpair;
         (function (view) {
             var Jelly = (function (_super) {
                 __extends(Jelly, _super);
-                // #region initialization =============================================
+                // #region initialization =========================================
                 function Jelly() {
                     _super.call(this);
 
@@ -29,10 +29,9 @@ var fpair;
                 };
 
                 /// #endregion
-                // #region behaviour =============================================
+                // #region behaviour ==============================================
                 //set tile number
                 Jelly.prototype.setNumber = function (value) {
-                    var _this = this;
                     //update image
                     this.imageContainer.removeAllChildren();
                     this.shadowContainer.removeAllChildren();
@@ -49,39 +48,46 @@ var fpair;
                         this.visible = true;
                         this.alpha = 1;
 
-                        //load image bg
-                        var img = new createjs.Bitmap("assets/j" + value + ".png");
-
-                        //centralize
-                        img.image.onload = function () {
-                            img.regX = img.image.width / 2;
-                            img.regY = img.image.height;
-
-                            var shadow = gameui.AssetsManager.getBitmap("shadow");
-                            shadow.regY = 45;
-                            shadow.regX = 108;
-                            shadow.scaleX = shadow.scaleY = img.image.width / 216;
-                            _this.shadowContainer.addChild(shadow);
-                        };
-
-                        this.imageContainer.addChild(img);
-
-                        //add Eyes
-                        var eye = new createjs.Container();
-                        var eyeImg = new createjs.Bitmap("assets/e" + value + ".png");
-                        eyeImg.regY = 20;
-                        createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
-                        eye.addChild(eyeImg);
-                        eye.regX = 133 / 2;
-                        eyeImg.image.onload = function () {
-                            eye.regX = eyeImg.image.width / 2;
-                        };
-                        eye.scaleX = eye.scaleY = img.scaleX;
-                        eye.y = -50;
-                        this.imageContainer.addChild(eye);
+                        this.createJelly(value);
+                        this.createEyes(value);
                     }
 
                     this.executeAnimationIn();
+                };
+
+                Jelly.prototype.createJelly = function (value) {
+                    var _this = this;
+                    var img = new createjs.Bitmap("assets/j" + value + ".png");
+
+                    //centralize
+                    img.image.onload = function () {
+                        img.regX = img.image.width / 2;
+                        img.regY = img.image.height;
+
+                        var shadow = gameui.AssetsManager.getBitmap("shadow");
+                        shadow.regY = 45;
+                        shadow.regX = 108;
+                        shadow.scaleX = shadow.scaleY = img.image.width / 216;
+                        _this.shadowContainer.addChild(shadow);
+                    };
+
+                    this.imageContainer.addChild(img);
+                };
+                Jelly.prototype.createEyes = function (value) {
+                    //add Eyes
+                    var eye = new createjs.Container();
+                    var eyeImg = new createjs.Bitmap("assets/e" + value + ".png");
+                    eyeImg.regY = 20;
+                    createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
+                    eye.addChild(eyeImg);
+                    eye.regX = 133 / 2;
+                    eyeImg.image.onload = function () {
+                        eye.regX = eyeImg.image.width / 2;
+                    };
+
+                    //eye.scaleX = eye.scaleY = img.scaleX;
+                    eye.y = -50;
+                    this.imageContainer.addChild(eye);
                 };
 
                 // #endregion
