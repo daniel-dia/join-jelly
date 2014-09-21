@@ -589,6 +589,7 @@ var gameui;
     var AssetsManager = (function () {
         function AssetsManager() {
         }
+        //load assets
         AssetsManager.loadAssets = function (assetsManifest, spriteSheets, imagesArray) {
             var _this = this;
             //cleans previous loaded assets.
@@ -676,6 +677,10 @@ var gameui;
             if (play)
                 sprite.play();
             return sprite;
+        };
+
+        AssetsManager.playSound = function (name) {
+            createjs.Sound.play(name);
         };
         return AssetsManager;
     })();

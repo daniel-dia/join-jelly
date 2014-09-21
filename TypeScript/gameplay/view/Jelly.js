@@ -50,9 +50,9 @@ var fpair;
 
                         this.createJelly(value);
                         this.createEyes(value);
-                    }
 
-                    this.executeAnimationIn();
+                        this.executeAnimationIn();
+                    }
                 };
 
                 Jelly.prototype.createJelly = function (value) {
@@ -125,8 +125,11 @@ var fpair;
                     });
 
                     createjs.Tween.get(this.imageContainer).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut);
-                    createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 200, createjs.Ease.sineOut).call(function () {
+                    createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(function () {
                         _this.executeIdle();
+
+                        var s = Math.floor(Math.random() * 4) + 1;
+                        createjs.Sound.play('sp' + s, null, null, null, null, 0.1);
                     });
                     ;
                 };

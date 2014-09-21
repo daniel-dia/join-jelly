@@ -85,6 +85,8 @@ module fpair.gameplay{
             this.step();
             this.board.mouseEnabled = true;
             this.updateInfos();
+
+            createjs.Sound.play("bg1", null, null, null, -1);
         }
         
         //time step for adding tiles.
@@ -119,7 +121,6 @@ module fpair.gameplay{
             return empty;
         }
 
-        // 
         private verifyGameLoose(): boolean {
 
             var empty = this.getEmptyBlocks();
@@ -130,7 +131,6 @@ module fpair.gameplay{
             return false;
         }
 
-        // 
         private addTileOnBoard() {
 
             var empty = this.getEmptyBlocks();
@@ -175,13 +175,11 @@ module fpair.gameplay{
             return 50 * Math.pow(2,level);
         }
         
-
         private getLevelByScore(score: number): number {
             if (!score) score = 1;
             return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2))+1
         }
         
-
         private getTimeIntervalByScore(score: number): number {
             var startTime = 1000;
             var step = 4;
@@ -235,10 +233,8 @@ module fpair.gameplay{
 
                 this.UserData.setScore(this.score);
                 this.UserData.setLastJelly(newValue);
-
-                this.updateInfos();
-
                 
+                this.updateInfos();
             }
         }
 

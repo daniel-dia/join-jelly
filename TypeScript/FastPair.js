@@ -10,6 +10,7 @@
 
             this.userData = new UserData();
             var loadingScreen = new fpair.Loading();
+            this.gameScreen.switchScreen(loadingScreen);
 
             loadingScreen.loaded = function () {
                 FasPair.showMainMenu();

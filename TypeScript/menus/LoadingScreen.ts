@@ -14,7 +14,7 @@
             var loader = gameui.AssetsManager.loadAssets(this.getAssetsManifest(1));//, spriteSheets, images);
 
             //var loader = Assets.loadAssets();
-            var text = new createjs.Text("", "600 90px Arial", "#FFF");
+            var text = new createjs.Text("", "90px Arial", "#FFF");
             text.x = defaultWidth / 2;
             text.y = defaultHeight / 2;
             text.textAlign = "center"
@@ -35,7 +35,7 @@
         }
 
 
-        private getAssetsManifest(scale:number) :Array<any>{
+        private getAssetsManifest(scale: number): Array<any> {
            return [
                 { id: "1024", src: "assets/1024.png" },
                 { id: "2048", src: "assets/2048.png" },
@@ -78,11 +78,19 @@
                 { id: "pause", src: "assets/pause.png" },
                 { id: "PlayBt", src: "assets/PlayBt.png" },
                 { id: "time_bar", src: "assets/time_bar.png" },
-               { id: "time_border", src: "assets/time_border.png" },
-               { id: "shadow", src: "assets/shadow.png" },
+                { id: "time_border", src: "assets/time_border.png" },
+                { id: "shadow", src: "assets/shadow.png" },
+
+                { id: "ho1", src: "Sounds/ho1.mp3" },
+                { id: "ho2", src: "Sounds/ho2.mp3" },
+                { id: "je5", src: "Sounds/je5.mp3" },
+                { id: "rl1", src: "Sounds/rl1.mp3" },
+                { id: "sp1", src: "Sounds/sp1.mp3" },
+                { id: "sp2", src: "Sounds/sp2.mp3" },
+                { id: "sp3", src: "Sounds/sp3.mp3" },
+                { id: "sp4", src: "Sounds/sp4.mp3" },
+                { id: "bg1", src: "Sounds/bg1.mp3" },
             ]
         }
-
-
     }
 }

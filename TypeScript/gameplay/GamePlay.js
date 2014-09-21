@@ -73,6 +73,8 @@ var fpair;
                 this.step();
                 this.board.mouseEnabled = true;
                 this.updateInfos();
+
+                createjs.Sound.play("bg1", null, null, null, -1);
             };
 
             //time step for adding tiles.
@@ -105,7 +107,6 @@ var fpair;
                 return empty;
             };
 
-            //
             GamePlayScreen.prototype.verifyGameLoose = function () {
                 var empty = this.getEmptyBlocks();
 
@@ -115,7 +116,6 @@ var fpair;
                 return false;
             };
 
-            //
             GamePlayScreen.prototype.addTileOnBoard = function () {
                 var empty = this.getEmptyBlocks();
 

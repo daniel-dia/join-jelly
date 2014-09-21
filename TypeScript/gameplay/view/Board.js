@@ -65,60 +65,64 @@ var fpair;
 
                     for (var x = 0; x < boardWidth; x++) {
                         for (var y = 0; y < boardHeight; y++) {
-                            var t = new view.Tile(x, y, tileSize);
+                            var tileDO = new view.Tile(x, y, tileSize);
 
-                            this.tiles.push(t);
-                            this.addChild(t);
-                            t.setNumber(0);
-                            t.name = (this.boardWidth * y + x).toString();
-                            t.set(this.getTilePositionByCoords(x, y, tileSize));
-
-                            this.addEventListener("mousedown", function (e) {
-                                var tile = _this.getTileByRawPos(e.localX, e.localY, tileSize);
-
-                                if (tile) {
-                                    _this.touchDictionary[e.pointerID] = tile;
-
-                                    //store offset mouse position
-                                    touchOffset[e.pointerID] = { x: tile.x - e.localX, y: tile.y - e.localY };
-                                    tile.drag();
-
-                                    //bring to front
-                                    _this.setChildIndex(tile, _this.getNumChildren() - 1);
-                                }
-                            });
-
-                            //Press Move
-                            this.addEventListener("pressmove", function (e) {
-                                //get tile by touch
-                                var tile = _this.touchDictionary[e.pointerID];
-                                if (tile) {
-                                    tile.x = e.localX + touchOffset[e.pointerID].x;
-                                    tile.y = e.localY + touchOffset[e.pointerID].y;
-                                    tile.locked = true;
-
-                                    var targetName = _this.getTileIdByPos(e.localX, e.localY, tileSize);
-
-                                    if (targetName != tile.name) {
-                                        _this.dispatchEvent("tileDrop", { origin: tile.name, target: targetName });
-                                    }
-                                }
-                            });
-
-                            //Press Up
-                            this.addEventListener("pressup", function (e) {
-                                var tile = _this.touchDictionary[e.pointerID];
-                                if (tile) {
-                                    tile.locked = false;
-                                    _this.releaseDrag(tile, false);
-                                    tile.release();
-                                }
-                            });
+                            this.tiles.push(tileDO);
+                            this.addChild(tileDO);
+                            tileDO.setNumber(0);
+                            tileDO.name = (this.boardWidth * y + x).toString();
+                            tileDO.set(this.getTilePositionByCoords(x, y, tileSize));
                         }
                     }
+
+                    this.addEventListener("mousedown", function (e) {
+                        var tile = _this.getTileByRawPos(e.localX, e.localY, tileSize);
+
+                        if (tile) {
+                            _this.touchDictionary[e.pointerID] = tile;
+
+                            //store offset mouse position
+                            touchOffset[e.pointerID] = { x: tile.x - e.localX, y: tile.y - e.localY };
+                            tile.drag();
+
+                            //bring to front
+                            _this.setChildIndex(tile, _this.getNumChildren() - 1);
+
+                            var s = Math.floor(Math.random() * 2) + 1;
+                            createjs.Sound.play('ho' + s);
+                        }
+                    });
+
+                    //Press Move
+                    this.addEventListener("pressmove", function (e) {
+                        //get tile by touch
+                        var tile = _this.touchDictionary[e.pointerID];
+                        if (tile) {
+                            tile.x = e.localX + touchOffset[e.pointerID].x;
+                            tile.y = e.localY + touchOffset[e.pointerID].y;
+                            tile.locked = true;
+
+                            var targetName = _this.getTileIdByPos(e.localX, e.localY, tileSize);
+
+                            if (targetName != tile.name) {
+                                _this.dispatchEvent("tileDrop", { origin: tile.name, target: targetName });
+                            }
+                        }
+                    });
+
+                    //Press Up
+                    this.addEventListener("pressup", function (e) {
+                        var tile = _this.touchDictionary[e.pointerID];
+                        if (tile) {
+                            tile.locked = false;
+                            _this.releaseDrag(tile, false);
+                            tile.release();
+
+                            createjs.Sound.play('rl1');
+                        }
+                    });
                 };
 
-                //---------------------------------------------------------------------------------
                 Board.prototype.releaseDrag = function (tile, match, target) {
                     var _this = this;
                     if (typeof match === "undefined") { match = true; }
@@ -148,6 +152,9 @@ var fpair;
 
                     tile.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
                     createjs.Tween.get(tile).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
+
+                    var s = Math.floor(Math.random() * 4) + 1;
+                    createjs.Sound.play('sp' + s);
                 };
 
                 //---------------------------------------------------------------------------------
