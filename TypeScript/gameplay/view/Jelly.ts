@@ -2,12 +2,8 @@
 
     export class Jelly extends createjs.Container {
         
-        private shadowSizes = [0.3, 0.35, 0.4, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
-     
         private shadowContainer: createjs.Container;
-        private background: createjs.Shape;
         private imageContainer: createjs.Container;
-
 
         // #region initialization =============================================
 
@@ -31,7 +27,7 @@
 
         }
 
-        // #endregioin 
+        /// #endregion
 
         // #region behaviour =============================================
 
@@ -97,8 +93,7 @@
 
 
 
-        // #endregioin 
-
+        // #endregion
 
         //#region animations =============================================
         private restore() {

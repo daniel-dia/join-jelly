@@ -13,7 +13,6 @@ var fpair;
                 // #region initialization =============================================
                 function Jelly() {
                     _super.call(this);
-                    this.shadowSizes = [0.3, 0.35, 0.4, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5];
 
                     this.addObjects();
                 }
@@ -29,7 +28,7 @@ var fpair;
                     this.addChild(this.imageContainer);
                 };
 
-                // #endregioin
+                /// #endregion
                 // #region behaviour =============================================
                 //set tile number
                 Jelly.prototype.setNumber = function (value) {
@@ -85,7 +84,7 @@ var fpair;
                     this.executeAnimationIn();
                 };
 
-                // #endregioin
+                // #endregion
                 //#region animations =============================================
                 Jelly.prototype.restore = function () {
                     createjs.Tween.removeTweens(this.imageContainer);
