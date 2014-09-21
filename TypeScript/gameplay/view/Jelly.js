@@ -20,12 +20,6 @@ var fpair;
                 Jelly.prototype.addObjects = function () {
                     //create shadow container
                     this.shadowContainer = new createjs.Container();
-                    var shadow = new createjs.Shape(new createjs.Graphics().beginFill("rgba(0,0,0,0.3)").drawCircle(0, 0, 200));
-                    shadow.scaleY = 0.4 * 0.3;
-                    shadow.scaleX = 0.3;
-                    shadow.y = 0;
-                    this.shadowContainer.x = 0;
-                    this.shadowContainer.addChild(shadow);
 
                     //create image container
                     this.imageContainer = new createjs.Container();
@@ -39,10 +33,10 @@ var fpair;
                 // #region behaviour =============================================
                 //set tile number
                 Jelly.prototype.setNumber = function (value) {
-                    //value logic
-                    //this.value = value;
+                    var _this = this;
                     //update image
                     this.imageContainer.removeAllChildren();
+                    this.shadowContainer.removeAllChildren();
 
                     //if values equals zero, hide the tile
                     if (value == 0) {
@@ -52,6 +46,7 @@ var fpair;
                         //enable mouse and visibility
                         this.mouseEnabled = true;
                         this.shadowContainer.visible = true;
+
                         this.visible = true;
                         this.alpha = 1;
 
@@ -62,6 +57,12 @@ var fpair;
                         img.image.onload = function () {
                             img.regX = img.image.width / 2;
                             img.regY = img.image.height;
+
+                            var shadow = gameui.AssetsManager.getBitmap("shadow");
+                            shadow.regY = 45;
+                            shadow.regX = 108;
+                            shadow.scaleX = shadow.scaleY = img.image.width / 216;
+                            _this.shadowContainer.addChild(shadow);
                         };
 
                         this.imageContainer.addChild(img);

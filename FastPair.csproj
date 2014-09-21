@@ -59,6 +59,7 @@
     <Content Include="assets\j8.png" />
     <Content Include="assets\pause.png" />
     <Content Include="assets\PlayBt.png" />
+    <Content Include="assets\shadow.png" />
     <Content Include="assets\time_bar.png" />
     <Content Include="assets\time_border.png" />
     <Content Include="index.html" />

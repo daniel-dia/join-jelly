@@ -81,7 +81,8 @@ var fpair;
                 { id: "pause", src: "assets/pause.png" },
                 { id: "PlayBt", src: "assets/PlayBt.png" },
                 { id: "time_bar", src: "assets/time_bar.png" },
-                { id: "time_border", src: "assets/time_border.png" }
+                { id: "time_border", src: "assets/time_border.png" },
+                { id: "shadow", src: "assets/shadow.png" }
             ];
         };
         return Loading;
