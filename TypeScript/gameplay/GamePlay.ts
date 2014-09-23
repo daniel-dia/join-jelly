@@ -144,7 +144,6 @@ module fpair.gameplay{
                 var tid = empty[i];
                 this.tiles[tid] = 1;
                 this.board.setTileValue(tid, 1);
-
                 return true;
             }
 

@@ -28,6 +28,10 @@ var fpair;
                     var t = this.getTileById(tileId);
                     if (t)
                         t.setNumber(value);
+
+                    //plays sound if is new jelly
+                    if (value == 1)
+                        createjs.Sound.play('s' + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
 
                 //----------------------------------------------------------------------------------
@@ -88,8 +92,7 @@ var fpair;
                             //bring to front
                             _this.setChildIndex(tile, _this.getNumChildren() - 1);
 
-                            var s = Math.floor(Math.random() * 2) + 1;
-                            createjs.Sound.play('ho' + s);
+                            createjs.Sound.play('h1');
                         }
                     });
 
@@ -117,8 +120,6 @@ var fpair;
                             tile.locked = false;
                             _this.releaseDrag(tile, false);
                             tile.release();
-
-                            createjs.Sound.play('rl1');
                         }
                     });
                 };
@@ -153,8 +154,7 @@ var fpair;
                     tile.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
                     createjs.Tween.get(tile).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
 
-                    var s = Math.floor(Math.random() * 4) + 1;
-                    createjs.Sound.play('sp' + s);
+                    createjs.Sound.play('j' + (Math.floor(Math.random() * 4) + 1));
                 };
 
                 //---------------------------------------------------------------------------------

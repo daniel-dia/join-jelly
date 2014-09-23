@@ -81,15 +81,22 @@
                 { id: "time_border", src: "assets/time_border.png" },
                 { id: "shadow", src: "assets/shadow.png" },
 
-                { id: "ho1", src: "Sounds/ho1.mp3" },
-                { id: "ho2", src: "Sounds/ho2.mp3" },
-                { id: "je5", src: "Sounds/je5.mp3" },
-                { id: "rl1", src: "Sounds/rl1.mp3" },
-                { id: "sp1", src: "Sounds/sp1.mp3" },
-                { id: "sp2", src: "Sounds/sp2.mp3" },
-                { id: "sp3", src: "Sounds/sp3.mp3" },
-                { id: "sp4", src: "Sounds/sp4.mp3" },
+    
                 { id: "bg1", src: "Sounds/bg1.mp3" },
+
+
+               { id: "h1", src: "Sounds/h1.mp3" },
+               { id: "r1", src: "Sounds/r1.mp3" },
+
+               { id: "s1", src: "Sounds/s1.mp3" },
+               { id: "s2", src: "Sounds/s2.mp3" },
+               { id: "s3", src: "Sounds/s3.mp3" },
+
+               { id: "j1", src: "Sounds/j1.mp3" },
+               { id: "j2", src: "Sounds/j2.mp3" },
+               { id: "j3", src: "Sounds/j3.mp3" },
+               { id: "j4", src: "Sounds/j4.mp3" },
+          
             ]
         }
     }

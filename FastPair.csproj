@@ -146,14 +146,15 @@
     <Content Include="Scripts\createjs-2013.12.12.min.js" />
     <Content Include="Scripts\gameuijs.js" />
     <Content Include="Sounds\bg1.mp3" />
-    <Content Include="Sounds\ho1.mp3" />
-    <Content Include="Sounds\ho2.mp3" />
-    <Content Include="Sounds\je5.mp3" />
-    <Content Include="Sounds\rl1.mp3" />
-    <Content Include="Sounds\sp1.mp3" />
-    <Content Include="Sounds\sp2.mp3" />
-    <Content Include="Sounds\sp3.mp3" />
-    <Content Include="Sounds\sp4.mp3" />
+    <Content Include="Sounds\h1.mp3" />
+    <Content Include="Sounds\j1.mp3" />
+    <Content Include="Sounds\j2.mp3" />
+    <Content Include="Sounds\j3.mp3" />
+    <Content Include="Sounds\j4.mp3" />
+    <Content Include="Sounds\r1.mp3" />
+    <Content Include="Sounds\s1.mp3" />
+    <Content Include="Sounds\s2.mp3" />
+    <Content Include="Sounds\s3.mp3" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>

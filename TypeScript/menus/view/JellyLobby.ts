@@ -38,7 +38,11 @@
             else
                 jelly.x = -1 * (position+1) * 120;
             jelly.y = 40*(14 - position);
-            jelly.scaleX = jelly.scaleY = 1-position/10;
+            jelly.scaleX = jelly.scaleY = 1 - position / 10;
+
+            //play JellySound
+
+            createjs.Sound.play('s' + (Math.floor(Math.random() * 3) + 1), null, 400);
 
 
         }

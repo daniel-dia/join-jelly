@@ -94,7 +94,6 @@
             eyeImg.image.onload = () => {
                 eye.regX = eyeImg.image.width / 2;
             }
-                //eye.scaleX = eye.scaleY = img.scaleX;
             eye.y = -50
                 this.imageContainer.addChild(eye)
         }
@@ -145,8 +144,8 @@
                 .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(() => {
                     this.executeIdle();
 
-                    var s = Math.floor(Math.random() * 4) + 1;
-                    createjs.Sound.play('sp' + s, null, null, null, null,0.1);
+                    
+                    
                 });;
 
 
