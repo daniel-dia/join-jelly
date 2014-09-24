@@ -18,6 +18,7 @@ module fpair.gameplay{
         private score: number;        
 
         private gameHeader: view.GameHeader;
+        private timeBar: view.TimeBar;
         private gameLevelIndicator: view.LevelIndicator;
 
         private UserData: UserData;
@@ -34,9 +35,7 @@ module fpair.gameplay{
             this.tiles = new Array();
             this.createBackground();
             this.createBoard();
-            this.createUI();
-            this.createHeader();
-            this.createFooter();
+            this.createGUI();
         }
         
         // create game background
@@ -53,26 +52,17 @@ module fpair.gameplay{
             this.content.addChild(this.board);
         }
 
-        // creates the game header
-        private createHeader() {
-            this.gameHeader = new view.GameHeader();
-            this.header.addChild(this.gameHeader);
-        }
+        // creates the game GUI
+        private createGUI() {
 
-        // create a score indicator footer
-        private createFooter() {
-
-            //add background
-            var bg = gameui.AssetsManager.getBitmap("assets/footer.png");
-            this.footer.addChild(bg);
-            bg.x = 35;
-            bg.y = -148;
-        }
-
-        // create screen elements
-        private createUI() {
             this.gameLevelIndicator = new view.LevelIndicator();
             this.content.addChild(this.gameLevelIndicator);
+        
+            this.gameHeader = new view.GameHeader();
+            this.header.addChild(this.gameHeader);
+
+            this.timeBar = new view.TimeBar();
+            this.footer.addChild(this.timeBar);
         }
 
         //#endregion
@@ -86,15 +76,12 @@ module fpair.gameplay{
             this.board.mouseEnabled = true;
             this.updateInfos();
 
-            createjs.Sound.play("bg1", null, null, null, -1);
+         //   createjs.Sound.play("bg1", null, null, null, -1);
         }
         
         //time step for adding tiles.
         private step() {
-            
-            // updates the level
-            // this.updateInfos();
-            
+                        
             // add a new tile  on board
             this.addTileOnBoard();
 
@@ -105,6 +92,8 @@ module fpair.gameplay{
             if(!loose)
                 setTimeout(() => { this.step(); }, this.getTimeIntervalByScore(this.sumAll()))
 
+
+            this.updateInfos();
         }
 
         private getEmptyBlocks(): Array<number> {
@@ -150,6 +139,8 @@ module fpair.gameplay{
             return false;
         }
 
+
+        //update GUI iformaion
         private updateInfos() {
 
             var score = this.score;
@@ -167,18 +158,33 @@ module fpair.gameplay{
                 this.gameLevelIndicator.showLevel(level);
 
             this.currentLevel = level;
+
+            // updates the footer
+
+            //reads all filled spaces
+            var filled = 0;
+            for (var t in this.tiles)
+                if (this.tiles[t] != 0)
+                    filled++;
+
+            //set percentage
+            var percent = 1 - (filled / (this.boardSize * this.boardSize));
+            this.timeBar.setPercent(percent);
         }
 
+        // returns a score based on level
         private getScoreByLevel(level: number): number {
             if (level==0) return 0;
             return 50 * Math.pow(2,level);
         }
         
+        //return a level based on a score
         private getLevelByScore(score: number): number {
             if (!score) score = 1;
             return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2))+1
         }
         
+        //return a time interval for jelly addition based on user level;
         private getTimeIntervalByScore(score: number): number {
             var startTime = 1000;
             var step = 4;

@@ -22,9 +22,7 @@ var fpair;
                 this.tiles = new Array();
                 this.createBackground();
                 this.createBoard();
-                this.createUI();
-                this.createHeader();
-                this.createFooter();
+                this.createGUI();
             }
             // create game background
             GamePlayScreen.prototype.createBackground = function () {
@@ -44,25 +42,16 @@ var fpair;
                 this.content.addChild(this.board);
             };
 
-            // creates the game header
-            GamePlayScreen.prototype.createHeader = function () {
-                this.gameHeader = new gameplay.view.GameHeader();
-                this.header.addChild(this.gameHeader);
-            };
-
-            // create a score indicator footer
-            GamePlayScreen.prototype.createFooter = function () {
-                //add background
-                var bg = gameui.AssetsManager.getBitmap("assets/footer.png");
-                this.footer.addChild(bg);
-                bg.x = 35;
-                bg.y = -148;
-            };
-
-            // create screen elements
-            GamePlayScreen.prototype.createUI = function () {
+            // creates the game GUI
+            GamePlayScreen.prototype.createGUI = function () {
                 this.gameLevelIndicator = new gameplay.view.LevelIndicator();
                 this.content.addChild(this.gameLevelIndicator);
+
+                this.gameHeader = new gameplay.view.GameHeader();
+                this.header.addChild(this.gameHeader);
+
+                this.timeBar = new gameplay.view.TimeBar();
+                this.footer.addChild(this.timeBar);
             };
 
             //#endregion
@@ -73,14 +62,11 @@ var fpair;
                 this.step();
                 this.board.mouseEnabled = true;
                 this.updateInfos();
-
-                createjs.Sound.play("bg1", null, null, null, -1);
+                //   createjs.Sound.play("bg1", null, null, null, -1);
             };
 
             //time step for adding tiles.
             GamePlayScreen.prototype.step = function () {
-                // updates the level
-                // this.updateInfos();
                 var _this = this;
                 // add a new tile  on board
                 this.addTileOnBoard();
@@ -93,6 +79,8 @@ var fpair;
                     setTimeout(function () {
                         _this.step();
                     }, this.getTimeIntervalByScore(this.sumAll()));
+
+                this.updateInfos();
             };
 
             GamePlayScreen.prototype.getEmptyBlocks = function () {
@@ -133,6 +121,7 @@ var fpair;
                 return false;
             };
 
+            //update GUI iformaion
             GamePlayScreen.prototype.updateInfos = function () {
                 var score = this.score;
 
@@ -149,20 +138,34 @@ var fpair;
                     this.gameLevelIndicator.showLevel(level);
 
                 this.currentLevel = level;
+
+                // updates the footer
+                //reads all filled spaces
+                var filled = 0;
+                for (var t in this.tiles)
+                    if (this.tiles[t] != 0)
+                        filled++;
+
+                //set percentage
+                var percent = 1 - (filled / (this.boardSize * this.boardSize));
+                this.timeBar.setPercent(percent);
             };
 
+            // returns a score based on level
             GamePlayScreen.prototype.getScoreByLevel = function (level) {
                 if (level == 0)
                     return 0;
                 return 50 * Math.pow(2, level);
             };
 
+            //return a level based on a score
             GamePlayScreen.prototype.getLevelByScore = function (score) {
                 if (!score)
                     score = 1;
                 return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2)) + 1;
             };
 
+            //return a time interval for jelly addition based on user level;
             GamePlayScreen.prototype.getTimeIntervalByScore = function (score) {
                 var startTime = 1000;
                 var step = 4;
