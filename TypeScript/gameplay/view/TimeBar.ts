@@ -5,6 +5,8 @@
         private value:number
         private percentBarMask: createjs.Shape;
 
+        private redFx: createjs.DisplayObject;
+        private brightFx: createjs.DisplayObject;
 
         constructor() {
             super();
@@ -15,7 +17,19 @@
         private initializeObjects() {
             var bg = gameui.AssetsManager.getBitmap("footer");
             var border = gameui.AssetsManager.getBitmap("time_border")
-            var percentBar = gameui.AssetsManager.getBitmap("time_bar")
+            var percentBar = new createjs.Container();
+
+            var bar = gameui.AssetsManager.getBitmap("time_bar");
+            var bright = gameui.AssetsManager.getBitmap("time_bar_bright");
+            var red = gameui.AssetsManager.getBitmap("time_bar_red")
+            bright.alpha = 0;
+
+            this.redFx = red;
+            this.brightFx = bright;
+
+            percentBar.addChild(bar);
+            percentBar.addChild(red);
+            percentBar.addChild(bright);
 
             this.addChild(bg);
             this.addChild(border);
@@ -43,6 +57,9 @@
             if (this.value < percent)
                 this.incrasePercent();
 
+
+            this.value = percent;
+
             // animates the bar
             createjs.Tween.removeTweens(this.percentBarMask);
             createjs.Tween.get(this.percentBarMask).to({ scaleX: percent }, 200, createjs.Ease.quadInOut);
@@ -57,15 +74,20 @@
         // #region animations
 
         private incrasePercent() {
-
+            this.brightFx.alpha = 1;
+            createjs.Tween.get(this.brightFx).to({ alpha: 0 }, 300);          
         }
 
         private setAlarmOn() {
-
+            this.redFx.alpha = 1;
+            createjs.Tween.removeTweens(this.redFx);
+            createjs.Tween.get(this.brightFx, {loop:true }).to({ alpha: 0 }, 300);          
         }
 
         private setAlarmOff() {
-
+            createjs.Tween.removeTweens(this.redFx);
+            this.redFx.alpha = 0;
+            
         }
 
         // #endregion
