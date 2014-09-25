@@ -26,12 +26,12 @@
             border.x = 218;
             border.y = -100;
             percentBar.x = 225;
-            percentBar.y = -100;
+            percentBar.y = -95;
 
             var shape = new createjs.Shape();
             shape.graphics.beginFill("red").drawRect(0, 0, 1110, 50)
             shape.x = 225;
-            shape.y - 100
+            shape.y = -95
 
             this.percentBarMask = shape;
             percentBar.mask = this.percentBarMask;
@@ -43,10 +43,15 @@
             if (this.value < percent)
                 this.incrasePercent();
 
+            // animates the bar
             createjs.Tween.removeTweens(this.percentBarMask);
             createjs.Tween.get(this.percentBarMask).to({ scaleX: percent }, 200, createjs.Ease.quadInOut);
-            
 
+            // set alarm
+            if (percent < 0.1)
+                this.setAlarmOn();
+            else
+                this.setAlarmOff();
         }
 
         // #region animations
