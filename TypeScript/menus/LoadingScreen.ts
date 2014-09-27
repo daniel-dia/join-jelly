@@ -77,11 +77,12 @@
                 { id: "j8", src: "assets/j8.png" },
                 { id: "pause", src: "assets/pause.png" },
                 { id: "PlayBt", src: "assets/PlayBt.png" },
-               { id: "time_bar", src: "assets/time_bar.png" },
-               { id: "time_bar_red", src: "assets/time_bar_red.png" },
-               { id: "time_bar_bright", src: "assets/time_bar_bright.png" },
-               { id: "time_border", src: "assets/time_border.png" },
+                { id: "time_bar", src: "assets/time_bar.png" },
+                { id: "time_bar_red", src: "assets/time_bar_red.png" },
+                { id: "time_bar_bright", src: "assets/time_bar_bright.png" },
+                { id: "time_border", src: "assets/time_border.png" },
                 { id: "shadow", src: "assets/shadow.png" },
+                { id: "particle", src: "assets/particle.png" },
 
     
                 { id: "bg1", src: "Sounds/bg1.mp3" },

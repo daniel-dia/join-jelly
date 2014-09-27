@@ -49,9 +49,6 @@ var fpair;
 
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
-
-                this.timeBar = new gameplay.view.TimeBar();
-                this.footer.addChild(this.timeBar);
             };
 
             //#endregion
@@ -132,15 +129,15 @@ var fpair;
                 var percent = (score - previousLevelScore) / (nextLevelScore - previousLevelScore) * 100;
 
                 // updates the header
-                this.gameHeader.updateStatus(score, level, percent);
+                this.gameHeader.updateStatus(score, level, percent, this.getPercentEmptySpaces());
 
                 if (this.currentLevel != level)
                     this.gameLevelIndicator.showLevel(level);
 
                 this.currentLevel = level;
+            };
 
-                // updates the footer
-                //reads all filled spaces
+            GamePlayScreen.prototype.getPercentEmptySpaces = function () {
                 var filled = 0;
                 for (var t in this.tiles)
                     if (this.tiles[t] != 0)
@@ -148,7 +145,8 @@ var fpair;
 
                 //set percentage
                 var percent = 1 - (filled / (this.boardSize * this.boardSize));
-                this.timeBar.setPercent(percent);
+
+                return percent;
             };
 
             // returns a score based on level
@@ -211,7 +209,7 @@ var fpair;
                     //animate the mach
                     this.board.match(origin, target);
 
-                    this.score += newValue + Math.floor(Math.random() * newValue);
+                    this.score += newValue * 10 + Math.floor(Math.random() * newValue);
 
                     this.UserData.setScore(this.score);
                     this.UserData.setLastJelly(newValue);

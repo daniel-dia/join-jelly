@@ -15,8 +15,7 @@
         }
 
         private initializeObjects() {
-            var bg = gameui.AssetsManager.getBitmap("footer");
-            var border = gameui.AssetsManager.getBitmap("time_border")
+             
             var percentBar = new createjs.Container();
 
             var bar = gameui.AssetsManager.getBitmap("time_bar");
@@ -26,26 +25,18 @@
 
             this.redFx = red;
             this.brightFx = bright;
+            createjs.Tween.get(this.redFx, { loop: true }).to({ alpha: 0 }, 500);          
 
             percentBar.addChild(bar);
-            percentBar.addChild(red);
+            this.addChild(red);
             percentBar.addChild(bright);
-
-            this.addChild(bg);
-            this.addChild(border);
+             
             this.addChild(percentBar);
-            
-            bg.x = 96;
-            bg.y = -190;
-            border.x = 218;
-            border.y = -100;
-            percentBar.x = 225;
-            percentBar.y = -95;
-
+             
+           
             var shape = new createjs.Shape();
-            shape.graphics.beginFill("red").drawRect(0, 0, 1110, 50)
-            shape.x = 225;
-            shape.y = -95
+            shape.graphics.beginFill("red").drawRect(0, 0, 991, 35)
+
 
             this.percentBarMask = shape;
             percentBar.mask = this.percentBarMask;
@@ -57,7 +48,6 @@
             if (this.value < percent)
                 this.incrasePercent();
 
-
             this.value = percent;
 
             // animates the bar
@@ -65,7 +55,7 @@
             createjs.Tween.get(this.percentBarMask).to({ scaleX: percent }, 200, createjs.Ease.quadInOut);
 
             // set alarm
-            if (percent < 0.1)
+            if (percent < 0.25)
                 this.setAlarmOn();
             else
                 this.setAlarmOff();
@@ -75,20 +65,12 @@
 
         private incrasePercent() {
             this.brightFx.alpha = 1;
-            createjs.Tween.get(this.brightFx).to({ alpha: 0 }, 300);          
+            createjs.Tween.get(this.brightFx).to({ alpha: 0 }, 300);
         }
 
-        private setAlarmOn() {
-            this.redFx.alpha = 1;
-            createjs.Tween.removeTweens(this.redFx);
-            createjs.Tween.get(this.brightFx, {loop:true }).to({ alpha: 0 }, 300);          
-        }
+        private setAlarmOn() { this.redFx.visible = true; }
 
-        private setAlarmOff() {
-            createjs.Tween.removeTweens(this.redFx);
-            this.redFx.alpha = 0;
-            
-        }
+        private setAlarmOff() { this.redFx.visible = false; }
 
         // #endregion
 

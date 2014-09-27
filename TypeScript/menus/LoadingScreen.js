@@ -85,6 +85,7 @@ var fpair;
                 { id: "time_bar_bright", src: "assets/time_bar_bright.png" },
                 { id: "time_border", src: "assets/time_border.png" },
                 { id: "shadow", src: "assets/shadow.png" },
+                { id: "particle", src: "assets/particle.png" },
                 { id: "bg1", src: "Sounds/bg1.mp3" },
                 { id: "h1", src: "Sounds/h1.mp3" },
                 { id: "r1", src: "Sounds/r1.mp3" },
