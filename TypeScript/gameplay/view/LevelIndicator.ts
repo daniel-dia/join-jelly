@@ -2,7 +2,7 @@
     export class LevelIndicator extends createjs.Container {
 
         public showLevel(levelId: number) {
-            var text = new createjs.BitmapText("Level: ?????", new createjs.SpriteSheet(Chubbyfont));
+            var text = new createjs.BitmapText("Level: ?????", new createjs.SpriteSheet(Deburilfont));
             this.addChild(text);
             //text.textAlign = "center";
             text.text = "LEVEL " + levelId;

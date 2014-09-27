@@ -14,7 +14,7 @@ var fpair;
                     _super.apply(this, arguments);
                 }
                 LevelIndicator.prototype.showLevel = function (levelId) {
-                    var text = new createjs.BitmapText("Level: ?????", new createjs.SpriteSheet(Chubbyfont));
+                    var text = new createjs.BitmapText("Level: ?????", new createjs.SpriteSheet(Deburilfont));
                     this.addChild(text);
 
                     //text.textAlign = "center";
