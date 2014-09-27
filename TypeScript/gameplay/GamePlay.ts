@@ -85,10 +85,11 @@ module fpair.gameplay{
             // 
             var loose = this.verifyGameLoose();
 
-            // do a next step
-            if(!loose)
-                setTimeout(() => { this.step(); }, this.getTimeIntervalByScore(this.sumAll()))
-
+            // do a next step 
+            if (!loose)
+                setTimeout(() => { this.step(); }, this.getTimeIntervalByScore(this.sumAll()));
+            else
+                this.endGame();
 
             this.updateInfos();
         }
@@ -122,10 +123,7 @@ module fpair.gameplay{
             var empty = this.getEmptyBlocks();
 
             // if there is no more empty tiles, ends the game
-            if (empty.length == 0) this.endGame();
-
-            //or selects a ramdom empty tile and adds a value to is
-            else {
+            if (empty.length >0){
                 var i = Math.floor(Math.random() * empty.length);
                 var tid = empty[i];
                 this.tiles[tid] = 1;
@@ -197,9 +195,10 @@ module fpair.gameplay{
         //finishes the game
         private endGame() {
             this.board.mouseEnabled = false;
-
+            this.board.mouseChildren = false;
             var menu = new FinishMenu(this.sumAll(), 1);
             menu.fadeIn();
+            
             this.content.addChild(menu);
         }
 

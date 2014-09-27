@@ -76,6 +76,8 @@ var fpair;
                     setTimeout(function () {
                         _this.step();
                     }, this.getTimeIntervalByScore(this.sumAll()));
+                else
+                    this.endGame();
 
                 this.updateInfos();
             };
@@ -105,9 +107,7 @@ var fpair;
                 var empty = this.getEmptyBlocks();
 
                 // if there is no more empty tiles, ends the game
-                if (empty.length == 0)
-                    this.endGame();
-                else {
+                if (empty.length > 0) {
                     var i = Math.floor(Math.random() * empty.length);
                     var tid = empty[i];
                     this.tiles[tid] = 1;
@@ -176,9 +176,10 @@ var fpair;
             //finishes the game
             GamePlayScreen.prototype.endGame = function () {
                 this.board.mouseEnabled = false;
-
+                this.board.mouseChildren = false;
                 var menu = new FinishMenu(this.sumAll(), 1);
                 menu.fadeIn();
+
                 this.content.addChild(menu);
             };
 
