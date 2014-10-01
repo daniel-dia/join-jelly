@@ -1,4 +1,4 @@
-﻿module fpair.gameplay.view {
+﻿module joinjelly.gameplay.view {
     export class LevelIndicator extends createjs.Container {
 
         public showLevel(levelId: number) {

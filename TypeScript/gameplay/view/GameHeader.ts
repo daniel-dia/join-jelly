@@ -1,6 +1,6 @@
 ﻿declare var Deburilfont;
 
-module fpair.gameplay.view {
+module joinjelly.gameplay.view {
     export class GameHeader extends createjs.Container {
 
         private scoreText: createjs.BitmapText;

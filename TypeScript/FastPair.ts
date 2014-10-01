@@ -1,4 +1,4 @@
-﻿module fpair {
+﻿module joinjelly {
     export class FasPair{
 
         public static userData: UserData;
@@ -11,7 +11,7 @@
             this.gameScreen.stage.mouseMoveOutside = true;
 
             this.userData = new UserData();
-            var loadingScreen = new fpair.Loading();
+            var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
 
             loadingScreen.loaded = () => {
@@ -20,7 +20,7 @@
         }
 
         public static showMainMenu() {
-            this.gameScreen.switchScreen(new fpair.MainScreen(this.userData));
+            this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData));
         }
 
         public static startLevel() {

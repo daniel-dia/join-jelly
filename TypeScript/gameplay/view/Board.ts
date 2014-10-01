@@ -1,4 +1,4 @@
-﻿module fpair.gameplay.view {
+﻿module joinjelly.gameplay.view {
     interface point { x: number; y: number }
 
     export class Board extends createjs.Container {

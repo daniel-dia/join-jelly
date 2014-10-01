@@ -1,4 +1,4 @@
-﻿module fpair.gameplay.view {
+﻿module joinjelly.gameplay.view {
     export class Message extends gameui.ui.Button {
         private text: createjs.Text;
         constructor() {

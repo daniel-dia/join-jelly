@@ -1,2 +1,2 @@
-﻿module fpair.gameplay.view {
+﻿module joinjelly.gameplay.view {
 } 

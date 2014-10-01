@@ -1,5 +1,5 @@
 ﻿declare var Chubbyfont;
-module fpair.gameplay{
+module joinjelly.gameplay{
 
     export class GamePlayScreen extends gameui.ScreenState {
 

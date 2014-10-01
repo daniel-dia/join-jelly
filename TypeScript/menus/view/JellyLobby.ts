@@ -1,4 +1,4 @@
-﻿module fpair.menus.view {
+﻿module joinjelly.menus.view {
 
     export class JellyLobby extends createjs.Container{
         constructor(lastJelly:number) {

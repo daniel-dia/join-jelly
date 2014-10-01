@@ -1,4 +1,4 @@
-﻿module fpair{
+﻿module joinjelly{
     export class MainScreen extends gameui.ScreenState {
 
         private timeStep = 2;
@@ -42,7 +42,7 @@
 
 
         private createTitle() {
-            var t = new fpair.menus.view.GameTitle();
+            var t = new joinjelly.menus.view.GameTitle();
             this.content.addChild(t);
         }
         private createBackground() {

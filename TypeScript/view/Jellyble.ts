@@ -1,4 +1,4 @@
-﻿module fpair.view {
+﻿module joinjelly.view {
     export class JellyContainer extends createjs.Container {
 
         shadowContainer: createjs.Container;

@@ -1,6 +1,6 @@
-﻿module fpair.gameplay.view {
+﻿module joinjelly.gameplay.view {
 
-    export class Jelly extends fpair.view.JellyContainer{
+    export class Jelly extends joinjelly.view.JellyContainer{
         
         // #region initialization =========================================
 

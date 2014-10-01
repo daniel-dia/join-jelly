@@ -1,4 +1,4 @@
-﻿module fpair.menus.view {
+﻿module joinjelly.menus.view {
 
     export class GameTitle extends createjs.Container {
 
@@ -11,7 +11,7 @@
         }
 
         private createJoin() {
-            var j = new fpair.view.JellyContainer();
+            var j = new joinjelly.view.JellyContainer();
             var i = gameui.AssetsManager.getBitmap("t0");
             j.addChild(i);
             this.addChild(j);
@@ -21,7 +21,7 @@
             var xs = [213, 492, 761, 1039, 1278];
 
             for (var l = 1; l <= 5; l++) {
-                var j = new fpair.view.JellyContainer();
+                var j = new joinjelly.view.JellyContainer();
                 var i = <createjs.Bitmap>gameui.AssetsManager.getBitmap("t"+l);
                 j.imageContainer.addChild(i);
                 this.addChild(j);

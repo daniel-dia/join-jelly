@@ -1,4 +1,4 @@
-﻿module fpair.gameplay.view {
+﻿module joinjelly.gameplay.view {
 
     export class Tile extends createjs.Container {
 

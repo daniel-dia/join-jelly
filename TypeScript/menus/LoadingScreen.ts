@@ -1,4 +1,4 @@
-﻿module fpair {
+﻿module joinjelly {
 
     export class Loading extends gameui.ScreenState {
 

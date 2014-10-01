@@ -1,2 +1,2 @@
-﻿module fpair.gameplay{
+﻿module joinjelly.gameplay{
 }
