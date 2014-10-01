@@ -18,6 +18,7 @@ var fpair;
             this.createBackground();
             this.createHeader();
             this.createFooter();
+            this.createTitle();
         }
         MainScreen.prototype.createContent = function () {
             var title = new createjs.BitmapText("Fast Pair", new createjs.SpriteSheet(Chubbyfont));
@@ -44,6 +45,10 @@ var fpair;
             this.content.addChild(lobby);
         };
 
+        MainScreen.prototype.createTitle = function () {
+            var t = new fpair.menus.view.GameTitle();
+            this.content.addChild(t);
+        };
         MainScreen.prototype.createBackground = function () {
             this.background.addChild(new createjs.Bitmap("assets/backhome.jpg"));
         };

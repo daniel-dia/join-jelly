@@ -18,6 +18,7 @@
             this.createBackground();
             this.createHeader();
             this.createFooter();
+            this.createTitle();
             
         }
 
@@ -47,6 +48,11 @@
 
         }
 
+
+        private createTitle() {
+            var t = new fpair.menus.view.GameTitle();
+            this.content.addChild(t);
+        }
         private createBackground() {
             this.background.addChild(new createjs.Bitmap("assets/backhome.jpg"));
         }

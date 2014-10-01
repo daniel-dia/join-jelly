@@ -7,9 +7,9 @@
 var fpair;
 (function (fpair) {
     (function (view) {
-        var Jellyble = (function (_super) {
-            __extends(Jellyble, _super);
-            function Jellyble() {
+        var JellyContainer = (function (_super) {
+            __extends(JellyContainer, _super);
+            function JellyContainer() {
                 _super.call(this);
                 this.shadowContainer = new createjs.Container();
                 this.imageContainer = new createjs.Container();
@@ -18,7 +18,7 @@ var fpair;
                 this.addChild(this.imageContainer);
             }
             //#region animations =============================================
-            Jellyble.prototype.restore = function () {
+            JellyContainer.prototype.restore = function () {
                 createjs.Tween.removeTweens(this.imageContainer);
                 createjs.Tween.removeTweens(this.shadowContainer);
                 this.imageContainer.scaleX = this.imageContainer.scaleY = 1;
@@ -30,12 +30,12 @@ var fpair;
                 this.shadowContainer.skewX = this.shadowContainer.skewY = 0;
             };
 
-            Jellyble.prototype.animation1 = function () {
+            JellyContainer.prototype.animation1 = function () {
                 this.restore();
                 createjs.Tween.get(this.imageContainer).to({ skewX: 10 }, 2000, createjs.Ease.elasticOut).to({ skewX: -10 }, 2000, createjs.Ease.getElasticInOut(10, 10)).to({ skewX: 0 }, 2000, createjs.Ease.elasticOut);
             };
 
-            Jellyble.prototype.executeAnimationIn = function () {
+            JellyContainer.prototype.executeAnimationIn = function () {
                 var _this = this;
                 this.restore();
                 this.imageContainer.set({
@@ -57,7 +57,7 @@ var fpair;
                 ;
             };
 
-            Jellyble.prototype.executeAnimationHold = function () {
+            JellyContainer.prototype.executeAnimationHold = function () {
                 this.restore();
                 createjs.Tween.get(this.imageContainer).to({
                     scaleX: 0.8,
@@ -67,7 +67,7 @@ var fpair;
                 createjs.Tween.get(this.shadowContainer).to({ alpha: 0 }, 200);
             };
 
-            Jellyble.prototype.executeAimationRelease = function () {
+            JellyContainer.prototype.executeAimationRelease = function () {
                 var _this = this;
                 this.restore();
                 createjs.Tween.get(this.imageContainer).to({
@@ -83,7 +83,7 @@ var fpair;
                 createjs.Tween.get(this.shadowContainer).to({ alpha: 1 }, 200);
             };
 
-            Jellyble.prototype.executeAnimation3 = function () {
+            JellyContainer.prototype.executeAnimation3 = function () {
                 this.restore();
                 createjs.Tween.get(this.imageContainer).to({
                     scaleY: 0.7,
@@ -94,7 +94,7 @@ var fpair;
                 }, 2000, createjs.Ease.elasticOut);
             };
 
-            Jellyble.prototype.executeAnimation4 = function () {
+            JellyContainer.prototype.executeAnimation4 = function () {
                 this.restore();
                 createjs.Tween.get(this.imageContainer).to({
                     scaleX: 0.8,
@@ -105,7 +105,7 @@ var fpair;
                 }, 2000, createjs.Ease.elasticOut);
             };
 
-            Jellyble.prototype.executeIdle = function () {
+            JellyContainer.prototype.executeIdle = function () {
                 switch (Math.floor(Math.random() * 3)) {
                     case 0:
                         this.executeIdle1();
@@ -119,7 +119,7 @@ var fpair;
                 }
             };
 
-            Jellyble.prototype.executeIdle1 = function () {
+            JellyContainer.prototype.executeIdle1 = function () {
                 var _this = this;
                 var f = Math.random() * 500 + 600;
                 var skew = Math.random();
@@ -147,7 +147,7 @@ var fpair;
                 });
             };
 
-            Jellyble.prototype.executeIdle2 = function () {
+            JellyContainer.prototype.executeIdle2 = function () {
                 var _this = this;
                 var time = Math.random() * 500 + 600;
                 var skew = Math.random();
@@ -168,7 +168,7 @@ var fpair;
                 });
             };
 
-            Jellyble.prototype.executeIdle3 = function () {
+            JellyContainer.prototype.executeIdle3 = function () {
                 var _this = this;
                 var time = Math.random() * 500 + 600;
                 var skew = Math.random();
@@ -188,9 +188,9 @@ var fpair;
                     createjs.Tween.get(_this.imageContainer, { loop: true }).to({ scaleX: 1 + scale * 2, scaleY: 1 - scale * 2, y: 0 }, time / 2, createjs.Ease.quadInOut).to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 4, createjs.Ease.quadIn).to({ scaleX: 1 + scale * 1, scaleY: 1 - scale * 1, y: -70 }, time / 4, createjs.Ease.quadOut).to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 5, createjs.Ease.quadIn).to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut);
                 });
             };
-            return Jellyble;
+            return JellyContainer;
         })(createjs.Container);
-        view.Jellyble = Jellyble;
+        view.JellyContainer = JellyContainer;
     })(fpair.view || (fpair.view = {}));
     var view = fpair.view;
 })(fpair || (fpair = {}));

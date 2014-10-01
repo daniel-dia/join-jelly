@@ -74,7 +74,7 @@ var fpair;
                     this.imageContainer.addChild(eye);
                 };
                 return Jelly;
-            })(fpair.view.Jellyble);
+            })(fpair.view.JellyContainer);
             view.Jelly = Jelly;
         })(gameplay.view || (gameplay.view = {}));
         var view = gameplay.view;

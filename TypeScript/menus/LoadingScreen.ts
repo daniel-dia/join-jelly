@@ -85,6 +85,14 @@
                 { id: "particle", src: "assets/particle.png" },
 
     
+               { id: "t0", src: "assets/t0.png" },
+               { id: "t1", src: "assets/t1.png" },
+               { id: "t2", src: "assets/t2.png" },
+               { id: "t3", src: "assets/t3.png" },
+               { id: "t4", src: "assets/t4.png" },
+               { id: "t5", src: "assets/t5.png" },
+               
+
                 { id: "bg1", src: "Sounds/bg1.mp3" },
 
 

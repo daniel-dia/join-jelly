@@ -1,5 +1,5 @@
 ﻿module fpair.view {
-    export class Jellyble extends createjs.Container {
+    export class JellyContainer extends createjs.Container {
 
         shadowContainer: createjs.Container;
         imageContainer: createjs.Container;
