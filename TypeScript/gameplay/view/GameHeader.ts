@@ -157,7 +157,5 @@ module fpair.gameplay.view {
 
             return emitter;
         }
-
-
     }
 } 
