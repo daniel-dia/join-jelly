@@ -93,7 +93,7 @@
                { id: "t5", src: "assets/t5.png" },
                
 
-                { id: "bg1", src: "Sounds/bg1.mp3" },
+                //{ id: "bg1", src: "Sounds/bg1.mp3" },
 
 
                { id: "h1", src: "Sounds/h1.mp3" },

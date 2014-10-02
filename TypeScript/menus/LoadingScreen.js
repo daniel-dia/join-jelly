@@ -92,7 +92,7 @@ var joinjelly;
                 { id: "t3", src: "assets/t3.png" },
                 { id: "t4", src: "assets/t4.png" },
                 { id: "t5", src: "assets/t5.png" },
-                { id: "bg1", src: "Sounds/bg1.mp3" },
+                //{ id: "bg1", src: "Sounds/bg1.mp3" },
                 { id: "h1", src: "Sounds/h1.mp3" },
                 { id: "r1", src: "Sounds/r1.mp3" },
                 { id: "s1", src: "Sounds/s1.mp3" },
