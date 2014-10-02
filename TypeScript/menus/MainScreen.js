@@ -25,7 +25,7 @@ var joinjelly;
                 joinjelly.FasPair.startLevel();
             });
 
-            button.y = 768;
+            button.y = 1168;
             button.x = 768;
             this.content.addChild(button);
 

@@ -21,6 +21,7 @@ var joinjelly;
             JellyContainer.prototype.restore = function () {
                 createjs.Tween.removeTweens(this.imageContainer);
                 createjs.Tween.removeTweens(this.shadowContainer);
+                this.visible = true;
                 this.imageContainer.scaleX = this.imageContainer.scaleY = 1;
                 this.imageContainer.rotation = 0;
                 this.imageContainer.alpha = 1;
