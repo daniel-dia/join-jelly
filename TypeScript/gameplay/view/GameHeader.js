@@ -4,8 +4,8 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var fpair;
-(function (fpair) {
+var joinjelly;
+(function (joinjelly) {
     (function (gameplay) {
         (function (view) {
             var GameHeader = (function (_super) {
@@ -15,6 +15,7 @@ var fpair;
                     this.addObjects();
                 }
                 GameHeader.prototype.addObjects = function () {
+                    var _this = this;
                     //add background
                     var bg = gameui.AssetsManager.getBitmap("assets/header.png");
                     this.addChild(bg);
@@ -22,7 +23,7 @@ var fpair;
 
                     //add pause button
                     var pauseButton = new gameui.ui.ImageButton("assets/pause.png", function () {
-                        fpair.FasPair.showMainMenu();
+                        _this.dispatchEvent("pause");
                     });
 
                     pauseButton.x = 106;
@@ -160,7 +161,7 @@ var fpair;
             view.GameHeader = GameHeader;
         })(gameplay.view || (gameplay.view = {}));
         var view = gameplay.view;
-    })(fpair.gameplay || (fpair.gameplay = {}));
-    var gameplay = fpair.gameplay;
-})(fpair || (fpair = {}));
+    })(joinjelly.gameplay || (joinjelly.gameplay = {}));
+    var gameplay = joinjelly.gameplay;
+})(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=GameHeader.js.map

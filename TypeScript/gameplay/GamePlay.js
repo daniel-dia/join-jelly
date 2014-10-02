@@ -4,15 +4,22 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var fpair;
-(function (fpair) {
+var joinjelly;
+(function (joinjelly) {
     (function (gameplay) {
+        var GameState;
+        (function (GameState) {
+            GameState[GameState["starting"] = 0] = "starting";
+            GameState[GameState["playing"] = 1] = "playing";
+            GameState[GameState["paused"] = 2] = "paused";
+            GameState[GameState["ended"] = 3] = "ended";
+        })(GameState || (GameState = {}));
+
         var GamePlayScreen = (function (_super) {
             __extends(GamePlayScreen, _super);
             //#region =================================== initialization ==========================================================//
             function GamePlayScreen(userData) {
                 _super.call(this);
-                this.timeStep = 2;
                 this.boardSize = 5;
 
                 this.UserData = userData;
@@ -44,42 +51,71 @@ var fpair;
 
             // creates the game GUI
             GamePlayScreen.prototype.createGUI = function () {
+                var _this = this;
                 this.gameLevelIndicator = new gameplay.view.LevelIndicator();
                 this.content.addChild(this.gameLevelIndicator);
 
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
+
+                this.gameHeader.addEventListener("pause", function () {
+                    _this.endGame();
+                    joinjelly.FasPair.showMainMenu();
+                });
             };
 
             //#endregion
             // #region =================================== gamelay behaviour ==========================================================//
             // Starts the game
             GamePlayScreen.prototype.start = function () {
+                var _this = this;
                 this.board.clean();
                 this.step();
                 this.board.mouseEnabled = true;
-                this.updateInfos();
-                //   createjs.Sound.play("bg1", null, null, null, -1);
+                this.updateInterfaceInfos();
+                this.timeInterval = 800;
+
+                //createjs.Sound.play("bg1", null, null, null, -1);
+                this.gamePlayLoop = setInterval(function () {
+                    _this.step();
+                }, 10);
+
+                this.gamestate = 1 /* playing */;
+            };
+
+            GamePlayScreen.prototype.pauseGame = function () {
+                this.gamestate = 2 /* paused */;
+            };
+
+            GamePlayScreen.prototype.continueGame = function () {
+                this.gamestate = 1 /* playing */;
             };
 
             //time step for adding tiles.
             GamePlayScreen.prototype.step = function () {
-                var _this = this;
-                // add a new tile  on board
-                this.addTileOnBoard();
+                // if is not playing, than does not execute a step
+                if (this.gamestate != 1 /* playing */)
+                    return;
 
-                //
-                var loose = this.verifyGameLoose();
+                // wait until interval
+                if (this.gameNextDrop > 0) {
+                    this.gameNextDrop--;
+                } else {
+                    this.gameNextDrop = this.timeInterval / 10;
 
-                // do a next step
-                if (!loose)
-                    setTimeout(function () {
-                        _this.step();
-                    }, this.getTimeIntervalByScore(this.sumAll()));
-                else
-                    this.endGame();
+                    // decreate time interval
+                    this.decreateInterval();
 
-                this.updateInfos();
+                    // add a new tile  on board
+                    this.addTileOnBoard();
+
+                    // verifies if game is ended
+                    if (this.verifyGameLoose())
+                        this.endGame();
+
+                    // updates interafce information
+                    this.updateInterfaceInfos();
+                }
             };
 
             GamePlayScreen.prototype.getEmptyBlocks = function () {
@@ -118,8 +154,8 @@ var fpair;
                 return false;
             };
 
-            //update GUI iformaion
-            GamePlayScreen.prototype.updateInfos = function () {
+            // update GUI iformaion
+            GamePlayScreen.prototype.updateInterfaceInfos = function () {
                 var score = this.score;
 
                 var level = this.getLevelByScore(score);
@@ -137,6 +173,7 @@ var fpair;
                 this.currentLevel = level;
             };
 
+            // calculate a percent
             GamePlayScreen.prototype.getPercentEmptySpaces = function () {
                 var filled = 0;
                 for (var t in this.tiles)
@@ -164,23 +201,43 @@ var fpair;
             };
 
             //return a time interval for jelly addition based on user level;
-            GamePlayScreen.prototype.getTimeIntervalByScore = function (score) {
-                var startTime = 1000;
-                var step = 4;
+            GamePlayScreen.prototype.decreateInterval = function () {
+                //var startTime = 800;
+                //var step = 4;
+                //var time = startTime - score * step;
+                //time = Math.max(time, 200);
+                //time = Math.round(time);
+                var time = this.timeInterval;
 
-                var time = startTime - score * step;
-                time = Math.max(time, 200);
+                if (time < 400)
+                    time -= 2;
+                if (time < 200)
+                    time -= 1;
+                else
+                    time -= 4;
+
+                this.timeInterval = time;
+
+                document.title = time.toString();
                 return time;
             };
 
             //finishes the game
             GamePlayScreen.prototype.endGame = function () {
+                // disable mouse interaction
                 this.board.mouseEnabled = false;
                 this.board.mouseChildren = false;
-                var menu = new FinishMenu(this.sumAll(), 1);
-                menu.fadeIn();
 
+                // creates a menu
+                var menu = new FinishMenu(this.sumAll(), 1);
                 this.content.addChild(menu);
+
+                // stop game loop
+                if (this.gamePlayLoop)
+                    clearInterval(this.gamePlayLoop);
+
+                //show endmenu
+                menu.fadeIn();
             };
 
             //called when a tile is dragged
@@ -215,7 +272,7 @@ var fpair;
                     this.UserData.setScore(this.score);
                     this.UserData.setLastJelly(newValue);
 
-                    this.updateInfos();
+                    this.updateInterfaceInfos();
                 }
             };
 
@@ -223,8 +280,8 @@ var fpair;
             GamePlayScreen.prototype.sumAll = function () {
                 var sum = 0;
                 for (var t in this.tiles) {
-                    if (this.tiles[t] != 1)
-                        sum += this.tiles[t];
+                    //if(this.tiles[t]!=1)
+                    sum += this.tiles[t];
                 }
                 return sum;
             };
@@ -238,7 +295,7 @@ var fpair;
             return GamePlayScreen;
         })(gameui.ScreenState);
         gameplay.GamePlayScreen = GamePlayScreen;
-    })(fpair.gameplay || (fpair.gameplay = {}));
-    var gameplay = fpair.gameplay;
-})(fpair || (fpair = {}));
+    })(joinjelly.gameplay || (joinjelly.gameplay = {}));
+    var gameplay = joinjelly.gameplay;
+})(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=GamePlay.js.map

@@ -4,8 +4,8 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var fpair;
-(function (fpair) {
+var joinjelly;
+(function (joinjelly) {
     var MainScreen = (function (_super) {
         __extends(MainScreen, _super);
         function MainScreen(userData) {
@@ -22,7 +22,7 @@ var fpair;
         }
         MainScreen.prototype.createContent = function () {
             var button = new gameui.ui.ImageButton("assets/PlayBt.png", function () {
-                fpair.FasPair.startLevel();
+                joinjelly.FasPair.startLevel();
             });
 
             button.y = 768;
@@ -30,14 +30,14 @@ var fpair;
             this.content.addChild(button);
 
             // adds jelly
-            var lobby = new fpair.menus.view.JellyLobby(this.userData.getLastJelly());
+            var lobby = new joinjelly.menus.view.JellyLobby(this.userData.getLastJelly());
             lobby.x = defaultWidth / 2;
             lobby.y = 1000;
             this.content.addChild(lobby);
         };
 
         MainScreen.prototype.createTitle = function () {
-            var t = new fpair.menus.view.GameTitle();
+            var t = new joinjelly.menus.view.GameTitle();
             this.content.addChild(t);
         };
         MainScreen.prototype.createBackground = function () {
@@ -58,6 +58,6 @@ var fpair;
         };
         return MainScreen;
     })(gameui.ScreenState);
-    fpair.MainScreen = MainScreen;
-})(fpair || (fpair = {}));
+    joinjelly.MainScreen = MainScreen;
+})(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=MainScreen.js.map

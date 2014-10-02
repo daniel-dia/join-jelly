@@ -4,8 +4,8 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var fpair;
-(function (fpair) {
+var joinjelly;
+(function (joinjelly) {
     (function (view) {
         var JellyContainer = (function (_super) {
             __extends(JellyContainer, _super);
@@ -191,7 +191,7 @@ var fpair;
             return JellyContainer;
         })(createjs.Container);
         view.JellyContainer = JellyContainer;
-    })(fpair.view || (fpair.view = {}));
-    var view = fpair.view;
-})(fpair || (fpair = {}));
+    })(joinjelly.view || (joinjelly.view = {}));
+    var view = joinjelly.view;
+})(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=Jellyble.js.map

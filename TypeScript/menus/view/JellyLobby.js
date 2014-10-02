@@ -4,8 +4,8 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var fpair;
-(function (fpair) {
+var joinjelly;
+(function (joinjelly) {
     (function (menus) {
         (function (view) {
             var JellyLobby = (function (_super) {
@@ -36,7 +36,7 @@ var fpair;
 
                 //adds a single jelly to the container
                 JellyLobby.prototype.dropJelly = function (value, position) {
-                    var jelly = new fpair.gameplay.view.Tile(0, 0, 500);
+                    var jelly = new joinjelly.gameplay.view.Tile(0, 0, 500);
 
                     // adds jelly
                     this.addChildAt(jelly, 0);
@@ -58,7 +58,7 @@ var fpair;
             view.JellyLobby = JellyLobby;
         })(menus.view || (menus.view = {}));
         var view = menus.view;
-    })(fpair.menus || (fpair.menus = {}));
-    var menus = fpair.menus;
-})(fpair || (fpair = {}));
+    })(joinjelly.menus || (joinjelly.menus = {}));
+    var menus = joinjelly.menus;
+})(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=JellyLobby.js.map

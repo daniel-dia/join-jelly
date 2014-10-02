@@ -4,8 +4,8 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var fpair;
-(function (fpair) {
+var joinjelly;
+(function (joinjelly) {
     var Loading = (function (_super) {
         __extends(Loading, _super);
         function Loading() {
@@ -106,6 +106,6 @@ var fpair;
         };
         return Loading;
     })(gameui.ScreenState);
-    fpair.Loading = Loading;
-})(fpair || (fpair = {}));
+    joinjelly.Loading = Loading;
+})(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=LoadingScreen.js.map

@@ -27,7 +27,7 @@ module joinjelly.gameplay.view {
 
             //add pause button
             var pauseButton = new gameui.ui.ImageButton("assets/pause.png", () => {
-                FasPair.showMainMenu();
+                this.dispatchEvent("pause");
             });
 
             pauseButton.x = 106;

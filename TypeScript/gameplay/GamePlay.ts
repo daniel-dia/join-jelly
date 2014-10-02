@@ -1,9 +1,14 @@
 ﻿declare var Chubbyfont;
 module joinjelly.gameplay{
 
-    export class GamePlayScreen extends gameui.ScreenState {
+    enum GameState {
+        starting,
+        playing,
+        paused,
+        ended
+    }
 
-        private timeStep = 2;
+    export class GamePlayScreen extends gameui.ScreenState {
 
         private boardSize = 5;
 
@@ -16,6 +21,13 @@ module joinjelly.gameplay{
         private currentLevel: number;
 
         private score: number;        
+
+        private timeInterval: number;
+
+        private gamePlayLoop: number;
+        private gameNextDrop: number;
+
+        private gamestate: GameState;
 
         private gameHeader: view.GameHeader;
         private gameLevelIndicator: view.LevelIndicator;
@@ -60,6 +72,11 @@ module joinjelly.gameplay{
             this.gameHeader = new view.GameHeader();
             this.header.addChild(this.gameHeader);
 
+            this.gameHeader.addEventListener("pause", () => {
+                this.endGame();
+                FasPair.showMainMenu();
+            });
+
         }
 
         //#endregion
@@ -71,27 +88,50 @@ module joinjelly.gameplay{
             this.board.clean();
             this.step();
             this.board.mouseEnabled = true;
-            this.updateInfos();
+            this.updateInterfaceInfos();
+            this.timeInterval = 800;
 
-         //   createjs.Sound.play("bg1", null, null, null, -1);
+            //createjs.Sound.play("bg1", null, null, null, -1);
+
+            this.gamePlayLoop = setInterval(() => { this.step(); }, 10)
+
+            this.gamestate = GameState.playing;
         }
-        
+
+        private pauseGame() {
+            this.gamestate = GameState.paused;
+        }
+
+        private continueGame() {
+            this.gamestate = GameState.playing;
+        }
+
         //time step for adding tiles.
         private step() {
-                        
-            // add a new tile  on board
-            this.addTileOnBoard();
 
-            // 
-            var loose = this.verifyGameLoose();
+            // if is not playing, than does not execute a step
+            if (this.gamestate != GameState.playing) return;
 
-            // do a next step 
-            if (!loose)
-                setTimeout(() => { this.step(); }, this.getTimeIntervalByScore(this.sumAll()));
-            else
-                this.endGame();
+            // wait until interval 
+            if (this.gameNextDrop > 0) {
+                this.gameNextDrop--;
+            }
+            else {
 
-            this.updateInfos();
+                this.gameNextDrop = this.timeInterval/10;
+
+                // decreate time interval
+                this.decreateInterval()
+
+                // add a new tile  on board
+                this.addTileOnBoard();
+
+                // verifies if game is ended
+                if (this.verifyGameLoose()) this.endGame();
+
+                // updates interafce information
+                this.updateInterfaceInfos();
+            }
         }
 
         private getEmptyBlocks(): Array<number> {
@@ -134,9 +174,8 @@ module joinjelly.gameplay{
             return false;
         }
 
-
-        //update GUI iformaion
-        private updateInfos() {
+        // update GUI iformaion
+        private updateInterfaceInfos() {
 
             var score = this.score;
 
@@ -156,6 +195,7 @@ module joinjelly.gameplay{
                   
         }
 
+        // calculate a percent 
         private getPercentEmptySpaces(): number {
 
             var filled = 0;
@@ -182,24 +222,44 @@ module joinjelly.gameplay{
         }
         
         //return a time interval for jelly addition based on user level;
-        private getTimeIntervalByScore(score: number): number {
-            var startTime = 1000;
-            var step = 4;
+        private decreateInterval(): number {
+            //var startTime = 800;
+            //var step = 4;
+            //var time = startTime - score * step;
+            //time = Math.max(time, 200);
+            //time = Math.round(time);
 
-            var time = startTime - score * step;
-            time = Math.max(time, 200);
+            var time = this.timeInterval;
+
+            if (time < 400)time -= 2;
+            if (time < 200) time -= 1;
+            else time -= 4;
+
+            this.timeInterval = time;
+
+            document.title = time.toString();
             return time;
             
         }
 
         //finishes the game
         private endGame() {
+
+            // disable mouse interaction
             this.board.mouseEnabled = false;
             this.board.mouseChildren = false;
+
+            // creates a menu
             var menu = new FinishMenu(this.sumAll(), 1);
-            menu.fadeIn();
-            
             this.content.addChild(menu);
+
+            // stop game loop
+            if(this.gamePlayLoop)
+                clearInterval(this.gamePlayLoop);
+
+            //show endmenu
+            menu.fadeIn();
+
         }
 
         //called when a tile is dragged
@@ -237,7 +297,7 @@ module joinjelly.gameplay{
                 this.UserData.setScore(this.score);
                 this.UserData.setLastJelly(newValue);
                 
-                this.updateInfos();
+                this.updateInterfaceInfos();
             }
         }
 
@@ -245,7 +305,7 @@ module joinjelly.gameplay{
         private sumAll(): number {
             var sum = 0;
             for (var t in this.tiles) {
-                if(this.tiles[t]!=1)
+                //if(this.tiles[t]!=1)
                     sum += this.tiles[t];
             }
             return sum;

@@ -1,5 +1,5 @@
-﻿var fpair;
-(function (fpair) {
+﻿var joinjelly;
+(function (joinjelly) {
     var FasPair = (function () {
         function FasPair() {
         }
@@ -9,7 +9,7 @@
             this.gameScreen.stage.mouseMoveOutside = true;
 
             this.userData = new UserData();
-            var loadingScreen = new fpair.Loading();
+            var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
 
             loadingScreen.loaded = function () {
@@ -18,14 +18,14 @@
         };
 
         FasPair.showMainMenu = function () {
-            this.gameScreen.switchScreen(new fpair.MainScreen(this.userData));
+            this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData));
         };
 
         FasPair.startLevel = function () {
-            this.gameScreen.switchScreen(new fpair.gameplay.GamePlayScreen(this.userData));
+            this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData));
         };
         return FasPair;
     })();
-    fpair.FasPair = FasPair;
-})(fpair || (fpair = {}));
+    joinjelly.FasPair = FasPair;
+})(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=FastPair.js.map

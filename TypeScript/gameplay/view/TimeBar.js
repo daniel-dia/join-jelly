@@ -4,8 +4,8 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var fpair;
-(function (fpair) {
+var joinjelly;
+(function (joinjelly) {
     (function (gameplay) {
         (function (view) {
             var TimeBar = (function (_super) {
@@ -76,7 +76,7 @@ var fpair;
             view.TimeBar = TimeBar;
         })(gameplay.view || (gameplay.view = {}));
         var view = gameplay.view;
-    })(fpair.gameplay || (fpair.gameplay = {}));
-    var gameplay = fpair.gameplay;
-})(fpair || (fpair = {}));
+    })(joinjelly.gameplay || (joinjelly.gameplay = {}));
+    var gameplay = joinjelly.gameplay;
+})(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=TimeBar.js.map
