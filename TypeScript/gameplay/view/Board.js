@@ -24,6 +24,7 @@ var joinjelly;
                     //this.addBackground(boardWidth, boardHeight, tileSize, img);
                     this.addTiles(boardWidth, boardHeight, tileSize, img);
                 }
+                //add tiles on the board
                 Board.prototype.addTiles = function (boardWidth, boardHeight, tileSize, img) {
                     var _this = this;
                     var touchOffset = [];
@@ -87,6 +88,7 @@ var joinjelly;
 
                 // #endregion
                 // #region Tile manager ------------------------------------------------------------------------
+                //set a tile value
                 Board.prototype.setTileValue = function (tileId, value) {
                     var t = this.getTileById(tileId);
                     if (t)
@@ -97,22 +99,26 @@ var joinjelly;
                         createjs.Sound.play('s' + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
 
+                //get a tile id by its x and y pos
                 Board.prototype.getTileIdByPos = function (rawx, rawy, tileSize) {
                     var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
                     return (this.boardWidth * coords.y + coords.x).toString();
                 };
 
+                //get tule position by pointer position
                 Board.prototype.getTileByRawPos = function (rawx, rawy, tileSize) {
                     var id = this.getTileIdByPos(rawx, rawy, tileSize);
                     return this.getTileById(id);
                 };
 
+                //get tile coordinates by pointer position
                 Board.prototype.getTileCoordsByRawPos = function (rawx, rawy, tileSize) {
                     var x = Math.floor(rawx / tileSize);
                     var y = Math.floor(rawy / tileSize);
                     return { x: x, y: y };
                 };
 
+                //get a new position for a tile based on its index
                 Board.prototype.getTilePositionByCoords = function (x, y, tileSize) {
                     return {
                         x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
@@ -120,12 +126,11 @@ var joinjelly;
                     };
                 };
 
+                //get a tile object by its id
                 Board.prototype.getTileById = function (id) {
                     return this.getChildByName(id);
                 };
 
-                // #endregion
-                //----------------------------------------------------------------------------------
                 //release e tile
                 Board.prototype.releaseDrag = function (tile, match, target) {
                     var _this = this;
@@ -154,6 +159,8 @@ var joinjelly;
                     }
                 };
 
+                // #endregion
+                // #region behaviour ----------------------------------------------------------------------------------
                 //organize all z-order
                 Board.prototype.arrangeZOrder = function () {
                     for (var t = this.tiles.length - 1; t >= 0; t--)
@@ -173,7 +180,6 @@ var joinjelly;
                     createjs.Sound.play('j' + (Math.floor(Math.random() * 4) + 1));
                 };
 
-                //---------------------------------------------------------------------------------
                 Board.prototype.clean = function () {
                     for (var t in this.tiles)
                         this.tiles[t].setNumber(0);

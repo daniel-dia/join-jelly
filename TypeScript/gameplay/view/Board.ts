@@ -26,7 +26,7 @@
 
         }
 
-
+        //add tiles on the board
         private addTiles(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
             var touchOffset = [];
 
@@ -95,6 +95,7 @@
 
         // #region Tile manager ------------------------------------------------------------------------
 
+        //set a tile value
         public setTileValue(tileId, value){
             var t = this.getTileById(tileId)
             if (t) t.setNumber(value);
@@ -104,22 +105,26 @@
                 createjs.Sound.play('s' + (Math.floor(Math.random() * 3) + 1), null, 400);
         }
         
+        //get a tile id by its x and y pos
         private getTileIdByPos(rawx: number, rawy: number, tileSize: number): string {
             var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
             return (this.boardWidth * coords.y + coords.x).toString();
         }
 
+        //get tule position by pointer position
         private getTileByRawPos(rawx: number, rawy: number, tileSize: number): Tile {
             var id = this.getTileIdByPos(rawx, rawy, tileSize);
             return this.getTileById(id);
         }
 
+        //get tile coordinates by pointer position
         private getTileCoordsByRawPos(rawx: number, rawy: number, tileSize: number): point {
             var x = Math.floor(rawx / tileSize);
             var y = Math.floor(rawy / tileSize);
             return { x: x, y: y };
         }
 
+        //get a new position for a tile based on its index
         private getTilePositionByCoords(x: number, y: number, tileSize: number): point {
         return {
                 x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
@@ -127,14 +132,10 @@
             }
         }
 
+        //get a tile object by its id
         public getTileById(id: string): Tile {
             return <Tile> this.getChildByName(id);
         }
-
-        // #endregion
-
-        //----------------------------------------------------------------------------------
-
 
         //release e tile
         private releaseDrag(tile: Tile, match: boolean= true, target?: Tile) {
@@ -164,6 +165,10 @@
             }
         }
 
+        // #endregion
+
+        // #region behaviour ----------------------------------------------------------------------------------
+
         //organize all z-order
         private arrangeZOrder() {
             for (var t = this.tiles.length - 1; t >= 0; t--)
@@ -185,12 +190,12 @@
             createjs.Sound.play('j' +( Math.floor(Math.random() * 4) + 1));
         }
 
-        //---------------------------------------------------------------------------------
-        
         public clean() {
             for (var t in this.tiles)
                 this.tiles[t].setNumber(0);
         }
+
+        //#endregion
     }
 
 }
