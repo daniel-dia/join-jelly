@@ -170,6 +170,7 @@
                 this.setChildIndex(this.tiles[t], 0);
         }
 
+        //match 2 tiles
         public match(origin: string, target: string) {
             
             var tile = this.getTileById(target);
