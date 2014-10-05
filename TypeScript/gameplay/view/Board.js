@@ -160,6 +160,7 @@ var joinjelly;
                         this.setChildIndex(this.tiles[t], 0);
                 };
 
+                //match 2 tiles
                 Board.prototype.match = function (origin, target) {
                     var tile = this.getTileById(target);
                     var old = this.getTileById(origin);
