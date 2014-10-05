@@ -10,7 +10,7 @@
         private tileSize: number;
         private touchDictionary: Array<Tile> = new Array();
 
-        //----------------------------------------------------------------------------------
+        // #region Initialization ----------------------------------------------------------------------
 
         constructor(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
             super();
@@ -26,44 +26,6 @@
 
         }
 
-        public setTileValue(tileId, value){
-            var t = this.getTileById(tileId)
-            if (t) t.setNumber(value);
-
-            //plays sound if is new jelly
-            if(value==1)
-                createjs.Sound.play('s' + (Math.floor(Math.random() * 3) + 1), null, 400);
-        }
-        //----------------------------------------------------------------------------------
-
-        private getTileIdByPos(rawx: number, rawy: number, tileSize: number): string {
-            var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
-            return (this.boardWidth * coords.y + coords.x).toString();
-        }
-
-        private getTileByRawPos(rawx: number, rawy: number, tileSize: number): Tile {
-            var id = this.getTileIdByPos(rawx, rawy, tileSize);
-            return this.getTileById(id);
-        }
-
-        private getTileCoordsByRawPos(rawx: number, rawy: number, tileSize: number): point {
-            var x = Math.floor(rawx / tileSize);
-            var y = Math.floor(rawy / tileSize);
-            return { x: x, y: y };
-        }
-
-        private getTilePositionByCoords(x: number, y: number, tileSize: number): point {
-        return {
-                x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
-                y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5
-            }
-        }
-
-        public getTileById(id: string): Tile {
-            return <Tile> this.getChildByName(id);
-        }
-
-        //----------------------------------------------------------------------------------
 
         private addTiles(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
             var touchOffset = [];
@@ -77,8 +39,6 @@
                     tileDO.setNumber(0);
                     tileDO.name = (this.boardWidth * y + x).toString();
                     tileDO.set(this.getTilePositionByCoords(x, y, tileSize));
-
-                 
                 }
             }
 
@@ -95,7 +55,7 @@
                     //bring to front
                     this.setChildIndex(tile, this.getNumChildren() - 1);
 
-                        createjs.Sound.play('h1');
+                    createjs.Sound.play('h1');
                 }
             });
 
@@ -125,12 +85,60 @@
                     tile.locked = false;
                     this.releaseDrag(tile, false);
                     tile.release();
- 
                 }
             });
         }
 
+
+
+        // #endregion
+
+        // #region Tile manager ------------------------------------------------------------------------
+
+        public setTileValue(tileId, value){
+            var t = this.getTileById(tileId)
+            if (t) t.setNumber(value);
+
+            //plays sound if is new jelly
+            if(value==1)
+                createjs.Sound.play('s' + (Math.floor(Math.random() * 3) + 1), null, 400);
+        }
+        
+        private getTileIdByPos(rawx: number, rawy: number, tileSize: number): string {
+            var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
+            return (this.boardWidth * coords.y + coords.x).toString();
+        }
+
+        private getTileByRawPos(rawx: number, rawy: number, tileSize: number): Tile {
+            var id = this.getTileIdByPos(rawx, rawy, tileSize);
+            return this.getTileById(id);
+        }
+
+        private getTileCoordsByRawPos(rawx: number, rawy: number, tileSize: number): point {
+            var x = Math.floor(rawx / tileSize);
+            var y = Math.floor(rawy / tileSize);
+            return { x: x, y: y };
+        }
+
+        private getTilePositionByCoords(x: number, y: number, tileSize: number): point {
+        return {
+                x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
+                y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5
+            }
+        }
+
+        public getTileById(id: string): Tile {
+            return <Tile> this.getChildByName(id);
+        }
+
+        // #endregion
+
+        //----------------------------------------------------------------------------------
+
+
+        //release e tile
         private releaseDrag(tile: Tile, match: boolean= true, target?: Tile) {
+            if (!target) return;
             var index = this.touchDictionary.indexOf(tile);
             delete this.touchDictionary[index];
 
@@ -139,18 +147,27 @@
 
             tile.locked = false;
 
-
-
+            //if tiles match
             if (match) {
 
                 var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
                 createjs.Tween.get(tile).to({ x: pos.x, y: pos.y, alpha: 0 }, 100, createjs.Ease.quadInOut).call(() => {
                     tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
                 })
-        }
-            else {
-                createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut);
             }
+            //or else, set it back to its place
+            else {
+                createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut).call(() => {
+                    //set the z-order
+                    this.arrangeZOrder();
+                });
+            }
+        }
+
+        //organize all z-order
+        private arrangeZOrder() {
+            for (var t = this.tiles.length - 1; t >= 0; t--)
+                this.setChildIndex(this.tiles[t], 0);
         }
 
         public match(origin: string, target: string) {
