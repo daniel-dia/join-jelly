@@ -14,8 +14,6 @@ module joinjelly.gameplay{
 
         private board: view.Board;
 
-        private finishMenu: FinishMenu;
-
         private tiles: Array<number>
 
         private currentLevel: number;
@@ -118,7 +116,7 @@ module joinjelly.gameplay{
             }
             else {
 
-                this.gameNextDrop = this.timeInterval/10;
+                this.gameNextDrop = this.timeInterval/100;
 
                 // decreate time interval
                 this.decreateInterval()
@@ -249,8 +247,8 @@ module joinjelly.gameplay{
             this.board.mouseEnabled = false;
             this.board.mouseChildren = false;
 
-            // creates a menu
-            var menu = new FinishMenu(this.sumAll(), 1);
+            // creates a end menu
+            var menu = new view.FinishMenu(this.sumAll(), 1);
             this.content.addChild(menu);
 
             // stop game loop

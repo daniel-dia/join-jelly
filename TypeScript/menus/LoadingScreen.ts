@@ -84,7 +84,13 @@
                 { id: "shadow", src: "assets/shadow.png" },
                 { id: "particle", src: "assets/particle.png" },
 
-    
+               { id: "GameOverBgJelly", src: "assets/GameOverBgJelly.png" },
+               { id: "GameOverBgPoints", src: "assets/GameOverBgPoints.png" },
+               { id: "GameOverBoard", src: "assets/GameOverBoard.png" },
+               { id: "GameOverOk", src: "assets/GameOverOk.png" },
+               { id: "GameOverShare", src: "assets/GameOverShare.png" },
+               { id: "GameOverTitle", src: "assets/GameOverTitle.png" },
+                   
                { id: "t0", src: "assets/t0.png" },
                { id: "t1", src: "assets/t1.png" },
                { id: "t2", src: "assets/t2.png" },

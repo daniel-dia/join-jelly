@@ -101,7 +101,7 @@ var joinjelly;
                 if (this.gameNextDrop > 0) {
                     this.gameNextDrop--;
                 } else {
-                    this.gameNextDrop = this.timeInterval / 10;
+                    this.gameNextDrop = this.timeInterval / 100;
 
                     // decreate time interval
                     this.decreateInterval();
@@ -228,8 +228,8 @@ var joinjelly;
                 this.board.mouseEnabled = false;
                 this.board.mouseChildren = false;
 
-                // creates a menu
-                var menu = new FinishMenu(this.sumAll(), 1);
+                // creates a end menu
+                var menu = new gameplay.view.FinishMenu(this.sumAll(), 1);
                 this.content.addChild(menu);
 
                 // stop game loop

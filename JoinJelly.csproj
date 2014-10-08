@@ -173,6 +173,7 @@
     <TypeScriptCompile Include="TypeScript\FastPair.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\GameScreen.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Board.ts" />
+    <TypeScriptCompile Include="TypeScript\gameplay\view\FinishDialog.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\GameHeader.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\GameMenu.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Jelly.ts" />
@@ -180,7 +181,6 @@
     <TypeScriptCompile Include="TypeScript\gameplay\view\TimeBar.ts" />
     <TypeScriptCompile Include="TypeScript\menus\view\Title.ts" />
     <TypeScriptCompile Include="TypeScript\view\Jellyble.ts" />
-    <TypeScriptCompile Include="TypeScript\menus\FinishMenu.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\GamePlay.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Tile.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Thorns.ts" />
