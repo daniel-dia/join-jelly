@@ -1,20 +1,26 @@
 ﻿module joinjelly.gameplay.view {
  
-    export class FinishMenu extends gameui.ui.UIItem{
+    export class FinishMenu extends createjs.Container{
 
         constructor(score:number,best:number, jelly?:number) {
             super();
+            this.regX = this.x = defaultWidth / 2;
+            this.regY = this.y = defaultHeight / 2;
+
 
             this.addTitle();
             this.addButtons();
             this.addPoints(score,best);
             this.addLastJelly();
+
+            this.animateIn();
+
         }
 
         //creates menu title
         private addTitle() {
-            var title = gameui.AssetsManager.getBitmap("GameOverTitle")
-            title.set({ x: 75, y: 257});
+            var title = gameui.AssetsManager.getBitmap("GameOverBack")
+            title.set({ x: defaultWidth/2, y: 257,regX:1330/2});
             this.addChild(title);
         }
 
@@ -46,7 +52,7 @@
 
             //creates points Bg
             var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
-            bg.set({ x: 233, y: 565});
+            bg.set({ x: defaultWidth/2, y: 565,regX:1056/2});
             container .addChild(bg);
 
             //create points object
@@ -58,7 +64,7 @@
 
             //create "points" text
             var tx = new createjs.BitmapText(score.toString(), textSprites)
-            tx.set({ x: 794, y: 747});
+            tx.set({ x: defaultWidth/2, y: 747});
             container.addChild(tx);
             tx.scaleX = tx.scaleY = 2;
             tx.regX = tx.getBounds().width / 2;
@@ -72,7 +78,6 @@
             tx.regX = tx.getBounds().width;
             
             this.addChild(container);
-
             return container;
 
         }
@@ -88,39 +93,45 @@
 
             //add background
             var bg = gameui.AssetsManager.getBitmap("GameOverBgJelly");
-            bg.set({ x: 363, y: 951});
+            bg.set({ x: defaultWidth / 2, y: 951,regX:797 / 2});
             container.addChild(bg);
 
-
             //add "LastJelly" Text
-            var tx = new createjs.BitmapText("High Score:", textSprites)
-            tx.set({ x: 1295, y: 784 });
+            var tx = new createjs.BitmapText("Last Jelly", textSprites)
+            tx.set({ x: 420, y:980});
             container.addChild(tx);
-            tx.scaleX = tx.scaleY = 0.5;
-            tx.regX = tx.getBounds().width;
-            return container;
-
+            tx.scaleX = tx.scaleY = 0.7;
+            
             //add "LastJelly" name Text
-            var tx = new createjs.BitmapText("High Score:", textSprites)
-            tx.set({ x: 1295, y: 784 });
+            var tx = new createjs.BitmapText("Mr Anything", textSprites)
+            tx.set({ x: defaultWidth/2, y: 1408});
             container.addChild(tx);
-            tx.scaleX = tx.scaleY = 0.5;
-            tx.regX = tx.getBounds().width;
-            return container;
-
+            tx.regX = tx.getBounds().width / 2;
+            tx.scaleX = tx.scaleY = 0.7;
+            
+            
             //add Jelly
             var jelly = new gameplay.view.Jelly();
             container.addChild(jelly);
             this.addChild(container);
 
             return container;
-
-            
         }
 
 
+        private animateHide() {
+        }
+
         // animates menu entrance
         private animateIn() {
+
+            //animate all
+            this.y -= 500;
+            this.alpha = 0;
+            this.scaleX = 0.5;
+            this.scaleY = 2;
+            createjs.Tween.get(this).to({ x:defaultWidth/2, y: defaultHeight/2, alpha: 1,scaleX:1,scaleY:1 }, 1400, createjs.Ease.elasticInOut)
+
             //animate title
 
             //animate points

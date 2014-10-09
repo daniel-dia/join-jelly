@@ -109,7 +109,7 @@ module joinjelly.gameplay{
 
             // if is not playing, than does not execute a step
             if (this.gamestate != GameState.playing) return;
-
+            
             // wait until interval 
             if (this.gameNextDrop > 0) {
                 this.gameNextDrop--;
@@ -246,17 +246,27 @@ module joinjelly.gameplay{
             // disable mouse interaction
             this.board.mouseEnabled = false;
             this.board.mouseChildren = false;
+            createjs.Tween.get(this.gameHeader).to({y:-425 },200,createjs.Ease.quadIn)
 
             // creates a end menu
             var menu = new view.FinishMenu(this.sumAll(), 1);
             this.content.addChild(menu);
+
+            //add eventListener
+            menu.addEventListener("ok", () => { FasPair.showMainMenu(); });
+            menu.addEventListener("board", () => { FasPair.showMainMenu(); });
+            menu.addEventListener("share", () => { FasPair.showMainMenu(); });
+
+                
+            //move the board a little up
+            createjs.Tween.get(this.board).to({ y: this.board.y-200 }, 800, createjs.Ease.quadInOut)
 
             // stop game loop
             if(this.gamePlayLoop)
                 clearInterval(this.gamePlayLoop);
 
             //show endmenu
-            menu.fadeIn();
+            
 
         }
 

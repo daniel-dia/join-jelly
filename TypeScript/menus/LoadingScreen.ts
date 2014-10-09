@@ -1,4 +1,5 @@
-﻿module joinjelly {
+﻿
+module joinjelly {
 
     export class Loading extends gameui.ScreenState {
 
@@ -89,7 +90,7 @@
                { id: "GameOverBoard", src: "assets/GameOverBoard.png" },
                { id: "GameOverOk", src: "assets/GameOverOk.png" },
                { id: "GameOverShare", src: "assets/GameOverShare.png" },
-               { id: "GameOverTitle", src: "assets/GameOverTitle.png" },
+               { id: "GameOverBack", src: "assets/GameOverBack.png" },
                    
                { id: "t0", src: "assets/t0.png" },
                { id: "t1", src: "assets/t1.png" },
