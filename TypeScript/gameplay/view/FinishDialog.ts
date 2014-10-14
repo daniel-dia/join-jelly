@@ -114,12 +114,24 @@
 
         //set values
         public setValues(score: number, best: number, jelly?: number) {
-            this.scoreText.text = score.toString();
+
+
+            var t = {value:0};
+
+            createjs.Tween.get(t).to({ value: 1 }, 3000, createjs.Ease.quadOut);
+
+            var interval = setInterval(() => {
+                this.scoreText.text = Math.floor(t.value*score).toString();
+                this.scoreText.regX = this.scoreText.getBounds().width / 2;
+                if (t.value >= 1) clearInterval(interval);
+            }, 30);
+        
+        
             this.higghScoreText.text = "High Score: " + best.toString();
             this.jellyText.text = jelly.toString();
             this.jelly.setNumber(jelly);
 
-            this.scoreText.regX = this.scoreText.getBounds().width / 2;
+            
             this.jellyText.regX = this.jellyText.getBounds().width / 2;
             this.higghScoreText.regX = this.higghScoreText.getBounds().width;
 
