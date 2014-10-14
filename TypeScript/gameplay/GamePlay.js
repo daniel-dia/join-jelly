@@ -17,7 +17,7 @@ var joinjelly;
 
         var GamePlayScreen = (function (_super) {
             __extends(GamePlayScreen, _super);
-            //#region =================================== initialization ==========================================================//
+            //#region =================================== initialization ==========================================================
             function GamePlayScreen(userData) {
                 _super.call(this);
                 this.boardSize = 5;
@@ -68,17 +68,26 @@ var joinjelly;
                 this.finishMenu = new gameplay.view.FinishMenu(this.sumAll(), 1);
                 this.content.addChild(this.finishMenu);
 
+                // creates a toggle button
+                var tbt = new gameui.ui.ImageButton("GameOverBoard", function () {
+                    _this.finishMenu.show();
+                    tbt.fadeOut();
+                });
+                tbt.set({ x: 150, y: -150, visible: false });
+                this.footer.addChild(tbt);
+
                 //add eventListener
                 this.finishMenu.addEventListener("ok", function () {
                     joinjelly.FasPair.showMainMenu();
                 });
 
                 this.finishMenu.addEventListener("board", function () {
-                    joinjelly.FasPair.showMainMenu();
+                    _this.finishMenu.hide();
+                    tbt.fadeIn();
                 });
 
                 this.finishMenu.addEventListener("share", function () {
-                    joinjelly.FasPair.showMainMenu();
+                    //
                 });
 
                 this.gameHeader.addEventListener("pause", function () {
@@ -106,7 +115,7 @@ var joinjelly;
             };
 
             //#endregion
-            // #region =================================== gamelay behaviour ==========================================================//
+            // #region =================================== gamelay behaviour =======================================================
             // Starts the game
             GamePlayScreen.prototype.start = function () {
                 var _this = this;
@@ -243,11 +252,6 @@ var joinjelly;
 
             //return a time interval for jelly addition based on user level;
             GamePlayScreen.prototype.decreateInterval = function () {
-                //var startTime = 800;
-                //var step = 4;
-                //var time = startTime - score * step;
-                //time = Math.max(time, 200);
-                //time = Math.round(time);
                 var time = this.timeInterval;
 
                 if (time < 400)
@@ -270,6 +274,7 @@ var joinjelly;
                 this.board.mouseChildren = false;
                 createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
 
+                // shows finished game menu
                 this.finishMenu.show();
 
                 //move the board a little up

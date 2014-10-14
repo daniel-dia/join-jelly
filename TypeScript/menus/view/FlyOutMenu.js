@@ -53,10 +53,6 @@ var joinjelly;
                     this.scaleX = 0.5;
                     this.scaleY = 2;
                     createjs.Tween.get(this).to({ x: defaultWidth / 2, y: defaultHeight / 2, alpha: 1, scaleX: 1, scaleY: 1 }, 1400, createjs.Ease.elasticOut);
-                    // animate title
-                    // animate points
-                    // animate last jelly
-                    // animate buttons
                 };
 
                 FlyOutMenu.prototype.animateOut = function () {
@@ -71,10 +67,14 @@ var joinjelly;
                 };
 
                 FlyOutMenu.prototype.show = function () {
+                    if (this.visible)
+                        return;
                     this.animateIn();
                 };
 
                 FlyOutMenu.prototype.hide = function () {
+                    if (!this.visible)
+                        return;
                     this.animateOut();
                 };
                 return FlyOutMenu;

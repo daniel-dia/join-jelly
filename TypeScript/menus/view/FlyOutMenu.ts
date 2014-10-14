@@ -47,15 +47,6 @@
             this.scaleX = 0.5;
             this.scaleY = 2;
             createjs.Tween.get(this).to({ x: defaultWidth / 2, y: defaultHeight / 2, alpha: 1, scaleX: 1, scaleY: 1 }, 1400, createjs.Ease.elasticOut);
-
-            // animate title
-
-            // animate points
-
-            // animate last jelly
-
-            // animate buttons
-
         }
 
         private animateOut() {
@@ -69,11 +60,13 @@
 
 
         public show() {
+            if (this.visible) return;
             this.animateIn();
         }
 
         public hide()
         {
+            if (!this.visible) return;
             this.animateOut();
         }
 

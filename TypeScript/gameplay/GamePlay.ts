@@ -35,7 +35,7 @@ module joinjelly.gameplay{
         private finishMenu:view.FinishMenu
         private pauseMenu: view.PauseMenu;
 
-        //#region =================================== initialization ==========================================================//
+        //#region =================================== initialization ==========================================================
 
         constructor(userData:UserData) {
             super();
@@ -84,6 +84,14 @@ module joinjelly.gameplay{
             this.finishMenu = new view.FinishMenu(this.sumAll(), 1);
             this.content.addChild(this.finishMenu);
 
+            // creates a toggle button
+            var tbt = new gameui.ui.ImageButton("GameOverBoard", () => {
+                this.finishMenu.show();
+                tbt.fadeOut();
+            });
+            tbt.set({ x: 150, y: -150,visible:false});
+            this.footer.addChild(tbt);
+
 
             //add eventListener
             this.finishMenu.addEventListener("ok", () => {
@@ -91,11 +99,12 @@ module joinjelly.gameplay{
             });
 
             this.finishMenu.addEventListener("board", () => {
-                FasPair.showMainMenu();
+                this.finishMenu.hide();
+                tbt.fadeIn();
             });
 
             this.finishMenu.addEventListener("share", () => {
-                FasPair.showMainMenu();
+                //
             });
 
             this.gameHeader.addEventListener("pause", () => {
@@ -121,7 +130,7 @@ module joinjelly.gameplay{
 
         //#endregion
 
-        // #region =================================== gamelay behaviour ==========================================================//
+        // #region =================================== gamelay behaviour =======================================================
 
         // Starts the game
         private start() {
@@ -263,11 +272,6 @@ module joinjelly.gameplay{
         
         //return a time interval for jelly addition based on user level;
         private decreateInterval(): number {
-            //var startTime = 800;
-            //var step = 4;
-            //var time = startTime - score * step;
-            //time = Math.max(time, 200);
-            //time = Math.round(time);
 
             var time = this.timeInterval;
 
@@ -290,14 +294,14 @@ module joinjelly.gameplay{
             this.board.mouseChildren = false;
             createjs.Tween.get(this.gameHeader).to({y:-425 },200,createjs.Ease.quadIn)
 
+            // shows finished game menu
             this.finishMenu.show();
 
             //move the board a little up
             createjs.Tween.get(this.board).to({ y: this.board.y-200 }, 800, createjs.Ease.quadInOut)
 
             // stop game loop
-            if(this.gamePlayLoop)
-                clearInterval(this.gamePlayLoop);
+            if(this.gamePlayLoop) clearInterval(this.gamePlayLoop);
         }
 
         //called when a tile is dragged
@@ -305,7 +309,6 @@ module joinjelly.gameplay{
             
             //try to match the tiles
             this.match(origin, target);
-
         }
 
         //verifies if a tile can pair another, and make it happens
