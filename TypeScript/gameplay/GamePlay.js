@@ -101,7 +101,7 @@ var joinjelly;
                 if (this.gameNextDrop > 0) {
                     this.gameNextDrop--;
                 } else {
-                    this.gameNextDrop = this.timeInterval / 100;
+                    this.gameNextDrop = this.timeInterval / 10;
 
                     // decreate time interval
                     this.decreateInterval();

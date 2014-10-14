@@ -116,7 +116,7 @@ module joinjelly.gameplay{
             }
             else {
 
-                this.gameNextDrop = this.timeInterval/100;
+                this.gameNextDrop = this.timeInterval/10;
 
                 // decreate time interval
                 this.decreateInterval()
@@ -253,9 +253,9 @@ module joinjelly.gameplay{
             this.content.addChild(menu);
 
             //add eventListener
-            menu.addEventListener("ok", () => { FasPair.showMainMenu(); });
-            menu.addEventListener("board", () => { FasPair.showMainMenu(); });
-            menu.addEventListener("share", () => { FasPair.showMainMenu(); });
+            menu.addEventListener("ok",     () => { FasPair.showMainMenu(); });
+            menu.addEventListener("board",  () => { FasPair.showMainMenu(); });
+            menu.addEventListener("share",  () => { FasPair.showMainMenu(); });
 
                 
             //move the board a little up
