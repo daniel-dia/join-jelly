@@ -2,31 +2,36 @@
 
     export class FlyOutMenu extends createjs.Container {
 
-        constructor(title: string) {
+        constructor(title: string, heigth:number=1022) {
             super();
 
             this.regX = this.x = defaultWidth / 2;
             this.regY = this.y = defaultHeight / 2;
 
-            this.AddBG();
-            this.addTitle();
+            this.AddBG(heigth);
+            this.addTitle(title);
 
             this.visible=false;
         }
 
-        // creates menu title
-        private AddBG() {
+        // creates menu background
+        private AddBG(heigth:number) {
             var title = gameui.AssetsManager.getBitmap("FlyBG");
             title.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
+            title.scaleY = heigth / 1022;
             this.addChild(title);
         }
 
         // creates menu title
-        private addTitle() {
-            var title = gameui.AssetsManager.getBitmap("FlyBG");
-            title.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
-            // 1305 1022
-            this.addChild(title);
+        private addTitle(title:string) {
+            //create "points" text
+            var textSprites = new createjs.SpriteSheet(Deburilfont);
+            var tx = new createjs.BitmapText(title, textSprites)
+            tx.set({ x: defaultWidth / 2, y: 660 });
+            this.addChild(tx);
+
+           // tx.scaleX = tx.scaleY = 2;
+            tx.regX = tx.getBounds().width / 2;
         }
 
 
@@ -41,7 +46,7 @@
             this.alpha = 0;
             this.scaleX = 0.5;
             this.scaleY = 2;
-            createjs.Tween.get(this).to({ x: defaultWidth / 2, y: defaultHeight / 2, alpha: 1, scaleX: 1, scaleY: 1 }, 1400, createjs.Ease.elasticInOut);
+            createjs.Tween.get(this).to({ x: defaultWidth / 2, y: defaultHeight / 2, alpha: 1, scaleX: 1, scaleY: 1 }, 1400, createjs.Ease.elasticOut);
 
             // animate title
 

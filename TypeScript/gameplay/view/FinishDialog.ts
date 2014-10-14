@@ -3,7 +3,7 @@
     export class FinishMenu extends joinjelly.menus.view.FlyOutMenu{
 
         constructor(score:number,best:number, jelly?:number) {
-            super("GAME OVER");
+            super("GAME OVER",1250);
             this.addButtons();
             this.addPoints(score,best);
             this.addLastJelly();
@@ -14,17 +14,17 @@
 
             //add continue button;
             var ok = new gameui.ui.ImageButton("GameOverOk", (() => { this.dispatchEvent("ok") }));
-            ok.set({ x: 771, y: 1599 });
+            ok.set({ x: 771, y: 1810 });
             this.addChild(ok);
 
             //add share button;
             var board = new gameui.ui.ImageButton("GameOverBoard", (() => { this.dispatchEvent("board") }));
-            board.set({ x: 353, y: 1570 });
+            board.set({ x: 353, y: 1780 });
             this.addChild(board);
 
             //add showBoard button
             var share = new gameui.ui.ImageButton("GameOverShare", (() => { this.dispatchEvent("share") }));
-            share.set({ x: 1190, y: 1570 });
+            share.set({ x: 1190, y: 1780 });
             this.addChild(share);
         }
 
@@ -60,8 +60,10 @@
             container.addChild(tx);
             tx.scaleX = tx.scaleY = 0.7;
             tx.regX = tx.getBounds().width;
-            
+
+            container.y += 260;
             this.addChild(container);
+             
             return container;
 
         }
@@ -97,7 +99,7 @@
             var jelly = new gameplay.view.Jelly();
             container.addChild(jelly);
             this.addChild(container);
-
+            container.y += 200;
             return container;
         }
 

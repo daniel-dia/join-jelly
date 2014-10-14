@@ -11,7 +11,7 @@ var joinjelly;
             var FinishMenu = (function (_super) {
                 __extends(FinishMenu, _super);
                 function FinishMenu(score, best, jelly) {
-                    _super.call(this, "GAME OVER");
+                    _super.call(this, "GAME OVER", 1250);
                     this.addButtons();
                     this.addPoints(score, best);
                     this.addLastJelly();
@@ -23,21 +23,21 @@ var joinjelly;
                     var ok = new gameui.ui.ImageButton("GameOverOk", (function () {
                         _this.dispatchEvent("ok");
                     }));
-                    ok.set({ x: 771, y: 1599 });
+                    ok.set({ x: 771, y: 1810 });
                     this.addChild(ok);
 
                     //add share button;
                     var board = new gameui.ui.ImageButton("GameOverBoard", (function () {
                         _this.dispatchEvent("board");
                     }));
-                    board.set({ x: 353, y: 1570 });
+                    board.set({ x: 353, y: 1780 });
                     this.addChild(board);
 
                     //add showBoard button
                     var share = new gameui.ui.ImageButton("GameOverShare", (function () {
                         _this.dispatchEvent("share");
                     }));
-                    share.set({ x: 1190, y: 1570 });
+                    share.set({ x: 1190, y: 1780 });
                     this.addChild(share);
                 };
 
@@ -71,7 +71,9 @@ var joinjelly;
                     tx.scaleX = tx.scaleY = 0.7;
                     tx.regX = tx.getBounds().width;
 
+                    container.y += 260;
                     this.addChild(container);
+
                     return container;
                 };
 
@@ -104,7 +106,7 @@ var joinjelly;
                     var jelly = new gameplay.view.Jelly();
                     container.addChild(jelly);
                     this.addChild(container);
-
+                    container.y += 200;
                     return container;
                 };
                 return FinishMenu;
