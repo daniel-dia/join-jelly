@@ -2,10 +2,16 @@
  
     export class FinishMenu extends joinjelly.menus.view.FlyOutMenu{
 
-        constructor(score:number,best:number, jelly?:number) {
+        private jellyText: createjs.BitmapText;
+        private jelly: view.Jelly;
+        private scoreText: createjs.BitmapText;
+        private higghScoreText: createjs.BitmapText;
+        
+
+        constructor() {
             super("GAME OVER",1250);
             this.addButtons();
-            this.addPoints(score,best);
+            this.addPoints();
             this.addLastJelly();
         }
 
@@ -29,7 +35,7 @@
         }
 
         // create points control
-        private addPoints(score:number,best:number):createjs.DisplayObject {
+        private addPoints():createjs.DisplayObject {
 
             var container = new createjs.Container();
             var textSprites = new createjs.SpriteSheet(Deburilfont);
@@ -43,23 +49,21 @@
             var tx = new createjs.BitmapText("Score", textSprites)
             tx.set({ x: 288, y: 592 });
             tx.scaleX = tx.scaleY = 0.7;
-            container .addChild(tx);
+            //container.addChild(tx);
             
-
             //create "points" text
-            var tx = new createjs.BitmapText(score.toString(), textSprites)
+            var tx = new createjs.BitmapText("", textSprites)
             tx.set({ x: defaultWidth/2, y: 747});
             container.addChild(tx);
             tx.scaleX = tx.scaleY = 2;
-            tx.regX = tx.getBounds().width / 2;
-            
+            this.scoreText = tx;            
 
             //create HighScore text
-            var tx = new createjs.BitmapText("High Score: "+best.toString(), textSprites)
+            var tx = new createjs.BitmapText("", textSprites)
             tx.set({ x: 1240, y: 835 });
             container.addChild(tx);
             tx.scaleX = tx.scaleY = 0.7;
-            tx.regX = tx.getBounds().width;
+            this.higghScoreText = tx;
 
             container.y += 260;
             this.addChild(container);
@@ -84,23 +88,43 @@
             //add "LastJelly" Text
             var tx = new createjs.BitmapText("Last Jelly", textSprites)
             tx.set({ x: 420, y:980});
-            container.addChild(tx);
+            //container.addChild(tx);
             tx.scaleX = tx.scaleY = 0.7;
-            
-            //add "LastJelly" name Text
-            var tx = new createjs.BitmapText("Mr Anything", textSprites)
-            tx.set({ x: defaultWidth/2, y: 1408});
-            container.addChild(tx);
-            tx.regX = tx.getBounds().width / 2;
-            tx.scaleX = tx.scaleY = 0.7;
-            
-            
+                                    
             //add Jelly
             var jelly = new gameplay.view.Jelly();
             container.addChild(jelly);
             this.addChild(container);
+            jelly.scaleX = jelly.scaleY = 1.75;
+            jelly.set({ x: defaultWidth / 2, y: 1350 });
+            this.jelly = jelly;
+
+
+            //add "LastJelly" name Text
+            var tx = new createjs.BitmapText("Mr Anything", textSprites)
+            tx.set({ x: defaultWidth / 2, y: 1408 });
+            tx.regX = tx.getBounds().width / 2;
+            tx.scaleX = tx.scaleY = 0.7;
+            this.jellyText = tx;
+            container.addChild(tx);
+            
+            
+
             container.y += 200;
             return container;
+        }
+
+        //set values
+        public setValues(score: number, best: number, jelly?: number) {
+            this.scoreText.text = score.toString();
+            this.higghScoreText.text = "High Score: " + best.toString();
+            this.jellyText.text = jelly.toString();
+            this.jelly.setNumber(jelly);
+
+            this.scoreText.regX = this.scoreText.getBounds().width / 2;
+            this.jellyText.regX = this.jellyText.getBounds().width / 2;
+            this.higghScoreText.regX = this.higghScoreText.getBounds().width;
+
         }
     }
 }

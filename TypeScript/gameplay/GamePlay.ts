@@ -81,7 +81,7 @@ module joinjelly.gameplay{
             this.content.addChild(this.pauseMenu);
 
             // creates a end menu
-            this.finishMenu = new view.FinishMenu(this.sumAll(), 1);
+            this.finishMenu = new view.FinishMenu();
             this.content.addChild(this.finishMenu);
 
             // creates a toggle button
@@ -289,13 +289,23 @@ module joinjelly.gameplay{
         //finishes the game
         private endGame() {
 
+            var score = this.score;
+            var highScore = FasPair.userData.getHighScore();
+            var jelly = 0;
+            for (var j in this.tiles)
+                if(this.tiles[j]>jelly) jelly=this.tiles[j]
+
             // disable mouse interaction
             this.board.mouseEnabled = false;
             this.board.mouseChildren = false;
             createjs.Tween.get(this.gameHeader).to({y:-425 },200,createjs.Ease.quadIn)
 
+            // save high score
+            FasPair.userData.setScore(score);
+
             // shows finished game menu
             this.finishMenu.show();
+            this.finishMenu.setValues(score, highScore, jelly);
 
             //move the board a little up
             createjs.Tween.get(this.board).to({ y: this.board.y-200 }, 800, createjs.Ease.quadInOut)
