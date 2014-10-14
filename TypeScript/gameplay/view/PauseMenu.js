@@ -13,6 +13,7 @@ var joinjelly;
                 function PauseMenu() {
                     _super.call(this, "PAUSED");
                     this.addButtons();
+                    this.addSoundOptions();
                 }
                 //creates buttons controls
                 PauseMenu.prototype.addButtons = function () {
@@ -37,6 +38,9 @@ var joinjelly;
                     }));
                     share.set({ x: 1190, y: 1570 });
                     this.addChild(share);
+                };
+
+                PauseMenu.prototype.addSoundOptions = function () {
                 };
                 return PauseMenu;
             })(joinjelly.menus.view.FlyOutMenu);

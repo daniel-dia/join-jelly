@@ -5,6 +5,7 @@
         constructor() {
             super("PAUSED");
             this.addButtons();
+            this.addSoundOptions();
         }
 
         //creates buttons controls
@@ -26,6 +27,8 @@
             this.addChild(share);
         }
 
+        private addSoundOptions() {
+        }
 
     }
 }

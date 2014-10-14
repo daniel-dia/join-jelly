@@ -108,8 +108,6 @@
             this.jellyText = tx;
             container.addChild(tx);
             
-            
-
             container.y += 200;
             return container;
         }
