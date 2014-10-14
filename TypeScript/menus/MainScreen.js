@@ -49,10 +49,10 @@ var joinjelly;
 
         MainScreen.prototype.createFooter = function () {
             if (this.userData) {
-                this.scoreText = new createjs.Text("High Score: " + this.userData.getHighScore(), "40px Arial", "white");
-                this.scoreText.textAlign = "right";
-                this.scoreText.x = 450;
-                this.scoreText.y = -100;
+                this.scoreText = new createjs.BitmapText("High Score " + this.userData.getHighScore(), new createjs.SpriteSheet(Deburilfont));
+                this.scoreText.x = 50;
+                this.scoreText.y = -50;
+                this.scoreText.scaleX = this.scoreText.scaleY = 0.8;
                 this.footer.addChild(this.scoreText);
             }
         };
