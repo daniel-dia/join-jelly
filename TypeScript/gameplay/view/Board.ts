@@ -139,7 +139,7 @@
 
         //release e tile
         private releaseDrag(tile: Tile, match: boolean= true, target?: Tile) {
-            if (!target) return;
+            
             var index = this.touchDictionary.indexOf(tile);
             delete this.touchDictionary[index];
 
@@ -149,7 +149,7 @@
             tile.locked = false;
 
             //if tiles match
-            if (match) {
+            if (match && target) {
 
                 var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
                 createjs.Tween.get(tile).to({ x: pos.x, y: pos.y, alpha: 0 }, 100, createjs.Ease.quadInOut).call(() => {
