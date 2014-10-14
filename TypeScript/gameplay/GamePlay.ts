@@ -32,6 +32,8 @@ module joinjelly.gameplay{
 
         private UserData: UserData;
 
+        private pauseMenu: view.PauseMenu;
+
         //#region =================================== initialization ==========================================================//
 
         constructor(userData:UserData) {
@@ -45,6 +47,7 @@ module joinjelly.gameplay{
             this.createBackground();
             this.createBoard();
             this.createGUI();
+            
         }
         
         // create game background
@@ -70,9 +73,17 @@ module joinjelly.gameplay{
             this.gameHeader = new view.GameHeader();
             this.header.addChild(this.gameHeader);
 
+            
+            this.pauseMenu = new view.PauseMenu();
+            this.content.addChild(this.pauseMenu);
+
             this.gameHeader.addEventListener("pause", () => {
-                this.endGame();
-                FasPair.showMainMenu();
+                this.pauseGame();
+                this.pauseMenu.show();
+            });
+            this.pauseMenu.addEventListener("play", () => {
+                this.continueGame();
+                this.pauseMenu.hide();
             });
 
         }

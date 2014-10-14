@@ -58,9 +58,16 @@ var joinjelly;
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
 
+                this.pauseMenu = new gameplay.view.PauseMenu();
+                this.content.addChild(this.pauseMenu);
+
                 this.gameHeader.addEventListener("pause", function () {
-                    _this.endGame();
-                    joinjelly.FasPair.showMainMenu();
+                    _this.pauseGame();
+                    _this.pauseMenu.show();
+                });
+                this.pauseMenu.addEventListener("play", function () {
+                    _this.continueGame();
+                    _this.pauseMenu.hide();
                 });
             };
 
