@@ -1,27 +1,12 @@
 ﻿module joinjelly.gameplay.view {
  
-    export class FinishMenu extends createjs.Container{
+    export class FinishMenu extends joinjelly.menus.view.FlyOutMenu{
 
         constructor(score:number,best:number, jelly?:number) {
-            super();
-            this.regX = this.x = defaultWidth / 2;
-            this.regY = this.y = defaultHeight / 2;
-
-
-            this.addTitle();
+            super("GAME OVER");
             this.addButtons();
             this.addPoints(score,best);
             this.addLastJelly();
-
-            this.animateIn();
-
-        }
-
-        //creates menu title
-        private addTitle() {
-            var title = gameui.AssetsManager.getBitmap("GameOverBack")
-            title.set({ x: defaultWidth/2, y: 257,regX:1330/2});
-            this.addChild(title);
         }
 
         //creates buttons controls
@@ -42,7 +27,6 @@
             share.set({ x: 1190, y: 1570 });
             this.addChild(share);
         }
-
 
         // create points control
         private addPoints(score:number,best:number):createjs.DisplayObject {
@@ -82,7 +66,6 @@
 
         }
 
-
         // creates last jelly control
         private addLastJelly(): createjs.DisplayObject {
 
@@ -117,33 +100,6 @@
 
             return container;
         }
-
-
-        private animateHide() {
-        }
-
-        // animates menu entrance
-        private animateIn() {
-
-            //animate all
-            this.y -= 500;
-            this.alpha = 0;
-            this.scaleX = 0.5;
-            this.scaleY = 2;
-            createjs.Tween.get(this).to({ x:defaultWidth/2, y: defaultHeight/2, alpha: 1,scaleX:1,scaleY:1 }, 1400, createjs.Ease.elasticInOut)
-
-            //animate title
-
-            //animate points
-
-            //animate last jelly
-
-            //animate buttons
-
-            
-        }
-
-
 
     }
 }

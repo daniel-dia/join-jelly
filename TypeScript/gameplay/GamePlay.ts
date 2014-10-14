@@ -32,6 +32,7 @@ module joinjelly.gameplay{
 
         private UserData: UserData;
 
+        private finishMenu:view.FinishMenu
         private pauseMenu: view.PauseMenu;
 
         //#region =================================== initialization ==========================================================//
@@ -67,15 +68,35 @@ module joinjelly.gameplay{
         // creates the game GUI
         private createGUI() {
 
+            // creates game level indicator
             this.gameLevelIndicator = new view.LevelIndicator();
             this.content.addChild(this.gameLevelIndicator);
         
+            // creates game header
             this.gameHeader = new view.GameHeader();
             this.header.addChild(this.gameHeader);
-
-            
+                        
+            // creates pause menu
             this.pauseMenu = new view.PauseMenu();
             this.content.addChild(this.pauseMenu);
+
+            // creates a end menu
+            this.finishMenu = new view.FinishMenu(this.sumAll(), 1);
+            this.content.addChild(this.finishMenu);
+
+
+            //add eventListener
+            this.finishMenu.addEventListener("ok", () => {
+                FasPair.showMainMenu();
+            });
+
+            this.finishMenu.addEventListener("board", () => {
+                FasPair.showMainMenu();
+            });
+
+            this.finishMenu.addEventListener("share", () => {
+                FasPair.showMainMenu();
+            });
 
             this.gameHeader.addEventListener("pause", () => {
                 this.pauseGame();
@@ -84,6 +105,16 @@ module joinjelly.gameplay{
             this.pauseMenu.addEventListener("play", () => {
                 this.continueGame();
                 this.pauseMenu.hide();
+            });
+
+            this.pauseMenu.addEventListener("home", () => {
+                this.pauseMenu.hide();
+                setTimeout(() => {joinjelly.FasPair.showMainMenu();}, 200);
+            });
+
+            this.pauseMenu.addEventListener("restart", () => {
+                this.pauseMenu.hide();
+                setTimeout(() => {joinjelly.FasPair.startLevel();}, 200);
             });
 
         }
@@ -259,26 +290,14 @@ module joinjelly.gameplay{
             this.board.mouseChildren = false;
             createjs.Tween.get(this.gameHeader).to({y:-425 },200,createjs.Ease.quadIn)
 
-            // creates a end menu
-            var menu = new view.FinishMenu(this.sumAll(), 1);
-            this.content.addChild(menu);
+            this.finishMenu.show();
 
-            //add eventListener
-            menu.addEventListener("ok",     () => { FasPair.showMainMenu(); });
-            menu.addEventListener("board",  () => { FasPair.showMainMenu(); });
-            menu.addEventListener("share",  () => { FasPair.showMainMenu(); });
-
-                
             //move the board a little up
             createjs.Tween.get(this.board).to({ y: this.board.y-200 }, 800, createjs.Ease.quadInOut)
 
             // stop game loop
             if(this.gamePlayLoop)
                 clearInterval(this.gamePlayLoop);
-
-            //show endmenu
-            
-
         }
 
         //called when a tile is dragged
