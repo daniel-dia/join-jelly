@@ -11,7 +11,7 @@ var joinjelly;
             var PauseMenu = (function (_super) {
                 __extends(PauseMenu, _super);
                 function PauseMenu() {
-                    _super.call(this, "OPTIONS");
+                    _super.call(this, "PAUSED");
                     this.addButtons();
                 }
                 //creates buttons controls

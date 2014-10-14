@@ -3,7 +3,7 @@
     export class PauseMenu extends joinjelly.menus.view.FlyOutMenu{
 
         constructor() {
-            super("OPTIONS");
+            super("PAUSED");
             this.addButtons();
         }
 
