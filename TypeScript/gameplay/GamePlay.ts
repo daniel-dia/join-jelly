@@ -149,10 +149,12 @@ module joinjelly.gameplay{
 
         private pauseGame() {
             this.gamestate = GameState.paused;
+            this.board.mouseEnabled = false;
         }
 
         private continueGame() {
             this.gamestate = GameState.playing;
+            this.board.mouseEnabled = true;
         }
 
         //time step for adding tiles.

@@ -135,10 +135,12 @@ var joinjelly;
 
             GamePlayScreen.prototype.pauseGame = function () {
                 this.gamestate = 2 /* paused */;
+                this.board.mouseEnabled = false;
             };
 
             GamePlayScreen.prototype.continueGame = function () {
                 this.gamestate = 1 /* playing */;
+                this.board.mouseEnabled = true;
             };
 
             //time step for adding tiles.
