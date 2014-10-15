@@ -108,10 +108,10 @@ var joinjelly;
                 { id: "Home", src: "assets/Home.png" },
                 { id: "FlyBG", src: "assets/FlyBG.png" },
                 { id: "FlyGroup", src: "assets/FlyGroup.png" },
-                { id: "BtMus", src: "assets/BtMus.png" },
-                { id: "BtMus", src: "assets/BtMus.png" },
+                { id: "BtMusic", src: "assets/BtMusic.png" },
+                { id: "BtMusicOff", src: "assets/BtMusicOff.png" },
                 { id: "BtSound", src: "assets/BtSound.png" },
-                { id: "BtSound", src: "assets/BtSound.png" }
+                { id: "BtSoundOff", src: "assets/BtSoundOff.png" }
             ];
         };
         return Loading;

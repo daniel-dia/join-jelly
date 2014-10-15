@@ -41,6 +41,61 @@ var joinjelly;
                 };
 
                 PauseMenu.prototype.addSoundOptions = function () {
+                    var _this = this;
+                    var y = 1000;
+
+                    var f = gameui.AssetsManager.getBitmap("FlyGroup");
+                    f.set({ x: (defaultWidth - 1056) / 2, y: 870 });
+                    this.addChild(f);
+
+                    var t = new createjs.BitmapText("Sound", new createjs.SpriteSheet(Deburilfont));
+                    t.set({ x: defaultWidth / 2, y: 870 });
+                    t.regX = t.getBounds().width / 2;
+                    this.addChild(t);
+
+                    //add continue button;
+                    var music = new gameui.ui.ImageButton("BtMusic", (function () {
+                        music.fadeOut();
+                        musicOFf.fadeIn();
+                        _this.dispatchEvent("music");
+                    }));
+                    music.set({ x: 623, y: y });
+                    this.addChild(music);
+
+                    //add share button;
+                    var sound = new gameui.ui.ImageButton("BtSound", (function () {
+                        sound.fadeOut();
+                        soundOff.fadeIn();
+                        _this.dispatchEvent("sound");
+                    }));
+                    sound.set({ x: 923, y: y });
+                    this.addChild(sound);
+
+                    //add continue button;
+                    var musicOFf = new gameui.ui.ImageButton("BtMusicOff", (function () {
+                        musicOFf.fadeOut();
+                        music.fadeIn();
+                        _this.dispatchEvent("musicOn");
+                    }));
+                    musicOFf.set({ x: 623, y: y });
+                    this.addChild(musicOFf);
+
+                    //add share button;
+                    var soundOff = new gameui.ui.ImageButton("BtSoundOff", (function () {
+                        soundOff.fadeOut();
+                        sound.fadeIn();
+                        _this.dispatchEvent("soundOn");
+                    }));
+                    soundOff.set({ x: 923, y: y });
+                    this.addChild(soundOff);
+
+                    var mus = joinjelly.FasPair.userData.getMusicVol();
+                    var snd = joinjelly.FasPair.userData.getSoundVol();
+
+                    musicOFf.visible = !mus;
+                    soundOff.visible = !snd;
+                    music.visible = !!mus;
+                    sound.visible = !!snd;
                 };
                 return PauseMenu;
             })(joinjelly.menus.view.FlyOutMenu);

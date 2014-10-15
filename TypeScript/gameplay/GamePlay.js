@@ -133,11 +133,13 @@ var joinjelly;
                 this.gamestate = 1 /* playing */;
             };
 
+            // pause game
             GamePlayScreen.prototype.pauseGame = function () {
                 this.gamestate = 2 /* paused */;
                 this.board.mouseEnabled = false;
             };
 
+            // unpause game
             GamePlayScreen.prototype.continueGame = function () {
                 this.gamestate = 1 /* playing */;
                 this.board.mouseEnabled = true;

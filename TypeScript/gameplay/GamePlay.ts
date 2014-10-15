@@ -147,11 +147,13 @@ module joinjelly.gameplay{
             this.gamestate = GameState.playing;
         }
 
+        // pause game
         private pauseGame() {
             this.gamestate = GameState.paused;
             this.board.mouseEnabled = false;
         }
 
+        // unpause game
         private continueGame() {
             this.gamestate = GameState.playing;
             this.board.mouseEnabled = true;
