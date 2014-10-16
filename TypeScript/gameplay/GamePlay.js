@@ -21,6 +21,8 @@ var joinjelly;
             function GamePlayScreen(userData) {
                 _super.call(this);
                 this.boardSize = 5;
+                //verifies if a tile can pair another, and make it happens
+                this.moves = 0;
 
                 this.UserData = userData;
 
@@ -78,7 +80,7 @@ var joinjelly;
 
                 //add eventListener
                 this.finishMenu.addEventListener("ok", function () {
-                    joinjelly.FasPair.showMainMenu();
+                    joinjelly.JoinJelly.showMainMenu();
                 });
 
                 this.finishMenu.addEventListener("board", function () {
@@ -102,14 +104,14 @@ var joinjelly;
                 this.pauseMenu.addEventListener("home", function () {
                     _this.pauseMenu.hide();
                     setTimeout(function () {
-                        joinjelly.FasPair.showMainMenu();
+                        joinjelly.JoinJelly.showMainMenu();
                     }, 200);
                 });
 
                 this.pauseMenu.addEventListener("restart", function () {
                     _this.pauseMenu.hide();
                     setTimeout(function () {
-                        joinjelly.FasPair.startLevel();
+                        joinjelly.JoinJelly.startLevel();
                     }, 200);
                 });
             };
@@ -131,6 +133,9 @@ var joinjelly;
                 }, 10);
 
                 this.gamestate = 1 /* playing */;
+
+                // log game start event
+                joinjelly.JoinJelly.analytics.logGameStart();
             };
 
             // pause game
@@ -274,7 +279,7 @@ var joinjelly;
             //finishes the game
             GamePlayScreen.prototype.endGame = function () {
                 var score = this.score;
-                var highScore = joinjelly.FasPair.userData.getHighScore();
+                var highScore = joinjelly.JoinJelly.userData.getHighScore();
                 var jelly = 0;
                 for (var j in this.tiles)
                     if (this.tiles[j] > jelly)
@@ -286,7 +291,7 @@ var joinjelly;
                 createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
 
                 // save high score
-                joinjelly.FasPair.userData.setScore(score);
+                joinjelly.JoinJelly.userData.setScore(score);
 
                 // shows finished game menu
                 this.finishMenu.show();
@@ -298,6 +303,9 @@ var joinjelly;
                 // stop game loop
                 if (this.gamePlayLoop)
                     clearInterval(this.gamePlayLoop);
+
+                // log event
+                joinjelly.JoinJelly.analytics.logEndGame(this.moves, this.score, this.currentLevel, jelly);
             };
 
             //called when a tile is dragged
@@ -306,11 +314,12 @@ var joinjelly;
                 this.match(origin, target);
             };
 
-            //verifies if a tile can pair another, and make it happens
             GamePlayScreen.prototype.match = function (origin, target) {
                 var _this = this;
                 //check if match is correct
                 if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin]) {
+                    this.moves++;
+
                     //calculate new value
                     var newValue = this.tiles[target] + this.tiles[origin];
 
@@ -333,6 +342,9 @@ var joinjelly;
                     this.UserData.setLastJelly(newValue);
 
                     this.updateInterfaceInfos();
+
+                    //log event
+                    joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.getEmptyBlocks().length);
                 }
             };
 

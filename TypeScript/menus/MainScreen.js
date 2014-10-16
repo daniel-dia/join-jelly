@@ -22,7 +22,7 @@ var joinjelly;
         }
         MainScreen.prototype.createContent = function () {
             var button = new gameui.ui.ImageButton("assets/PlayBt.png", function () {
-                joinjelly.FasPair.startLevel();
+                joinjelly.JoinJelly.startLevel();
             });
 
             button.y = 1168;
@@ -36,7 +36,7 @@ var joinjelly;
             this.content.addChild(lobby);
 
             var aboutBt = new gameui.ui.ImageButton("About", function () {
-                joinjelly.FasPair.showAboutScreen();
+                joinjelly.JoinJelly.showAboutScreen();
             });
             aboutBt.y = -150;
             aboutBt.x = defaultWidth - 150;

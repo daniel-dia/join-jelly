@@ -89,8 +89,8 @@ var joinjelly;
                     soundOff.set({ x: 923, y: y });
                     this.addChild(soundOff);
 
-                    var mus = joinjelly.FasPair.userData.getMusicVol();
-                    var snd = joinjelly.FasPair.userData.getSoundVol();
+                    var mus = joinjelly.JoinJelly.userData.getMusicVol();
+                    var snd = joinjelly.JoinJelly.userData.getSoundVol();
 
                     musicOFf.visible = !mus;
                     soundOff.visible = !snd;
@@ -99,12 +99,12 @@ var joinjelly;
                 };
 
                 PauseMenu.prototype.setMusic = function (value) {
-                    joinjelly.FasPair.userData.setMusicVol(value);
+                    joinjelly.JoinJelly.userData.setMusicVol(value);
                     //Todo make it communicate with sound
                 };
 
                 PauseMenu.prototype.setSound = function (value) {
-                    joinjelly.FasPair.userData.setSoundVol(value);
+                    joinjelly.JoinJelly.userData.setSoundVol(value);
                     //Todo make it communicate with sound
                 };
                 return PauseMenu;

@@ -1,9 +1,11 @@
 ﻿var joinjelly;
 (function (joinjelly) {
-    var FasPair = (function () {
-        function FasPair() {
+    var JoinJelly = (function () {
+        function JoinJelly() {
         }
-        FasPair.init = function () {
+        JoinJelly.init = function () {
+            this.analytics = new Analytics();
+
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight);
             this.gameScreen.stage.enableMouseOver(60);
             this.gameScreen.stage.mouseMoveOutside = true;
@@ -13,24 +15,24 @@
             this.gameScreen.switchScreen(loadingScreen);
 
             loadingScreen.loaded = function () {
-                FasPair.showMainMenu();
+                JoinJelly.showMainMenu();
             };
         };
 
-        FasPair.showAboutScreen = function () {
+        JoinJelly.showAboutScreen = function () {
             //not Implemented
             alert("beta");
         };
 
-        FasPair.showMainMenu = function () {
+        JoinJelly.showMainMenu = function () {
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData));
         };
 
-        FasPair.startLevel = function () {
+        JoinJelly.startLevel = function () {
             this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData));
         };
-        return FasPair;
+        return JoinJelly;
     })();
-    joinjelly.FasPair = FasPair;
+    joinjelly.JoinJelly = JoinJelly;
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=FastPair.js.map

@@ -145,6 +145,9 @@ module joinjelly.gameplay{
             this.gamePlayLoop = setInterval(() => { this.step(); }, 10)
 
             this.gamestate = GameState.playing;
+
+            // log game start event
+            JoinJelly.analytics.logGameStart();
         }
 
         // pause game
@@ -315,7 +318,11 @@ module joinjelly.gameplay{
             createjs.Tween.get(this.board).to({ y: this.board.y-200 }, 800, createjs.Ease.quadInOut)
 
             // stop game loop
-            if(this.gamePlayLoop) clearInterval(this.gamePlayLoop);
+            if (this.gamePlayLoop) clearInterval(this.gamePlayLoop);
+
+            // log event
+            JoinJelly.analytics.logEndGame(this.moves, this.score, this.currentLevel, jelly)
+
         }
 
         //called when a tile is dragged
@@ -326,11 +333,13 @@ module joinjelly.gameplay{
         }
 
         //verifies if a tile can pair another, and make it happens
+        private moves: number = 0;
         private match(origin: string, target: string) {
 
             //check if match is correct
             if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin] ){//&&!tileTarget.locked) {
 
+                this.moves++;
                 //calculate new value
                 var newValue = this.tiles[target] + this.tiles[origin];
 
@@ -353,6 +362,9 @@ module joinjelly.gameplay{
                 this.UserData.setLastJelly(newValue);
                 
                 this.updateInterfaceInfos();
+
+                //log event
+                joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.getEmptyBlocks().length);
             }
         }
 
