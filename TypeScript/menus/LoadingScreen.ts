@@ -114,6 +114,8 @@ module joinjelly {
                { id: "BtMusicOff", src: "assets/BtMusicOff.png" },
                { id: "BtSound", src: "assets/BtSound.png" },
                { id: "BtSoundOff", src: "assets/BtSoundOff.png" },
+
+               { id: "About", src: "assets/About.png" },
                
                //{ id: "bg1", src: "Sounds/bg1.mp3" },
 

@@ -38,6 +38,14 @@
             lobby.y = 1000;
             this.content.addChild(lobby);
 
+            var aboutBt = new gameui.ui.ImageButton("About", () => {
+                FasPair.showAboutScreen();
+            });
+            aboutBt.y = -150;
+            aboutBt.x = defaultWidth-150;
+
+            this.footer.addChild(aboutBt);
+
         }
 
 

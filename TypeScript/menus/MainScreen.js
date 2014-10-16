@@ -34,6 +34,14 @@ var joinjelly;
             lobby.x = defaultWidth / 2;
             lobby.y = 1000;
             this.content.addChild(lobby);
+
+            var aboutBt = new gameui.ui.ImageButton("About", function () {
+                joinjelly.FasPair.showAboutScreen();
+            });
+            aboutBt.y = -150;
+            aboutBt.x = defaultWidth - 150;
+
+            this.footer.addChild(aboutBt);
         };
 
         MainScreen.prototype.createTitle = function () {

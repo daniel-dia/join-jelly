@@ -17,6 +17,11 @@
             };
         };
 
+        FasPair.showAboutScreen = function () {
+            //not Implemented
+            alert("beta");
+        };
+
         FasPair.showMainMenu = function () {
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData));
         };

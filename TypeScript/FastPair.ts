@@ -19,6 +19,11 @@
             }
         }
 
+        public static showAboutScreen() {
+            //not Implemented
+            alert("beta");
+        }
+
         public static showMainMenu() {
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData));
         }
