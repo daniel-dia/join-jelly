@@ -95,7 +95,7 @@ module joinjelly.gameplay{
 
             //add eventListener
             this.finishMenu.addEventListener("ok", () => {
-                FasPair.showMainMenu();
+                JoinJelly.showMainMenu();
             });
 
             this.finishMenu.addEventListener("board", () => {
@@ -118,12 +118,12 @@ module joinjelly.gameplay{
 
             this.pauseMenu.addEventListener("home", () => {
                 this.pauseMenu.hide();
-                setTimeout(() => {joinjelly.FasPair.showMainMenu();}, 200);
+                setTimeout(() => {joinjelly.JoinJelly.showMainMenu();}, 200);
             });
 
             this.pauseMenu.addEventListener("restart", () => {
                 this.pauseMenu.hide();
-                setTimeout(() => {joinjelly.FasPair.startLevel();}, 200);
+                setTimeout(() => {joinjelly.JoinJelly.startLevel();}, 200);
             });
 
         }
@@ -294,7 +294,7 @@ module joinjelly.gameplay{
         private endGame() {
 
             var score = this.score;
-            var highScore = FasPair.userData.getHighScore();
+            var highScore = JoinJelly.userData.getHighScore();
             var jelly = 0;
             for (var j in this.tiles)
                 if(this.tiles[j]>jelly) jelly=this.tiles[j]
@@ -305,7 +305,7 @@ module joinjelly.gameplay{
             createjs.Tween.get(this.gameHeader).to({y:-425 },200,createjs.Ease.quadIn)
 
             // save high score
-            FasPair.userData.setScore(score);
+            JoinJelly.userData.setScore(score);
 
             // shows finished game menu
             this.finishMenu.show();

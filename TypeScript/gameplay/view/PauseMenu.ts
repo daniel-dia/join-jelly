@@ -59,8 +59,8 @@
             soundOff.set({ x: 923, y: y });
             this.addChild(soundOff);
 
-            var mus = FasPair.userData.getMusicVol();
-            var snd = FasPair.userData.getSoundVol();
+            var mus = JoinJelly.userData.getMusicVol();
+            var snd = JoinJelly.userData.getSoundVol();
 
             musicOFf.visible = !mus;
             soundOff.visible = !snd;
@@ -70,12 +70,12 @@
         }
 
         private setMusic(value: boolean) {
-            FasPair.userData.setMusicVol(value);
+            JoinJelly.userData.setMusicVol(value);
             //Todo make it communicate with sound
         }
 
         private setSound(value: boolean) {
-            FasPair.userData.setSoundVol(value);
+            JoinJelly.userData.setSoundVol(value);
             //Todo make it communicate with sound
         }
     }

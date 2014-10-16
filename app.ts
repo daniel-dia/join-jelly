@@ -1,3 +1,3 @@
 ﻿window.onload = () => {
-    joinjelly.FasPair.init();
+    joinjelly.JoinJelly.init();
 }

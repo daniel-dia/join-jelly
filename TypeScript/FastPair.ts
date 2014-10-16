@@ -1,5 +1,5 @@
 ﻿module joinjelly {
-    export class FasPair{
+    export class JoinJelly{
 
         public static userData: UserData;
         private static gameScreen: gameui.GameScreen;
@@ -15,7 +15,7 @@
             this.gameScreen.switchScreen(loadingScreen);
 
             loadingScreen.loaded = () => {
-                FasPair.showMainMenu();
+                JoinJelly.showMainMenu();
             }
         }
 

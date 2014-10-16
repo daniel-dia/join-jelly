@@ -25,7 +25,7 @@
         private createContent() {
 
             var button = new gameui.ui.ImageButton("assets/PlayBt.png", () => {
-                FasPair.startLevel();
+                JoinJelly.startLevel();
             });
 
             button.y = 1168;
@@ -39,7 +39,7 @@
             this.content.addChild(lobby);
 
             var aboutBt = new gameui.ui.ImageButton("About", () => {
-                FasPair.showAboutScreen();
+                JoinJelly.showAboutScreen();
             });
             aboutBt.y = -150;
             aboutBt.x = defaultWidth-150;
