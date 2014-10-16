@@ -21,6 +21,8 @@ var joinjelly;
             function GamePlayScreen(userData) {
                 _super.call(this);
                 this.boardSize = 5;
+                //verifies if a tile can pair another, and make it happens
+                this.moves = 0;
 
                 this.UserData = userData;
 
@@ -131,6 +133,9 @@ var joinjelly;
                 }, 10);
 
                 this.gamestate = 1 /* playing */;
+
+                // log game start event
+                joinjelly.JoinJelly.analytics.logGameStart();
             };
 
             // pause game
@@ -298,6 +303,9 @@ var joinjelly;
                 // stop game loop
                 if (this.gamePlayLoop)
                     clearInterval(this.gamePlayLoop);
+
+                // log event
+                joinjelly.JoinJelly.analytics.logEndGame(this.moves, this.score, this.currentLevel, jelly);
             };
 
             //called when a tile is dragged
@@ -306,11 +314,12 @@ var joinjelly;
                 this.match(origin, target);
             };
 
-            //verifies if a tile can pair another, and make it happens
             GamePlayScreen.prototype.match = function (origin, target) {
                 var _this = this;
                 //check if match is correct
                 if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin]) {
+                    this.moves++;
+
                     //calculate new value
                     var newValue = this.tiles[target] + this.tiles[origin];
 
@@ -333,6 +342,9 @@ var joinjelly;
                     this.UserData.setLastJelly(newValue);
 
                     this.updateInterfaceInfos();
+
+                    //log event
+                    joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.getEmptyBlocks().length);
                 }
             };
 
