@@ -31,7 +31,7 @@
     //#endregion
     //#region options
     UserData.prototype.getMusicVol = function () {
-        return UserData.loadValue("music", 1);
+        return UserData.loadValue("music", true);
     };
 
     UserData.prototype.setMusicVol = function (volume) {
@@ -39,7 +39,7 @@
     };
 
     UserData.prototype.getSoundVol = function () {
-        return UserData.loadValue("sound", 1);
+        return UserData.loadValue("sound", true);
     };
 
     UserData.prototype.setSoundVol = function (volume) {

@@ -40,22 +40,22 @@
             this.addChild(t)
 
             //add continue button;
-            var music = new gameui.ui.ImageButton("BtMusic", (() => { music.fadeOut(); musicOFf.fadeIn(); this.dispatchEvent("music") }));
+            var music = new gameui.ui.ImageButton("BtMusic", (() => { music.fadeOut(); musicOFf.fadeIn(); this.setMusic(false) }));
             music.set({ x: 623, y: y });
             this.addChild(music);
 
             //add share button;
-            var sound = new gameui.ui.ImageButton("BtSound", (() => { sound.fadeOut(); soundOff.fadeIn();this.dispatchEvent("sound") }));
+            var sound = new gameui.ui.ImageButton("BtSound", (() => { sound.fadeOut(); soundOff.fadeIn();this.setSound(false) }));
             sound.set({ x: 923, y: y });
             this.addChild(sound);
 
             //add continue button;
-            var musicOFf = new gameui.ui.ImageButton("BtMusicOff", (() => { musicOFf.fadeOut(); music.fadeIn(); this.dispatchEvent("musicOn") }));
+            var musicOFf = new gameui.ui.ImageButton("BtMusicOff", (() => { musicOFf.fadeOut(); music.fadeIn(); this.setMusic(true)}));
             musicOFf .set({ x: 623, y: y });
             this.addChild(musicOFf );
 
             //add share button;
-            var soundOff = new gameui.ui.ImageButton("BtSoundOff", (() => { soundOff.fadeOut(); sound.fadeIn();this.dispatchEvent("soundOn") }));
+            var soundOff = new gameui.ui.ImageButton("BtSoundOff", (() => { soundOff.fadeOut(); sound.fadeIn();this.setSound(true) }));
             soundOff.set({ x: 923, y: y });
             this.addChild(soundOff);
 
@@ -67,6 +67,16 @@
             music.visible = !!mus;
             sound.visible = !!snd;
 
+        }
+
+        private setMusic(value: boolean) {
+            FasPair.userData.setMusicVol(value);
+            //Todo make it communicate with sound
+        }
+
+        private setSound(value: boolean) {
+            FasPair.userData.setSoundVol(value);
+            //Todo make it communicate with sound
         }
     }
 }

@@ -28,19 +28,19 @@
 
     //#region options
 
-    public getMusicVol(): number {
-        return UserData.loadValue("music",1); 
+    public getMusicVol(): boolean {
+        return UserData.loadValue("music",true); 
     }
 
-    public setMusicVol(volume: number) {
+    public setMusicVol(volume: boolean) {
         UserData.saveValue("music", volume);
     }
 
-    public getSoundVol(): number{
-        return UserData.loadValue("sound",1);
+    public getSoundVol(): boolean{
+        return UserData.loadValue("sound",true);
     }
 
-    public setSoundVol(volume: number) {
+    public setSoundVol(volume: boolean) {
         UserData.saveValue("sound",volume);
     }
 

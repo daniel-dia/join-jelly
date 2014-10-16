@@ -57,7 +57,7 @@ var joinjelly;
                     var music = new gameui.ui.ImageButton("BtMusic", (function () {
                         music.fadeOut();
                         musicOFf.fadeIn();
-                        _this.dispatchEvent("music");
+                        _this.setMusic(false);
                     }));
                     music.set({ x: 623, y: y });
                     this.addChild(music);
@@ -66,7 +66,7 @@ var joinjelly;
                     var sound = new gameui.ui.ImageButton("BtSound", (function () {
                         sound.fadeOut();
                         soundOff.fadeIn();
-                        _this.dispatchEvent("sound");
+                        _this.setSound(false);
                     }));
                     sound.set({ x: 923, y: y });
                     this.addChild(sound);
@@ -75,7 +75,7 @@ var joinjelly;
                     var musicOFf = new gameui.ui.ImageButton("BtMusicOff", (function () {
                         musicOFf.fadeOut();
                         music.fadeIn();
-                        _this.dispatchEvent("musicOn");
+                        _this.setMusic(true);
                     }));
                     musicOFf.set({ x: 623, y: y });
                     this.addChild(musicOFf);
@@ -84,7 +84,7 @@ var joinjelly;
                     var soundOff = new gameui.ui.ImageButton("BtSoundOff", (function () {
                         soundOff.fadeOut();
                         sound.fadeIn();
-                        _this.dispatchEvent("soundOn");
+                        _this.setSound(true);
                     }));
                     soundOff.set({ x: 923, y: y });
                     this.addChild(soundOff);
@@ -96,6 +96,16 @@ var joinjelly;
                     soundOff.visible = !snd;
                     music.visible = !!mus;
                     sound.visible = !!snd;
+                };
+
+                PauseMenu.prototype.setMusic = function (value) {
+                    joinjelly.FasPair.userData.setMusicVol(value);
+                    //Todo make it communicate with sound
+                };
+
+                PauseMenu.prototype.setSound = function (value) {
+                    joinjelly.FasPair.userData.setSoundVol(value);
+                    //Todo make it communicate with sound
                 };
                 return PauseMenu;
             })(joinjelly.menus.view.FlyOutMenu);
