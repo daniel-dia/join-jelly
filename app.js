@@ -1,4 +1,4 @@
 ﻿window.onload = function () {
-    joinjelly.FasPair.init();
+    joinjelly.JoinJelly.init();
 };
 //# sourceMappingURL=app.js.map

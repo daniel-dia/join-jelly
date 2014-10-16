@@ -78,7 +78,7 @@ var joinjelly;
 
                 //add eventListener
                 this.finishMenu.addEventListener("ok", function () {
-                    joinjelly.FasPair.showMainMenu();
+                    joinjelly.JoinJelly.showMainMenu();
                 });
 
                 this.finishMenu.addEventListener("board", function () {
@@ -102,14 +102,14 @@ var joinjelly;
                 this.pauseMenu.addEventListener("home", function () {
                     _this.pauseMenu.hide();
                     setTimeout(function () {
-                        joinjelly.FasPair.showMainMenu();
+                        joinjelly.JoinJelly.showMainMenu();
                     }, 200);
                 });
 
                 this.pauseMenu.addEventListener("restart", function () {
                     _this.pauseMenu.hide();
                     setTimeout(function () {
-                        joinjelly.FasPair.startLevel();
+                        joinjelly.JoinJelly.startLevel();
                     }, 200);
                 });
             };
@@ -274,7 +274,7 @@ var joinjelly;
             //finishes the game
             GamePlayScreen.prototype.endGame = function () {
                 var score = this.score;
-                var highScore = joinjelly.FasPair.userData.getHighScore();
+                var highScore = joinjelly.JoinJelly.userData.getHighScore();
                 var jelly = 0;
                 for (var j in this.tiles)
                     if (this.tiles[j] > jelly)
@@ -286,7 +286,7 @@ var joinjelly;
                 createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
 
                 // save high score
-                joinjelly.FasPair.userData.setScore(score);
+                joinjelly.JoinJelly.userData.setScore(score);
 
                 // shows finished game menu
                 this.finishMenu.show();

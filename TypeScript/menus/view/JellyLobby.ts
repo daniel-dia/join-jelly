@@ -14,6 +14,9 @@
             // set a default value to the last jelly
             if (!lastJelly) lastJelly = 1;
 
+
+            lastJelly = 8192;
+
             // calculate all jellys already unlocked
             var jellys: Array<number> = new Array();
             for (var j = 1; j <= lastJelly; j *= 2)
@@ -32,16 +35,14 @@
             this.addChildAt(jelly,0);
             jelly.setNumber(value);
 
-            // set jelly positions and scale
-            if(position%2==0)
-                jelly.x = position * 120;
-            else
-                jelly.x = -1 * (position+1) * 120;
+            jelly.x = ((position) * 1120) //* (14 - position) / 10;;
+
+            jelly.x = jelly.x % defaultWidth*.6666   - defaultWidth/3
+
             jelly.y = 40*(14 - position);
-            jelly.scaleX = jelly.scaleY = 1 - position / 10;
+            jelly.scaleX = jelly.scaleY = (1 - position / 15);
 
             //play JellySound
-
             createjs.Sound.play('s' + (Math.floor(Math.random() * 3) + 1), null, 400);
 
 

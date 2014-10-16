@@ -38,10 +38,10 @@ module joinjelly {
 
         private getAssetsManifest(scale: number): Array<any> {
            return [
-                { id: "1024", src: "assets/1024.png" },
-                { id: "2048", src: "assets/2048.png" },
-                { id: "4096", src: "assets/4096.png" },
-                { id: "8192", src: "assets/8192.png" },
+                { id: "j1024", src: "assets/j1024.png" },
+                { id: "j2048", src: "assets/j2048.png" },
+                { id: "j4096", src: "assets/j4096.png" },
+                { id: "j8192", src: "assets/j8192.png" },
                 { id: "Background", src: "assets/Background.jpg" },
                 { id: "Background2", src: "assets/Background2.jpg" },
                 { id: "backhome", src: "assets/backhome.jpg" },
