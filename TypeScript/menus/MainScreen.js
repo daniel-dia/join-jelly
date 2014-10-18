@@ -21,14 +21,6 @@ var joinjelly;
             this.createTitle();
         }
         MainScreen.prototype.createContent = function () {
-            var button = new gameui.ui.ImageButton("assets/PlayBt.png", function () {
-                joinjelly.JoinJelly.startLevel();
-            });
-
-            button.y = 1168;
-            button.x = 768;
-            this.content.addChild(button);
-
             // adds jelly
             var lobby = new joinjelly.menus.view.JellyLobby(this.userData.getLastJelly());
             lobby.x = defaultWidth / 2;
@@ -42,6 +34,15 @@ var joinjelly;
             aboutBt.x = defaultWidth - 150;
 
             this.footer.addChild(aboutBt);
+
+            // play button
+            var button = new gameui.ui.ImageButton("assets/PlayBt.png", function () {
+                joinjelly.JoinJelly.startLevel();
+            });
+
+            button.y = 1168;
+            button.x = 768;
+            this.content.addChild(button);
         };
 
         MainScreen.prototype.createTitle = function () {

@@ -1,5 +1,5 @@
 ﻿declare var Chubbyfont;
-module joinjelly.gameplay{
+module joinjelly.gameplay {
 
     enum GameState {
         starting,
@@ -18,7 +18,7 @@ module joinjelly.gameplay{
 
         private currentLevel: number;
 
-        private score: number;        
+        private score: number;
 
         private timeInterval: number;
 
@@ -32,12 +32,21 @@ module joinjelly.gameplay{
 
         private UserData: UserData;
 
-        private finishMenu:view.FinishMenu
+        private finishMenu: view.FinishMenu
         private pauseMenu: view.PauseMenu;
+
+        // count moves for log
+        private moves: number = 0;
+
+        // tutoral current step
+        private currentTutorialStep = 0;
+
+        //tutorial mode
+        private tutorialMatch: ()=>void;
 
         //#region =================================== initialization ==========================================================
 
-        constructor(userData:UserData) {
+        constructor(userData: UserData) {
             super();
 
             this.UserData = userData;
@@ -48,9 +57,9 @@ module joinjelly.gameplay{
             this.createBackground();
             this.createBoard();
             this.createGUI();
-            
+
         }
-        
+
         // create game background
         private createBackground() {
             this.background.addChild(new createjs.Bitmap("assets/Background.jpg"));
@@ -61,7 +70,7 @@ module joinjelly.gameplay{
             this.board = new view.Board(this.boardSize, this.boardSize, 1536 / 5, true);
             ////this.board.addEventListener("tile", (e: createjs.MouseEvent) => { this.setInput(e.target); });
             this.board.addEventListener("tileDrop", (e: createjs.MouseEvent) => { this.dragged(e.target.origin, e.target.target); });
-            this.board.y = (2048 - 1536) / 2+100;
+            this.board.y = (2048 - 1536) / 2 + 100;
             this.content.addChild(this.board);
         }
 
@@ -71,11 +80,11 @@ module joinjelly.gameplay{
             // creates game level indicator
             this.gameLevelIndicator = new view.LevelIndicator();
             this.content.addChild(this.gameLevelIndicator);
-        
+
             // creates game header
             this.gameHeader = new view.GameHeader();
             this.header.addChild(this.gameHeader);
-                        
+
             // creates pause menu
             this.pauseMenu = new view.PauseMenu();
             this.content.addChild(this.pauseMenu);
@@ -89,7 +98,7 @@ module joinjelly.gameplay{
                 this.finishMenu.show();
                 tbt.fadeOut();
             });
-            tbt.set({ x: 150, y: -150,visible:false});
+            tbt.set({ x: 150, y: -150, visible: false });
             this.footer.addChild(tbt);
 
 
@@ -118,12 +127,12 @@ module joinjelly.gameplay{
 
             this.pauseMenu.addEventListener("home", () => {
                 this.pauseMenu.hide();
-                setTimeout(() => {joinjelly.JoinJelly.showMainMenu();}, 200);
+                setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
             });
 
             this.pauseMenu.addEventListener("restart", () => {
                 this.pauseMenu.hide();
-                setTimeout(() => {joinjelly.JoinJelly.startLevel();}, 200);
+                setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 
         }
@@ -167,20 +176,20 @@ module joinjelly.gameplay{
 
             // if is not playing, than does not execute a step
             if (this.gamestate != GameState.playing) return;
-            
+
             // wait until interval 
             if (this.gameNextDrop > 0) {
                 this.gameNextDrop--;
             }
             else {
 
-                this.gameNextDrop = this.timeInterval/10;
+                this.gameNextDrop = this.timeInterval / 10;
 
                 // decreate time interval
                 this.decreateInterval()
 
                 // add a new tile  on board
-                this.addTileOnBoard();
+                this.addRandomTileOnBoard();
 
                 // verifies if game is ended
                 if (this.verifyGameLoose()) this.endGame();
@@ -190,6 +199,7 @@ module joinjelly.gameplay{
             }
         }
 
+        // list all empty blocks in a array
         private getEmptyBlocks(): Array<number> {
 
             //get next jelly
@@ -204,6 +214,7 @@ module joinjelly.gameplay{
             return empty;
         }
 
+        // Verifies if game is over
         private verifyGameLoose(): boolean {
 
             var empty = this.getEmptyBlocks();
@@ -214,20 +225,26 @@ module joinjelly.gameplay{
             return false;
         }
 
-        private addTileOnBoard() {
+        // add a random tile with value 1 on board
+        private addRandomTileOnBoard() {
 
             var empty = this.getEmptyBlocks();
 
             // if there is no more empty tiles, ends the game
-            if (empty.length >0){
+            if (empty.length > 0) {
                 var i = Math.floor(Math.random() * empty.length);
                 var tid = empty[i];
-                this.tiles[tid] = 1;
-                this.board.setTileValue(tid, 1);
+                this.setTileValue(tid, 1);
                 return true;
             }
 
             return false;
+        }
+
+        private setTileValue(tileId:number, value:number) {
+            this.tiles[tileId] = value;
+            this.board.setTileValue(tileId, value);
+
         }
 
         // update GUI iformaion
@@ -238,8 +255,8 @@ module joinjelly.gameplay{
             var level = this.getLevelByScore(score);
 
             var nextLevelScore = this.getScoreByLevel(level);
-            var previousLevelScore = this.getScoreByLevel(level-1);
-            var percent = (score-previousLevelScore)/ (nextLevelScore-previousLevelScore)*100
+            var previousLevelScore = this.getScoreByLevel(level - 1);
+            var percent = (score - previousLevelScore) / (nextLevelScore - previousLevelScore) * 100
 
             // updates the header
             this.gameHeader.updateStatus(score, level, percent, this.getPercentEmptySpaces());
@@ -248,7 +265,7 @@ module joinjelly.gameplay{
                 this.gameLevelIndicator.showLevel(level);
 
             this.currentLevel = level;
-                  
+
         }
 
         // calculate a percent 
@@ -267,22 +284,22 @@ module joinjelly.gameplay{
 
         // returns a score based on level
         private getScoreByLevel(level: number): number {
-            if (level==0) return 0;
-            return 50 * Math.pow(2,level);
+            if (level == 0) return 0;
+            return 50 * Math.pow(2, level);
         }
-        
+
         //return a level based on a score
         private getLevelByScore(score: number): number {
             if (!score) score = 1;
-            return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2))+1
+            return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2)) + 1
         }
-        
+
         //return a time interval for jelly addition based on user level;
         private decreateInterval(): number {
 
             var time = this.timeInterval;
 
-            if (time < 400)time -= 2;
+            if (time < 400) time -= 2;
             if (time < 200) time -= 1;
             else time -= 4;
 
@@ -290,7 +307,7 @@ module joinjelly.gameplay{
 
             document.title = time.toString();
             return time;
-            
+
         }
 
         //finishes the game
@@ -300,12 +317,12 @@ module joinjelly.gameplay{
             var highScore = JoinJelly.userData.getHighScore();
             var jelly = 0;
             for (var j in this.tiles)
-                if(this.tiles[j]>jelly) jelly=this.tiles[j]
+                if (this.tiles[j] > jelly) jelly = this.tiles[j]
 
             // disable mouse interaction
             this.board.mouseEnabled = false;
             this.board.mouseChildren = false;
-            createjs.Tween.get(this.gameHeader).to({y:-425 },200,createjs.Ease.quadIn)
+            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn)
 
             // save high score
             JoinJelly.userData.setScore(score);
@@ -315,7 +332,7 @@ module joinjelly.gameplay{
             this.finishMenu.setValues(score, highScore, jelly);
 
             //move the board a little up
-            createjs.Tween.get(this.board).to({ y: this.board.y-200 }, 800, createjs.Ease.quadInOut)
+            createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut)
 
             // stop game loop
             if (this.gamePlayLoop) clearInterval(this.gamePlayLoop);
@@ -327,17 +344,16 @@ module joinjelly.gameplay{
 
         //called when a tile is dragged
         private dragged(origin: string, target: string) {
-            
+
             //try to match the tiles
             this.match(origin, target);
         }
 
         //verifies if a tile can pair another, and make it happens
-        private moves: number = 0;
         private match(origin: string, target: string) {
 
             //check if match is correct
-            if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin] ){//&&!tileTarget.locked) {
+            if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin]) {//&&!tileTarget.locked) {
 
                 this.moves++;
                 //calculate new value
@@ -345,7 +361,7 @@ module joinjelly.gameplay{
 
                 //sum the tiles values
                 this.tiles[target] = newValue;
-                this.board.setTileValue(target,newValue);
+                this.board.setTileValue(target, newValue);
                 this.tiles[origin] = 0;
 
                 //reset the previous tile
@@ -356,14 +372,18 @@ module joinjelly.gameplay{
                 //animate the mach
                 this.board.match(origin, target);
 
-                this.score += newValue*10 + Math.floor(Math.random() * newValue);
+                this.score += newValue * 10 + Math.floor(Math.random() * newValue);
 
                 this.UserData.setScore(this.score);
                 this.UserData.setLastJelly(newValue);
-                
+
                 this.updateInterfaceInfos();
 
-                //log event
+                // notify match
+                if (this.tutorialMatch)
+                    this.tutorialMatch()
+
+                // log event
                 joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.getEmptyBlocks().length);
             }
         }
@@ -373,14 +393,138 @@ module joinjelly.gameplay{
             var sum = 0;
             for (var t in this.tiles) {
                 //if(this.tiles[t]!=1)
-                    sum += this.tiles[t];
+                sum += this.tiles[t];
             }
             return sum;
         }
 
 
         // #endregion
-        
+
+        // #region tutorial ====================================================================================================
+
+        public startTutorial() {
+            clearInterval(this.gamePlayLoop);
+            this.resetTutorialStep();
+            this.executeTutorialStep();
+            
+        }
+
+        private resetTutorialStep() {
+            this.currentTutorialStep = -1;
+        }
+
+        private executeTutorialStep() {
+
+            this.currentTutorialStep++;
+
+            var steps = [
+                () => {
+                    this.tutorialWait(1500);
+                    this.board.getTileById("16").mouseEnabled = false;
+                    this.setTileValue(16, 1);
+                },
+                () => {
+                    
+                    this.showTutorialMessage("Hello, I'm ...");
+
+                },
+                () => {
+                    this.tutorialWait(700);
+                },
+                () => {
+
+                    this.showTutorialMessage("Help me to evolve");
+                },
+                () => {
+                    this.tutorialWait(700);
+                },
+                () => {
+
+                    this.setTileValue(18, 1);
+                    this.showTutorialMessage("Join another jelly with me");
+                },
+                () => {
+
+                    this.showTutorialMove(18, 16)
+                    this.tutorialwaitMatch();
+
+                },
+                () => {
+
+                    this.hideTutorialMove();
+                    this.showTutorialMessage("Great! now I'm ..., try to evolve me once more");
+
+                },
+                () => {
+
+                    this.setTileValue(24, 2);
+                    this.showTutorialMove(24, 16)
+                    this.tutorialwaitMatch();
+
+                },
+                () => {
+
+                    this.showTutorialMessage("Perfect! Now I'm ..., Let's play this game.");
+
+                },
+                () => {
+
+                    this.showTutorialMessage("but be careful, do not let the board fill, this is the end for us.");
+
+                },
+                () => {
+
+                    JoinJelly.startLevel();
+                }]
+
+
+            // execute the step
+
+            
+            if (steps[this.currentTutorialStep])
+                steps[this.currentTutorialStep]();
+
+
+        }
+
+        private tutorialWait(delay: number) {
+            setTimeout(() => {
+                this.executeTutorialStep();
+            }, delay);
+        }
+
+        private tutorialwaitMatch() {
+
+            this.tutorialMatch = () => {
+                this.tutorialMatch = null;
+                this.executeTutorialStep();
+            }
+
+        }
+
+        private showTutorialMessage(text: string) {
+
+            //show message
+            alert(text)
+
+            //when message closes, execute next step
+            this.executeTutorialStep();
+        }
+
+
+        private showTutorialMove(source: number, target: number) {
+
+        }
+
+        private hideTutorialMove() {
+
+        }
+
+
+        // #endregion 
+
+
         //acivate the screen
         activate(parameters?: any) {
             super.activate(parameters);

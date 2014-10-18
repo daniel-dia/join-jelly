@@ -21,8 +21,10 @@ var joinjelly;
             function GamePlayScreen(userData) {
                 _super.call(this);
                 this.boardSize = 5;
-                //verifies if a tile can pair another, and make it happens
+                // count moves for log
                 this.moves = 0;
+                // tutoral current step
+                this.currentTutorialStep = 0;
 
                 this.UserData = userData;
 
@@ -136,6 +138,8 @@ var joinjelly;
 
                 // log game start event
                 joinjelly.JoinJelly.analytics.logGameStart();
+
+                this.startTutorial();
             };
 
             // pause game
@@ -166,7 +170,7 @@ var joinjelly;
                     this.decreateInterval();
 
                     // add a new tile  on board
-                    this.addTileOnBoard();
+                    this.addRandomTileOnBoard();
 
                     // verifies if game is ended
                     if (this.verifyGameLoose())
@@ -177,6 +181,7 @@ var joinjelly;
                 }
             };
 
+            // list all empty blocks in a array
             GamePlayScreen.prototype.getEmptyBlocks = function () {
                 //get next jelly
                 var total = this.boardSize * this.boardSize;
@@ -189,6 +194,7 @@ var joinjelly;
                 return empty;
             };
 
+            // Verifies if game is over
             GamePlayScreen.prototype.verifyGameLoose = function () {
                 var empty = this.getEmptyBlocks();
 
@@ -198,19 +204,24 @@ var joinjelly;
                 return false;
             };
 
-            GamePlayScreen.prototype.addTileOnBoard = function () {
+            // add a random tile with value 1 on board
+            GamePlayScreen.prototype.addRandomTileOnBoard = function () {
                 var empty = this.getEmptyBlocks();
 
                 // if there is no more empty tiles, ends the game
                 if (empty.length > 0) {
                     var i = Math.floor(Math.random() * empty.length);
                     var tid = empty[i];
-                    this.tiles[tid] = 1;
-                    this.board.setTileValue(tid, 1);
+                    this.setTileValue(tid, 1);
                     return true;
                 }
 
                 return false;
+            };
+
+            GamePlayScreen.prototype.setTileValue = function (tileId, value) {
+                this.tiles[tileId] = value;
+                this.board.setTileValue(tileId, value);
             };
 
             // update GUI iformaion
@@ -314,6 +325,7 @@ var joinjelly;
                 this.match(origin, target);
             };
 
+            //verifies if a tile can pair another, and make it happens
             GamePlayScreen.prototype.match = function (origin, target) {
                 var _this = this;
                 //check if match is correct
@@ -343,7 +355,11 @@ var joinjelly;
 
                     this.updateInterfaceInfos();
 
-                    //log event
+                    // notify match
+                    if (this.tutorialMatch)
+                        this.tutorialMatch();
+
+                    // log event
                     joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.getEmptyBlocks().length);
                 }
             };
@@ -356,6 +372,104 @@ var joinjelly;
                     sum += this.tiles[t];
                 }
                 return sum;
+            };
+
+            // #endregion
+            // #region tutorial ====================================================================================================
+            GamePlayScreen.prototype.startTutorial = function () {
+                clearInterval(this.gamePlayLoop);
+                this.resetTutorialStep();
+                this.executeTutorialStep();
+            };
+
+            GamePlayScreen.prototype.resetTutorialStep = function () {
+                this.currentTutorialStep = -1;
+            };
+
+            GamePlayScreen.prototype.executeTutorialStep = function () {
+                var _this = this;
+                this.currentTutorialStep++;
+
+                var steps = [
+                    function () {
+                        _this.tutorialWait(2000);
+                        _this.board.getTileById("16").mouseEnabled = false;
+                        _this.setTileValue(16, 1);
+                    },
+                    function () {
+                        _this.showTutorialMessage("Hello, I'm ...");
+                    },
+                    function () {
+                        _this.tutorialWait(1000);
+                    },
+                    function () {
+                        _this.showTutorialMessage("Help me to evolve");
+                    },
+                    function () {
+                        _this.tutorialWait(1000);
+                    },
+                    function () {
+                        _this.setTileValue(18, 1);
+                        _this.tutorialWait(1000);
+                    },
+                    function () {
+                        _this.showTutorialMessage("Join another jelly with me");
+                    },
+                    function () {
+                        _this.showTutorialMove(18, 16);
+                        _this.tutorialwaitMatch();
+                    },
+                    function () {
+                        _this.hideTutorialMove();
+                        _this.showTutorialMessage("Great! now I'm ..., try to evolve me once more");
+                    },
+                    function () {
+                        _this.setTileValue(24, 2);
+                        _this.showTutorialMove(24, 16);
+                        _this.tutorialwaitMatch();
+                    },
+                    function () {
+                        _this.showTutorialMessage("Perfect! Now I'm ..., Let's play this game.");
+                    },
+                    function () {
+                        _this.showTutorialMessage("but be careful, do not let the board fill, this is the end for us.");
+                    },
+                    function () {
+                        joinjelly.JoinJelly.startLevel();
+                    }];
+
+                // execute the step
+                if (steps[this.currentTutorialStep])
+                    steps[this.currentTutorialStep]();
+            };
+
+            GamePlayScreen.prototype.tutorialWait = function (delay) {
+                var _this = this;
+                setTimeout(function () {
+                    _this.executeTutorialStep();
+                }, delay);
+            };
+
+            GamePlayScreen.prototype.tutorialwaitMatch = function () {
+                var _this = this;
+                this.tutorialMatch = function () {
+                    _this.tutorialMatch = null;
+                    _this.executeTutorialStep();
+                };
+            };
+
+            GamePlayScreen.prototype.showTutorialMessage = function (text) {
+                //show message
+                alert(text);
+
+                //when message closes, execute next step
+                this.executeTutorialStep();
+            };
+
+            GamePlayScreen.prototype.showTutorialMove = function (source, target) {
+            };
+
+            GamePlayScreen.prototype.hideTutorialMove = function () {
             };
 
             // #endregion
