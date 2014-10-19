@@ -27,17 +27,28 @@ var joinjelly;
             lobby.y = 1000;
             this.content.addChild(lobby);
 
+            //add about bt
             var aboutBt = new gameui.ui.ImageButton("About", function () {
                 joinjelly.JoinJelly.showAboutScreen();
             });
             aboutBt.y = -150;
             aboutBt.x = defaultWidth - 150;
-
             this.footer.addChild(aboutBt);
+
+            //add tutorial bt
+            var tutorialBt = new gameui.ui.ImageButton("tutorial", function () {
+                joinjelly.JoinJelly.startTutorial();
+            });
+            tutorialBt.y = -150;
+            tutorialBt.x = defaultWidth - 400;
+            this.footer.addChild(tutorialBt);
 
             // play button
             var button = new gameui.ui.ImageButton("assets/PlayBt.png", function () {
-                joinjelly.JoinJelly.startLevel();
+                if (joinjelly.JoinJelly.userData.getLastJelly() > 1)
+                    joinjelly.JoinJelly.startLevel();
+                else
+                    joinjelly.JoinJelly.startTutorial();
             });
 
             button.y = 1168;

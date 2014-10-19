@@ -117,6 +117,10 @@ module joinjelly {
 
                { id: "About", src: "assets/About.png" },
                
+               { id: "tutorialFinger", src: "assets/tutorialFinger.png" },
+               { id: "ballon", src: "assets/ballon.png" },
+               { id: "tutorial", src: "assets/tutorial.png" },
+               
                //{ id: "bg1", src: "Sounds/bg1.mp3" },
 
 

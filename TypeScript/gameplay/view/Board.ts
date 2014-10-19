@@ -72,7 +72,7 @@
 
                     var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
 
-                    if (targetName != tile.name) {
+                    if (targetName.toString() != tile.name) {
                         this.dispatchEvent("tileDrop", { origin: tile.name, target: targetName });
                     }
                 }
@@ -106,9 +106,9 @@
         }
         
         //get a tile id by its x and y pos
-        private getTileIdByPos(rawx: number, rawy: number, tileSize: number): string {
+        private getTileIdByPos(rawx: number, rawy: number, tileSize: number): number {
             var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
-            return (this.boardWidth * coords.y + coords.x).toString();
+            return (this.boardWidth * coords.y + coords.x);
         }
 
         //get tule position by pointer position
@@ -133,8 +133,8 @@
         }
 
         //get a tile object by its id
-        public getTileById(id: string): Tile {
-            return <Tile> this.getChildByName(id);
+        public getTileById(id: number): Tile {
+            return <Tile> this.getChildByName(id.toString());
         }
 
         //release e tile
@@ -176,7 +176,7 @@
         }
 
         //match 2 tiles
-        public match(origin: string, target: string) {
+        public match(origin: number, target: number) {
             
             var tile = this.getTileById(target);
             var old = this.getTileById(origin);

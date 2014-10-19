@@ -9,7 +9,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.1</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -232,6 +232,7 @@
     <TypeScriptCompile Include="TypeScript\gameplay\GameScreen.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\Tutorial.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Board.ts" />
+    <TypeScriptCompile Include="TypeScript\gameplay\view\TutorialMessage.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\PauseMenu.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\FinishDialog.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\GameHeader.ts" />
@@ -239,6 +240,7 @@
     <TypeScriptCompile Include="TypeScript\gameplay\view\Jelly.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\LevelIndicator.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\TimeBar.ts" />
+    <TypeScriptCompile Include="TypeScript\gameplay\view\TutorialMove.ts" />
     <TypeScriptCompile Include="TypeScript\menus\view\FlyOutMenu.ts" />
     <TypeScriptCompile Include="TypeScript\menus\view\Title.ts" />
     <TypeScriptCompile Include="TypeScript\view\Jellyble.ts" />

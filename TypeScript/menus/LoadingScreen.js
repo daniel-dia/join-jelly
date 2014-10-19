@@ -112,7 +112,10 @@ var joinjelly;
                 { id: "BtMusicOff", src: "assets/BtMusicOff.png" },
                 { id: "BtSound", src: "assets/BtSound.png" },
                 { id: "BtSoundOff", src: "assets/BtSoundOff.png" },
-                { id: "About", src: "assets/About.png" }
+                { id: "About", src: "assets/About.png" },
+                { id: "tutorialFinger", src: "assets/tutorialFinger.png" },
+                { id: "ballon", src: "assets/ballon.png" },
+                { id: "tutorial", src: "assets/tutorial.png" }
             ];
         };
         return Loading;

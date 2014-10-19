@@ -12,7 +12,7 @@ module joinjelly.gameplay {
 
         private boardSize = 5;
 
-        private board: view.Board;
+                 board: view.Board;
 
         private tiles: Array<number>
 
@@ -22,7 +22,8 @@ module joinjelly.gameplay {
 
         private timeInterval: number;
 
-        private gamePlayLoop: number;
+                 gamePlayLoop: number;
+
         private gameNextDrop: number;
 
         private gamestate: GameState;
@@ -38,11 +39,7 @@ module joinjelly.gameplay {
         // count moves for log
         private moves: number = 0;
 
-        // tutoral current step
-        private currentTutorialStep = 0;
-
-        //tutorial mode
-        private tutorialMatch: ()=>void;
+        matchNotify: () => void;
 
         //#region =================================== initialization ==========================================================
 
@@ -58,6 +55,7 @@ module joinjelly.gameplay {
             this.createBoard();
             this.createGUI();
 
+            
         }
 
         // create game background
@@ -142,7 +140,7 @@ module joinjelly.gameplay {
         // #region =================================== gamelay behaviour =======================================================
 
         // Starts the game
-        private start() {
+        start() {
             this.board.clean();
             this.step();
             this.board.mouseEnabled = true;
@@ -241,7 +239,7 @@ module joinjelly.gameplay {
             return false;
         }
 
-        private setTileValue(tileId:number, value:number) {
+        setTileValue(tileId:number, value:number) {
             this.tiles[tileId] = value;
             this.board.setTileValue(tileId, value);
 
@@ -343,14 +341,14 @@ module joinjelly.gameplay {
         }
 
         //called when a tile is dragged
-        private dragged(origin: string, target: string) {
+        private dragged(origin: number, target: number) {
 
             //try to match the tiles
             this.match(origin, target);
         }
 
         //verifies if a tile can pair another, and make it happens
-        private match(origin: string, target: string) {
+        private match(origin: number, target: number) {
 
             //check if match is correct
             if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin]) {//&&!tileTarget.locked) {
@@ -380,8 +378,8 @@ module joinjelly.gameplay {
                 this.updateInterfaceInfos();
 
                 // notify match
-                if (this.tutorialMatch)
-                    this.tutorialMatch()
+                if (this.matchNotify)
+                    this.matchNotify()
 
                 // log event
                 joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.getEmptyBlocks().length);
@@ -401,128 +399,6 @@ module joinjelly.gameplay {
 
         // #endregion
 
-        // #region tutorial ====================================================================================================
-
-        public startTutorial() {
-            clearInterval(this.gamePlayLoop);
-            this.resetTutorialStep();
-            this.executeTutorialStep();
-            
-        }
-
-        private resetTutorialStep() {
-            this.currentTutorialStep = -1;
-        }
-
-        private executeTutorialStep() {
-
-            this.currentTutorialStep++;
-
-            var steps = [
-                () => {
-                    this.tutorialWait(1500);
-                    this.board.getTileById("16").mouseEnabled = false;
-                    this.setTileValue(16, 1);
-                },
-                () => {
-                    
-                    this.showTutorialMessage("Hello, I'm ...");
-
-                },
-                () => {
-                    this.tutorialWait(700);
-                },
-                () => {
-
-                    this.showTutorialMessage("Help me to evolve");
-                },
-                () => {
-                    this.tutorialWait(700);
-                },
-                () => {
-
-                    this.setTileValue(18, 1);
-                    this.showTutorialMessage("Join another jelly with me");
-                },
-                () => {
-
-                    this.showTutorialMove(18, 16)
-                    this.tutorialwaitMatch();
-
-                },
-                () => {
-
-                    this.hideTutorialMove();
-                    this.showTutorialMessage("Great! now I'm ..., try to evolve me once more");
-
-                },
-                () => {
-
-                    this.setTileValue(24, 2);
-                    this.showTutorialMove(24, 16)
-                    this.tutorialwaitMatch();
-
-                },
-                () => {
-
-                    this.showTutorialMessage("Perfect! Now I'm ..., Let's play this game.");
-
-                },
-                () => {
-
-                    this.showTutorialMessage("but be careful, do not let the board fill, this is the end for us.");
-
-                },
-                () => {
-
-                    JoinJelly.startLevel();
-                }]
-
-
-            // execute the step
-
-            
-            if (steps[this.currentTutorialStep])
-                steps[this.currentTutorialStep]();
-
-
-        }
-
-        private tutorialWait(delay: number) {
-            setTimeout(() => {
-                this.executeTutorialStep();
-            }, delay);
-        }
-
-        private tutorialwaitMatch() {
-
-            this.tutorialMatch = () => {
-                this.tutorialMatch = null;
-                this.executeTutorialStep();
-            }
-
-        }
-
-        private showTutorialMessage(text: string) {
-
-            //show message
-            alert(text)
-
-            //when message closes, execute next step
-            this.executeTutorialStep();
-        }
-
-
-        private showTutorialMove(source: number, target: number) {
-
-        }
-
-        private hideTutorialMove() {
-
-        }
-
-
-        // #endregion 
 
 
         //acivate the screen
