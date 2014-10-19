@@ -1,4 +1,4 @@
-﻿var __extends = this.__extends || function (d, b) {
+var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -14,22 +14,18 @@ var joinjelly;
         }
         Loading.prototype.initializeImages = function () {
             var _this = this;
-            var loader = gameui.AssetsManager.loadAssets(this.getAssetsManifest(1));
-
+            var loader = gameui.AssetsManager.loadAssets(this.getAssetsManifest(1)); //, spriteSheets, images);
             //var loader = Assets.loadAssets();
             var text = new createjs.Text("", "90px Arial", "#FFF");
             text.x = defaultWidth / 2;
             text.y = defaultHeight / 2;
             text.textAlign = "center";
-
             this.content.addChild(text);
-
             //add update% functtion
             loader.addEventListener("progress", function (evt) {
                 text.text = "Loading" + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
                 return true;
             });
-
             //creates load complete action
             loader.addEventListener("complete", function (evt) {
                 if (_this.loaded)
@@ -37,7 +33,6 @@ var joinjelly;
                 return true;
             });
         };
-
         Loading.prototype.getAssetsManifest = function (scale) {
             return [
                 { id: "j1024", src: "assets/j1024.png" },
@@ -115,7 +110,7 @@ var joinjelly;
                 { id: "About", src: "assets/About.png" },
                 { id: "tutorialFinger", src: "assets/tutorialFinger.png" },
                 { id: "ballon", src: "assets/ballon.png" },
-                { id: "tutorial", src: "assets/tutorial.png" }
+                { id: "tutorial", src: "assets/tutorial.png" },
             ];
         };
         return Loading;

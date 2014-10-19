@@ -15,7 +15,6 @@
             if (!lastJelly) lastJelly = 1;
 
 
-            lastJelly = 8192;
 
             // calculate all jellys already unlocked
             var jellys: Array<number> = new Array();
