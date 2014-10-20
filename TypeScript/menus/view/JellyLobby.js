@@ -25,7 +25,7 @@ var joinjelly;
 
                     // calculate all jellys already unlocked
                     var jellys = new Array();
-                    for (var j = 1; j <= lastJelly; j++)
+                    for (var j = 1; j <= lastJelly; j *= 2)
                         jellys.push(j);
 
                     var i = 0;
