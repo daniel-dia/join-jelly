@@ -37,15 +37,15 @@ class Analytics {
     }
 
     public logEndGame(moves, score, level, jelly) {
-        this.sendEvent("LevelEnd", "level", level, moves);
-        this.sendEvent("LevelEnd", "jelly", jelly, moves);
-        this.sendEvent("LevelEnd", "score", score, moves);
+        this.sendEvent("LevelEnd", "level", level, moves.toString());
+        this.sendEvent("LevelEnd", "jelly", jelly, moves.toString());
+        this.sendEvent("LevelEnd", "score", score, moves.toString());
     }
 
     public logMove(moves, score, level, freeSpaces) {
-        this.sendEvent("level", "freeSpaces", freeSpaces, moves);
-        this.sendEvent("level", "score", score, moves);
-        this.sendEvent("level", "level", level, moves);
+        this.sendEvent("level", "freeSpaces", freeSpaces, moves.toString());
+        this.sendEvent("level", "score", score, moves.toString());
+        this.sendEvent("level", "level", level, moves.toString());
     }
 
 
