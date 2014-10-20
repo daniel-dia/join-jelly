@@ -46,13 +46,13 @@ var joinjelly;
                     var img = gameui.AssetsManager.getBitmap("j" + value);
 
                     //centralize
-                    img.regX = img.image.width / 2;
-                    img.regY = img.image.height;
+                    img.regX = img.getBounds().width / 2;
+                    img.regY = img.getBounds().height;
 
                     var shadow = gameui.AssetsManager.getBitmap("shadow");
                     shadow.regY = 45;
                     shadow.regX = 108;
-                    shadow.scaleX = shadow.scaleY = img.image.width / 216;
+                    shadow.scaleX = shadow.scaleY = img.getBounds().width / 216;
                     this.shadowContainer.addChild(shadow);
 
                     this.imageContainer.addChild(img);
@@ -65,7 +65,7 @@ var joinjelly;
                     createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
                     eye.addChild(eyeImg);
                     eye.regX = 133 / 2;
-                    eye.regX = eyeImg.image.width / 2;
+                    eye.regX = eyeImg.getBounds().width / 2;
 
                     eye.y = -50;
                     this.imageContainer.addChild(eye);

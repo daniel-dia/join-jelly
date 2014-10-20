@@ -38,8 +38,8 @@
                 this.addChild(j);
 
 
-                i.regX = i.image.width / 2;
-                i.regY = i.image.height;
+                i.regX = i.getBounds().width / 2;
+                i.regY = i.getBounds().height;
 
                 
 

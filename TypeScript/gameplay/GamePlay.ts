@@ -60,7 +60,7 @@ module joinjelly.gameplay {
 
         // create game background
         private createBackground() {
-            this.background.addChild(new createjs.Bitmap("assets/Background.jpg"));
+            this.background.addChild(gameui.AssetsManager.getBitmap("Background"));
         }
 
         // create a new board

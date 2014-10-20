@@ -1,4 +1,5 @@
-﻿
+﻿declare var createDeburilfont
+
 module joinjelly {
 
     export class Loading extends gameui.ScreenState {
@@ -11,8 +12,13 @@ module joinjelly {
             }
 
         public initializeImages() {
+            
+            assetscale = 1;
+            if (window.innerWidth <= 1024) assetscale = 0.5;
+            if (window.innerWidth <= 384) assetscale = 0.25;      
+            assetscale = 0.25;
 
-            var loader = gameui.AssetsManager.loadAssets(this.getAssetsManifest(1));//, spriteSheets, images);
+            var loader = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale));//, spriteSheets, images);
 
             //var loader = Assets.loadAssets();
             var text = new createjs.Text("", "90px Arial", "#FFF");
@@ -33,93 +39,95 @@ module joinjelly {
                 if (this.loaded) this.loaded();
                 return true;
             });
+
+            //load font
+            createDeburilfont(assetscale);
         }
-
-
+        
         private getAssetsManifest(scale: number): Array<any> {
            return [
-                { id: "j1024", src: "assets/j1024.png" },
-                { id: "j2048", src: "assets/j2048.png" },
-                { id: "j4096", src: "assets/j4096.png" },
-                { id: "j8192", src: "assets/j8192.png" },
-                { id: "Background", src: "assets/Background.jpg" },
-                { id: "Background2", src: "assets/Background2.jpg" },
-                { id: "backhome", src: "assets/backhome.jpg" },
-                { id: "bonus_bar", src: "assets/bonus_bar.png" },
-                { id: "bonus_border", src: "assets/bonus_border.png" },
-                { id: "bt", src: "assets/bt.png" },
-                { id: "ChubbyFont", src: "assets/ChubbyFont.png" },
-                { id: "Deburil", src: "assets/Deburil.png" },
-                { id: "e1", src: "assets/e1.png" },
-                { id: "e128", src: "assets/e128.png" },
-                { id: "e16", src: "assets/e16.png" },
-                { id: "e2", src: "assets/e2.png" },
-                { id: "e256", src: "assets/e256.png" },
-                { id: "e32", src: "assets/e32.png" },
-                { id: "e4", src: "assets/e4.png" },
-                { id: "e512", src: "assets/e512.png" },
-                { id: "e64", src: "assets/e64.png" },
-                { id: "e8", src: "assets/e8.png" },
-                { id: "footer", src: "assets/footer.png" },
-                { id: "header", src: "assets/header.png" },
-                { id: "htmlBG", src: "assets/htmlBG.jpg" },
-                { id: "iconMenu", src: "assets/iconMenu.png" },
-                { id: "iconPause", src: "assets/iconPause.png" },
-                { id: "iconPlay", src: "assets/iconPlay.png" },
-                { id: "j1", src: "assets/j1.png" },
-                { id: "j128", src: "assets/j128.png" },
-                { id: "j16", src: "assets/j16.png" },
-                { id: "j2", src: "assets/j2.png" },
-                { id: "j256", src: "assets/j256.png" },
-                { id: "j32", src: "assets/j32.png" },
-                { id: "j4", src: "assets/j4.png" },
-                { id: "j512", src: "assets/j512.png" },
-                { id: "j64", src: "assets/j64.png" },
-                { id: "j8", src: "assets/j8.png" },
-                { id: "pause", src: "assets/pause.png" },
-                { id: "PlayBt", src: "assets/PlayBt.png" },
-                { id: "time_bar", src: "assets/time_bar.png" },
-                { id: "time_bar_red", src: "assets/time_bar_red.png" },
-                { id: "time_bar_bright", src: "assets/time_bar_bright.png" },
-                { id: "time_border", src: "assets/time_border.png" },
-                { id: "shadow", src: "assets/shadow.png" },
-                { id: "particle", src: "assets/particle.png" },
+                { id: "j1024", src: "assets/images_"+scale+"x/j1024.png" },
+                { id: "j2048", src: "assets/images_"+scale+"x/j2048.png" },
+                { id: "j4096", src: "assets/images_"+scale+"x/j4096.png" },
+                { id: "j8192", src: "assets/images_"+scale+"x/j8192.png" },
+                { id: "Background", src: "assets/images_"+scale+"x/Background.jpg" },
+                { id: "Background2", src: "assets/images_"+scale+"x/Background2.jpg" },
+                { id: "backhome", src: "assets/images_"+scale+"x/backhome.jpg" },
+                { id: "bonus_bar", src: "assets/images_"+scale+"x/bonus_bar.png" },
+                { id: "bonus_border", src: "assets/images_"+scale+"x/bonus_border.png" },
+                { id: "bt", src: "assets/images_"+scale+"x/bt.png" },
+                { id: "ChubbyFont", src: "assets/images_"+scale+"x/ChubbyFont.png" },
+                { id: "Deburil", src: "assets/images_"+scale+"x/Deburil.png" },
+                { id: "e1", src: "assets/images_"+scale+"x/e1.png" },
+                { id: "e128", src: "assets/images_"+scale+"x/e128.png" },
+                { id: "e16", src: "assets/images_"+scale+"x/e16.png" },
+                { id: "e2", src: "assets/images_"+scale+"x/e2.png" },
+                { id: "e256", src: "assets/images_"+scale+"x/e256.png" },
+                { id: "e32", src: "assets/images_"+scale+"x/e32.png" },
+                { id: "e4", src: "assets/images_"+scale+"x/e4.png" },
+                { id: "e512", src: "assets/images_"+scale+"x/e512.png" },
+                { id: "e64", src: "assets/images_"+scale+"x/e64.png" },
+                { id: "e8", src: "assets/images_"+scale+"x/e8.png" },
+                { id: "footer", src: "assets/images_"+scale+"x/footer.png" },
+                { id: "header", src: "assets/images_"+scale+"x/header.png" },
+                { id: "htmlBG", src: "assets/images_"+scale+"x/htmlBG.jpg" },
+                { id: "iconMenu", src: "assets/images_"+scale+"x/iconMenu.png" },
+                { id: "iconPause", src: "assets/images_"+scale+"x/iconPause.png" },
+                { id: "iconPlay", src: "assets/images_"+scale+"x/iconPlay.png" },
+                { id: "j1", src: "assets/images_"+scale+"x/j1.png" },
+                { id: "j128", src: "assets/images_"+scale+"x/j128.png" },
+                { id: "j16", src: "assets/images_"+scale+"x/j16.png" },
+                { id: "j2", src: "assets/images_"+scale+"x/j2.png" },
+                { id: "j256", src: "assets/images_"+scale+"x/j256.png" },
+                { id: "j32", src: "assets/images_"+scale+"x/j32.png" },
+                { id: "j4", src: "assets/images_"+scale+"x/j4.png" },
+                { id: "j512", src: "assets/images_"+scale+"x/j512.png" },
+                { id: "j64", src: "assets/images_"+scale+"x/j64.png" },
+                { id: "j8", src: "assets/images_"+scale+"x/j8.png" },
+                { id: "pause", src: "assets/images_"+scale+"x/pause.png" },
+                { id: "PlayBt", src: "assets/images_"+scale+"x/PlayBt.png" },
+                { id: "time_bar", src: "assets/images_"+scale+"x/time_bar.png" },
+                { id: "time_bar_red", src: "assets/images_"+scale+"x/time_bar_red.png" },
+                { id: "time_bar_bright", src: "assets/images_"+scale+"x/time_bar_bright.png" },
+                { id: "time_border", src: "assets/images_"+scale+"x/time_border.png" },
+                { id: "shadow", src: "assets/images_"+scale+"x/shadow.png" },
+                { id: "particle", src: "assets/images_"+scale+"x/particle.png" },
 
-               { id: "GameOverBgJelly", src: "assets/GameOverBgJelly.png" },
-               { id: "GameOverBgPoints", src: "assets/GameOverBgPoints.png" },
-               { id: "GameOverBoard", src: "assets/GameOverBoard.png" },
-               { id: "GameOverOk", src: "assets/GameOverOk.png" },
-               { id: "GameOverShare", src: "assets/GameOverShare.png" },
-               { id: "GameOverBack", src: "assets/GameOverBack.png" },
+               { id: "GameOverBgJelly", src: "assets/images_"+scale+"x/GameOverBgJelly.png" },
+               { id: "GameOverBgPoints", src: "assets/images_"+scale+"x/GameOverBgPoints.png" },
+               { id: "GameOverBoard", src: "assets/images_"+scale+"x/GameOverBoard.png" },
+               { id: "GameOverOk", src: "assets/images_"+scale+"x/GameOverOk.png" },
+               { id: "GameOverShare", src: "assets/images_"+scale+"x/GameOverShare.png" },
+               { id: "GameOverBack", src: "assets/images_"+scale+"x/GameOverBack.png" },
           
-               { id: "GameOverBgJelly", src: "assets/GameOverBgJelly.png" },
-               { id: "GameOverBgPoints", src: "assets/GameOverBgPoints.png" },
-               { id: "GameOverBoard", src: "assets/GameOverBoard.png" },
-               { id: "GameOverOk", src: "assets/GameOverOk.png" },
-               { id: "GameOverShare", src: "assets/GameOverShare.png" },
-               { id: "GameOverBack", src: "assets/GameOverBack.png" },
+               { id: "GameOverBgJelly", src: "assets/images_"+scale+"x/GameOverBgJelly.png" },
+               { id: "GameOverBgPoints", src: "assets/images_"+scale+"x/GameOverBgPoints.png" },
+               { id: "GameOverBoard", src: "assets/images_"+scale+"x/GameOverBoard.png" },
+               { id: "GameOverOk", src: "assets/images_"+scale+"x/GameOverOk.png" },
+               { id: "GameOverShare", src: "assets/images_"+scale+"x/GameOverShare.png" },
+               { id: "GameOverBack", src: "assets/images_"+scale+"x/GameOverBack.png" },
                         
-               { id: "t0", src: "assets/t0.png" },
-               { id: "t1", src: "assets/t1.png" },
-               { id: "t2", src: "assets/t2.png" },
-               { id: "t3", src: "assets/t3.png" },
-               { id: "t4", src: "assets/t4.png" },
-               { id: "t5", src: "assets/t5.png" },
+               { id: "t0", src: "assets/images_"+scale+"x/t0.png" },
+               { id: "t1", src: "assets/images_"+scale+"x/t1.png" },
+               { id: "t2", src: "assets/images_"+scale+"x/t2.png" },
+               { id: "t3", src: "assets/images_"+scale+"x/t3.png" },
+               { id: "t4", src: "assets/images_"+scale+"x/t4.png" },
+               { id: "t5", src: "assets/images_"+scale+"x/t5.png" },
 
-               { id: "Restart", src: "assets/Restart.png" },
-               { id: "Home", src: "assets/Home.png" },
-               { id: "FlyBG", src: "assets/FlyBG.png" },
-               { id: "FlyGroup", src: "assets/FlyGroup.png" },
-               { id: "BtMusic", src: "assets/BtMusic.png" },
-               { id: "BtMusicOff", src: "assets/BtMusicOff.png" },
-               { id: "BtSound", src: "assets/BtSound.png" },
-               { id: "BtSoundOff", src: "assets/BtSoundOff.png" },
+               { id: "Restart", src: "assets/images_"+scale+"x/Restart.png" },
+               { id: "Home", src: "assets/images_"+scale+"x/Home.png" },
+               { id: "FlyBG", src: "assets/images_"+scale+"x/FlyBG.png" },
+               { id: "FlyGroup", src: "assets/images_"+scale+"x/FlyGroup.png" },
+               { id: "BtMusic", src: "assets/images_"+scale+"x/BtMusic.png" },
+               { id: "BtMusicOff", src: "assets/images_"+scale+"x/BtMusicOff.png" },
+               { id: "BtSound", src: "assets/images_"+scale+"x/BtSound.png" },
+               { id: "BtSoundOff", src: "assets/images_"+scale+"x/BtSoundOff.png" },
 
-               { id: "About", src: "assets/About.png" },
+               { id: "About", src: "assets/images_"+scale+"x/About.png" },
                
-               { id: "tutorialFinger", src: "assets/tutorialFinger.png" },
-               { id: "ballon", src: "assets/ballon.png" },
-               { id: "tutorial", src: "assets/tutorial.png" },
+               { id: "tutorialFinger", src: "assets/images_"+scale+"x/tutorialFinger.png" },
+               { id: "ballon", src: "assets/images_"+scale+"x/ballon.png" },
+               { id: "tutorial", src: "assets/images_"+scale+"x/tutorial.png" },
                
                //{ id: "bg1", src: "Sounds/bg1.mp3" },
 

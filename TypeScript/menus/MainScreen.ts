@@ -48,7 +48,7 @@
             this.footer.addChild(tutorialBt);
 
             // play button
-            var button = new gameui.ui.ImageButton("assets/PlayBt.png", () => {
+            var button = new gameui.ui.ImageButton("PlayBt", () => {
                 if (JoinJelly.userData.getLastJelly()>1)
                     JoinJelly.startLevel();
                 else
@@ -68,7 +68,7 @@
             this.content.addChild(t);
         }
         private createBackground() {
-            this.background.addChild(new createjs.Bitmap("assets/backhome.jpg"));
+            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
         }
 
         private createHeader() {

@@ -17,12 +17,12 @@ var joinjelly;
                 GameHeader.prototype.addObjects = function () {
                     var _this = this;
                     //add background
-                    var bg = gameui.AssetsManager.getBitmap("assets/header.png");
+                    var bg = gameui.AssetsManager.getBitmap("header");
                     this.addChild(bg);
                     bg.x = 0;
 
                     //add pause button
-                    var pauseButton = new gameui.ui.ImageButton("assets/pause.png", function () {
+                    var pauseButton = new gameui.ui.ImageButton("pause", function () {
                         _this.dispatchEvent("pause");
                     });
 
@@ -31,12 +31,12 @@ var joinjelly;
                     this.addChild(pauseButton);
 
                     //add levelBar
-                    var levelBarBorder = new createjs.Bitmap("assets/bonus_border.png");
+                    var levelBarBorder = gameui.AssetsManager.getBitmap("bonus_border");
                     this.addChild(levelBarBorder);
                     levelBarBorder.x = 223;
                     levelBarBorder.y = 122;
 
-                    var levelBar = new createjs.Bitmap("assets/bonus_bar.png");
+                    var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
                     this.addChild(levelBar);
                     levelBar.x = 282;
                     levelBar.y = 151;
@@ -66,15 +66,6 @@ var joinjelly;
                     this.addChild(this.timebar);
                     this.timebar.x = 281;
                     this.timebar.y = 233;
-                    ////add effect
-                    //var fxc = new createjs.Container();
-                    //var fx = this.AddlevelEffect();
-                    //this.addChild(fxc);
-                    //fxc.addChild(fx);
-                    //fxc.x = 1210;
-                    //fxc.y = 277 - 130;
-                    //fx.reset();
-                    //this.fx = fx;
                 };
 
                 // updates level ad score status
@@ -112,45 +103,6 @@ var joinjelly;
 
                     this.lastLevel = level;
                     this.lastScore = score;
-                };
-
-                GameHeader.prototype.AddlevelEffect = function () {
-                    var image = gameui.AssetsManager.getImagesArray()["particle"];
-                    var emitter = new createjs.ParticleEmitter(image);
-                    emitter.position = new createjs.Point(0, 0);
-                    emitter.emitterType = createjs.ParticleEmitterType.OneShot;
-                    emitter.emissionRate = 40;
-                    emitter.maxParticles = 40;
-                    emitter.life = 400;
-                    emitter.lifeVar = 400;
-                    emitter.speed = 300;
-                    emitter.speedVar = 300;
-                    emitter.positionVarX = 0;
-                    emitter.positionVarY = 0;
-                    emitter.accelerationX = 0;
-                    emitter.accelerationY = 0;
-                    emitter.radialAcceleration = 0;
-                    emitter.radialAccelerationVar = 0;
-                    emitter.tangentalAcceleration = 0;
-                    emitter.tangentalAccelerationVar = 0;
-                    emitter.angle = 0;
-                    emitter.angleVar = 360;
-                    emitter.startSpin = 0;
-                    emitter.startSpinVar = 0;
-                    emitter.endSpin = null;
-                    emitter.endSpinVar = null;
-                    emitter.startColor = [255, 255, 255];
-                    emitter.startColorVar = [0, 0, 0];
-                    emitter.startOpacity = 1;
-                    emitter.endColor = null;
-                    emitter.endColorVar = null;
-                    emitter.endOpacity = 0;
-                    emitter.startSizeVar = 0;
-                    emitter.endSize = null;
-                    emitter.endSizeVar = null;
-                    emitter.startSize = 30;
-
-                    return emitter;
                 };
                 return GameHeader;
             })(createjs.Container);

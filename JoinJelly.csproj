@@ -197,6 +197,7 @@
     <Content Include="resources\Puyo-Characters[1].jpg" />
     <Content Include="resources\puyopuyo20th[1].jpg" />
     <Content Include="resources\Wallpaper-Puyo-Puyo-pink-background[1].jpg" />
+    <Content Include="Scripts\BitmapScalePath.js" />
     <Content Include="Scripts\CocoonJStouchPathc.js" />
     <Content Include="Scripts\createjs-2013.12.12.min.js" />
     <Content Include="Scripts\gameuijs.js" />

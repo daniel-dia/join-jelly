@@ -35,7 +35,7 @@ var joinjelly;
             }
             // create game background
             GamePlayScreen.prototype.createBackground = function () {
-                this.background.addChild(new createjs.Bitmap("assets/Background.jpg"));
+                this.background.addChild(gameui.AssetsManager.getBitmap("Background"));
             };
 
             // create a new board
