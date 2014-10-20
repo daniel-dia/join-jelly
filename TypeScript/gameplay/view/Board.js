@@ -131,6 +131,12 @@ var joinjelly;
                     return this.getChildByName(id.toString());
                 };
 
+                // release all Jellyies
+                Board.prototype.releaseAll = function () {
+                    for (var t in this.touchDictionary)
+                        this.releaseDrag(this.touchDictionary[t]);
+                };
+
                 //release e tile
                 Board.prototype.releaseDrag = function (tile, match, target) {
                     var _this = this;

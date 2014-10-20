@@ -58,7 +58,6 @@
             shadow.scaleX = shadow.scaleY = img.image.width / 216;
             this.shadowContainer.addChild(shadow);
 
-
             this.imageContainer.addChild(img);
         }
         private createEyes(value: number) {

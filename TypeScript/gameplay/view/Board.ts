@@ -137,6 +137,13 @@
             return <Tile> this.getChildByName(id.toString());
         }
 
+        // release all Jellyies
+        public releaseAll() {
+            for (var t in this.touchDictionary) 
+                this.releaseDrag(this.touchDictionary[t]);
+            
+        }
+
         //release e tile
         private releaseDrag(tile: Tile, match: boolean= true, target?: Tile) {
             

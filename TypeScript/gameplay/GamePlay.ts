@@ -322,6 +322,9 @@ module joinjelly.gameplay {
             this.board.mouseChildren = false;
             createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn)
 
+            // releases all jellys
+            this.board.releaseAll();
+
             // save high score
             JoinJelly.userData.setScore(score);
 
