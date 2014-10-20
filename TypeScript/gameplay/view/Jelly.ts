@@ -1,7 +1,7 @@
 ﻿module joinjelly.gameplay.view {
 
-    export class Jelly extends joinjelly.view.JellyContainer{
-        
+    export class Jelly extends joinjelly.view.JellyContainer {
+
         // #region initialization =========================================
 
         constructor() {
@@ -32,10 +32,10 @@
                 //enable mouse and visibility
                 this.mouseEnabled = true;
                 this.shadowContainer.visible = true;
-                
+
                 this.visible = true;
                 this.alpha = 1;
-                
+
                 this.createJelly(value);
                 this.createEyes(value);
 
@@ -44,21 +44,20 @@
         }
 
         private createJelly(value: number) {
-            var img = new createjs.Bitmap("assets/j" + value + ".png");
+            var img = <createjs.Bitmap>gameui.AssetsManager.getBitmap("j" + value);
 
             //centralize
-            img.image.onload = () => {
-                img.regX = img.image.width / 2;
-                img.regY = img.image.height;
+
+            img.regX = img.image.width / 2;
+            img.regY = img.image.height;
 
 
-                var shadow = gameui.AssetsManager.getBitmap("shadow");
-                shadow.regY = 45;
-                shadow.regX = 108;
-                shadow.scaleX = shadow.scaleY = img.image.width / 216;
-                this.shadowContainer.addChild(shadow);
+            var shadow = gameui.AssetsManager.getBitmap("shadow");
+            shadow.regY = 45;
+            shadow.regX = 108;
+            shadow.scaleX = shadow.scaleY = img.image.width / 216;
+            this.shadowContainer.addChild(shadow);
 
-            };
 
             this.imageContainer.addChild(img);
         }
@@ -66,14 +65,13 @@
 
             //add Eyes
             var eye = new createjs.Container();
-            var eyeImg = new createjs.Bitmap("assets/e" + value + ".png");
+            var eyeImg = <createjs.Bitmap>gameui.AssetsManager.getBitmap("e" + value);
             eyeImg.regY = 20;
             createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
             eye.addChild(eyeImg);
             eye.regX = 133 / 2;
-            eyeImg.image.onload = () => {
-                eye.regX = eyeImg.image.width / 2;
-            }
+            eye.regX = eyeImg.image.width / 2;
+
             eye.y = -50
                 this.imageContainer.addChild(eye)
         }

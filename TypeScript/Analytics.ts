@@ -36,30 +36,30 @@ class Analytics {
         this.sendEvent("Game", "start", 1);
     }
 
-    public logEndGame(moves, score, level,jelly) {
-        this.sendEvent("LevelEnd", "level", level,moves);
-        this.sendEvent("LevelEnd", "jelly", jelly,moves);
-        this.sendEvent("LevelEnd", "score", score,moves);
+    public logEndGame(moves, score, level, jelly) {
+        this.sendEvent("LevelEnd", "level", level, moves);
+        this.sendEvent("LevelEnd", "jelly", jelly, moves);
+        this.sendEvent("LevelEnd", "score", score, moves);
     }
 
-    public logMove(moves,score,level, freeSpaces) {
-        this.sendEvent("level", "freeSpaces",   freeSpaces, moves);
-        this.sendEvent("level", "score",        score,      moves);
-        this.sendEvent("level", "level",        level,      moves);
+    public logMove(moves, score, level, freeSpaces) {
+        this.sendEvent("level", "freeSpaces", freeSpaces, moves);
+        this.sendEvent("level", "score", score, moves);
+        this.sendEvent("level", "level", level, moves);
     }
 
 
 
-   // public logUsedItem(itemId: string, levelId: string) {
-   //     this.sendEvent("item", itemId, 1, levelId);
-   // }
-   // public loglevelTime(levelId: string, time: number, final: string) {
-   //     this.sendEvent("time", final, time / 1000, levelId);
-   // }
-   //
-   // public logBonus(bonusid: string, items: number) {
-   //     this.sendEvent("bonus", bonusid.toString(), items, bonusid);
-   // }
+    // public logUsedItem(itemId: string, levelId: string) {
+    //     this.sendEvent("item", itemId, 1, levelId);
+    // }
+    // public loglevelTime(levelId: string, time: number, final: string) {
+    //     this.sendEvent("time", final, time / 1000, levelId);
+    // }
+    //
+    // public logBonus(bonusid: string, items: number) {
+    //     this.sendEvent("bonus", bonusid.toString(), items, bonusid);
+    // }
 
 
     //======================================================================================================================

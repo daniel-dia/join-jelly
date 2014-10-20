@@ -1,4 +1,4 @@
-var __extends = this.__extends || function (d, b) {
+﻿var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -12,6 +12,7 @@ var joinjelly;
             _super.call(this);
             this.timeStep = 2;
             this.boardSize = 5;
+
             this.userData = userData;
             this.createContent();
             this.createBackground();
@@ -25,6 +26,7 @@ var joinjelly;
             lobby.x = defaultWidth / 2;
             lobby.y = 1000;
             this.content.addChild(lobby);
+
             //add about bt
             var aboutBt = new gameui.ui.ImageButton("About", function () {
                 joinjelly.JoinJelly.showAboutScreen();
@@ -32,6 +34,7 @@ var joinjelly;
             aboutBt.y = -150;
             aboutBt.x = defaultWidth - 150;
             this.footer.addChild(aboutBt);
+
             //add tutorial bt
             var tutorialBt = new gameui.ui.ImageButton("tutorial", function () {
                 joinjelly.JoinJelly.startTutorial();
@@ -39,6 +42,7 @@ var joinjelly;
             tutorialBt.y = -150;
             tutorialBt.x = defaultWidth - 400;
             this.footer.addChild(tutorialBt);
+
             // play button
             var button = new gameui.ui.ImageButton("assets/PlayBt.png", function () {
                 if (joinjelly.JoinJelly.userData.getLastJelly() > 1)
@@ -46,10 +50,12 @@ var joinjelly;
                 else
                     joinjelly.JoinJelly.startTutorial();
             });
+
             button.y = 1168;
             button.x = 768;
             this.content.addChild(button);
         };
+
         MainScreen.prototype.createTitle = function () {
             var t = new joinjelly.menus.view.GameTitle();
             this.content.addChild(t);
@@ -57,8 +63,10 @@ var joinjelly;
         MainScreen.prototype.createBackground = function () {
             this.background.addChild(new createjs.Bitmap("assets/backhome.jpg"));
         };
+
         MainScreen.prototype.createHeader = function () {
         };
+
         MainScreen.prototype.createFooter = function () {
             if (this.userData) {
                 this.scoreText = new createjs.BitmapText("High Score " + this.userData.getHighScore(), new createjs.SpriteSheet(Deburilfont));

@@ -1,37 +1,46 @@
-var Analytics = (function () {
+﻿var Analytics = (function () {
     function Analytics() {
     }
     //create a random user ID
     Analytics.prototype.getUser = function () {
         if (!this.userId)
             this.userId = localStorage.getItem("lirum_userId");
+
         if (!this.userId) {
             this.userId = (Math.random() * 9999999999).toString();
             localStorage.setItem("lirum_userId", this.userId);
         }
+
         return this.userId;
     };
+
     Analytics.prototype.getSession = function () {
         if (!this.sessionId)
             this.sessionId = (Math.random() * 9999999999).toString();
+
         return this.sessionId;
     };
+
     Analytics.prototype.getBuild = function () {
         return "alpha1";
     };
+
     Analytics.prototype.logGameStart = function () {
         this.sendEvent("Game", "start", 1);
     };
+
     Analytics.prototype.logEndGame = function (moves, score, level, jelly) {
         this.sendEvent("LevelEnd", "level", level, moves);
         this.sendEvent("LevelEnd", "jelly", jelly, moves);
         this.sendEvent("LevelEnd", "score", score, moves);
     };
+
     Analytics.prototype.logMove = function (moves, score, level, freeSpaces) {
         this.sendEvent("level", "freeSpaces", freeSpaces, moves);
         this.sendEvent("level", "score", score, moves);
         this.sendEvent("level", "level", level, moves);
     };
+
     // public logUsedItem(itemId: string, levelId: string) {
     //     this.sendEvent("item", itemId, 1, levelId);
     // }
@@ -46,8 +55,10 @@ var Analytics = (function () {
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, level, x, y) {
         var game_key = '8c544aeba45e500f2af6e9b1beee996a';
         var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0';
+
         //var data_api_key = 'd519f8572c1893fb49873fa2345d444c03afa172'
         var category = "design";
+
         var message = {
             "user_id": this.getUser(),
             "session_id": this.getSession(),
@@ -56,22 +67,25 @@ var Analytics = (function () {
             "value": value,
             "area": level,
             "x": x,
-            "y": y,
+            "y": y
         };
+
         var json_message = JSON.stringify(message);
         var md5_msg = CryptoJS.MD5(json_message + secret_key);
         var header_auth_hex = CryptoJS.enc.Hex.stringify(md5_msg);
+
         var url = 'http://api-eu.gameanalytics.com/1/' + game_key + '/' + category;
+
         $.ajax({
             type: 'POST',
             url: url,
             data: json_message,
             headers: {
-                "Authorization": header_auth_hex,
+                "Authorization": header_auth_hex
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Content-Type', 'text/plain');
-            },
+            }
         });
     };
     return Analytics;

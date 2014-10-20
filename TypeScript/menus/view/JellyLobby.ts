@@ -10,19 +10,23 @@
 
 
         //add all jellys to the container
+        
         private dropAllJellys(lastJelly: number) {
             // set a default value to the last jelly
             if (!lastJelly) lastJelly = 1;
 
-
-
-            // calculate all jellys already unlocked
+             // calculate all jellys already unlocked
             var jellys: Array<number> = new Array();
-            for (var j = 1; j <= lastJelly; j *= 2)
+            for (var j = 1; j <= lastJelly; j++)
                 jellys.push(j)
 
+            var i = 0;
+            var p = 1;
             for (var j = 0; j < jellys.length; j++)
-                setTimeout((j) => { this.dropJelly(jellys[j], j); }, j * 200,j);
+                setTimeout(() => {
+                    this.dropJelly(p*= 2, i);
+                    i++
+                }, j * 200);
 
         }
 
