@@ -59,15 +59,15 @@ var joinjelly;
                     this.addChild(this.timebar);
                     this.timebar.x = 281;
                     this.timebar.y = 233;
-                    //add effect
-                    var fxc = new createjs.Container();
-                    var fx = this.AddlevelEffect();
-                    this.addChild(fxc);
-                    fxc.addChild(fx);
-                    fxc.x = 1210;
-                    fxc.y = 277 - 130;
-                    fx.reset();
-                    this.fx = fx;
+                    ////add effect
+                    //var fxc = new createjs.Container();
+                    //var fx = this.AddlevelEffect();
+                    //this.addChild(fxc);
+                    //fxc.addChild(fx);
+                    //fxc.x = 1210;
+                    //fxc.y = 277 - 130;
+                    //fx.reset();
+                    //this.fx = fx;
                 };
                 // updates level ad score status
                 GameHeader.prototype.updateStatus = function (score, level, percent, emptyPercent) {
@@ -86,8 +86,6 @@ var joinjelly;
                         }
                     // if level changes. do some animations
                     if (this.lastLevel != level) {
-                        //emits particles
-                        this.fx.reset();
                         //moves the bar
                         createjs.Tween.removeTweens(this.levelBar);
                         createjs.Tween.get(this.levelBar).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () {

@@ -11,8 +11,6 @@ module joinjelly.gameplay.view {
 
         private timebar: TimeBar;
 
-        private fx: createjs.ParticleEmitter;
-
         private levelBar: createjs.DisplayObject;
         constructor() {
             super();
@@ -69,15 +67,15 @@ module joinjelly.gameplay.view {
             this.timebar.x = 281;
             this.timebar.y = 233; 
 
-            //add effect
-            var fxc = new createjs.Container();
-            var fx = this.AddlevelEffect();
-            this.addChild(fxc);
-            fxc.addChild(fx);
-            fxc.x = 1210;
-            fxc.y = 277 - 130;
-            fx.reset();
-            this.fx = fx;
+            ////add effect
+            //var fxc = new createjs.Container();
+            //var fx = this.AddlevelEffect();
+            //this.addChild(fxc);
+            //fxc.addChild(fx);
+            //fxc.x = 1210;
+            //fxc.y = 277 - 130;
+            //fx.reset();
+            //this.fx = fx;
         }
 
 
@@ -101,9 +99,6 @@ module joinjelly.gameplay.view {
 
             // if level changes. do some animations
             if (this.lastLevel != level) {
-
-                //emits particles
-                this.fx.reset();
 
                 //moves the bar
                 createjs.Tween.removeTweens(this.levelBar);

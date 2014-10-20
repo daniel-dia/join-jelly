@@ -200,10 +200,9 @@
     <Content Include="Scripts\CocoonJStouchPathc.js" />
     <Content Include="Scripts\createjs-2013.12.12.min.js" />
     <Content Include="Scripts\gameuijs.js" />
+    <Content Include="Scripts\ImageHitAreaPatch.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="Scripts\md5.js" />
-    <Content Include="Scripts\particleEmitterJs-0.5.0.js" />
-    <Content Include="Scripts\particleEmitterJs-0.5.0.min.js" />
     <Content Include="Sounds\bg1.mp3" />
     <Content Include="Sounds\h1.mp3" />
     <Content Include="Sounds\j1.mp3" />
