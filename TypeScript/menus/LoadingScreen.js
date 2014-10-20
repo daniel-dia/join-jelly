@@ -19,7 +19,6 @@ var joinjelly;
                 assetscale = 0.5;
             if (window.innerWidth <= 384)
                 assetscale = 0.25;
-            assetscale = 0.25;
 
             var loader = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale));
 
