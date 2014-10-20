@@ -53,6 +53,8 @@
     // }
     //======================================================================================================================
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, level, x, y) {
+        if (!$)
+            return;
         var game_key = '8c544aeba45e500f2af6e9b1beee996a';
         var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0';
 

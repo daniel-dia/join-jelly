@@ -202,6 +202,7 @@
     <Content Include="Scripts\gameuijs.js" />
     <Content Include="Scripts\ImageHitAreaPatch.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\md5.js" />
     <Content Include="Sounds\bg1.mp3" />
     <Content Include="Sounds\h1.mp3" />
