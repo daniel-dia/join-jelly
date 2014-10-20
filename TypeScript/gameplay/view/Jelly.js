@@ -13,6 +13,7 @@ var joinjelly;
                 // #region initialization =========================================
                 function Jelly() {
                     _super.call(this);
+                    this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("black").rect(-115, -230, 230, 230));
                 }
                 /// #endregion
                 // #region behaviour ==============================================

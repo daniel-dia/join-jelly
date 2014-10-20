@@ -6,6 +6,7 @@
 
         constructor() {
             super();
+            this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("black").rect(-115,-230,230,230));
         }
 
 
