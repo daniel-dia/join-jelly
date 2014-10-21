@@ -32,25 +32,42 @@ var joinjelly;
                     var p = 1;
                     for (var j = 0; j < jellys.length; j++)
                         setTimeout(function () {
-                            _this.dropJelly(p *= 2, i);
+                            _this.dropJelly(p, i);
                             i++;
+                            p *= 2;
                         }, j * 200);
                 };
 
                 //adds a single jelly to the container
                 JellyLobby.prototype.dropJelly = function (value, position) {
+                    var positions = [
+                        [2 / 4, 0],
+                        [3 / 4, 0.2],
+                        [1 / 4, 0.2],
+                        [2 / 5, 1],
+                        [3 / 5, 1],
+                        [1 / 5, 1.2],
+                        [4 / 5, 1.2],
+                        [1 / 6, 2.3],
+                        [2 / 6, 2],
+                        [4 / 6, 2],
+                        [5 / 6, 2.3],
+                        [1 / 4, 2.6],
+                        [3 / 4, 2.6],
+                        [2 / 4, 3]
+                    ];
                     var jelly = new joinjelly.gameplay.view.Tile(0, 0, 500);
 
                     // adds jelly
                     this.addChildAt(jelly, 0);
                     jelly.setNumber(value);
 
-                    jelly.x = ((position) * 1120);
+                    var m = (position % 2) ? -1 : 1;
 
-                    jelly.x = jelly.x % defaultWidth * .6666 - defaultWidth / 3;
+                    jelly.x = (positions[position][0] * defaultWidth - defaultWidth / 2) * 1.2;
+                    jelly.y = positions[position][1] * -200 + 550;
 
-                    jelly.y = 40 * (14 - position);
-                    jelly.scaleX = jelly.scaleY = (1 - position / 15);
+                    jelly.scaleX = jelly.scaleY = 1 - positions[position][1] / 4;
 
                     //play JellySound
                     createjs.Sound.play('s' + (Math.floor(Math.random() * 3) + 1), null, 400);

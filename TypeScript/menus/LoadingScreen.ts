@@ -52,7 +52,7 @@ module joinjelly {
                 { id: "j8192", src: "assets/images_"+scale+"x/j8192.png" },
                 { id: "Background", src: "assets/images_"+scale+"x/Background.jpg" },
                 { id: "Background2", src: "assets/images_"+scale+"x/Background2.jpg" },
-                { id: "backhome", src: "assets/images_"+scale+"x/backhome.jpg" },
+                { id: "backhome", src: "assets/images_" + scale +"x/BackMain.jpg" },
                 { id: "bonus_bar", src: "assets/images_"+scale+"x/bonus_bar.png" },
                 { id: "bonus_border", src: "assets/images_"+scale+"x/bonus_border.png" },
                 { id: "bt", src: "assets/images_"+scale+"x/bt.png" },

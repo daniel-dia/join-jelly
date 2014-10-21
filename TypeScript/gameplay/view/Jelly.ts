@@ -70,7 +70,9 @@
             createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
             eye.addChild(eyeImg);
             eye.regX = 133 / 2;
-            eye.regX = eyeImg.getBounds().width / 2;
+
+            if (eyeImg.getBounds()) 
+                eye.regX = eyeImg.getBounds().width / 2;
 
             eye.y = -50
                 this.imageContainer.addChild(eye)
