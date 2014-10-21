@@ -29,9 +29,10 @@
             for (var l = 1; l <= 5; l++) {
                 var j = new joinjelly.view.JellyContainer();
                 j.visible = false;
-                setTimeout((j1) => {
-                    j1.executeAnimationIn()
-                }, l * 200 + 600, j);
+                var x = 0;
+                //setTimeout(() => {
+                    j.executeAnimationIn()
+                ///}, l * 200 + 600);
 
                 var i = <createjs.Bitmap>gameui.AssetsManager.getBitmap("t"+l);
                 j.imageContainer.addChild(i);
