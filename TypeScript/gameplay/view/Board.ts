@@ -21,7 +21,6 @@
             this.boardHeight = boardHeight;
             this.boardWidth = boardWidth;
 
-            //this.addBackground(boardWidth, boardHeight, tileSize, img);
             this.addTiles(boardWidth, boardHeight, tileSize, img);
 
         }
@@ -70,10 +69,11 @@
                     tile.y = e.localY + touchOffset[e.pointerID].y;
                     tile.locked = true;
 
-                    var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
-
-                    if (targetName.toString() != tile.name) {
-                        this.dispatchEvent("tileDrop", { origin: tile.name, target: targetName });
+                    //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
+                    var target = this.getTileByRawPos(e.localX, e.localY, tileSize);
+                    if (target && target.name.toString() != tile.name) {
+                        if(!target.locked)
+                        this.dispatchEvent("tileMove", { origin: tile.name, target: target.name});
                     }
                 }
             });
@@ -157,16 +157,18 @@
 
             //if tiles match
             if (match && target) {
-
+            
                 var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
                 createjs.Tween.get(tile).to({ x: pos.x, y: pos.y, alpha: 0 }, 100, createjs.Ease.quadInOut).call(() => {
                     tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
+                    this.arrangeZOrder();
                 })
             }
             //or else, set it back to its place
             else {
+                tile.release();
                 createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut).call(() => {
-                    //set the z-order
+                //set the z-order
                     this.arrangeZOrder();
                 });
             }

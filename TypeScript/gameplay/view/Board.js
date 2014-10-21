@@ -21,7 +21,6 @@ var joinjelly;
                     this.boardHeight = boardHeight;
                     this.boardWidth = boardWidth;
 
-                    //this.addBackground(boardWidth, boardHeight, tileSize, img);
                     this.addTiles(boardWidth, boardHeight, tileSize, img);
                 }
                 //add tiles on the board
@@ -67,10 +66,11 @@ var joinjelly;
                             tile.y = e.localY + touchOffset[e.pointerID].y;
                             tile.locked = true;
 
-                            var targetName = _this.getTileIdByPos(e.localX, e.localY, tileSize);
-
-                            if (targetName.toString() != tile.name) {
-                                _this.dispatchEvent("tileDrop", { origin: tile.name, target: targetName });
+                            //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
+                            var target = _this.getTileByRawPos(e.localX, e.localY, tileSize);
+                            if (target && target.name.toString() != tile.name) {
+                                if (!target.locked)
+                                    _this.dispatchEvent("tileMove", { origin: tile.name, target: target.name });
                             }
                         }
                     });
@@ -154,8 +154,10 @@ var joinjelly;
                         var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
                         createjs.Tween.get(tile).to({ x: pos.x, y: pos.y, alpha: 0 }, 100, createjs.Ease.quadInOut).call(function () {
                             tile.set(_this.getTilePositionByCoords(tile.posx, tile.posy, _this.tileSize));
+                            _this.arrangeZOrder();
                         });
                     } else {
+                        tile.release();
                         createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut).call(function () {
                             //set the z-order
                             _this.arrangeZOrder();

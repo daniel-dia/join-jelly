@@ -42,9 +42,7 @@ var joinjelly;
             GamePlayScreen.prototype.createBoard = function () {
                 var _this = this;
                 this.board = new gameplay.view.Board(this.boardSize, this.boardSize, 1536 / 5, true);
-
-                ////this.board.addEventListener("tile", (e: createjs.MouseEvent) => { this.setInput(e.target); });
-                this.board.addEventListener("tileDrop", function (e) {
+                this.board.addEventListener("tileMove", function (e) {
                     _this.dragged(e.target.origin, e.target.target);
                 });
                 this.board.y = (2048 - 1536) / 2 + 100;

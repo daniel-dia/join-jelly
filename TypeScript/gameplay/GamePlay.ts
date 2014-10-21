@@ -66,8 +66,9 @@ module joinjelly.gameplay {
         // create a new board
         private createBoard() {
             this.board = new view.Board(this.boardSize, this.boardSize, 1536 / 5, true);
-            ////this.board.addEventListener("tile", (e: createjs.MouseEvent) => { this.setInput(e.target); });
-            this.board.addEventListener("tileDrop", (e: createjs.MouseEvent) => { this.dragged(e.target.origin, e.target.target); });
+            this.board.addEventListener("tileMove", (e: createjs.MouseEvent) => {
+                this.dragged(e.target.origin, e.target.target);
+            });
             this.board.y = (2048 - 1536) / 2 + 100;
             this.content.addChild(this.board);
         }
@@ -354,7 +355,7 @@ module joinjelly.gameplay {
         private match(origin: number, target: number) {
 
             //check if match is correct
-            if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin]) {//&&!tileTarget.locked) {
+            if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin]) {//&& !tileTarget.locked) {
 
                 this.moves++;
                 //calculate new value
