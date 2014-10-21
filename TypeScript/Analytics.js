@@ -33,12 +33,16 @@
         this.sendEvent("LevelEnd", "level", level, moves.toString());
         this.sendEvent("LevelEnd", "jelly", jelly, moves.toString());
         this.sendEvent("LevelEnd", "score", score, moves.toString());
+
+        this.sendEvent("LevelEnd", "move", moves);
     };
 
     Analytics.prototype.logMove = function (moves, score, level, freeSpaces) {
         this.sendEvent("level", "freeSpaces", freeSpaces, moves.toString());
         this.sendEvent("level", "score", score, moves.toString());
         this.sendEvent("level", "level", level, moves.toString());
+
+        this.sendEvent("level", "move", moves);
     };
 
     // public logUsedItem(itemId: string, levelId: string) {
