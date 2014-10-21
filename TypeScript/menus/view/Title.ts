@@ -31,7 +31,7 @@
                 j.visible = false;
                 var x = 0;
                 //setTimeout(() => {
-                    j.executeAnimationIn()
+                j.executeAnimationIn()
                 ///}, l * 200 + 600);
 
                 var i = <createjs.Bitmap>gameui.AssetsManager.getBitmap("t"+l);
@@ -47,7 +47,6 @@
                 j.x = xs[l - 1];
                 j.y = 769;
 
-                j.executeIdle();
             }
 
         }

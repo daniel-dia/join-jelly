@@ -11,12 +11,12 @@
 
             this.addChild(this.shadowContainer);
             this.addChild(this.imageContainer);
-            
+
         }
 
         //#region animations =============================================
         restore() {
-            
+
             createjs.Tween.removeTweens(this.imageContainer);
             createjs.Tween.removeTweens(this.shadowContainer);
             this.visible = true;
@@ -27,14 +27,6 @@
             this.imageContainer.y = 0;
             this.imageContainer.skewX = this.imageContainer.skewY = 0;
             this.shadowContainer.skewX = this.shadowContainer.skewY = 0;
-        }
-
-        animation1() {
-            this.restore();
-            createjs.Tween.get(this.imageContainer)
-                .to({ skewX: 10 }, 2000, createjs.Ease.elasticOut)
-                .to({ skewX: -10 }, 2000, createjs.Ease.getElasticInOut(10, 10))
-                .to({ skewX: 0 }, 2000, createjs.Ease.elasticOut);
         }
 
         executeAnimationIn() {
@@ -55,16 +47,14 @@
 
             createjs.Tween.get(this.imageContainer)
                 .to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut)
-                .to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut);
+                .to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut).call(() => {
+                    this.executeIdle();
+                });
+
             createjs.Tween.get(this.shadowContainer)
                 .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(() => {
-                    this.executeIdle();
-
-
-
+                    //this.executeIdle();
                 });;
-
-
         }
 
         public executeAnimationHold() {
@@ -233,8 +223,8 @@
                         .to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut)
             });
         }
-        
+
         //#endregion
- 
+
     }
 }

@@ -31,11 +31,6 @@ var joinjelly;
                 this.shadowContainer.skewX = this.shadowContainer.skewY = 0;
             };
 
-            JellyContainer.prototype.animation1 = function () {
-                this.restore();
-                createjs.Tween.get(this.imageContainer).to({ skewX: 10 }, 2000, createjs.Ease.elasticOut).to({ skewX: -10 }, 2000, createjs.Ease.getElasticInOut(10, 10)).to({ skewX: 0 }, 2000, createjs.Ease.elasticOut);
-            };
-
             JellyContainer.prototype.executeAnimationIn = function () {
                 var _this = this;
                 this.restore();
@@ -51,9 +46,12 @@ var joinjelly;
                     scaleX: 0
                 });
 
-                createjs.Tween.get(this.imageContainer).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut);
-                createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(function () {
+                createjs.Tween.get(this.imageContainer).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut).call(function () {
                     _this.executeIdle();
+                });
+
+                createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(function () {
+                    //this.executeIdle();
                 });
                 ;
             };

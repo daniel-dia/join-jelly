@@ -50,8 +50,6 @@ var joinjelly;
 
                         j.x = xs[l - 1];
                         j.y = 769;
-
-                        j.executeIdle();
                     }
                 };
                 return GameTitle;
