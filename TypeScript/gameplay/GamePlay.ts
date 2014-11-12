@@ -96,6 +96,8 @@ module joinjelly.gameplay {
             var tbt = new gameui.ui.ImageButton("GameOverBoard", () => {
                 this.finishMenu.show();
                 tbt.fadeOut();
+
+                createjs.Sound.play("Interface Sound-06");
             });
             tbt.set({ x: 150, y: -150, visible: false });
             this.footer.addChild(tbt);

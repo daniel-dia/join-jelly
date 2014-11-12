@@ -21,6 +21,7 @@ var joinjelly;
                     //add continue button;
                     var ok = new gameui.ui.ImageButton("PlayBt", (function () {
                         _this.dispatchEvent("play");
+                        createjs.Sound.play("Interface Sound-08");
                     }));
                     ok.set({ x: 771, y: 1599 });
                     this.addChild(ok);
@@ -28,6 +29,7 @@ var joinjelly;
                     //add share button;
                     var board = new gameui.ui.ImageButton("Home", (function () {
                         _this.dispatchEvent("home");
+                        createjs.Sound.play("Interface Sound-08");
                     }));
                     board.set({ x: 353, y: 1570 });
                     this.addChild(board);
@@ -35,6 +37,7 @@ var joinjelly;
                     //add showBoard button
                     var share = new gameui.ui.ImageButton("Restart", (function () {
                         _this.dispatchEvent("restart");
+                        createjs.Sound.play("Interface Sound-06");
                     }));
                     share.set({ x: 1190, y: 1570 });
                     this.addChild(share);

@@ -1,3 +1,4 @@
+/// <reference path="../createjs/createjs.d.ts" />
 declare module gameui.ui {
     class UIItem extends createjs.Container {
         public width: number;
@@ -123,7 +124,7 @@ declare module gameui {
         private static getLoadedImage(name);
         static getMovieClip(name: string): createjs.Sprite;
         static getSprite(name: string, play?: boolean): createjs.Sprite;
-        static playSound(name: string): void;
+        static playSound(name: string, interrupt?: boolean, delay?: number): void;
     }
 }
 declare module gameui {

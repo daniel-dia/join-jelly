@@ -679,8 +679,9 @@ var gameui;
             return sprite;
         };
 
-        AssetsManager.playSound = function (name) {
-            createjs.Sound.play(name);
+        AssetsManager.playSound = function (name, interrupt, delay) {
+            if (typeof delay === "undefined") { delay = 0; }
+            createjs.Sound.play(name, interrupt, delay);
         };
         return AssetsManager;
     })();

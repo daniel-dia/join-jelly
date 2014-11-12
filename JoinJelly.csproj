@@ -207,14 +207,34 @@
     <Content Include="Scripts\md5.js" />
     <Content Include="Sounds\bg1.mp3" />
     <Content Include="Sounds\h1.mp3" />
+    <Content Include="Sounds\Interface Sound-06.mp3" />
+    <Content Include="Sounds\Interface Sound-06.wav" />
+    <Content Include="Sounds\Interface Sound-07.mp3" />
+    <Content Include="Sounds\Interface Sound-07.wav" />
+    <Content Include="Sounds\Interface Sound-08.mp3" />
+    <Content Include="Sounds\Interface Sound-08.wav" />
+    <Content Include="Sounds\Interface Sound-09.mp3" />
+    <Content Include="Sounds\Interface Sound-09.wav" />
+    <Content Include="Sounds\Interface Sound-10.mp3" />
+    <Content Include="Sounds\Interface Sound-10.wav" />
+    <Content Include="Sounds\Interface Sound-11.mp3" />
+    <Content Include="Sounds\Interface Sound-11.wav" />
+    <Content Include="Sounds\Interface Sound-12.mp3" />
+    <Content Include="Sounds\Interface Sound-12.wav" />
+    <Content Include="Sounds\Interface Sound-13.mp3" />
+    <Content Include="Sounds\Interface Sound-13.wav" />
+    <Content Include="Sounds\Interface Sound-14.mp3" />
+    <Content Include="Sounds\Interface Sound-14.wav" />
     <Content Include="Sounds\j1.mp3" />
     <Content Include="Sounds\j2.mp3" />
     <Content Include="Sounds\j3.mp3" />
     <Content Include="Sounds\j4.mp3" />
+    <Content Include="Sounds\preview.mp3" />
     <Content Include="Sounds\r1.mp3" />
     <Content Include="Sounds\s1.mp3" />
     <Content Include="Sounds\s2.mp3" />
     <Content Include="Sounds\s3.mp3" />
+    <Content Include="Sounds\tests.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>

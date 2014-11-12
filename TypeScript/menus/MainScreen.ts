@@ -34,6 +34,7 @@
             //add about bt
             var aboutBt = new gameui.ui.ImageButton("About", () => {
                 JoinJelly.showAboutScreen();
+                createjs.Sound.play("Interface Sound-06");
             });
             aboutBt.y = -150;
             aboutBt.x = defaultWidth-150;
@@ -42,6 +43,7 @@
             //add tutorial bt
             var tutorialBt = new gameui.ui.ImageButton("tutorial", () => {
                 JoinJelly.startTutorial();
+                createjs.Sound.play("Interface Sound-06");
             });
             tutorialBt.y = -150;
             tutorialBt.x = defaultWidth - 400;
@@ -53,7 +55,8 @@
                     JoinJelly.startLevel();
                 else
                     JoinJelly.startTutorial();
-                
+
+                createjs.Sound.play("Interface Sound-06");
             });
 
             button.y = 1168;

@@ -19,17 +19,26 @@
         private addButtons() {
 
             //add continue button;
-            var ok = new gameui.ui.ImageButton("GameOverOk", (() => { this.dispatchEvent("ok") }));
+            var ok = new gameui.ui.ImageButton("GameOverOk", (() => {
+                this.dispatchEvent("ok")
+                createjs.Sound.play("Interface Sound-08");
+            }));
             ok.set({ x: 771, y: 1810 });
             this.addChild(ok);
 
             //add share button;
-            var board = new gameui.ui.ImageButton("GameOverBoard", (() => { this.dispatchEvent("board") }));
+            var board = new gameui.ui.ImageButton("GameOverBoard", (() => {
+                this.dispatchEvent("board")
+                createjs.Sound.play("Interface Sound-06");
+            }));
             board.set({ x: 353, y: 1780 });
             this.addChild(board);
 
             //add showBoard button
-            var share = new gameui.ui.ImageButton("GameOverShare", (() => { this.dispatchEvent("share") }));
+            var share = new gameui.ui.ImageButton("GameOverShare", (() => {
+                this.dispatchEvent("share")
+                createjs.Sound.play("Interface Sound-06");
+            }));
             share.set({ x: 1190, y: 1780 });
             this.addChild(share);
         }

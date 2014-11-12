@@ -53,7 +53,7 @@ var joinjelly;
                             //bring to front
                             _this.setChildIndex(tile, _this.getNumChildren() - 1);
 
-                            createjs.Sound.play('h1');
+                            gameui.AssetsManager.playSound('soundh_1');
                         }
                     });
 
@@ -96,7 +96,7 @@ var joinjelly;
 
                     //plays sound if is new jelly
                     if (value == 1)
-                        createjs.Sound.play('s' + (Math.floor(Math.random() * 3) + 1), null, 400);
+                        gameui.AssetsManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
 
                 //get a tile id by its x and y pos
@@ -183,7 +183,7 @@ var joinjelly;
                     tile.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
                     createjs.Tween.get(tile).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
 
-                    createjs.Sound.play('j' + (Math.floor(Math.random() * 4) + 1));
+                    gameui.AssetsManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
                 };
 
                 Board.prototype.clean = function () {

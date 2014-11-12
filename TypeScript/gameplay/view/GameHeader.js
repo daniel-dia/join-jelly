@@ -24,6 +24,7 @@ var joinjelly;
                     //add pause button
                     var pauseButton = new gameui.ui.ImageButton("pause", function () {
                         _this.dispatchEvent("pause");
+                        createjs.Sound.play("Interface Sound-06");
                     });
 
                     pauseButton.x = 106;

@@ -26,6 +26,7 @@ module joinjelly.gameplay.view {
             //add pause button
             var pauseButton = new gameui.ui.ImageButton("pause", () => {
                 this.dispatchEvent("pause");
+                createjs.Sound.play("Interface Sound-06");
             });
 
             pauseButton.x = 106;
