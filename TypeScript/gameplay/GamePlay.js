@@ -72,6 +72,8 @@ var joinjelly;
                 var tbt = new gameui.ui.ImageButton("GameOverBoard", function () {
                     _this.finishMenu.show();
                     tbt.fadeOut();
+
+                    createjs.Sound.play("Interface Sound-06");
                 });
                 tbt.set({ x: 150, y: -150, visible: false });
                 this.footer.addChild(tbt);
@@ -125,7 +127,8 @@ var joinjelly;
                 this.updateInterfaceInfos();
                 this.timeInterval = 800;
 
-                //createjs.Sound.play("bg1", null, null, null, -1);
+                gameui.AssetsManager.playMusic("music1");
+
                 this.gamePlayLoop = setInterval(function () {
                     _this.step();
                 }, 10);
@@ -231,9 +234,11 @@ var joinjelly;
                 // updates the header
                 this.gameHeader.updateStatus(score, level, percent, this.getPercentEmptySpaces());
 
-                if (this.currentLevel != level)
+                if (this.currentLevel != level) {
                     this.gameLevelIndicator.showLevel(level);
-
+                    if (level > 1)
+                        createjs.Sound.play("Interface Sound-11");
+                }
                 this.currentLevel = level;
             };
 
@@ -283,6 +288,7 @@ var joinjelly;
 
             //finishes the game
             GamePlayScreen.prototype.endGame = function () {
+                var _this = this;
                 var score = this.score;
                 var highScore = joinjelly.JoinJelly.userData.getHighScore();
                 var jelly = 0;
@@ -302,7 +308,9 @@ var joinjelly;
                 joinjelly.JoinJelly.userData.setScore(score);
 
                 // shows finished game menu
-                this.finishMenu.show();
+                setTimeout(function () {
+                    _this.finishMenu.show();
+                }, 600);
                 this.finishMenu.setValues(score, highScore, jelly);
 
                 //move the board a little up
@@ -314,6 +322,9 @@ var joinjelly;
 
                 // log event
                 joinjelly.JoinJelly.analytics.logEndGame(this.moves, this.score, this.currentLevel, jelly);
+
+                // play end soud
+                gameui.AssetsManager.playSound("end");
             };
 
             //called when a tile is dragged

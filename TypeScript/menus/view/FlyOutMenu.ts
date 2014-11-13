@@ -62,12 +62,14 @@
         public show() {
             if (this.visible) return;
             this.animateIn();
+            gameui.AssetsManager.playSound("Interface Sound-14");
         }
 
         public hide()
         {
             if (!this.visible) return;
             this.animateOut();
+            gameui.AssetsManager.playSound("Interface Sound-15");
         }
 
     }

@@ -26,12 +26,16 @@
             this.addEventListener("click", () => {
                 this.fadeOut();
                 this.dispatchEvent("closed");
+
+                gameui.AssetsManager.playSound("Interface Sound-15");
             })
         }
 
         public show(text: string) {
             this.bitmapText.text = text;
             this.fadeIn();
+
+            gameui.AssetsManager.playSound("Interface Sound-14");
         }
 
    }

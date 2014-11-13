@@ -67,6 +67,9 @@
                 () => {
                     this.board.getTileById(16).mouseEnabled = false;
                     this.hideTutorialMove();
+                    this.tutorialWait(700);
+                },
+                () => {
                     this.showTutorialMessage("Great! now I'm bigger, \nevolve me once more");
                 },
                 () => {
@@ -78,6 +81,9 @@
                 () => {
 
                     this.hideTutorialMove();
+                    this.tutorialWait(700);
+                },
+                () => {
                     this.showTutorialMessage("Perfect! Now I'm ...,\nLet's play this game.");
                 },
                 () => {

@@ -34,11 +34,15 @@ var joinjelly;
                     this.addEventListener("click", function () {
                         _this.fadeOut();
                         _this.dispatchEvent("closed");
+
+                        gameui.AssetsManager.playSound("Interface Sound-15");
                     });
                 }
                 TutoralMessage.prototype.show = function (text) {
                     this.bitmapText.text = text;
                     this.fadeIn();
+
+                    gameui.AssetsManager.playSound("Interface Sound-14");
                 };
                 return TutoralMessage;
             })(gameui.ui.Button);

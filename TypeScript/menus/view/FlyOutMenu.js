@@ -70,12 +70,14 @@ var joinjelly;
                     if (this.visible)
                         return;
                     this.animateIn();
+                    gameui.AssetsManager.playSound("Interface Sound-14");
                 };
 
                 FlyOutMenu.prototype.hide = function () {
                     if (!this.visible)
                         return;
                     this.animateOut();
+                    gameui.AssetsManager.playSound("Interface Sound-15");
                 };
                 return FlyOutMenu;
             })(createjs.Container);

@@ -125,6 +125,9 @@ declare module gameui {
         static getMovieClip(name: string): createjs.Sprite;
         static getSprite(name: string, play?: boolean): createjs.Sprite;
         static playSound(name: string, interrupt?: boolean, delay?: number): void;
+        private static currentMusicName;
+        private static currentMusic;
+        static playMusic(name: string): void;
     }
 }
 declare module gameui {

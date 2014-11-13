@@ -149,8 +149,8 @@ module joinjelly.gameplay {
             this.board.mouseEnabled = true;
             this.updateInterfaceInfos();
             this.timeInterval = 800;
-
-            //createjs.Sound.play("bg1", null, null, null, -1);
+            
+            gameui.AssetsManager.playMusic("music1");
 
             this.gamePlayLoop = setInterval(() => { this.step(); }, 10)
 
@@ -262,9 +262,11 @@ module joinjelly.gameplay {
             // updates the header
             this.gameHeader.updateStatus(score, level, percent, this.getPercentEmptySpaces());
 
-            if (this.currentLevel != level)
+            if (this.currentLevel != level) {
                 this.gameLevelIndicator.showLevel(level);
-
+                if(level>1)
+                createjs.Sound.play("Interface Sound-11");
+            }
             this.currentLevel = level;
 
         }
@@ -332,7 +334,9 @@ module joinjelly.gameplay {
             JoinJelly.userData.setScore(score);
 
             // shows finished game menu
-            this.finishMenu.show();
+            setTimeout(() => {
+                this.finishMenu.show();
+            }, 600);
             this.finishMenu.setValues(score, highScore, jelly);
 
             //move the board a little up
@@ -343,6 +347,9 @@ module joinjelly.gameplay {
 
             // log event
             JoinJelly.analytics.logEndGame(this.moves, this.score, this.currentLevel, jelly)
+
+            // play end soud
+            gameui.AssetsManager.playSound("end");
 
         }
 

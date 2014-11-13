@@ -67,6 +67,9 @@ var joinjelly;
                     function () {
                         _this.board.getTileById(16).mouseEnabled = false;
                         _this.hideTutorialMove();
+                        _this.tutorialWait(700);
+                    },
+                    function () {
                         _this.showTutorialMessage("Great! now I'm bigger, \nevolve me once more");
                     },
                     function () {
@@ -77,6 +80,9 @@ var joinjelly;
                     },
                     function () {
                         _this.hideTutorialMove();
+                        _this.tutorialWait(700);
+                    },
+                    function () {
                         _this.showTutorialMessage("Perfect! Now I'm ...,\nLet's play this game.");
                     },
                     function () {

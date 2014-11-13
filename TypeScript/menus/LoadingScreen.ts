@@ -148,6 +148,13 @@ module joinjelly {
                { id: "Interface Sound-07", src: "Sounds/Interface Sound-07.mp3" },
                { id: "Interface Sound-08", src: "Sounds/Interface Sound-08.mp3" },
                { id: "Interface Sound-09", src: "Sounds/Interface Sound-09.mp3" },
+               { id: "Interface Sound-11", src: "Sounds/Interface Sound-11.mp3" },
+               { id: "Interface Sound-14", src: "Sounds/Interface Sound-14.mp3" },
+               { id: "Interface Sound-15", src: "Sounds/Interface Sound-15.mp3" },
+               { id: "end", src: "Sounds/end.mp3" },
+               
+               { id: "musicIntro", src: "Sounds/musicIntro.mp3" },
+               { id: "music1", src: "Sounds/music1.mp3" },
           
             ]
         }

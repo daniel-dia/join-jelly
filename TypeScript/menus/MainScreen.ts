@@ -19,6 +19,8 @@
             this.createHeader();
             this.createFooter();
             this.createTitle();
+
+            gameui.AssetsManager.playMusic("musicIntro");
             
         }
 

@@ -206,6 +206,7 @@
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\md5.js" />
     <Content Include="Sounds\bg1.mp3" />
+    <Content Include="Sounds\end.mp3" />
     <Content Include="Sounds\h1.mp3" />
     <Content Include="Sounds\Interface Sound-06.mp3" />
     <Content Include="Sounds\Interface Sound-06.wav" />
@@ -225,11 +226,13 @@
     <Content Include="Sounds\Interface Sound-13.wav" />
     <Content Include="Sounds\Interface Sound-14.mp3" />
     <Content Include="Sounds\Interface Sound-14.wav" />
+    <Content Include="Sounds\Interface Sound-15.mp3" />
     <Content Include="Sounds\j1.mp3" />
     <Content Include="Sounds\j2.mp3" />
     <Content Include="Sounds\j3.mp3" />
     <Content Include="Sounds\j4.mp3" />
-    <Content Include="Sounds\preview.mp3" />
+    <Content Include="Sounds\music1.mp3" />
+    <Content Include="Sounds\musicIntro.mp3" />
     <Content Include="Sounds\r1.mp3" />
     <Content Include="Sounds\s1.mp3" />
     <Content Include="Sounds\s2.mp3" />

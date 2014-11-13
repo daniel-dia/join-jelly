@@ -683,6 +683,19 @@ var gameui;
             if (typeof delay === "undefined") { delay = 0; }
             createjs.Sound.play(name, interrupt, delay);
         };
+
+        AssetsManager.playMusic = function (name) {
+            if (this.currentMusic) {
+                if (this.currentMusicName == name)
+                    return;
+
+                this.currentMusic.stop();
+                delete this.currentMusic;
+            }
+
+            this.currentMusicName = name;
+            this.currentMusic = createjs.Sound.play(name, null, null, null, -1);
+        };
         return AssetsManager;
     })();
     gameui.AssetsManager = AssetsManager;
