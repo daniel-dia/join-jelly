@@ -10,6 +10,8 @@
         private tileSize: number;
         private touchDictionary: Array<Tile> = new Array();
 
+        private alarming: boolean=false;
+
         // #region Initialization ----------------------------------------------------------------------
 
         constructor(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
@@ -143,6 +145,8 @@
             
         }
 
+
+
         //release e tile
         private releaseDrag(tile: Tile, match: boolean= true, target?: Tile) {
             
@@ -202,7 +206,24 @@
                 this.tiles[t].setNumber(0);
         }
 
-        //#endregion
+        // #endregion
+        
+        public setAlarm(alarm: boolean) {
+            
+            if (alarm) {
+                if (this.alarming) return;
+
+                
+                createjs.Tween.get(this, { loop: true }).to({ x: -10 }, 50).to({ x: +10 }, 100).to({ x: -10 }, 100).to({ x: 0}, 50).wait(200);
+            }
+            else {
+                if (!this.alarming) return;
+                createjs.Tween.removeTweens(this);
+            }
+
+            this.alarming = alarm;
+
+        }
     }
 
 }

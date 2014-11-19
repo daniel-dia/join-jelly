@@ -14,6 +14,7 @@ var joinjelly;
                 function Board(boardWidth, boardHeight, tileSize, img) {
                     _super.call(this);
                     this.touchDictionary = new Array();
+                    this.alarming = false;
 
                     this.tileSize = tileSize;
 
@@ -189,6 +190,22 @@ var joinjelly;
                 Board.prototype.clean = function () {
                     for (var t in this.tiles)
                         this.tiles[t].setNumber(0);
+                };
+
+                // #endregion
+                Board.prototype.setAlarm = function (alarm) {
+                    if (alarm) {
+                        if (this.alarming)
+                            return;
+
+                        createjs.Tween.get(this, { loop: true }).to({ x: -10 }, 50).to({ x: +10 }, 100).to({ x: -10 }, 100).to({ x: 0 }, 50).wait(200);
+                    } else {
+                        if (!this.alarming)
+                            return;
+                        createjs.Tween.removeTweens(this);
+                    }
+
+                    this.alarming = alarm;
                 };
                 return Board;
             })(createjs.Container);

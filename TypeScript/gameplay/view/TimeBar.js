@@ -40,7 +40,7 @@ var joinjelly;
                     percentBar.mask = this.percentBarMask;
                 };
 
-                TimeBar.prototype.setPercent = function (percent) {
+                TimeBar.prototype.setPercent = function (percent, alarm) {
                     //if value is greater, do a animation for increasing
                     if (this.value < percent)
                         this.incrasePercent();
@@ -52,7 +52,7 @@ var joinjelly;
                     createjs.Tween.get(this.percentBarMask).to({ scaleX: percent }, 200, createjs.Ease.quadInOut);
 
                     // set alarm
-                    if (percent < 0.25)
+                    if (alarm)
                         this.setAlarmOn();
                     else
                         this.setAlarmOff();

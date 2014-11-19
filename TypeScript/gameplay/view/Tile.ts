@@ -7,7 +7,7 @@
         public posy: number;
         public locked: boolean;
 
-        private jelly: Jelly;
+               jelly: Jelly;
 
         //contructr
         constructor(posx: number, posy: number, tileSize: number) {

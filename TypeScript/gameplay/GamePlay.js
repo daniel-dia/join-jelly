@@ -231,14 +231,24 @@ var joinjelly;
                 var previousLevelScore = this.getScoreByLevel(level - 1);
                 var percent = (score - previousLevelScore) / (nextLevelScore - previousLevelScore) * 100;
 
+                // defines alarm condition
+                var emptySpaces = this.getPercentEmptySpaces();
+                var alarm = false;
+                if (emptySpaces < 0.25 && emptySpaces > 0)
+                    var alarm = true;
+
                 // updates the header
-                this.gameHeader.updateStatus(score, level, percent, this.getPercentEmptySpaces());
+                this.gameHeader.updateStatus(score, level, percent, emptySpaces, alarm);
+
+                // updates board shaking.
+                this.board.setAlarm(alarm);
 
                 if (this.currentLevel != level) {
                     this.gameLevelIndicator.showLevel(level);
                     if (level > 1)
                         createjs.Sound.play("Interface Sound-11");
                 }
+
                 this.currentLevel = level;
             };
 

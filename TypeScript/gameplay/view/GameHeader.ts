@@ -71,14 +71,14 @@ module joinjelly.gameplay.view {
 
 
         // updates level ad score status
-        public updateStatus(score: number,level:number,percent?:number,emptyPercent?:number) {
+        public updateStatus(score: number,level:number,percent?:number,emptyPercent?:number, alarm?:boolean) {
             this.scoreText.text = "SCORE " + score.toString();
             this.levelText.text = level.toString();
 
             var value = 1;
 
             //updates timebar
-            this.timebar.setPercent(emptyPercent);
+            this.timebar.setPercent(emptyPercent,alarm);
             
             //updates percent
             if (percent!=undefined)

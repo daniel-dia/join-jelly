@@ -4,6 +4,9 @@
         shadowContainer: createjs.Container;
         imageContainer: createjs.Container;
 
+
+        private state: string;
+
         constructor() {
             super();
             this.shadowContainer = new createjs.Container();
@@ -16,7 +19,7 @@
 
         //#region animations =============================================
         restore() {
-
+            this.state = "";
             createjs.Tween.removeTweens(this.imageContainer);
             createjs.Tween.removeTweens(this.shadowContainer);
             this.visible = true;
@@ -30,6 +33,9 @@
         }
 
         executeAnimationIn() {
+            if (this.state == "in") return;
+            this.state = "in";
+
             this.restore();
             this.imageContainer.set(
                 {
@@ -58,17 +64,24 @@
         }
 
         public executeAnimationHold() {
+            if (this.state == "hold") return;
+            this.state = "hold";
+
             this.restore();
             createjs.Tween.get(this.imageContainer)
                 .to({
                     scaleX: 0.8,
                     scaleY: 1.2
-                }, 1000, createjs.Ease.elasticOut)
+                }, 1000, createjs.Ease.elasticOut);
 
-        createjs.Tween.get(this.shadowContainer).to({ alpha: 0 }, 200);
+            createjs.Tween.get(this.shadowContainer).to({ alpha: 0 }, 200);
         }
 
         public executeAimationRelease() {
+
+            if (this.state == "release") return;
+            this.state = "release";
+
             this.restore();
             createjs.Tween.get(this.imageContainer)
                 .to({
@@ -86,34 +99,11 @@
             createjs.Tween.get(this.shadowContainer).to({ alpha: 1 }, 200);
         }
 
-        executeAnimation3() {
-            this.restore();
-            createjs.Tween.get(this.imageContainer)
-
-                .to({
-                    scaleY: 0.7,
-                    scaleX: 1.3
-                }, 2000, createjs.Ease.elasticOut)
-                .to({
-                    scaleX: 1,
-                    scaleY: 1
-                }, 2000, createjs.Ease.elasticOut);
-        }
-
-        executeAnimation4() {
-            this.restore();
-            createjs.Tween.get(this.imageContainer)
-                .to({
-                    scaleX: 0.8,
-                    scaleY: 1.2
-                }, 200, createjs.Ease.sineOut)
-                .to({
-                    scaleX: 1,
-                    scaleY: 1
-                }, 2000, createjs.Ease.elasticOut);
-        }
-
+ 
         executeIdle() {
+
+            if (this.state == "idle") return;
+            this.state = "idle";
 
             switch (Math.floor(Math.random() * 3)) {
                 case 0: this.executeIdle1(); break;
@@ -125,6 +115,7 @@
         }
 
         executeIdle1() {
+
 
             var f = Math.random() * 500 + 600;
             var skew = Math.random();
@@ -223,6 +214,9 @@
                         .to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut)
             });
         }
+
+
+       
 
         //#endregion
 

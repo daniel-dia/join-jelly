@@ -70,7 +70,7 @@ var joinjelly;
                 };
 
                 // updates level ad score status
-                GameHeader.prototype.updateStatus = function (score, level, percent, emptyPercent) {
+                GameHeader.prototype.updateStatus = function (score, level, percent, emptyPercent, alarm) {
                     var _this = this;
                     this.scoreText.text = "SCORE " + score.toString();
                     this.levelText.text = level.toString();
@@ -78,7 +78,7 @@ var joinjelly;
                     var value = 1;
 
                     //updates timebar
-                    this.timebar.setPercent(emptyPercent);
+                    this.timebar.setPercent(emptyPercent, alarm);
 
                     //updates percent
                     if (percent != undefined)

@@ -19,6 +19,7 @@ var joinjelly;
             }
             //#region animations =============================================
             JellyContainer.prototype.restore = function () {
+                this.state = "";
                 createjs.Tween.removeTweens(this.imageContainer);
                 createjs.Tween.removeTweens(this.shadowContainer);
                 this.visible = true;
@@ -33,6 +34,10 @@ var joinjelly;
 
             JellyContainer.prototype.executeAnimationIn = function () {
                 var _this = this;
+                if (this.state == "in")
+                    return;
+                this.state = "in";
+
                 this.restore();
                 this.imageContainer.set({
                     alpha: 0,
@@ -57,6 +62,10 @@ var joinjelly;
             };
 
             JellyContainer.prototype.executeAnimationHold = function () {
+                if (this.state == "hold")
+                    return;
+                this.state = "hold";
+
                 this.restore();
                 createjs.Tween.get(this.imageContainer).to({
                     scaleX: 0.8,
@@ -68,6 +77,10 @@ var joinjelly;
 
             JellyContainer.prototype.executeAimationRelease = function () {
                 var _this = this;
+                if (this.state == "release")
+                    return;
+                this.state = "release";
+
                 this.restore();
                 createjs.Tween.get(this.imageContainer).to({
                     scaleX: 0.8,
@@ -82,29 +95,11 @@ var joinjelly;
                 createjs.Tween.get(this.shadowContainer).to({ alpha: 1 }, 200);
             };
 
-            JellyContainer.prototype.executeAnimation3 = function () {
-                this.restore();
-                createjs.Tween.get(this.imageContainer).to({
-                    scaleY: 0.7,
-                    scaleX: 1.3
-                }, 2000, createjs.Ease.elasticOut).to({
-                    scaleX: 1,
-                    scaleY: 1
-                }, 2000, createjs.Ease.elasticOut);
-            };
-
-            JellyContainer.prototype.executeAnimation4 = function () {
-                this.restore();
-                createjs.Tween.get(this.imageContainer).to({
-                    scaleX: 0.8,
-                    scaleY: 1.2
-                }, 200, createjs.Ease.sineOut).to({
-                    scaleX: 1,
-                    scaleY: 1
-                }, 2000, createjs.Ease.elasticOut);
-            };
-
             JellyContainer.prototype.executeIdle = function () {
+                if (this.state == "idle")
+                    return;
+                this.state = "idle";
+
                 switch (Math.floor(Math.random() * 3)) {
                     case 0:
                         this.executeIdle1();
