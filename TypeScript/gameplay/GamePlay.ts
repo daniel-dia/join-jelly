@@ -346,7 +346,7 @@ module joinjelly.gameplay {
             // shows finished game menu
             setTimeout(() => {
                 this.finishMenu.show();
-            }, 600);
+            }, 1200);
             this.finishMenu.setValues(score, highScore, jelly);
 
             //move the board a little up

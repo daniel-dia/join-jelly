@@ -320,7 +320,7 @@ var joinjelly;
                 // shows finished game menu
                 setTimeout(function () {
                     _this.finishMenu.show();
-                }, 600);
+                }, 1200);
                 this.finishMenu.setValues(score, highScore, jelly);
 
                 //move the board a little up
