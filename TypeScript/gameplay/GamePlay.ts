@@ -184,6 +184,7 @@ module joinjelly.gameplay {
             }
             else {
 
+                // defines next drop time interval
                 this.gameNextDrop = this.timeInterval / 10;
 
                 // decreate time interval
@@ -197,8 +198,6 @@ module joinjelly.gameplay {
 
                 // verifies if game is ended
                 if (this.verifyGameLoose()) this.endGame();
-
-
             }
         }
 
