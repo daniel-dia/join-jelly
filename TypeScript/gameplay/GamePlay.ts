@@ -192,11 +192,13 @@ module joinjelly.gameplay {
                 // add a new tile  on board
                 this.addRandomTileOnBoard();
 
+                // updates interafce information
+                this.updateInterfaceInfos();
+
                 // verifies if game is ended
                 if (this.verifyGameLoose()) this.endGame();
 
-                // updates interafce information
-                this.updateInterfaceInfos();
+
             }
         }
 
@@ -335,7 +337,6 @@ module joinjelly.gameplay {
             // disable mouse interaction
             this.board.mouseEnabled = false;
             this.board.mouseChildren = false;
-            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn)
 
             // releases all jellys
             this.board.releaseAll();
@@ -344,12 +345,10 @@ module joinjelly.gameplay {
             JoinJelly.userData.setScore(score);
 
             // shows finished game menu
-            setTimeout(() => {
-                this.finishMenu.show();
-            }, 1200);
+            setTimeout(() => { this.finishMenu.show(); }, 1200);
             this.finishMenu.setValues(score, highScore, jelly);
 
-            //move the board a little up
+            // move the board a little up
             createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut)
 
             // stop game loop
@@ -360,6 +359,10 @@ module joinjelly.gameplay {
 
             // play end soud
             gameui.AssetsManager.playSound("end");
+
+            // move board to top
+            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn)
+
 
         }
 

@@ -169,12 +169,12 @@ var joinjelly;
                     // add a new tile  on board
                     this.addRandomTileOnBoard();
 
+                    // updates interafce information
+                    this.updateInterfaceInfos();
+
                     // verifies if game is ended
                     if (this.verifyGameLoose())
                         this.endGame();
-
-                    // updates interafce information
-                    this.updateInterfaceInfos();
                 }
             };
 
@@ -309,7 +309,6 @@ var joinjelly;
                 // disable mouse interaction
                 this.board.mouseEnabled = false;
                 this.board.mouseChildren = false;
-                createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
 
                 // releases all jellys
                 this.board.releaseAll();
@@ -323,7 +322,7 @@ var joinjelly;
                 }, 1200);
                 this.finishMenu.setValues(score, highScore, jelly);
 
-                //move the board a little up
+                // move the board a little up
                 createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut);
 
                 // stop game loop
@@ -335,6 +334,9 @@ var joinjelly;
 
                 // play end soud
                 gameui.AssetsManager.playSound("end");
+
+                // move board to top
+                createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
             };
 
             //called when a tile is dragged
