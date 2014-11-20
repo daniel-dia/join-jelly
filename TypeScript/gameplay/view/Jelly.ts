@@ -2,12 +2,22 @@
 
     export class Jelly extends joinjelly.view.JellyContainer {
 
+        private joinFx: createjs.DisplayObject;
+
         // #region initialization =========================================
 
         constructor() {
             super();
-            this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("black").rect(-115,-230,230,230));
-        }
+            this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("black").rect(-115, -230, 230, 230));
+            this.joinFx = gameui.AssetsManager.getBitmap("fxJoin");
+            this.joinFx.visible = false;
+            this.joinFx.regX = 100;
+            this.joinFx.regY = 100;
+            this.joinFx.y = -115;
+
+
+         }
+
 
 
         /// #endregion
@@ -15,6 +25,17 @@
         // #region behaviour ==============================================
 
         //set tile number
+
+        public playJoinFX() {
+            this.joinFx.visible = true;
+            this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 1,visible:true});
+            createjs.Tween.get(this.joinFx).to({ scaleX: 1.5, scaleY: 1.5, alpha: 0}, 200).call(() => { this.joinFx.visible = true;});
+            this.addChild(this.joinFx);
+
+            setTimeout(() => {
+                var x = 1;
+            }, 1000);
+        }
 
         public setNumber(value: number) {
 
@@ -41,6 +62,9 @@
                 this.createEyes(value);
 
                 this.executeAnimationIn();
+
+                if (value > 1)
+                    this.playJoinFX();
             }
         }
 
@@ -49,18 +73,18 @@
 
             //centralize
 
-            img.regX = img.getBounds().width/ 2;
-            img.regY = img.getBounds().height ;
-
+            img.regX = img.getBounds().width / 2;
+            img.regY = img.getBounds().height;
 
             var shadow = gameui.AssetsManager.getBitmap("shadow");
             shadow.regY = 45;
             shadow.regX = 108;
             shadow.scaleX = shadow.scaleY = img.getBounds().width / 216;
-            this.shadowContainer.addChild(shadow);
 
+            this.shadowContainer.addChild(shadow);
             this.imageContainer.addChild(img);
         }
+
         private createEyes(value: number) {
 
             //add Eyes

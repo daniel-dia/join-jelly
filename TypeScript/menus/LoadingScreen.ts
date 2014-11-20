@@ -104,8 +104,10 @@ module joinjelly {
                { id: "GameOverBgPoints", src: "assets/images_"+scale+"x/GameOverBgPoints.png" },
                { id: "GameOverBoard", src: "assets/images_"+scale+"x/GameOverBoard.png" },
                { id: "GameOverOk", src: "assets/images_"+scale+"x/GameOverOk.png" },
-               { id: "GameOverShare", src: "assets/images_"+scale+"x/GameOverShare.png" },
-               { id: "GameOverBack", src: "assets/images_"+scale+"x/GameOverBack.png" },
+               { id: "GameOverShare", src: "assets/images_" + scale + "x/GameOverShare.png" },
+               { id: "GameOverBack", src: "assets/images_" + scale + "x/GameOverBack.png" },
+
+               { id: "fxJoin", src: "assets/images_" + scale + "x/fxJoin.png" },
                         
                { id: "t0", src: "assets/images_"+scale+"x/t0.png" },
                { id: "t1", src: "assets/images_"+scale+"x/t1.png" },
