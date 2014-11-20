@@ -187,29 +187,55 @@ var joinjelly;
                     gameui.AssetsManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
                 };
 
+                // create and execute a level up effect on tiles
                 Board.prototype.levelUpEffect = function () {
                     var _this = this;
+                    // reseteffect timeOut id
                     this.t = 0;
+
                     for (var t in this.tiles) {
+                        // set timeout for the animation. each tile by time interval
                         setTimeout(function () {
+                            // increment effect timeOut id
                             _this.t++;
+
+                            // calculate tile id
                             var x = (_this.boardHeight * _this.boardWidth) - (_this.t % _this.boardWidth * _this.boardWidth + Math.floor(_this.t / _this.boardWidth));
+
+                            // define tile by it id
                             var tile = _this.tiles[x];
+
+                            // create a tween fast move
                             createjs.Tween.get(tile).to({ scaleY: 1.5 }, 100).to({ scaleY: 1 }, 100);
+
+                            // play a jelly light effect
                             tile.jelly.playLevelUp();
                         }, 20 * t);
                     }
                 };
 
+                // create and execute a end game effect on tiles
                 Board.prototype.endGameEffect = function () {
                     var _this = this;
+                    // reseteffect timeOut id
                     this.t = 0;
+
                     for (var t in this.tiles) {
+                        // set timeout for the animation. each tile by time interval
                         setTimeout(function () {
+                            // increment effect timeOut id
                             _this.t++;
+
+                            // calculate tile id
                             var x = (_this.t % _this.boardWidth * _this.boardWidth + Math.floor(_this.t / _this.boardWidth));
+
+                            // define tile by it id
                             var tile = _this.tiles[x];
+
+                            // create a tween fast move
                             createjs.Tween.get(tile).to({ scaleY: 0.5 }, 100).to({ scaleY: 1 }, 100);
+
+                            // play a jelly light effect
                             tile.jelly.playLevelUp();
                         }, 20 * t);
                     }

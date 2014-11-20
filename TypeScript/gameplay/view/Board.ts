@@ -199,29 +199,65 @@
             gameui.AssetsManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
         }
 
+
+        // global animation identifier.
+        // TODO: use another aproach
         private t;
+
+        // create and execute a level up effect on tiles
         public levelUpEffect() {
+            
+            // reseteffect timeOut id
             this.t = 0;
+
+            // for each tile
             for (var t in this.tiles) {
+
+                // set timeout for the animation. each tile by time interval
                 setTimeout(() => {
-                    this.t++;
+
+                    // increment effect timeOut id
+                    this.t++
+                    
+                    // calculate tile id
                     var x = (this.boardHeight * this.boardWidth) - (this.t % this.boardWidth * this.boardWidth + Math.floor(this.t / this.boardWidth));
+
+                    // define tile by it id
                     var tile = this.tiles[x];
+
+                    // create a tween fast move
                     createjs.Tween.get(tile).to({ scaleY: 1.5 }, 100).to({ scaleY: 1 }, 100);
+
+                    // play a jelly light effect
                     tile.jelly.playLevelUp();
                 }, 20 * t);
             }
         }
 
+        // create and execute a end game effect on tiles
+        public endGameEffect(){
 
-        public endGameEffect() {
+            // reseteffect timeOut id
             this.t = 0;
+
+            // for each tile
             for (var t in this.tiles) {
+
+                // set timeout for the animation. each tile by time interval
                 setTimeout(() => {
+
+                    // increment effect timeOut id
                     this.t++;
+                    // calculate tile id
                     var x = (this.t % this.boardWidth * this.boardWidth + Math.floor(this.t / this.boardWidth));
+
+                    // define tile by it id
                     var tile = this.tiles[x];
+
+                    // create a tween fast move
                     createjs.Tween.get(tile).to({ scaleY: 0.5 }, 100).to({ scaleY: 1 }, 100);
+
+                    // play a jelly light effect
                     tile.jelly.playLevelUp();
                 }, 20 * t);
             }
