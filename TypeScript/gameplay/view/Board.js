@@ -24,7 +24,7 @@ var joinjelly;
 
                     this.addTiles(boardWidth, boardHeight, tileSize, img);
                 }
-                //add tiles on the board
+                // add tiles on the board
                 Board.prototype.addTiles = function (boardWidth, boardHeight, tileSize, img) {
                     var _this = this;
                     var touchOffset = [];
@@ -89,7 +89,7 @@ var joinjelly;
 
                 // #endregion
                 // #region Tile manager ------------------------------------------------------------------------
-                //set a tile value
+                // set a tile value
                 Board.prototype.setTileValue = function (tileId, value) {
                     var t = this.getTileById(tileId);
                     if (t)
@@ -100,26 +100,26 @@ var joinjelly;
                         gameui.AssetsManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
 
-                //get a tile id by its x and y pos
+                // get a tile id by its x and y pos
                 Board.prototype.getTileIdByPos = function (rawx, rawy, tileSize) {
                     var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
                     return (this.boardWidth * coords.y + coords.x);
                 };
 
-                //get tule position by pointer position
+                // get tule position by pointer position
                 Board.prototype.getTileByRawPos = function (rawx, rawy, tileSize) {
                     var id = this.getTileIdByPos(rawx, rawy, tileSize);
                     return this.getTileById(id);
                 };
 
-                //get tile coordinates by pointer position
+                // get tile coordinates by pointer position
                 Board.prototype.getTileCoordsByRawPos = function (rawx, rawy, tileSize) {
                     var x = Math.floor(rawx / tileSize);
                     var y = Math.floor(rawy / tileSize);
                     return { x: x, y: y };
                 };
 
-                //get a new position for a tile based on its index
+                // get a new position for a tile based on its index
                 Board.prototype.getTilePositionByCoords = function (x, y, tileSize) {
                     return {
                         x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
@@ -127,7 +127,7 @@ var joinjelly;
                     };
                 };
 
-                //get a tile object by its id
+                // get a tile object by its id
                 Board.prototype.getTileById = function (id) {
                     return this.getChildByName(id.toString());
                 };
@@ -138,7 +138,7 @@ var joinjelly;
                         this.releaseDrag(this.touchDictionary[t]);
                 };
 
-                //release e tile
+                // release e tile
                 Board.prototype.releaseDrag = function (tile, match, target) {
                     var _this = this;
                     if (typeof match === "undefined") { match = true; }
@@ -168,13 +168,13 @@ var joinjelly;
 
                 // #endregion
                 // #region behaviour ----------------------------------------------------------------------------------
-                //organize all z-order
+                // organize all z-order
                 Board.prototype.arrangeZOrder = function () {
                     for (var t = this.tiles.length - 1; t >= 0; t--)
                         this.setChildIndex(this.tiles[t], 0);
                 };
 
-                //match 2 tiles
+                // match 2 tiles
                 Board.prototype.match = function (origin, target) {
                     var tile = this.getTileById(target);
                     var old = this.getTileById(origin);
@@ -185,6 +185,34 @@ var joinjelly;
                     createjs.Tween.get(tile).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
 
                     gameui.AssetsManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
+                };
+
+                Board.prototype.levelUpEffect = function () {
+                    var _this = this;
+                    this.t = 0;
+                    for (var t in this.tiles) {
+                        setTimeout(function () {
+                            _this.t++;
+                            var x = (_this.boardHeight * _this.boardWidth) - (_this.t % _this.boardWidth * _this.boardWidth + Math.floor(_this.t / _this.boardWidth));
+                            var tile = _this.tiles[x];
+                            createjs.Tween.get(tile).to({ scaleY: 1.5 }, 100).to({ scaleY: 1 }, 100);
+                            tile.jelly.playLevelUp();
+                        }, 20 * t);
+                    }
+                };
+
+                Board.prototype.endGameEffect = function () {
+                    var _this = this;
+                    this.t = 0;
+                    for (var t in this.tiles) {
+                        setTimeout(function () {
+                            _this.t++;
+                            var x = (_this.t % _this.boardWidth * _this.boardWidth + Math.floor(_this.t / _this.boardWidth));
+                            var tile = _this.tiles[x];
+                            createjs.Tween.get(tile).to({ scaleY: 0.5 }, 100).to({ scaleY: 1 }, 100);
+                            tile.jelly.playLevelUp();
+                        }, 20 * t);
+                    }
                 };
 
                 Board.prototype.clean = function () {

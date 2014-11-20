@@ -27,7 +27,7 @@
 
         }
 
-        //add tiles on the board
+        // add tiles on the board
         private addTiles(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
             var touchOffset = [];
 
@@ -95,7 +95,7 @@
 
         // #region Tile manager ------------------------------------------------------------------------
 
-        //set a tile value
+        // set a tile value
         public setTileValue(tileId, value){
             var t = this.getTileById(tileId)
             if (t) t.setNumber(value);
@@ -106,26 +106,26 @@
                 
         }
         
-        //get a tile id by its x and y pos
+        // get a tile id by its x and y pos
         private getTileIdByPos(rawx: number, rawy: number, tileSize: number): number {
             var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
             return (this.boardWidth * coords.y + coords.x);
         }
 
-        //get tule position by pointer position
+        // get tule position by pointer position
         private getTileByRawPos(rawx: number, rawy: number, tileSize: number): Tile {
             var id = this.getTileIdByPos(rawx, rawy, tileSize);
             return this.getTileById(id);
         }
 
-        //get tile coordinates by pointer position
+        // get tile coordinates by pointer position
         private getTileCoordsByRawPos(rawx: number, rawy: number, tileSize: number): point {
             var x = Math.floor(rawx / tileSize);
             var y = Math.floor(rawy / tileSize);
             return { x: x, y: y };
         }
 
-        //get a new position for a tile based on its index
+        // get a new position for a tile based on its index
         private getTilePositionByCoords(x: number, y: number, tileSize: number): point {
         return {
                 x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
@@ -133,7 +133,7 @@
             }
         }
 
-        //get a tile object by its id
+        // get a tile object by its id
         public getTileById(id: number): Tile {
             return <Tile> this.getChildByName(id.toString());
         }
@@ -145,9 +145,7 @@
             
         }
 
-
-
-        //release e tile
+        // release e tile
         private releaseDrag(tile: Tile, match: boolean= true, target?: Tile) {
             
             var index = this.touchDictionary.indexOf(tile);
@@ -181,13 +179,13 @@
 
         // #region behaviour ----------------------------------------------------------------------------------
 
-        //organize all z-order
+        // organize all z-order
         private arrangeZOrder() {
             for (var t = this.tiles.length - 1; t >= 0; t--)
                 this.setChildIndex(this.tiles[t], 0);
         }
 
-        //match 2 tiles
+        // match 2 tiles
         public match(origin: number, target: number) {
             
             var tile = this.getTileById(target);
@@ -200,6 +198,35 @@
 
             gameui.AssetsManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
         }
+
+        private t;
+        public levelUpEffect() {
+            this.t = 0;
+            for (var t in this.tiles) {
+                setTimeout(() => {
+                    this.t++;
+                    var x = (this.boardHeight * this.boardWidth) - (this.t % this.boardWidth * this.boardWidth + Math.floor(this.t / this.boardWidth));
+                    var tile = this.tiles[x];
+                    createjs.Tween.get(tile).to({ scaleY: 1.5 }, 100).to({ scaleY: 1 }, 100);
+                    tile.jelly.playLevelUp();
+                }, 20 * t);
+            }
+        }
+
+
+        public endGameEffect() {
+            this.t = 0;
+            for (var t in this.tiles) {
+                setTimeout(() => {
+                    this.t++;
+                    var x = (this.t % this.boardWidth * this.boardWidth + Math.floor(this.t / this.boardWidth));
+                    var tile = this.tiles[x];
+                    createjs.Tween.get(tile).to({ scaleY: 0.5 }, 100).to({ scaleY: 1 }, 100);
+                    tile.jelly.playLevelUp();
+                }, 20 * t);
+            }
+        }
+
 
         public clean() {
             for (var t in this.tiles)

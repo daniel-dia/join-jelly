@@ -37,6 +37,19 @@ var joinjelly;
                     }, 1000);
                 };
 
+                Jelly.prototype.playLevelUp = function () {
+                    var _this = this;
+                    this.joinFx.visible = true;
+                    this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 0.6, visible: true });
+                    createjs.Tween.get(this.joinFx).to({ scaleX: 1.5, scaleY: 1.5, alpha: 0 }, 200).call(function () {
+                        _this.joinFx.visible = true;
+                    });
+                    this.addChild(this.joinFx);
+
+                    setTimeout(function () {
+                        var x = 1;
+                    }, 1000);
+                };
                 Jelly.prototype.setNumber = function (value) {
                     //update image
                     this.imageContainer.removeAllChildren();

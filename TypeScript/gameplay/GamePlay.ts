@@ -275,7 +275,8 @@ module joinjelly.gameplay {
             if (this.currentLevel != level) {
                 this.gameLevelIndicator.showLevel(level);
                 if(level>1)
-                createjs.Sound.play("Interface Sound-11");
+                    createjs.Sound.play("Interface Sound-11");
+                this.board.levelUpEffect();
             }
 
             this.currentLevel = level;
@@ -362,6 +363,8 @@ module joinjelly.gameplay {
             // move board to top
             createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn)
 
+            // play end game effect
+            this.board.endGameEffect();
 
         }
 

@@ -37,6 +37,16 @@
             }, 1000);
         }
 
+        public playLevelUp() {
+            this.joinFx.visible = true;
+            this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 0.6, visible: true });
+            createjs.Tween.get(this.joinFx).to({ scaleX: 1.5, scaleY: 1.5, alpha: 0 }, 200).call(() => { this.joinFx.visible = true; });
+            this.addChild(this.joinFx);
+
+            setTimeout(() => {
+                var x = 1;
+            }, 1000);
+        }
         public setNumber(value: number) {
 
             //update image 
