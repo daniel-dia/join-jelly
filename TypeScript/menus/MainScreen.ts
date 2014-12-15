@@ -34,7 +34,7 @@
             this.content.addChild(lobby);
 
             //add about bt
-            var aboutBt = new gameui.ui.ImageButton("About", () => {
+            var aboutBt = new gameui.ImageButton("About", () => {
                 JoinJelly.showAboutScreen();
                 createjs.Sound.play("Interface Sound-06");
             });
@@ -43,7 +43,7 @@
             this.footer.addChild(aboutBt);
 
             //add tutorial bt
-            var tutorialBt = new gameui.ui.ImageButton("tutorial", () => {
+            var tutorialBt = new gameui.ImageButton("tutorial", () => {
                 JoinJelly.startTutorial();
                 createjs.Sound.play("Interface Sound-06");
             });
@@ -52,7 +52,7 @@
             this.footer.addChild(tutorialBt);
 
             // play button
-            var button = new gameui.ui.ImageButton("PlayBt", () => {
+            var button = new gameui.ImageButton("PlayBt", () => {
                 if (JoinJelly.userData.getLastJelly()>1)
                     JoinJelly.startLevel();
                 else
@@ -82,9 +82,9 @@
 
         private createFooter() {
             if (this.userData) {
-                this.scoreText = new createjs.BitmapText("High Score " + this.userData.getHighScore(), new createjs.SpriteSheet(Deburilfont));
+                this.scoreText = gameui.AssetsManager.getBitmapText("High Score " + this.userData.getHighScore(), "debussy");
                 this.scoreText.x = 50;
-                this.scoreText.y = -50;
+                this.scoreText.y = -100;
                 this.scoreText.scaleX = this.scoreText.scaleY = 0.8;    
                 this.footer.addChild(this.scoreText);
             }

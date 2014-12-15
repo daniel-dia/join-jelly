@@ -12,7 +12,7 @@
         private addButtons() {
 
             //add continue button;
-            var ok = new gameui.ui.ImageButton("PlayBt", (() => {
+            var ok = new gameui.ImageButton("PlayBt", (() => {
                 this.dispatchEvent("play")
                 createjs.Sound.play("Interface Sound-08");
             }));
@@ -20,7 +20,7 @@
             this.addChild(ok);
 
             //add share button;
-            var board = new gameui.ui.ImageButton("Home", (() => {
+            var board = new gameui.ImageButton("Home", (() => {
                 this.dispatchEvent("home")
                 createjs.Sound.play("Interface Sound-08");
             }));
@@ -28,7 +28,7 @@
             this.addChild(board);
 
             //add showBoard button
-            var share = new gameui.ui.ImageButton("Restart", (() => {
+            var share = new gameui.ImageButton("Restart", (() => {
                 this.dispatchEvent("restart")
                 createjs.Sound.play("Interface Sound-06");
             }));
@@ -43,28 +43,28 @@
             f.set({x:(defaultWidth-1056)/2,y:870 })
             this.addChild(f);
 
-            var t = new createjs.BitmapText("Sound", new createjs.SpriteSheet(Deburilfont)); 
-            t.set({ x: defaultWidth/2, y: 870 });
+            var t = gameui.AssetsManager.getBitmapText("Sound", "debussy")
+            t.set({ x: defaultWidth/2, y: 810 });
             t.regX = t.getBounds().width / 2;
             this.addChild(t)
 
             //add continue button;
-            var music = new gameui.ui.ImageButton("BtMusic", (() => { music.fadeOut(); musicOFf.fadeIn(); this.setMusic(false) }));
+            var music = new gameui.ImageButton("BtMusic", (() => { music.fadeOut(); musicOFf.fadeIn(); this.setMusic(false) }));
             music.set({ x: 623, y: y });
             this.addChild(music);
 
             //add share button;
-            var sound = new gameui.ui.ImageButton("BtSound", (() => { sound.fadeOut(); soundOff.fadeIn();this.setSound(false) }));
+            var sound = new gameui.ImageButton("BtSound", (() => { sound.fadeOut(); soundOff.fadeIn();this.setSound(false) }));
             sound.set({ x: 923, y: y });
             this.addChild(sound);
 
             //add continue button;
-            var musicOFf = new gameui.ui.ImageButton("BtMusicOff", (() => { musicOFf.fadeOut(); music.fadeIn(); this.setMusic(true)}));
+            var musicOFf = new gameui.ImageButton("BtMusicOff", (() => { musicOFf.fadeOut(); music.fadeIn(); this.setMusic(true)}));
             musicOFf .set({ x: 623, y: y });
             this.addChild(musicOFf );
 
             //add share button;
-            var soundOff = new gameui.ui.ImageButton("BtSoundOff", (() => { soundOff.fadeOut(); sound.fadeIn();this.setSound(true) }));
+            var soundOff = new gameui.ImageButton("BtSoundOff", (() => { soundOff.fadeOut(); sound.fadeIn();this.setSound(true) }));
             soundOff.set({ x: 923, y: y });
             this.addChild(soundOff);
 

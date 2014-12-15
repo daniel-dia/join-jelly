@@ -19,7 +19,7 @@
         private addButtons() {
 
             //add continue button;
-            var ok = new gameui.ui.ImageButton("GameOverOk", (() => {
+            var ok = new gameui.ImageButton("GameOverOk", (() => {
                 this.dispatchEvent("ok")
                 createjs.Sound.play("Interface Sound-08");
             }));
@@ -27,7 +27,7 @@
             this.addChild(ok);
 
             //add share button;
-            var board = new gameui.ui.ImageButton("GameOverBoard", (() => {
+            var board = new gameui.ImageButton("GameOverBoard", (() => {
                 this.dispatchEvent("board")
                 createjs.Sound.play("Interface Sound-06");
             }));
@@ -35,7 +35,7 @@
             this.addChild(board);
 
             //add showBoard button
-            var share = new gameui.ui.ImageButton("GameOverShare", (() => {
+            var share = new gameui.ImageButton("GameOverShare", (() => {
                 this.dispatchEvent("share")
                 createjs.Sound.play("Interface Sound-06");
             }));
@@ -47,29 +47,28 @@
         private addPoints():createjs.DisplayObject {
 
             var container = new createjs.Container();
-            var textSprites = new createjs.SpriteSheet(Deburilfont);
-
+            
             //creates points Bg
             var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
             bg.set({ x: defaultWidth/2, y: 565,regX:1056/2});
             container .addChild(bg);
 
             //create points object
-            var tx = new createjs.BitmapText("Score", textSprites)
-            tx.set({ x: 288, y: 592 });
+            var tx = gameui.AssetsManager.getBitmapText("Score", "debussy")
+            tx.set({ x: 288, y: 442 });
             tx.scaleX = tx.scaleY = 0.7;
             //container.addChild(tx);
             
             //create "points" text
-            var tx = new createjs.BitmapText("", textSprites)
-            tx.set({ x: defaultWidth/2, y: 747});
+            var tx = gameui.AssetsManager.getBitmapText("", "debussy")
+            tx.set({ x: defaultWidth/2, y: 687});
             container.addChild(tx);
             tx.scaleX = tx.scaleY = 2;
             this.scoreText = tx;            
 
             //create HighScore text
-            var tx = new createjs.BitmapText("", textSprites)
-            tx.set({ x: 1240, y: 835 });
+            var tx = gameui.AssetsManager.getBitmapText("", "debussy")
+            tx.set({ x: 1240, y: 775 });
             container.addChild(tx);
             tx.scaleX = tx.scaleY = 0.7;
             this.higghScoreText = tx;
@@ -85,7 +84,6 @@
         private addLastJelly(): createjs.DisplayObject {
 
             var container = new createjs.Container();
-            var textSprites = new createjs.SpriteSheet(Deburilfont);
 
             this.addChild(container);
 
@@ -95,8 +93,8 @@
             container.addChild(bg);
 
             //add "LastJelly" Text
-            var tx = new createjs.BitmapText("Last Jelly", textSprites)
-            tx.set({ x: 420, y:980});
+            var tx = gameui.AssetsManager.getBitmapText("Last Jelly", "debussy")
+            tx.set({ x: 420, y:820});
             //container.addChild(tx);
             tx.scaleX = tx.scaleY = 0.7;
                                     
@@ -110,8 +108,8 @@
 
 
             //add "LastJelly" name Text
-            var tx = new createjs.BitmapText("Mr Anything", textSprites)
-            tx.set({ x: defaultWidth / 2, y: 1408 });
+            var tx = gameui.AssetsManager.getBitmapText("Mr Anything", "debussy")
+            tx.set({ x: defaultWidth / 2, y: 1358 });
             tx.regX = tx.getBounds().width / 2;
             tx.scaleX = tx.scaleY = 0.7;
             this.jellyText = tx;

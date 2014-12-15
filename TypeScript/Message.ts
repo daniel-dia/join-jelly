@@ -1,5 +1,5 @@
 ﻿module joinjelly.gameplay.view {
-    export class Message extends gameui.ui.Button {
+    export class Message extends gameui.Button {
         private text: createjs.Text;
         constructor() {
             super();

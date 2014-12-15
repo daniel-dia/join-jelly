@@ -49,7 +49,7 @@
                     this.board.getTileById(16).mouseEnabled = false;
                 },
                 () => {
-                    this.showTutorialMessage("Hello, I'm little Jelly");
+                    this.showTutorialMessage("Hello, \nI'm little Jelly");
                 },
                 () => {
                     this.tutorialWait(700);

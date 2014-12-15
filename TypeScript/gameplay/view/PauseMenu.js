@@ -19,7 +19,7 @@ var joinjelly;
                 PauseMenu.prototype.addButtons = function () {
                     var _this = this;
                     //add continue button;
-                    var ok = new gameui.ui.ImageButton("PlayBt", (function () {
+                    var ok = new gameui.ImageButton("PlayBt", (function () {
                         _this.dispatchEvent("play");
                         createjs.Sound.play("Interface Sound-08");
                     }));
@@ -27,7 +27,7 @@ var joinjelly;
                     this.addChild(ok);
 
                     //add share button;
-                    var board = new gameui.ui.ImageButton("Home", (function () {
+                    var board = new gameui.ImageButton("Home", (function () {
                         _this.dispatchEvent("home");
                         createjs.Sound.play("Interface Sound-08");
                     }));
@@ -35,7 +35,7 @@ var joinjelly;
                     this.addChild(board);
 
                     //add showBoard button
-                    var share = new gameui.ui.ImageButton("Restart", (function () {
+                    var share = new gameui.ImageButton("Restart", (function () {
                         _this.dispatchEvent("restart");
                         createjs.Sound.play("Interface Sound-06");
                     }));
@@ -51,13 +51,13 @@ var joinjelly;
                     f.set({ x: (defaultWidth - 1056) / 2, y: 870 });
                     this.addChild(f);
 
-                    var t = new createjs.BitmapText("Sound", new createjs.SpriteSheet(Deburilfont));
-                    t.set({ x: defaultWidth / 2, y: 870 });
+                    var t = gameui.AssetsManager.getBitmapText("Sound", "debussy");
+                    t.set({ x: defaultWidth / 2, y: 810 });
                     t.regX = t.getBounds().width / 2;
                     this.addChild(t);
 
                     //add continue button;
-                    var music = new gameui.ui.ImageButton("BtMusic", (function () {
+                    var music = new gameui.ImageButton("BtMusic", (function () {
                         music.fadeOut();
                         musicOFf.fadeIn();
                         _this.setMusic(false);
@@ -66,7 +66,7 @@ var joinjelly;
                     this.addChild(music);
 
                     //add share button;
-                    var sound = new gameui.ui.ImageButton("BtSound", (function () {
+                    var sound = new gameui.ImageButton("BtSound", (function () {
                         sound.fadeOut();
                         soundOff.fadeIn();
                         _this.setSound(false);
@@ -75,7 +75,7 @@ var joinjelly;
                     this.addChild(sound);
 
                     //add continue button;
-                    var musicOFf = new gameui.ui.ImageButton("BtMusicOff", (function () {
+                    var musicOFf = new gameui.ImageButton("BtMusicOff", (function () {
                         musicOFf.fadeOut();
                         music.fadeIn();
                         _this.setMusic(true);
@@ -84,7 +84,7 @@ var joinjelly;
                     this.addChild(musicOFf);
 
                     //add share button;
-                    var soundOff = new gameui.ui.ImageButton("BtSoundOff", (function () {
+                    var soundOff = new gameui.ImageButton("BtSoundOff", (function () {
                         soundOff.fadeOut();
                         sound.fadeIn();
                         _this.setSound(true);

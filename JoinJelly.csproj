@@ -200,7 +200,7 @@
     <Content Include="Scripts\BitmapScalePath.js" />
     <Content Include="Scripts\CocoonJStouchPathc.js" />
     <Content Include="Scripts\createjs-2013.12.12.min.js" />
-    <Content Include="Scripts\gameuijs.js" />
+    <Content Include="Scripts\fontConverter.js" />
     <Content Include="Scripts\ImageHitAreaPatch.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -242,10 +242,18 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="gameui\AssetsManager.ts" />
+    <TypeScriptCompile Include="gameui\Button.ts" />
+    <TypeScriptCompile Include="gameui\GameScreen.ts" />
+    <TypeScriptCompile Include="gameui\Grid.ts" />
+    <TypeScriptCompile Include="gameui\Label.ts" />
+    <TypeScriptCompile Include="gameui\MenuContainer.ts" />
+    <TypeScriptCompile Include="gameui\ScreenState.ts" />
+    <TypeScriptCompile Include="gameui\Transition.ts" />
+    <TypeScriptCompile Include="gameui\UIItem.ts" />
     <TypeScriptCompile Include="Scripts\typings\createjs-lib\createjs-lib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\createjs\createjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\easeljs\easeljs.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\gameuijs\gameuijs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\ParticleEmitterJS.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\preloadjs\preloadjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\soundjs\soundjs.d.ts" />

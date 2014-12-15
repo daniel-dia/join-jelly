@@ -25,9 +25,9 @@
         // creates menu title
         private addTitle(title:string) {
             //create "points" text
-            var textSprites = new createjs.SpriteSheet(Deburilfont);
-            var tx = new createjs.BitmapText(title, textSprites)
-            tx.set({ x: defaultWidth / 2, y: 660 });
+            
+            var tx = gameui.AssetsManager.getBitmapText("1", "debussy")
+            tx.set({ x: defaultWidth / 2, y: 600 });
             this.addChild(tx);
 
            // tx.scaleX = tx.scaleY = 2;

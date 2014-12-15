@@ -40,7 +40,7 @@ createjs.Sprite.prototype.draw = function (ctx, ignoreCache) {
 	var o = this.spriteSheet.getFrame(this._currentFrame|0);
 	if (!o) { return false; }
 	var rect = o.rect;
-	ctx.drawImage(o.image, rect.x * assetscale, rect.y * assetscale, rect.width * assetscale, rect.height * assetscale, -o.regX , -o.regY , rect.width , rect.height );
+	ctx.drawImage(o.image, rect.x * assetscale, rect.y * assetscale, rect.width * assetscale, rect.height * assetscale, -o.regX * assetscale, -o.regY * assetscale, rect.width, rect.height);
 	return true;
 };
 
@@ -82,7 +82,7 @@ createjs.BitmapText.prototype._drawText = function (ctx, bounds) {
 			rx = o.regX;
 			w = rect.width 
 			h = rect.height
-			ctx && ctx.drawImage(o.image, rect.x * assetscale, rect.y * assetscale, w * assetscale, h * assetscale, x - rx, y - o.regY, w, h);
+			ctx && ctx.drawImage(o.image, rect.x * assetscale, rect.y * assetscale, w * assetscale, h * assetscale, (x - rx )* assetscale, (y - o.regY) * assetscale, w, h);
 			
 			x += w + this.letterSpacing;
 		}

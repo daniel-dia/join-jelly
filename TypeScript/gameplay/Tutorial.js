@@ -49,7 +49,7 @@ var joinjelly;
                         _this.board.getTileById(16).mouseEnabled = false;
                     },
                     function () {
-                        _this.showTutorialMessage("Hello, I'm little Jelly");
+                        _this.showTutorialMessage("Hello, \nI'm little Jelly");
                     },
                     function () {
                         _this.tutorialWait(700);

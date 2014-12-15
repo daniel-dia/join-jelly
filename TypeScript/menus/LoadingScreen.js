@@ -20,7 +20,8 @@ var joinjelly;
             if (window.innerWidth <= 384)
                 assetscale = 0.25;
 
-            var loader = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale));
+            assetscale = 1;
+            var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale));
 
             //var loader = Assets.loadAssets();
             var text = new createjs.Text("", "90px Arial", "#FFF");
@@ -31,20 +32,21 @@ var joinjelly;
             this.content.addChild(text);
 
             //add update% functtion
-            loader.addEventListener("progress", function (evt) {
+            queue.addEventListener("progress", function (evt) {
                 text.text = "Loading" + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
                 return true;
             });
 
             //creates load complete action
-            loader.addEventListener("complete", function (evt) {
+            queue.addEventListener("complete", function (evt) {
                 if (_this.loaded)
                     _this.loaded();
                 return true;
             });
 
             //load font
-            createDeburilfont(assetscale);
+            debussy = createSpriteSheetFromFont(debussyFont, "assets/images_" + assetscale + "x/");
+            gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
         };
 
         Loading.prototype.getAssetsManifest = function (scale) {
@@ -60,7 +62,7 @@ var joinjelly;
                 { id: "bonus_border", src: "assets/images_" + scale + "x/bonus_border.png" },
                 { id: "bt", src: "assets/images_" + scale + "x/bt.png" },
                 { id: "ChubbyFont", src: "assets/images_" + scale + "x/ChubbyFont.png" },
-                { id: "Deburil", src: "assets/images_" + scale + "x/Deburil.png" },
+                { id: "font", src: "assets/images_" + scale + "x/font.png" },
                 { id: "e1", src: "assets/images_" + scale + "x/e1.png" },
                 { id: "e128", src: "assets/images_" + scale + "x/e128.png" },
                 { id: "e16", src: "assets/images_" + scale + "x/e16.png" },
@@ -126,7 +128,7 @@ var joinjelly;
                 { id: "tutorialFinger", src: "assets/images_" + scale + "x/tutorialFinger.png" },
                 { id: "ballon", src: "assets/images_" + scale + "x/ballon.png" },
                 { id: "tutorial", src: "assets/images_" + scale + "x/tutorial.png" },
-                //{ id: "bg1", src: "Sounds/bg1.mp3" },
+                { id: "bg1", src: "Sounds/bg1.mp3" },
                 { id: "sound_h1", src: "Sounds/h1.mp3" },
                 { id: "sound_r1", src: "Sounds/r1.mp3" },
                 { id: "sound_s1", src: "Sounds/s1.mp3" },

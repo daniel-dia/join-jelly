@@ -20,7 +20,7 @@ var joinjelly;
                 FinishMenu.prototype.addButtons = function () {
                     var _this = this;
                     //add continue button;
-                    var ok = new gameui.ui.ImageButton("GameOverOk", (function () {
+                    var ok = new gameui.ImageButton("GameOverOk", (function () {
                         _this.dispatchEvent("ok");
                         createjs.Sound.play("Interface Sound-08");
                     }));
@@ -28,7 +28,7 @@ var joinjelly;
                     this.addChild(ok);
 
                     //add share button;
-                    var board = new gameui.ui.ImageButton("GameOverBoard", (function () {
+                    var board = new gameui.ImageButton("GameOverBoard", (function () {
                         _this.dispatchEvent("board");
                         createjs.Sound.play("Interface Sound-06");
                     }));
@@ -36,7 +36,7 @@ var joinjelly;
                     this.addChild(board);
 
                     //add showBoard button
-                    var share = new gameui.ui.ImageButton("GameOverShare", (function () {
+                    var share = new gameui.ImageButton("GameOverShare", (function () {
                         _this.dispatchEvent("share");
                         createjs.Sound.play("Interface Sound-06");
                     }));
@@ -47,7 +47,6 @@ var joinjelly;
                 // create points control
                 FinishMenu.prototype.addPoints = function () {
                     var container = new createjs.Container();
-                    var textSprites = new createjs.SpriteSheet(Deburilfont);
 
                     //creates points Bg
                     var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
@@ -55,21 +54,21 @@ var joinjelly;
                     container.addChild(bg);
 
                     //create points object
-                    var tx = new createjs.BitmapText("Score", textSprites);
-                    tx.set({ x: 288, y: 592 });
+                    var tx = gameui.AssetsManager.getBitmapText("Score", "debussy");
+                    tx.set({ x: 288, y: 442 });
                     tx.scaleX = tx.scaleY = 0.7;
 
                     //container.addChild(tx);
                     //create "points" text
-                    var tx = new createjs.BitmapText("", textSprites);
-                    tx.set({ x: defaultWidth / 2, y: 747 });
+                    var tx = gameui.AssetsManager.getBitmapText("", "debussy");
+                    tx.set({ x: defaultWidth / 2, y: 687 });
                     container.addChild(tx);
                     tx.scaleX = tx.scaleY = 2;
                     this.scoreText = tx;
 
                     //create HighScore text
-                    var tx = new createjs.BitmapText("", textSprites);
-                    tx.set({ x: 1240, y: 835 });
+                    var tx = gameui.AssetsManager.getBitmapText("", "debussy");
+                    tx.set({ x: 1240, y: 775 });
                     container.addChild(tx);
                     tx.scaleX = tx.scaleY = 0.7;
                     this.higghScoreText = tx;
@@ -83,7 +82,6 @@ var joinjelly;
                 // creates last jelly control
                 FinishMenu.prototype.addLastJelly = function () {
                     var container = new createjs.Container();
-                    var textSprites = new createjs.SpriteSheet(Deburilfont);
 
                     this.addChild(container);
 
@@ -93,8 +91,8 @@ var joinjelly;
                     container.addChild(bg);
 
                     //add "LastJelly" Text
-                    var tx = new createjs.BitmapText("Last Jelly", textSprites);
-                    tx.set({ x: 420, y: 980 });
+                    var tx = gameui.AssetsManager.getBitmapText("Last Jelly", "debussy");
+                    tx.set({ x: 420, y: 820 });
 
                     //container.addChild(tx);
                     tx.scaleX = tx.scaleY = 0.7;
@@ -108,8 +106,8 @@ var joinjelly;
                     this.jelly = jelly;
 
                     //add "LastJelly" name Text
-                    var tx = new createjs.BitmapText("Mr Anything", textSprites);
-                    tx.set({ x: defaultWidth / 2, y: 1408 });
+                    var tx = gameui.AssetsManager.getBitmapText("Mr Anything", "debussy");
+                    tx.set({ x: defaultWidth / 2, y: 1358 });
                     tx.regX = tx.getBounds().width / 2;
                     tx.scaleX = tx.scaleY = 0.7;
                     this.jellyText = tx;

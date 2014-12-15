@@ -1,6 +1,4 @@
-﻿declare var Deburilfont;
-
-module joinjelly.gameplay.view {
+﻿module joinjelly.gameplay.view {
     export class GameHeader extends createjs.Container {
 
         private scoreText: createjs.BitmapText;
@@ -24,7 +22,7 @@ module joinjelly.gameplay.view {
             bg.x = 0;
 
             //add pause button
-            var pauseButton = new gameui.ui.ImageButton("pause", () => {
+            var pauseButton = new gameui.ImageButton("pause", () => {
                 this.dispatchEvent("pause");
                 createjs.Sound.play("Interface Sound-06");
             });
@@ -46,18 +44,18 @@ module joinjelly.gameplay.view {
             this.levelBar = levelBar;
 
             //add scores text
-            var score = new createjs.BitmapText("score", new createjs.SpriteSheet(Deburilfont));
+            var score = gameui.AssetsManager.getBitmapText("score", "debussy")
             //score.textBaseline = "middle";
             score.x = 323;
-            score.y = 124 -30;
+            score.y = 124 -80;
             this.scoreText = score;
             this.addChild(score);
 
             //add scores text
-            var level = new createjs.BitmapText("Level: ?????", new createjs.SpriteSheet(Deburilfont));
+            var level = gameui.AssetsManager.getBitmapText("level", "debussy")
             //level.textBaseline = "middle";
             level.x = 1099;
-            level.y = 242 -40;
+            level.y = 242 -200;
             level.scaleX = level.scaleY = 2;
             this.levelText = level;
             this.addChild(level);

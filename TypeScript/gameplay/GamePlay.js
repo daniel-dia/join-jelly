@@ -69,7 +69,7 @@ var joinjelly;
                 this.content.addChild(this.finishMenu);
 
                 // creates a toggle button
-                var tbt = new gameui.ui.ImageButton("GameOverBoard", function () {
+                var tbt = new gameui.ImageButton("GameOverBoard", function () {
                     _this.finishMenu.show();
                     tbt.fadeOut();
 

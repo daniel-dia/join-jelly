@@ -1,4 +1,6 @@
-﻿declare var createDeburilfont
+﻿declare var debussy
+declare var debussyFont
+declare function createSpriteSheetFromFont(font:any, path:string);
 
 module joinjelly {
 
@@ -16,9 +18,9 @@ module joinjelly {
             assetscale = 1;
             if (window.innerWidth <= 1024) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;      
-            
 
-            var loader = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale));//, spriteSheets, images);
+            assetscale = 1;
+            var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale));//, spriteSheets, images);
 
             //var loader = Assets.loadAssets();
             var text = new createjs.Text("", "90px Arial", "#FFF");
@@ -29,19 +31,21 @@ module joinjelly {
             this.content.addChild(text);
 
             //add update% functtion
-            loader.addEventListener("progress", (evt: Object): boolean => {
+            queue.addEventListener("progress", (evt: Object): boolean => {
                 text.text = /*stringResources.ld*/ "Loading" + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
                 return true;
             });
 
             //creates load complete action
-            loader.addEventListener("complete", (evt: Object): boolean => {
+            queue.addEventListener("complete", (evt: Object): boolean => {
                 if (this.loaded) this.loaded();
                 return true;
             });
 
+            
             //load font
-            createDeburilfont(assetscale);
+            debussy = createSpriteSheetFromFont(debussyFont, "assets/images_" + assetscale +"x/");
+            gameui.AssetsManager.loadFontSpriteSheet("debussy",debussy);
         }
         
         private getAssetsManifest(scale: number): Array<any> {
@@ -57,7 +61,7 @@ module joinjelly {
                 { id: "bonus_border", src: "assets/images_"+scale+"x/bonus_border.png" },
                 { id: "bt", src: "assets/images_"+scale+"x/bt.png" },
                 { id: "ChubbyFont", src: "assets/images_"+scale+"x/ChubbyFont.png" },
-                { id: "Deburil", src: "assets/images_"+scale+"x/Deburil.png" },
+                { id: "font", src: "assets/images_"+scale+"x/font.png" },
                 { id: "e1", src: "assets/images_"+scale+"x/e1.png" },
                 { id: "e128", src: "assets/images_"+scale+"x/e128.png" },
                 { id: "e16", src: "assets/images_"+scale+"x/e16.png" },
@@ -131,16 +135,16 @@ module joinjelly {
                { id: "ballon", src: "assets/images_"+scale+"x/ballon.png" },
                { id: "tutorial", src: "assets/images_"+scale+"x/tutorial.png" },
                
-               //{ id: "bg1", src: "Sounds/bg1.mp3" },
+               { id: "bg1", src: "Sounds/bg1.mp3" },
 
 
                { id: "sound_h1", src: "Sounds/h1.mp3" },
                { id: "sound_r1", src: "Sounds/r1.mp3" },
-                           
+                         
                { id: "sound_s1", src: "Sounds/s1.mp3" },
                { id: "sound_s2", src: "Sounds/s2.mp3" },
                { id: "sound_s3", src: "Sounds/s3.mp3" },
-                           
+                         
                { id: "sound_j1", src: "Sounds/j1.mp3" },
                { id: "sound_j2", src: "Sounds/j2.mp3" },
                { id: "sound_j3", src: "Sounds/j3.mp3" },

@@ -30,7 +30,7 @@ var joinjelly;
                     this.fadeIn();
                 };
                 return Message;
-            })(gameui.ui.Button);
+            })(gameui.Button);
             view.Message = Message;
         })(gameplay.view || (gameplay.view = {}));
         var view = gameplay.view;

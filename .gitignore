@@ -154,3 +154,8 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/JoinJelly.sln.ide/storage.ide
+/JoinJelly.sln.ide/edbres00002.jrs
+/JoinJelly.sln.ide/edbres00001.jrs
+/JoinJelly.sln.ide/edb.chk
+/JoinJelly.sln.ide

@@ -14,13 +14,13 @@ var joinjelly;
                     _super.apply(this, arguments);
                 }
                 LevelIndicator.prototype.showLevel = function (levelId) {
-                    var text = new createjs.BitmapText("Level: ?????", new createjs.SpriteSheet(Deburilfont));
+                    var text = gameui.AssetsManager.getBitmapText("level", "debussy");
                     this.addChild(text);
 
                     //text.textAlign = "center";
                     text.text = "LEVEL " + levelId;
                     text.x = defaultWidth / 2;
-                    text.y = defaultHeight / 2 + 200;
+                    text.y = defaultHeight / 2 + 140;
                     text.alpha = 0;
 
                     text.regX = text.getBounds().width / 2;

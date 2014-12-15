@@ -23,11 +23,11 @@ var joinjelly;
                     this.x = 164 + this.regX;
                     this.y = 941 + this.regY;
 
-                    var t = new createjs.BitmapText("", new createjs.SpriteSheet(Deburilfont));
+                    var t = gameui.AssetsManager.getBitmapText("", "debussy");
                     this.addChild(t);
                     t.scaleX = t.scaleY = 0.7;
                     t.x = 50;
-                    t.y = 100;
+                    t.y = 50;
                     this.bitmapText = t;
                     t.mouseEnabled = false;
 
@@ -45,7 +45,7 @@ var joinjelly;
                     gameui.AssetsManager.playSound("Interface Sound-14");
                 };
                 return TutoralMessage;
-            })(gameui.ui.Button);
+            })(gameui.Button);
             view.TutoralMessage = TutoralMessage;
         })(gameplay.view || (gameplay.view = {}));
         var view = gameplay.view;
