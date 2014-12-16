@@ -35,11 +35,21 @@
                 for (var y = 0; y < boardHeight; y++) {
                     var tileDO = new Tile(x, y, tileSize);
 
+                    // add a tile background
+                    if ((x + y) % 2 == 0) {
+                        var shape = new createjs.Shape();
+                        this.addChild(shape);
+                        shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize*0.2, tileSize, tileSize);
+                    }
+
+                    // add a jelly on tile
                     this.tiles.push(tileDO);
                     this.addChild(tileDO);
                     tileDO.setNumber(0);
                     tileDO.name = (this.boardWidth * y + x).toString();
                     tileDO.set(this.getTilePositionByCoords(x, y, tileSize));
+
+
                 }
             }
 
@@ -181,8 +191,8 @@
 
         // organize all z-order
         private arrangeZOrder() {
-            for (var t = this.tiles.length - 1; t >= 0; t--)
-                this.setChildIndex(this.tiles[t], 0);
+            for (var t = 0 ; t < this.tiles.length; t++)
+                this.setChildIndex(this.tiles[t], this.getNumChildren()-1);
         }
 
         // match 2 tiles
