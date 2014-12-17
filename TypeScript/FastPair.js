@@ -35,6 +35,10 @@
         JoinJelly.startTutorial = function () {
             this.gameScreen.switchScreen(new joinjelly.gameplay.Tutorial(this.userData));
         };
+
+        JoinJelly.showPedia = function () {
+            this.gameScreen.switchScreen(new joinjelly.Jellypedia(this.userData, jellyInfos));
+        };
         return JoinJelly;
     })();
     joinjelly.JoinJelly = JoinJelly;

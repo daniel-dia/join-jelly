@@ -33,8 +33,17 @@
             lobby.y = 1000;
             this.content.addChild(lobby);
 
+            //add pedia button
+            var aboutBt = new gameui.ImageButton("btJelly", () => {
+                JoinJelly.showPedia();
+                createjs.Sound.play("Interface Sound-06");
+            });
+            aboutBt.y = -150;
+            aboutBt.x = defaultWidth - 650;
+            this.footer.addChild(aboutBt);
+
             //add about bt
-            var aboutBt = new gameui.ImageButton("About", () => {
+            var aboutBt = new gameui.ImageButton("btInfo", () => {
                 JoinJelly.showAboutScreen();
                 createjs.Sound.play("Interface Sound-06");
             });
@@ -43,7 +52,7 @@
             this.footer.addChild(aboutBt);
 
             //add tutorial bt
-            var tutorialBt = new gameui.ImageButton("tutorial", () => {
+            var tutorialBt = new gameui.ImageButton("btHelp", () => {
                 JoinJelly.startTutorial();
                 createjs.Sound.play("Interface Sound-06");
             });

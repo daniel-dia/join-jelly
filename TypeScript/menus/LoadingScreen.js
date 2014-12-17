@@ -1,4 +1,4 @@
-﻿var __extends = this.__extends || function (d, b) {
+var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -19,36 +19,29 @@ var joinjelly;
                 assetscale = 0.5;
             if (window.innerWidth <= 384)
                 assetscale = 0.25;
-
             assetscale = 1;
-            var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale));
-
+            var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale)); //, spriteSheets, images);
             //var loader = Assets.loadAssets();
             var text = new createjs.Text("", "90px Arial", "#FFF");
             text.x = defaultWidth / 2;
             text.y = defaultHeight / 2;
             text.textAlign = "center";
-
             this.content.addChild(text);
-
             //add update% functtion
             queue.addEventListener("progress", function (evt) {
                 text.text = "Loading" + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
                 return true;
             });
-
             //creates load complete action
             queue.addEventListener("complete", function (evt) {
                 if (_this.loaded)
                     _this.loaded();
                 return true;
             });
-
             //load font
             debussy = createSpriteSheetFromFont(debussyFont, "assets/images_" + assetscale + "x/");
             gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
         };
-
         Loading.prototype.getAssetsManifest = function (scale) {
             return [
                 { id: "j1024", src: "assets/images_" + scale + "x/j1024.png" },
@@ -97,12 +90,10 @@ var joinjelly;
                 { id: "time_border", src: "assets/images_" + scale + "x/time_border.png" },
                 { id: "shadow", src: "assets/images_" + scale + "x/shadow.png" },
                 { id: "particle", src: "assets/images_" + scale + "x/particle.png" },
-                { id: "GameOverBgJelly", src: "assets/images_" + scale + "x/GameOverBgJelly.png" },
-                { id: "GameOverBgPoints", src: "assets/images_" + scale + "x/GameOverBgPoints.png" },
-                { id: "GameOverBoard", src: "assets/images_" + scale + "x/GameOverBoard.png" },
-                { id: "GameOverOk", src: "assets/images_" + scale + "x/GameOverOk.png" },
-                { id: "GameOverShare", src: "assets/images_" + scale + "x/GameOverShare.png" },
-                { id: "GameOverBack", src: "assets/images_" + scale + "x/GameOverBack.png" },
+                { id: "btHelp", src: "assets/images_" + scale + "x/btHelp.png" },
+                { id: "btInfo", src: "assets/images_" + scale + "x/btInfo.png" },
+                { id: "btJelly", src: "assets/images_" + scale + "x/btJelly.png" },
+                { id: "btPause", src: "assets/images_" + scale + "x/btPause.png" },
                 { id: "GameOverBgJelly", src: "assets/images_" + scale + "x/GameOverBgJelly.png" },
                 { id: "GameOverBgPoints", src: "assets/images_" + scale + "x/GameOverBgPoints.png" },
                 { id: "GameOverBoard", src: "assets/images_" + scale + "x/GameOverBoard.png" },
@@ -127,7 +118,9 @@ var joinjelly;
                 { id: "About", src: "assets/images_" + scale + "x/About.png" },
                 { id: "tutorialFinger", src: "assets/images_" + scale + "x/tutorialFinger.png" },
                 { id: "ballon", src: "assets/images_" + scale + "x/ballon.png" },
-                { id: "tutorial", src: "assets/images_" + scale + "x/tutorial.png" }
+                { id: "tutorial", src: "assets/images_" + scale + "x/tutorial.png" },
+                { id: "pediaItem", src: "assets/images_" + scale + "x/pediaItem.png" },
+                { id: "BigBG", src: "assets/images_" + scale + "x/BigBG.png" },
             ];
         };
         return Loading;

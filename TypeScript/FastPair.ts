@@ -37,6 +37,10 @@
      
         public static startTutorial() {
             this.gameScreen.switchScreen(new gameplay.Tutorial(this.userData));
+        } 
+        
+        public static showPedia() {
+            this.gameScreen.switchScreen(new Jellypedia(this.userData,jellyInfos));
         }
     }
 }

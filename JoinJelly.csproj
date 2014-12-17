@@ -273,7 +273,10 @@
     <TypeScriptCompile Include="TypeScript\gameplay\view\LevelIndicator.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\TimeBar.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\TutorialMove.ts" />
+    <TypeScriptCompile Include="TypeScript\JellyData.ts" />
+    <TypeScriptCompile Include="TypeScript\menus\Jellypedia.ts" />
     <TypeScriptCompile Include="TypeScript\menus\view\FlyOutMenu.ts" />
+    <TypeScriptCompile Include="TypeScript\menus\view\JellypediaItem.ts" />
     <TypeScriptCompile Include="TypeScript\menus\view\Title.ts" />
     <TypeScriptCompile Include="TypeScript\view\Jellyble.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\GamePlay.ts" />

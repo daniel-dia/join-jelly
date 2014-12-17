@@ -61,7 +61,7 @@ var joinjelly;
                     //container.addChild(tx);
                     //create "points" text
                     var tx = gameui.AssetsManager.getBitmapText("", "debussy");
-                    tx.set({ x: defaultWidth / 2, y: 687 });
+                    tx.set({ x: defaultWidth / 2, y: 587 });
                     container.addChild(tx);
                     tx.scaleX = tx.scaleY = 2;
                     this.scoreText = tx;
@@ -106,9 +106,8 @@ var joinjelly;
                     this.jelly = jelly;
 
                     //add "LastJelly" name Text
-                    var tx = gameui.AssetsManager.getBitmapText("Mr Anything", "debussy");
+                    var tx = gameui.AssetsManager.getBitmapText("1", "debussy");
                     tx.set({ x: defaultWidth / 2, y: 1358 });
-                    tx.regX = tx.getBounds().width / 2;
                     tx.scaleX = tx.scaleY = 0.7;
                     this.jellyText = tx;
                     container.addChild(tx);
@@ -132,9 +131,9 @@ var joinjelly;
                     }, 30);
 
                     this.higghScoreText.text = "High Score: " + best.toString();
-                    this.jellyText.text = jelly.toString();
                     this.jelly.setNumber(jelly);
 
+                    this.jellyText.text = jellyInfos[jelly].name;
                     this.jellyText.regX = this.jellyText.getBounds().width / 2;
                     this.higghScoreText.regX = this.higghScoreText.getBounds().width;
                 };
