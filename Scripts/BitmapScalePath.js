@@ -82,15 +82,15 @@ createjs.BitmapText.prototype._drawText = function (ctx, bounds) {
 			rx = o.regX;
 			w = rect.width 
 			h = rect.height
-			ctx && ctx.drawImage(o.image, rect.x * assetscale, rect.y * assetscale, w * assetscale, h * assetscale, (x - rx )* assetscale, (y - o.regY) * assetscale, w, h);
+			ctx && ctx.drawImage(o.image, rect.x * assetscale, rect.y * assetscale, w * assetscale, h * assetscale, (x  *assetscale - rx), (y * assetscale - o.regY), w, h);
 			
-			x += w + this.letterSpacing;
+			x += w /assetscale + this.letterSpacing;
 		}
 	if (x-rx > maxX) { maxX = x-rx; }
 	
 	if (bounds) {
-			bounds.width = maxX-this.letterSpacing;
-			bounds.height = y+lineH;
+			bounds.width = (maxX-this.letterSpacing)*assetscale;
+			bounds.height = (y+lineH)*assetscale;
 		}
 };
 
