@@ -32,7 +32,7 @@
         }
 
         public static startLevel() {
-            this.gameScreen.switchScreen(new gameplay.GamePlayScreen(this.userData));
+            this.gameScreen.switchScreen(new gameplay.ExplodeBricks(this.userData));
         }
      
         public static startTutorial() {

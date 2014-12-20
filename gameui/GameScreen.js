@@ -3,12 +3,11 @@ var gameui;
     var GameScreen = (function () {
         //-----------------------------------------------------------------------
         function GameScreen(canvasElement, gameWidth, gameHeight, fps, showFps) {
-            if (typeof fps === "undefined") { fps = 60; }
             var _this = this;
+            if (fps === void 0) { fps = 60; }
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
-
-            //Initializes canvas Context
+            //Initializes canvas Context            
             this.myCanvas = document.getElementById(canvasElement);
             var ctx = this.myCanvas.getContext("2d");
             this.stage = new createjs.Stage(this.myCanvas);
@@ -17,10 +16,8 @@ var gameui;
                 _this.stage.update();
             });
             createjs.Ticker.setFPS(fps);
-
             this.screenContainer = new createjs.Container();
             this.stage.addChild(this.screenContainer);
-
             //Framerate meter
             if (showFps) {
                 var fpsMeter = new createjs.Text("FPS", " 18px Arial ", "#fff");
@@ -31,7 +28,6 @@ var gameui;
                     fpsMeter.text = Math.floor(createjs.Ticker.getMeasuredFPS()) + " FPS";
                 });
             }
-
             //var windowWidth = window.innerWidth;
             this.resizeGameScreen(window.innerWidth, window.innerHeight);
             window.onresize = function () {
@@ -45,10 +41,8 @@ var gameui;
             //TODO to it better
             if (!transition)
                 transition = new gameui.Transition();
-
             //save oldscreen
             var oldScreen = this.currentScreen;
-
             //if transition
             if (transition && oldScreen) {
                 //and transition = fade
@@ -63,70 +57,59 @@ var gameui;
                         _this.removeOldScreen(oldScreen);
                         oldScreen = null;
                     });
-
                     //fade old screen out
                     createjs.Tween.get(oldScreen.view).to({ alpha: 0 }, transition.time);
-                } else {
+                }
+                else {
                     this.removeOldScreen(oldScreen);
                     oldScreen = null;
                 }
-            } else {
+            }
+            else {
                 this.removeOldScreen(oldScreen);
                 oldScreen = null;
             }
-
             //adds the new screen on viewer
             newScreen.activate(parameters);
             this.screenContainer.addChild(newScreen.view);
-
             this.currentScreen = newScreen;
-
             //updates current screen
             if (this.currentScreen)
                 this.currentScreen.redim(this.headerPosition, this.footerPosition, this.defaultWidth);
         };
-
         //resize GameScreen to a diferent scale
         GameScreen.prototype.resizeGameScreen = function (deviceWidth, deviceHeight, updateCSS) {
-            if (typeof updateCSS === "undefined") { updateCSS = true; }
-            //keep aspect ratio
+            if (updateCSS === void 0) { updateCSS = true; }
+            //keep aspect ratio 
             if (this.defaultHeight) {
                 var aspect = this.defaultWidth / this.defaultHeight;
                 var aspectReal = deviceWidth / deviceHeight;
-
                 if (aspectReal > aspect) {
                     var s = deviceHeight / this.defaultHeight;
                     deviceWidth = this.defaultWidth * s;
                 }
             }
-
             this.myCanvas.width = deviceWidth;
             this.myCanvas.height = deviceHeight;
-
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
             //if (updateCSS) setMobileScale(deviceWidth)
         };
-
         //updates screen viewer scale
         GameScreen.prototype.updateViewerScale = function (realWidth, realHeight, defaultWidth, defaultHeight) {
             var scale = realWidth / defaultWidth;
             var currentHeight = realHeight / scale;
             var currentWidth = realWidth / scale;
             this.defaultWidth = defaultWidth;
-
             //set header and footer positions
             this.headerPosition = -(currentHeight - defaultHeight) / 2;
             this.footerPosition = defaultHeight + (currentHeight - defaultHeight) / 2;
-
             //set the viewer offset to centralize in window
             this.screenContainer.scaleX = this.screenContainer.scaleY = scale;
             this.screenContainer.y = this.viewerOffset = (currentHeight - defaultHeight) / 2 * scale;
-
             //updates current screen
             if (this.currentScreen)
                 this.currentScreen.redim(this.headerPosition, this.footerPosition, this.defaultWidth);
         };
-
         //deletes old screen
         GameScreen.prototype.removeOldScreen = function (oldScreen) {
             if (oldScreen != null) {

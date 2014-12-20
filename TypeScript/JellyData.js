@@ -1,5 +1,4 @@
-﻿;
-
+;
 var jellyInfos = [];
 jellyInfos[1] = { name: "Little Jelly", description: "description" };
 jellyInfos[2] = { name: "Go Jelly", description: "description" };

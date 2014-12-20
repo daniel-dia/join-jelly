@@ -1,4 +1,4 @@
-﻿window.onload = function () {
+window.onload = function () {
     joinjelly.JoinJelly.init();
 };
 //# sourceMappingURL=app.js.map

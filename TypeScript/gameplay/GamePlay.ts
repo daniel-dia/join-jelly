@@ -1,5 +1,4 @@
-﻿declare var Chubbyfont;
-module joinjelly.gameplay {
+﻿module joinjelly.gameplay {
 
     enum GameState {
         starting,
@@ -10,11 +9,11 @@ module joinjelly.gameplay {
 
     export class GamePlayScreen extends gameui.ScreenState {
 
-        private boardSize = 5;
+        protected  gamestate: GameState;
 
-                 board: view.Board;
+        protected  boardSize = 5;
 
-        private tiles: Array<number>
+        protected board: view.Board;
 
         private currentLevel: number;
 
@@ -22,24 +21,24 @@ module joinjelly.gameplay {
 
         private timeInterval: number;
 
-                 gamePlayLoop: number;
-
         private gameNextDrop: number;
 
-        private gamestate: GameState;
-
         private gameHeader: view.GameHeader;
+
         private gameLevelIndicator: view.LevelIndicator;
 
         private UserData: UserData;
 
-        private finishMenu: view.FinishMenu
+        private finishMenu: view.FinishMenu;
+
         private pauseMenu: view.PauseMenu;
+
+        protected gamePlayLoop: number;
 
         // count moves for log
         private moves: number = 0;
 
-        matchNotify: () => void;
+        protected matchNotify: () => void;
 
         //#region =================================== initialization ==========================================================
 
@@ -50,13 +49,10 @@ module joinjelly.gameplay {
 
             this.score = 0;
 
-            this.tiles = new Array();
             this.createBackground();
             this.createBoard();
             this.createGUI();
-
-            
-        }
+       }
 
         // create game background
         private createBackground() {
@@ -140,16 +136,70 @@ module joinjelly.gameplay {
 
         //#endregion
 
-        // #region =================================== gamelay behaviour =======================================================
+        // #region =================================== interface =======================================================
+
+        // update GUI iformaion
+        private updateInterfaceInfos() {
+
+            var score = this.score;
+
+            var level = this.getLevelByScore(score);
+
+            var nextLevelScore = this.getScoreByLevel(level);
+            var previousLevelScore = this.getScoreByLevel(level - 1);
+            var percent = (score - previousLevelScore) / (nextLevelScore - previousLevelScore) * 100;
+
+            // defines alarm condition
+            var emptySpaces = this.board.getPercentEmptySpaces();
+            var alarm = false;
+            if (emptySpaces < 0.25 && emptySpaces > 0)
+                var alarm = true;
+
+            // updates the header
+            this.gameHeader.updateStatus(score, level, percent, emptySpaces, alarm);
+
+            // updates board shaking.
+            this.board.setAlarm(alarm);
+
+            // do level up
+            if (this.currentLevel != level && level > 1)
+                this.levelUp(level);
+
+            // 
+            this.currentLevel = level
+        }
+
+        // level up
+        protected levelUp(level:number) {
+            this.gameLevelIndicator.showLevel(level);
+            createjs.Sound.play("Interface Sound-11");
+            this.board.levelUpEffect();
+        }
+        
+        // returns a score based on level
+        private getScoreByLevel(level: number): number {
+            if (level == 0) return 0;
+            return 50 * Math.pow(2, level);
+        }
+
+        //return a level based on a score
+        private getLevelByScore(score: number): number {
+            if (!score) score = 1;
+            return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2)) + 1
+        }
+
+        // #endregion
+
+        // #region =================================== gamelay =======================================================
 
         // Starts the game
-        start() {
-            this.board.clean();
+        protected start() {
+            this.board.cleanBoard();
+            this.board.unlock();
             this.step();
-            this.board.mouseEnabled = true;
             this.updateInterfaceInfos();
-            this.timeInterval = 800;
-            
+            this.timeInterval = 300;
+
             gameui.AssetsManager.playMusic("music1");
 
             this.gamePlayLoop = setInterval(() => { this.step(); }, 10)
@@ -163,17 +213,57 @@ module joinjelly.gameplay {
         // pause game
         private pauseGame() {
             this.gamestate = GameState.paused;
-            this.board.mouseEnabled = false;
+            this.board.lock();
+        }
+
+        // finishes the game
+        private endGame() {
+
+            var score = this.score;
+            var highScore = JoinJelly.userData.getHighScore();
+            var highJelly = this.board.getHighestTileValue();
+
+            // disable mouse interaction
+            this.board.lock();
+
+            // releases all jellys
+            this.board.releaseAll();
+
+            // save high score
+            JoinJelly.userData.setScore(score);
+
+            // shows finished game menu
+            setTimeout(() => { this.finishMenu.show(); }, 1200);
+            this.finishMenu.setValues(score, highScore, highJelly);
+
+            // move the board a little up
+            createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut)
+
+            // stop game loop
+            if (this.gamePlayLoop) clearInterval(this.gamePlayLoop);
+
+            // log event
+            JoinJelly.analytics.logEndGame(this.moves, this.score, this.currentLevel, highJelly)
+
+            // play end soud
+            gameui.AssetsManager.playSound("end");
+
+            // move board to top
+            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn)
+
+            // play end game effect
+            this.board.endGameEffect();
+
         }
 
         // unpause game
         private continueGame() {
             this.gamestate = GameState.playing;
-            this.board.mouseEnabled = true;
+            this.board.unlock();
         }
 
-        //time step for adding tiles.
-        private step() {
+        // time step for adding tiles.
+        protected step() {
 
             // if is not playing, than does not execute a step
             if (this.gamestate != GameState.playing) return;
@@ -201,25 +291,10 @@ module joinjelly.gameplay {
             }
         }
 
-        // list all empty blocks in a array
-        private getEmptyBlocks(): Array<number> {
-
-            //get next jelly
-            var total = this.boardSize * this.boardSize;
-            var empty = [];
-
-            //get all empty tiles
-            for (var t = 0; t < total; t++)
-                if (this.tiles[t] == 0 || !this.tiles[t])
-                    empty.push(t);
-
-            return empty;
-        }
-
         // Verifies if game is over
         private verifyGameLoose(): boolean {
 
-            var empty = this.getEmptyBlocks();
+            var empty = this.board.getEmptyTiles();
 
             if (empty.length == 0)
                 return true;
@@ -228,85 +303,16 @@ module joinjelly.gameplay {
         }
 
         // add a random tile with value 1 on board
-        private addRandomTileOnBoard() {
+        protected addRandomTileOnBoard() {
 
-            var empty = this.getEmptyBlocks();
+            var empty = this.board.getEmptyTiles();
 
             // if there is no more empty tiles, ends the game
             if (empty.length > 0) {
                 var i = Math.floor(Math.random() * empty.length);
-                var tid = empty[i];
-                this.setTileValue(tid, 1);
-                return true;
+                var tile = empty[i];
+                tile.setNumber(1);
             }
-
-            return false;
-        }
-
-        setTileValue(tileId:number, value:number) {
-            this.tiles[tileId] = value;
-            this.board.setTileValue(tileId, value);
-
-        }
-
-        // update GUI iformaion
-        private updateInterfaceInfos() {
-
-            var score = this.score;
-
-            var level = this.getLevelByScore(score);
-
-            var nextLevelScore = this.getScoreByLevel(level);
-            var previousLevelScore = this.getScoreByLevel(level - 1);
-            var percent = (score - previousLevelScore) / (nextLevelScore - previousLevelScore) * 100;
-
-            // defines alarm condition
-            var emptySpaces = this.getPercentEmptySpaces();
-            var alarm = false;
-            if (emptySpaces < 0.25 && emptySpaces >0)
-                var alarm = true;
-            
-            // updates the header
-            this.gameHeader.updateStatus(score, level, percent, emptySpaces, alarm);
-
-            // updates board shaking.
-            this.board.setAlarm(alarm);
-
-            if (this.currentLevel != level) {
-                this.gameLevelIndicator.showLevel(level);
-                if(level>1)
-                    createjs.Sound.play("Interface Sound-11");
-                this.board.levelUpEffect();
-            }
-
-            this.currentLevel = level;
-
-        }
-
-        // calculate a percent 
-        private getPercentEmptySpaces(): number {
-
-            var filled = 0;
-            for (var t in this.tiles)
-                if (this.tiles[t] != 0)
-                    filled++;
-
-            //set percentage
-            var percent = 1 - (filled / (this.boardSize * this.boardSize));
-
-            return percent;
-        }
-
-        // returns a score based on level
-        private getScoreByLevel(level: number): number {
-            if (level == 0) return 0;
-            return 50 * Math.pow(2, level);
-        }
-
-        //return a level based on a score
-        private getLevelByScore(score: number): number {
-            if (!score) score = 1;
-            return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2)) + 1
         }
 
         //return a time interval for jelly addition based on user level;
@@ -314,9 +320,9 @@ module joinjelly.gameplay {
 
             var time = this.timeInterval;
 
-            if (time < 400) time -= 2;
-            if (time < 200) time -= 1;
-            else time -= 4;
+            if (time < 500) time -= 2;
+            if (time < 400) time -= 1;
+            else time -= 3;
 
             this.timeInterval = time;
 
@@ -325,76 +331,29 @@ module joinjelly.gameplay {
 
         }
 
-        //finishes the game
-        private endGame() {
-
-            var score = this.score;
-            var highScore = JoinJelly.userData.getHighScore();
-            var jelly = 0;
-            for (var j in this.tiles)
-                if (this.tiles[j] > jelly) jelly = this.tiles[j]
-
-            // disable mouse interaction
-            this.board.mouseEnabled = false;
-            this.board.mouseChildren = false;
-
-            // releases all jellys
-            this.board.releaseAll();
-
-            // save high score
-            JoinJelly.userData.setScore(score);
-
-            // shows finished game menu
-            setTimeout(() => { this.finishMenu.show(); }, 1200);
-            this.finishMenu.setValues(score, highScore, jelly);
-
-            // move the board a little up
-            createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut)
-
-            // stop game loop
-            if (this.gamePlayLoop) clearInterval(this.gamePlayLoop);
-
-            // log event
-            JoinJelly.analytics.logEndGame(this.moves, this.score, this.currentLevel, jelly)
-
-            // play end soud
-            gameui.AssetsManager.playSound("end");
-
-            // move board to top
-            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn)
-
-            // play end game effect
-            this.board.endGameEffect();
-
-        }
-
         //called when a tile is dragged
-        private dragged(origin: number, target: number) {
+        private dragged(origin: view.Tile, target: view.Tile) {
 
             //try to match the tiles
             this.match(origin, target);
         }
 
         //verifies if a tile can pair another, and make it happens
-        private match(origin: number, target: number) {
-
+        protected match(origin: view.Tile, target: view.Tile): boolean{
             //check if match is correct
-            if (this.tiles[origin] != 0 && target != origin && this.tiles[target] == this.tiles[origin]) {//&& !tileTarget.locked) {
+            if (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked){
 
                 this.moves++;
+
                 //calculate new value
-                var newValue = this.tiles[target] + this.tiles[origin];
+                var newValue = target.getNumber() + origin.getNumber();
 
                 //sum the tiles values
-                this.tiles[target] = newValue;
-                this.board.setTileValue(target, newValue);
-                this.tiles[origin] = 0;
-
+                target.setNumber(newValue);
+                              
                 //reset the previous tile
-                setTimeout(() => {
-                    this.board.setTileValue(origin, this.tiles[origin]);
-                }, 200);
-
+                origin.setNumber(0);
+ 
                 //animate the mach
                 this.board.match(origin, target);
 
@@ -410,24 +369,14 @@ module joinjelly.gameplay {
                     this.matchNotify()
 
                 // log event
-                joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.getEmptyBlocks().length);
-            }
-        }
+                joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.board.getEmptyTiles().length);
 
-        //get currentScore
-        private sumAll(): number {
-            var sum = 0;
-            for (var t in this.tiles) {
-                //if(this.tiles[t]!=1)
-                sum += this.tiles[t];
+                return true;
             }
-            return sum;
+            return false;
         }
-
 
         // #endregion
-
-
 
         //acivate the screen
         activate(parameters?: any) {

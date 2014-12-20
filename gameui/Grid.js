@@ -11,14 +11,13 @@ var gameui;
     var Grid = (function (_super) {
         __extends(Grid, _super);
         function Grid(cols, rows, width, height, padding, flowHorizontal) {
-            if (typeof padding === "undefined") { padding = 0; }
+            if (padding === void 0) { padding = 0; }
             _super.call(this);
             //provided variables
             this.flowHorizontal = false;
             //control variables;
             this.currentCol = 0;
             this.currentRow = 0;
-
             //define the variables
             this.flowHorizontal = flowHorizontal;
             this.cols = cols;
@@ -26,7 +25,6 @@ var gameui;
             this.padding = padding;
             this.width = width;
             this.height = height;
-
             //define other parameters
             this.wSpacing = (width - padding * 2) / cols;
             this.hSpacing = (height - padding * 2) / rows;
@@ -38,14 +36,12 @@ var gameui;
             object.y = this.getYPos();
             this.updatePosition();
         };
-
         Grid.prototype.getXPos = function () {
             return this.padding + this.currentCol * this.wSpacing + this.wSpacing / 2;
         };
         Grid.prototype.getYPos = function () {
             return this.padding + this.currentRow * this.hSpacing + this.hSpacing / 2;
         };
-
         //define next Item position
         Grid.prototype.updatePosition = function () {
             if (!this.flowHorizontal) {
@@ -54,7 +50,8 @@ var gameui;
                     this.currentCol = 0;
                     this.currentRow++;
                 }
-            } else {
+            }
+            else {
                 this.currentRow++;
                 if (this.currentRow >= this.rows) {
                     this.currentRow = 0;

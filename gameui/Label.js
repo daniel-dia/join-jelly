@@ -10,12 +10,11 @@ var gameui;
         __extends(Label, _super);
         //public container: createjs.Container;
         function Label(text, font, color) {
-            if (typeof text === "undefined") { text = ""; }
-            if (typeof font === "undefined") { font = "600 90px Myriad Pro"; }
-            if (typeof color === "undefined") { color = "#82e790"; }
+            if (text === void 0) { text = ""; }
+            if (font === void 0) { font = "600 90px Myriad Pro"; }
+            if (color === void 0) { color = "#82e790"; }
             _super.call(this);
             text = text.toUpperCase();
-
             //add text into it.
             this.textField = new createjs.Text(text, font, color);
             this.textField.textBaseline = "middle";

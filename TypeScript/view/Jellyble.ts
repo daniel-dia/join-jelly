@@ -1,9 +1,8 @@
 ﻿module joinjelly.view {
     export class JellyContainer extends createjs.Container {
 
-        shadowContainer: createjs.Container;
-        imageContainer: createjs.Container;
-
+        protected shadowContainer: createjs.Container;
+        protected imageContainer: createjs.Container;
 
         private state: string;
 
@@ -18,21 +17,8 @@
         }
 
         //#region animations =============================================
-        restore() {
-            this.state = "";
-            createjs.Tween.removeTweens(this.imageContainer);
-            createjs.Tween.removeTweens(this.shadowContainer);
-            this.visible = true;
-            this.imageContainer.scaleX = this.imageContainer.scaleY = 1;
-            this.imageContainer.rotation = 0;
-            this.imageContainer.alpha = 1;
-            this.alpha = 1;
-            this.imageContainer.y = 0;
-            this.imageContainer.skewX = this.imageContainer.skewY = 0;
-            this.shadowContainer.skewX = this.shadowContainer.skewY = 0;
-        }
 
-        executeAnimationIn() {
+        public executeAnimationIn() {
             if (this.state == "in") return;
             this.state = "in";
 
@@ -98,9 +84,31 @@
 
             createjs.Tween.get(this.shadowContainer).to({ alpha: 1 }, 200);
         }
+         
+        //#endregion
 
- 
-        executeIdle() {
+        //#region idle animations  =============================================
+
+        private restore() {
+            this.state = "";
+            createjs.Tween.removeTweens(this.imageContainer);
+            createjs.Tween.removeTweens(this.shadowContainer);
+            this.visible = true;
+            this.alpha = 1;
+
+            this.imageContainer.scaleX = this.imageContainer.scaleY = 1;
+            this.imageContainer.skewX = this.imageContainer.skewY = 0;
+            this.imageContainer.rotation = 0;
+            this.imageContainer.alpha = 1;
+            this.imageContainer.visible = true;
+            this.imageContainer.y = 0;
+
+            this.shadowContainer.visible = true;
+            this.shadowContainer.alpha = 1;
+            this.shadowContainer.skewX = this.shadowContainer.skewY = 0;
+        }
+
+        private executeIdle() {
 
             if (this.state == "idle") return;
             this.state = "idle";
@@ -114,7 +122,7 @@
 
         }
 
-        executeIdle1() {
+        private executeIdle1() {
 
 
             var f = Math.random() * 500 + 600;
@@ -160,7 +168,7 @@
 
         }
 
-        executeIdle2() {
+        private executeIdle2() {
 
             var time = Math.random() * 500 + 600;
             var skew = Math.random();
@@ -189,7 +197,7 @@
 
         }
 
-        executeIdle3() {
+        private executeIdle3() {
 
             var time = Math.random() * 500 + 600;
             var skew = Math.random();
@@ -214,9 +222,6 @@
                         .to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut)
             });
         }
-
-
-       
 
         //#endregion
 

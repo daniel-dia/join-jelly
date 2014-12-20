@@ -9,9 +9,9 @@ var gameui;
     var MenuContainer = (function (_super) {
         __extends(MenuContainer, _super);
         function MenuContainer(width, height, flowHorizontal) {
-            if (typeof width === "undefined") { width = null; }
-            if (typeof height === "undefined") { height = null; }
-            if (typeof flowHorizontal === "undefined") { flowHorizontal = false; }
+            if (width === void 0) { width = null; }
+            if (height === void 0) { height = null; }
+            if (flowHorizontal === void 0) { flowHorizontal = false; }
             if (!flowHorizontal)
                 _super.call(this, 1, 0, width, height, 0, flowHorizontal);
             else
@@ -24,17 +24,15 @@ var gameui;
             this.addObject(textObj);
             return textObj.textField;
         };
-
         //creates a button object
         MenuContainer.prototype.addButton = function (text, event) {
-            if (typeof event === "undefined") { event = null; }
+            if (event === void 0) { event = null; }
             var buttonObj = new gameui.TextButton(text, null, null, null, event);
             this.addObject(buttonObj);
             return buttonObj;
         };
-
         MenuContainer.prototype.addOutButton = function (text, event) {
-            if (typeof event === "undefined") { event = null; }
+            if (event === void 0) { event = null; }
             var buttonObj = new gameui.TextButton(text, null, null, null, event);
             this.addObject(buttonObj);
             return buttonObj;

@@ -1,1 +1,1 @@
-﻿//# sourceMappingURL=thorns.js.map
+//# sourceMappingURL=Thorns.js.map

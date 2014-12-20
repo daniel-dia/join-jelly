@@ -1,4 +1,4 @@
-﻿var __extends = this.__extends || function (d, b) {
+var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -19,7 +19,6 @@ var joinjelly;
             this.content.addChild(bg);
             bg.x = (defaultWidth - 1463) / 2;
             bg.y = (defaultHeight - 1788) / 2;
-
             // add Title
             var title = gameui.AssetsManager.getBitmapText("JELLYPEDIA", "debussy");
             this.content.addChild(title);
@@ -27,7 +26,6 @@ var joinjelly;
             title.x = defaultWidth / 2;
             title.regX = title.getBounds().width / 2;
             title.scaleX = title.scaleY = 1.5;
-
             // add jelly items
             var itensContainer = new createjs.Container();
             this.content.addChild(itensContainer);
@@ -43,12 +41,10 @@ var joinjelly;
                 pi.x = 150;
                 index++;
             }
-
             var g = new createjs.Graphics().f("rgb(254,254,254)").p("EALkCFSYAAomAAocAAomYAAgUAKgUAAgUYAAjwgKjwAKj6YAKi+AKi+AAi+YAKjwAKjmAKjwYAKiMAKiWAKiMYAylUB4lADIkiYEYmaFykEH0hQYDcgeDcgeDcgeYAKAAAAAAAKAAYAAAogKAoAAAoYAABuAKBkgKBuYgKC0AACqAAC0YgKCMA8BuBuBaYBkBQB4AUB4AAcArmAAAArmAAAArmAAAYAUAAAKAAAUAAYEOgKC+i+gKkOYAAiCAAh4AAh4YgKi+gKi+AAi+YAeAAAeAAAeAAYAKAAAKAKAUAAYDSAUDIAeDSAoYFUA8EiCgDwDwYCgCqCCDIBkDcYBuDmBGDwAUEEYAKCCAKB4AACCYAKDwAKDwAUDwYAABQgKBQAUBQYAAA8AAAyAAA8YgKAyAAA8AAAyYgKIIAKH+gKIIYAACqAACqAAC0YgKD6gKD6AAD6YgKC0AAC0AAC0YgUGQgKGGgKGQYgKC+gKDIAAC+YgUEigKEsgKEiYgKCqgKCqgKCqYgKD6gKDwgKD6YgKDcgUDcgKDmYgKDSgKDSgKDSYgKDcgUDcgKDcYgKC+gKDIgKC+YgKCWAACWgyCMYgoB4geB4gyB4YiWFKjIEYkYDcYjSCgjmBukYAKYi0AKi+AKi+AKYjSAKjSAAjSAKYiMAKiMgKiMAKYi0AKi0AAi0AAYnCAAnCAUnMgKYhaAAhQAAhaAAYgUAAgUAAgUAKYywAAy6AAywAAYgUAAgKgKgUAAYlyAAlyAAlygKYiCAAiCAAiCgKYkEAAkOgKkEgKYiqgKigAAiqgKYg8AAhGgKhGgUYjwg8i+iCi0igYiWiMhuiWhuigYiMjmhaj6g8kEYgeh4AKh4gKh4YgKjSgKjSgKjSYgUjmgKjwgKjmYgKkEgKj6gKkEYgKk2gUk2gKk2YgKjmAAjcgKjmYgKmkgUmkgKmkYgKlKAAlKgKlUYAAj6gKkEAAj6YAAjSAAjcAAjSYAAgUgKgKAAgU").cp().ef();
             var s = new createjs.Shape(g);
             itensContainer.mask = s;
             this.content.addChild(itensContainer);
-
             // add ok button
             var okButton = new gameui.ImageButton("GameOverOk", function () {
                 joinjelly.JoinJelly.showMainMenu();
@@ -56,7 +52,6 @@ var joinjelly;
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
-
             // add scrool event
             var last;
             this.content.addEventListener("pressmove", function (evt) {

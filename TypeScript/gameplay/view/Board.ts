@@ -3,19 +3,23 @@
 
     export class Board extends createjs.Container {
 
-        public boardWidth: number;
-        public boardHeight: number;
+        private boardWidth: number;
+        private boardHeight: number;
         private tiles: Array<Tile>;
 
         private tileSize: number;
         private touchDictionary: Array<Tile> = new Array();
 
-        private alarming: boolean=false;
+        private alarming: boolean = false;
+        private tilesContainer: createjs.Container;
 
         // #region Initialization ----------------------------------------------------------------------
 
         constructor(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
             super();
+            
+            this.tilesContainer = new createjs.Container();
+            this.addChild(this.tilesContainer);
 
             this.tileSize = tileSize;
 
@@ -38,13 +42,13 @@
                     // add a tile background
                     if ((x + y) % 2 == 0) {
                         var shape = new createjs.Shape();
-                        this.addChild(shape);
-                        shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize*0.2, tileSize, tileSize);
+                        this.tilesContainer.addChild(shape);
+                        shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
                     }
 
                     // add a jelly on tile
                     this.tiles.push(tileDO);
-                    this.addChild(tileDO);
+                    this.tilesContainer.addChild(tileDO);
                     tileDO.setNumber(0);
                     tileDO.name = (this.boardWidth * y + x).toString();
                     tileDO.set(this.getTilePositionByCoords(x, y, tileSize));
@@ -53,10 +57,13 @@
                 }
             }
 
-            this.addEventListener("mousedown", (e: createjs.MouseEvent) => {
+            this.tilesContainer.addEventListener("mousedown", (e: createjs.MouseEvent) => {
                 var tile = this.getTileByRawPos(e.localX, e.localY, tileSize);
 
-                if (tile) {
+                if (tile && tile.isUnlocked()){
+                    
+                    tile.lock();
+
                     this.touchDictionary[e.pointerID] = tile;
 
                     //store offset mouse position
@@ -64,14 +71,14 @@
                     tile.drag();
 
                     //bring to front
-                    this.setChildIndex(tile, this.getNumChildren() - 1);
+                    this.tilesContainer.setChildIndex(tile, this.tilesContainer.getNumChildren() - 1);
 
                     gameui.AssetsManager.playSound('soundh_1');
                 }
             });
 
             //Press Move
-            this.addEventListener("pressmove", (e: createjs.MouseEvent) => {
+            this.tilesContainer.addEventListener("pressmove", (e: createjs.MouseEvent) => {
 
                 //get tile by touch
                 var tile = this.touchDictionary[e.pointerID];
@@ -79,22 +86,22 @@
 
                     tile.x = e.localX + touchOffset[e.pointerID].x;
                     tile.y = e.localY + touchOffset[e.pointerID].y;
-                    tile.locked = true;
+                    tile.lock();
 
                     //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
                     var target = this.getTileByRawPos(e.localX, e.localY, tileSize);
                     if (target && target.name.toString() != tile.name) {
-                        if(!target.locked)
-                        this.dispatchEvent("tileMove", { origin: tile.name, target: target.name});
+                        if (target.isUnlocked())
+                            this.dispatchEvent("tileMove", { origin: tile, target: target });
                     }
                 }
             });
 
             //Press Up
-            this.addEventListener("pressup", (e: createjs.MouseEvent) => {
+            this.tilesContainer.addEventListener("pressup", (e: createjs.MouseEvent) => {
                 var tile = this.touchDictionary[e.pointerID];
                 if (tile) {
-                    tile.locked = false;
+                    tile.unlock;
                     this.releaseDrag(tile, false);
                     tile.release();
                 }
@@ -106,16 +113,16 @@
         // #region Tile manager ------------------------------------------------------------------------
 
         // set a tile value
-        public setTileValue(tileId, value){
+        public setTileValue(tileId, value) {
             var t = this.getTileById(tileId)
             if (t) t.setNumber(value);
 
             //plays sound if is new jelly
             if (value == 1)
                 gameui.AssetsManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
-                
+
         }
-        
+
         // get a tile id by its x and y pos
         private getTileIdByPos(rawx: number, rawy: number, tileSize: number): number {
             var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
@@ -137,7 +144,7 @@
 
         // get a new position for a tile based on its index
         private getTilePositionByCoords(x: number, y: number, tileSize: number): point {
-        return {
+            return {
                 x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
                 y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5
             }
@@ -145,46 +152,89 @@
 
         // get a tile object by its id
         public getTileById(id: number): Tile {
-            return <Tile> this.getChildByName(id.toString());
+            return <Tile> this.tilesContainer.getChildByName(id.toString());
         }
 
         // release all Jellyies
         public releaseAll() {
-            for (var t in this.touchDictionary) 
+            for (var t in this.touchDictionary)
                 this.releaseDrag(this.touchDictionary[t]);
+
+        }
+
+        public sumAllTiles() :number{
+            var sum = 0;
+            for (var t in this.tiles) {
+                sum += this.tiles[t].getNumber();
+            }
+            return sum;
+         }
+
+        public getEmptyTiles(): Array<view.Tile> { 
+
+            //get next jelly
+            var total = this.boardHeight * this.boardWidth;
+            var emptyTiles:Array<view.Tile> = [];
+
+            //get all empty tiles
+            for (var t = 0; t < total; t++) 
+                if (this.tiles[t].isEmpty())
+                    emptyTiles.push(this.tiles[t]);
             
+            return emptyTiles;
+        }
+
+        public getAllTiles(): Array<view.Tile> {
+            return this.tiles;
+        }
+
+        // calculate a percent 
+        public getPercentEmptySpaces(): number {
+            var total = this.boardHeight * this.boardWidth;
+            var empty: number = this.getEmptyTiles().length;
+            return empty / total;
         }
 
         // release e tile
         private releaseDrag(tile: Tile, match: boolean= true, target?: Tile) {
-            
+
             var index = this.touchDictionary.indexOf(tile);
             delete this.touchDictionary[index];
 
             createjs.Tween.removeTweens(tile);
             tile.scaleY = tile.scaleX = 1;
 
-            tile.locked = false;
-
             //if tiles match
             if (match && target) {
-            
                 var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
-                createjs.Tween.get(tile).to({ x: pos.x, y: pos.y, alpha: 0 }, 100, createjs.Ease.quadInOut).call(() => {
+                createjs.Tween.get(tile).to({ x: pos.x, y: pos.y,alpha:0}, 100, createjs.Ease.quadInOut).call(() => {
                     tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
                     this.arrangeZOrder();
+                    tile.unlock();
+                    tile.alpha = 1; 
                 })
             }
             //or else, set it back to its place
             else {
                 tile.release();
                 createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut).call(() => {
-                //set the z-order
+                    //set the z-order
                     this.arrangeZOrder();
+                    tile.unlock();
                 });
             }
         }
 
+        public getHighestTileValue(): number {
+            var highestTile = 0;
+            for (var j in this.tiles)
+                if (this.tiles[j].getNumber() > highestTile) highestTile = this.tiles[j].getNumber();
+            return highestTile;
+        }
+        
+        public lock() { this.tilesContainer.mouseEnabled = false;}
+
+        public unlock() { this.tilesContainer.mouseEnabled = true; }
         // #endregion
 
         // #region behaviour ----------------------------------------------------------------------------------
@@ -192,33 +242,36 @@
         // organize all z-order
         private arrangeZOrder() {
             for (var t = 0 ; t < this.tiles.length; t++)
-                this.setChildIndex(this.tiles[t], this.getNumChildren()-1);
+                this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.getNumChildren()-1);
         }
 
         // match 2 tiles
-        public match(origin: number, target: number) {
+        public match(origin: view.Tile, target: view.Tile) {
             
-            var tile = this.getTileById(target);
-            var old = this.getTileById(origin);
+            this.releaseDrag(origin, true, target);
 
-            this.releaseDrag(old, true, tile);
-
-            tile.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
-            createjs.Tween.get(tile).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
+            target.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
+            createjs.Tween.get(target).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
 
             gameui.AssetsManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
         }
 
+        // clar all board
+        public cleanBoard() {
+            for (var t in this.tiles)
+                this.tiles[t].setNumber(0);
+        }
+               
+        // #endregion
+       
+        // #region Animations ----------------------------------------------------------------------------------
 
-        // global animation identifier.
-        // TODO: use another aproach
-        private t;
-
+   
         // create and execute a level up effect on tiles
         public levelUpEffect() {
-            
+
             // reseteffect timeOut id
-            this.t = 0;
+            var currentTile = 0;
 
             // for each tile
             for (var t in this.tiles) {
@@ -226,20 +279,24 @@
                 // set timeout for the animation. each tile by time interval
                 setTimeout(() => {
 
-                    // increment effect timeOut id
-                    this.t++
-                    
                     // calculate tile id
-                    var x = (this.boardHeight * this.boardWidth) - (this.t % this.boardWidth * this.boardWidth + Math.floor(this.t / this.boardWidth));
+                    var calculatedTile = (this.boardHeight * this.boardWidth) - (currentTile % this.boardWidth * this.boardWidth + Math.floor(currentTile / this.boardWidth)) - 1;
 
                     // define tile by it id
-                    var tile = this.tiles[x];
+                    var tile = this.tiles[calculatedTile];
 
                     // create a tween fast move
                     createjs.Tween.get(tile).to({ scaleY: 1.5 }, 100).to({ scaleY: 1 }, 100);
 
                     // play a jelly light effect
                     tile.jelly.playLevelUp();
+
+                    // unlocks it
+                    tile.unlock();
+             
+                    // increment effect timeOut id
+                    currentTile++
+
                 }, 20 * t);
             }
         }
@@ -248,7 +305,7 @@
         public endGameEffect(){
 
             // reseteffect timeOut id
-            this.t = 0;
+            var currentTile = 0;
 
             // for each tile
             for (var t in this.tiles) {
@@ -257,9 +314,9 @@
                 setTimeout(() => {
 
                     // increment effect timeOut id
-                    this.t++;
+                    currentTile++;
                     // calculate tile id
-                    var x = (this.t % this.boardWidth * this.boardWidth + Math.floor(this.t / this.boardWidth));
+                    var x = (currentTile % this.boardWidth * this.boardWidth + Math.floor(currentTile / this.boardWidth));
 
                     // define tile by it id
                     var tile = this.tiles[x];
@@ -272,22 +329,12 @@
                 }, 20 * t);
             }
         }
-
-
-        public clean() {
-            for (var t in this.tiles)
-                this.tiles[t].setNumber(0);
-        }
-
-        // #endregion
-        
+ 
         public setAlarm(alarm: boolean) {
-            
+
             if (alarm) {
                 if (this.alarming) return;
-
-                
-                createjs.Tween.get(this, { loop: true }).to({ x: -10 }, 50).to({ x: +10 }, 100).to({ x: -10 }, 100).to({ x: 0}, 50).wait(200);
+                createjs.Tween.get(this, { loop: true }).to({ x: -10 }, 50).to({ x: +10 }, 100).to({ x: -10 }, 100).to({ x: 0 }, 50).wait(200);
             }
             else {
                 if (!this.alarming) return;
@@ -297,6 +344,9 @@
             this.alarming = alarm;
 
         }
-    }
+
+        // #endregion
+        
+     }
 
 }

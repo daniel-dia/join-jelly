@@ -5,11 +5,12 @@
         private tileSize: number;
         public posx: number;
         public posy: number;
-        public locked: boolean;
+        private locked: boolean;
+        private value: number;
 
-               jelly: Jelly;
+        public jelly: Jelly;
 
-        //contructr
+        // contructr
         constructor(posx: number, posy: number, tileSize: number) {
 
             super();
@@ -26,7 +27,7 @@
             this.jelly = new Jelly();
             this.jelly.x = tileSize / 2;
             this.jelly.y = tileSize;
-            this.jelly.scaleX = this.jelly.scaleY=this.tileSize / (220);
+            this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (220);
             this.addChild(this.jelly);
 
             //creates hitArea for the tile
@@ -42,19 +43,33 @@
             this.jelly.executeAnimationHold();
         }
 
-        //set tile number
+        public isUnlocked(): boolean { return !this.locked; }
+
+        public lock() { this.locked = true; }
+        public unlock() {
+            this.locked = false;
+            this.jelly.setNumber(this.value);
+        }
+
+        // set tile number
         public setNumber(value: number) {
 
-            this.jelly.setNumber(value);
-            if (value == 0)
-                this.mouseEnabled = false;
-            else {
-                //enable mouse and visibility
-                this.mouseEnabled = true;
-                this.visible = true;
-                this.alpha = 1;
+            this.value = value;
 
+            if (this.isUnlocked()) {
+                this.jelly.setNumber(value);
+
+                if (value > 0) this.mouseEnabled = true;
+                else this.mouseEnabled = false;
             }
+        }
+
+        public getNumber(): number {
+            return this.value;
+        }
+
+        public isEmpty() {
+            return (this.value == 0);
         }
     }
 }

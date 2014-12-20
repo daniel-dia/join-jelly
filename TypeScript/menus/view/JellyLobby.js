@@ -1,4 +1,4 @@
-﻿var __extends = this.__extends || function (d, b) {
+var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -6,13 +6,14 @@
 };
 var joinjelly;
 (function (joinjelly) {
+    var menus;
     (function (menus) {
+        var view;
         (function (view) {
             var JellyLobby = (function (_super) {
                 __extends(JellyLobby, _super);
                 function JellyLobby(lastJelly) {
                     _super.call(this);
-
                     // drop all jellies
                     this.dropAllJellys(lastJelly);
                 }
@@ -22,12 +23,10 @@ var joinjelly;
                     // set a default value to the last jelly
                     if (!lastJelly)
                         lastJelly = 1;
-
                     // calculate all jellys already unlocked
                     var jellys = new Array();
                     for (var j = 1; j <= lastJelly; j *= 2)
                         jellys.push(j);
-
                     var i = 0;
                     var p = 1;
                     for (var j = 0; j < jellys.length; j++)
@@ -37,7 +36,6 @@ var joinjelly;
                             p *= 2;
                         }, j * 200);
                 };
-
                 //adds a single jelly to the container
                 JellyLobby.prototype.dropJelly = function (value, position) {
                     var positions = [
@@ -54,30 +52,23 @@ var joinjelly;
                         [5 / 6, 2.3],
                         [1 / 4, 2.6],
                         [3 / 4, 2.6],
-                        [2 / 4, 3]
+                        [2 / 4, 3],
                     ];
                     var jelly = new joinjelly.gameplay.view.Tile(0, 0, 500);
-
                     // adds jelly
                     this.addChildAt(jelly, 0);
                     jelly.setNumber(value);
-
                     var m = (position % 2) ? -1 : 1;
-
                     jelly.x = (positions[position][0] * defaultWidth - defaultWidth / 2) * 1.2;
                     jelly.y = positions[position][1] * -200 + 550;
-
                     jelly.scaleX = jelly.scaleY = 1 - positions[position][1] / 4;
-
                     //play JellySound
                     gameui.AssetsManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
                 return JellyLobby;
             })(createjs.Container);
             view.JellyLobby = JellyLobby;
-        })(menus.view || (menus.view = {}));
-        var view = menus.view;
-    })(joinjelly.menus || (joinjelly.menus = {}));
-    var menus = joinjelly.menus;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=JellyLobby.js.map

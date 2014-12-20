@@ -16,66 +16,6 @@
             this.joinFx.y = -115;
 
 
-         }
-
-
-
-        /// #endregion
-
-        // #region behaviour ==============================================
-
-        //set tile number
-
-        public playJoinFX() {
-            this.joinFx.visible = true;
-            this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 1,visible:true});
-            createjs.Tween.get(this.joinFx).to({ scaleX: 1.5, scaleY: 1.5, alpha: 0}, 200).call(() => { this.joinFx.visible = true;});
-            this.addChild(this.joinFx);
-
-            setTimeout(() => {
-                var x = 1;
-            }, 1000);
-        }
-
-        public playLevelUp() {
-            this.joinFx.visible = true;
-            this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 0.6, visible: true });
-            createjs.Tween.get(this.joinFx).to({ scaleX: 1.5, scaleY: 1.5, alpha: 0 }, 200).call(() => { this.joinFx.visible = true; });
-            this.addChild(this.joinFx);
-
-            setTimeout(() => {
-                var x = 1;
-            }, 1000);
-        }
-        public setNumber(value: number) {
-
-            //update image 
-            this.imageContainer.removeAllChildren();
-            this.shadowContainer.removeAllChildren();
-
-            //if values equals zero, hide the tile
-            if (value == 0) {
-                this.mouseEnabled = false;
-                this.shadowContainer.visible = false;
-            }
-
-            else {
-
-                //enable mouse and visibility
-                this.mouseEnabled = true;
-                this.shadowContainer.visible = true;
-
-                this.visible = true;
-                this.alpha = 1;
-
-                this.createJelly(value);
-                this.createEyes(value);
-
-                this.executeAnimationIn();
-
-                if (value > 1)
-                    this.playJoinFX();
-            }
         }
 
         private createJelly(value: number) {
@@ -105,15 +45,70 @@
             eye.addChild(eyeImg);
             eye.regX = 133 / 2;
 
-            if (eyeImg.getBounds()) 
+            if (eyeImg.getBounds())
                 eye.regX = eyeImg.getBounds().width / 2;
 
             eye.y = -50
-                this.imageContainer.addChild(eye)
+            this.imageContainer.addChild(eye)
+        }
+        
+        /// #endregion
+    
+        // #region behaviour ==============================================
+
+        //set tile number
+        public setNumber(value: number) {
+
+            //update image 
+            this.imageContainer.removeAllChildren();
+            this.shadowContainer.removeAllChildren();
+
+            //if values equals zero, hide the tile
+            if (value == 0) {
+                this.visible = false;
+            }
+
+            else {
+                //enable visibility
+                this.visible = true;
+                this.alpha = 1;
+
+                this.createJelly(value);
+                this.createEyes(value);
+
+                this.executeAnimationIn();
+
+                if (value > 1) this.playJoinFX();
+            }
         }
 
         // #endregion
 
+        // #region Animation ==============================================
+
+        public playJoinFX() {
+            this.joinFx.visible = true;
+            this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 1, visible: true });
+            createjs.Tween.get(this.joinFx).to({ scaleX: 1.5, scaleY: 1.5, alpha: 0 }, 200).call(() => { this.joinFx.visible = true; });
+            this.addChild(this.joinFx);
+
+            setTimeout(() => {
+                var x = 1;
+            }, 1000);
+        }
+
+        public playLevelUp() {
+            this.joinFx.visible = true;
+            this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 0.6, visible: true });
+            createjs.Tween.get(this.joinFx).to({ scaleX: 1.5, scaleY: 1.5, alpha: 0 }, 200).call(() => { this.joinFx.visible = true; });
+            this.addChild(this.joinFx);
+
+            setTimeout(() => {
+                var x = 1;
+            }, 1000);
+        }
+
+        /// #endregion
 
 
     }

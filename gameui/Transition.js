@@ -1,9 +1,9 @@
-﻿var gameui;
+var gameui;
 (function (gameui) {
     var Transition = (function () {
         function Transition() {
             this.time = 300;
-            this.type = "fade";
+            this.type = "fade"; // none,fade
         }
         return Transition;
     })();

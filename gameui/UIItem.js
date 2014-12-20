@@ -19,11 +19,10 @@ var gameui;
             this.regY = this.height / 2;
             this.centered = true;
         };
-
         UIItem.prototype.fadeOut = function (scaleX, scaleY) {
             var _this = this;
-            if (typeof scaleX === "undefined") { scaleX = 0.5; }
-            if (typeof scaleY === "undefined") { scaleY = 0.5; }
+            if (scaleX === void 0) { scaleX = 0.5; }
+            if (scaleY === void 0) { scaleY = 0.5; }
             this.animating = true;
             this.antX = this.x;
             this.antY = this.y;
@@ -34,7 +33,7 @@ var gameui;
                 scaleY: scaleY,
                 alpha: 0,
                 x: this.antX,
-                y: this.antY
+                y: this.antY,
             }, 200, createjs.Ease.quadIn).call(function () {
                 _this.visible = false;
                 _this.x = _this.antX;
@@ -46,22 +45,18 @@ var gameui;
                 ;
             });
         };
-
         UIItem.prototype.fadeIn = function (scaleX, scaleY) {
             var _this = this;
-            if (typeof scaleX === "undefined") { scaleX = 0.5; }
-            if (typeof scaleY === "undefined") { scaleY = 0.5; }
+            if (scaleX === void 0) { scaleX = 0.5; }
+            if (scaleY === void 0) { scaleY = 0.5; }
             this.visible = true;
             this.animating = true;
-
             if (this.antX == null) {
                 this.antX = this.x;
                 this.antY = this.y;
             }
-
             this.scaleX = scaleX, this.scaleY = scaleY, this.alpha = 0, this.x = this.x;
             this.y = this.y;
-
             this.mouseEnabled = false;
             createjs.Tween.removeTweens(this);
             createjs.Tween.get(this).to({
@@ -69,22 +64,18 @@ var gameui;
                 scaleY: 1,
                 alpha: 1,
                 x: this.antX,
-                y: this.antY
+                y: this.antY,
             }, 400, createjs.Ease.quadOut).call(function () {
                 _this.mouseEnabled = true;
                 _this.animating = false;
             });
         };
-
         //calcula
         UIItem.prototype.createHitArea = function () {
             var hit = new createjs.Shape();
-
             var b = this.getBounds();
-
             if (b)
                 hit.graphics.beginFill("#000").drawRect(b.x, b.y, b.width, b.height);
-
             //TODO. se for texto colocar uma sobra. !
             this.hitArea = hit;
         };
