@@ -56,7 +56,7 @@
                 [3 / 4, 2.6],//13
                 [2 / 4, 3],//14
             ]
-            var jelly = new gameplay.view.Tile(0, 0, 500);
+            var jelly = new gameplay.Tile(0, 0, 500);
 
             // adds jelly
             this.addChildAt(jelly,0);

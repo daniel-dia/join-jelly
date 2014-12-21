@@ -31,7 +31,7 @@ var joinjelly;
                     var touchOffset = [];
                     for (var x = 0; x < boardWidth; x++) {
                         for (var y = 0; y < boardHeight; y++) {
-                            var tileDO = new view.Tile(x, y, tileSize);
+                            var tileDO = new gameplay.Tile(x, y, tileSize);
                             // add a tile background
                             if ((x + y) % 2 == 0) {
                                 var shape = new createjs.Shape();
@@ -146,6 +146,26 @@ var joinjelly;
                 };
                 Board.prototype.getAllTiles = function () {
                     return this.tiles;
+                };
+                Board.prototype.getTilePosition = function (tile) {
+                    return parseInt(tile.name);
+                };
+                Board.prototype.getNeighborTiles = function (tile) {
+                    var position = this.getTilePosition(tile);
+                    var neighborPos = [
+                        position + 1,
+                        position - 1,
+                        position + this.boardWidth,
+                        position - this.boardWidth,
+                        position + this.boardWidth + 1,
+                        position - this.boardWidth + 1,
+                        position + this.boardWidth - 1,
+                        position - this.boardWidth - 1,
+                    ];
+                    var neighbor = [];
+                    for (var p in neighborPos)
+                        neighbor.push(this.getTileById(neighborPos[p]));
+                    return neighbor;
                 };
                 // calculate a percent 
                 Board.prototype.getPercentEmptySpaces = function () {

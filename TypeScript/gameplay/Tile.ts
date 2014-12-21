@@ -1,4 +1,4 @@
-﻿module joinjelly.gameplay.view {
+﻿module joinjelly.gameplay {
 
     export class Tile extends createjs.Container {
 
@@ -8,7 +8,7 @@
         private locked: boolean;
         private value: number;
 
-        public jelly: Jelly;
+        public jelly: view.Jelly;
 
         // contructr
         constructor(posx: number, posy: number, tileSize: number) {
@@ -24,7 +24,7 @@
             this.regX = this.regY = tileSize / 2;
 
             //addObjects
-            this.jelly = new Jelly();
+            this.jelly = new view.Jelly();
             this.jelly.x = tileSize / 2;
             this.jelly.y = tileSize;
             this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (220);

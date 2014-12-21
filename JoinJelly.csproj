@@ -453,7 +453,7 @@
     <TypeScriptCompile Include="TypeScript\menus\view\Title.ts" />
     <TypeScriptCompile Include="TypeScript\view\Jellyble.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\GamePlay.ts" />
-    <TypeScriptCompile Include="TypeScript\gameplay\view\Tile.ts" />
+    <TypeScriptCompile Include="TypeScript\gameplay\Tile.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\Thorns.ts" />
     <TypeScriptCompile Include="TypeScript\menus\LoadingScreen.ts" />
     <TypeScriptCompile Include="TypeScript\menus\MainScreen.ts" />

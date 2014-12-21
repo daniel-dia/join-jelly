@@ -170,11 +170,11 @@
             return sum;
          }
 
-        public getEmptyTiles(): Array<view.Tile> { 
+        public getEmptyTiles(): Array<Tile> { 
 
             //get next jelly
             var total = this.boardHeight * this.boardWidth;
-            var emptyTiles:Array<view.Tile> = [];
+            var emptyTiles:Array<Tile> = [];
 
             //get all empty tiles
             for (var t = 0; t < total; t++) 
@@ -184,8 +184,34 @@
             return emptyTiles;
         }
 
-        public getAllTiles(): Array<view.Tile> {
+        public getAllTiles(): Array<Tile> {
             return this.tiles;
+        }
+
+        public getTilePosition(tile:Tile): number {
+            return parseInt(tile.name);
+        }
+
+        public getNeighborTiles(tile:Tile): Array<Tile> {
+            
+            var position = this.getTilePosition(tile);
+
+            var neighborPos = [
+                position + 1,
+                position - 1,
+                position + this.boardWidth,
+                position - this.boardWidth,
+                position + this.boardWidth + 1,
+                position - this.boardWidth + 1,
+                position + this.boardWidth - 1,
+                position - this.boardWidth - 1,
+            ]
+
+            var neighbor: Array<Tile> = [];
+            for (var p in neighborPos) 
+                neighbor.push(this.getTileById(neighborPos[p]));
+
+            return neighbor;
         }
 
         // calculate a percent 
@@ -246,7 +272,7 @@
         }
 
         // match 2 tiles
-        public match(origin: view.Tile, target: view.Tile) {
+        public match(origin: Tile, target: Tile) {
             
             this.releaseDrag(origin, true, target);
 

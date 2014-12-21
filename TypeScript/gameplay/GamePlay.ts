@@ -332,14 +332,14 @@
         }
 
         //called when a tile is dragged
-        private dragged(origin: view.Tile, target: view.Tile) {
+        private dragged(origin: Tile, target: Tile) {
 
             //try to match the tiles
             this.match(origin, target);
         }
 
         //verifies if a tile can pair another, and make it happens
-        protected match(origin: view.Tile, target: view.Tile): boolean{
+        protected match(origin: Tile, target: Tile): boolean{
             //check if match is correct
             if (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked){
 

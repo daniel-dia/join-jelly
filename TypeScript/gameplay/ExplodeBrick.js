@@ -33,21 +33,11 @@ var joinjelly;
             };
             // verifies if a tile can pair another, and make it happens
             ExplodeBricks.prototype.match = function (origin, target) {
-                var position = parseInt(target.name);
                 var ok = _super.prototype.match.call(this, origin, target);
                 if (ok) {
-                    var array = [
-                        position + 1,
-                        position - 1,
-                        position + this.boardSize,
-                        position - this.boardSize,
-                        position + this.boardSize + 1,
-                        position - this.boardSize + 1,
-                        position + this.boardSize - 1,
-                        position - this.boardSize - 1,
-                    ];
-                    for (var i in array) {
-                        var tile = this.board.getTileById(array[i]);
+                    var neighborTiles = this.board.getNeighborTiles(target);
+                    for (var t in neighborTiles) {
+                        var tile = neighborTiles[t];
                         if (tile && tile.getNumber() < 0) {
                             tile.unlock();
                             tile.setNumber(0);

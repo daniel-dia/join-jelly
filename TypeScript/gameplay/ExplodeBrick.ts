@@ -27,24 +27,14 @@
         }
 
         // verifies if a tile can pair another, and make it happens
-        protected match(origin: view.Tile, target: view.Tile): boolean {
-            var position = parseInt(target.name);
+        protected match(origin: Tile, target: Tile): boolean {
             var ok = super.match(origin, target);
             if (ok) {
 
-                var array = [
-                    position + 1,
-                    position - 1,
-                    position + this.boardSize,
-                    position - this.boardSize,
-                    position + this.boardSize + 1,
-                    position - this.boardSize + 1,
-                    position + this.boardSize - 1,
-                    position - this.boardSize - 1,
-                ]
+                var neighborTiles = this.board.getNeighborTiles(target);
 
-                for (var i in array) {
-                    var tile = this.board.getTileById(array[i]);
+                for (var t in neighborTiles) {
+                    var tile = neighborTiles[t];
                     if (tile && tile.getNumber() < 0) {
                         tile.unlock();
                         tile.setNumber(0);

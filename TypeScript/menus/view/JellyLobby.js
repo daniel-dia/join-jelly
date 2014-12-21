@@ -54,7 +54,7 @@ var joinjelly;
                         [3 / 4, 2.6],
                         [2 / 4, 3],
                     ];
-                    var jelly = new joinjelly.gameplay.view.Tile(0, 0, 500);
+                    var jelly = new joinjelly.gameplay.Tile(0, 0, 500);
                     // adds jelly
                     this.addChildAt(jelly, 0);
                     jelly.setNumber(value);
