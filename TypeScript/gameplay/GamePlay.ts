@@ -13,7 +13,7 @@
 
         protected  boardSize = 5;
 
-        protected board: view.Board;
+        protected board: Board;
 
         private currentLevel: number;
 
@@ -61,7 +61,7 @@
 
         // create a new board
         private createBoard() {
-            this.board = new view.Board(this.boardSize, this.boardSize, 1536 / 5, true);
+            this.board = new Board(this.boardSize, this.boardSize, 1536 / 5, true);
             this.board.addEventListener("tileMove", (e: createjs.MouseEvent) => {
                 this.dragged(e.target.origin, e.target.target);
             });

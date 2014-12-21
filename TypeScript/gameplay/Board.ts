@@ -1,4 +1,4 @@
-﻿module joinjelly.gameplay.view {
+﻿module joinjelly.gameplay {
     interface point { x: number; y: number }
 
     export class Board extends createjs.Container {

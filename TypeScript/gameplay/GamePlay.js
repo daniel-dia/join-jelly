@@ -36,7 +36,7 @@ var joinjelly;
             // create a new board
             GamePlayScreen.prototype.createBoard = function () {
                 var _this = this;
-                this.board = new gameplay.view.Board(this.boardSize, this.boardSize, 1536 / 5, true);
+                this.board = new gameplay.Board(this.boardSize, this.boardSize, 1536 / 5, true);
                 this.board.addEventListener("tileMove", function (e) {
                     _this.dragged(e.target.origin, e.target.target);
                 });
