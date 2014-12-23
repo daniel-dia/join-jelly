@@ -23,7 +23,7 @@ var joinjelly;
                     this.addChild(bg);
                     bg.x = 0;
                     //add pause button
-                    var pauseButton = new gameui.ImageButton("pause", function () {
+                    var pauseButton = new gameui.ImageButton("btPause", function () {
                         _this.dispatchEvent("pause");
                         createjs.Sound.play("Interface Sound-06");
                     });

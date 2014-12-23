@@ -39,12 +39,12 @@
                 for (var y = 0; y < boardHeight; y++) {
                     var tileDO = new Tile(x, y, tileSize);
 
-                    // add a tile background
-                    if ((x + y) % 2 == 0) {
-                        var shape = new createjs.Shape();
-                        this.tilesContainer.addChild(shape);
-                        shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
-                    }
+                    //// add a tile background
+                    //if ((x + y) % 2 == 0) {
+                    //    var shape = new createjs.Shape();
+                    //    this.tilesContainer.addChild(shape);
+                    //    shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
+                    //}
 
                     // add a jelly on tile
                     this.tiles.push(tileDO);
@@ -60,7 +60,7 @@
             this.tilesContainer.addEventListener("mousedown", (e: createjs.MouseEvent) => {
                 var tile = this.getTileByRawPos(e.localX, e.localY, tileSize);
 
-                if (tile && tile.isUnlocked()){
+                if (tile && tile.isUnlocked() && tile.isEnabled()){
                     
                     tile.lock();
 
@@ -194,6 +194,7 @@
 
         public getNeighborTiles(tile:Tile): Array<Tile> {
             
+            // TODO, consider edges
             var position = this.getTilePosition(tile);
 
             var neighborPos = [
@@ -233,12 +234,7 @@
             //if tiles match
             if (match && target) {
                 var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
-                createjs.Tween.get(tile).to({ x: pos.x, y: pos.y,alpha:0}, 100, createjs.Ease.quadInOut).call(() => {
-                    tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
-                    this.arrangeZOrder();
-                    tile.unlock();
-                    tile.alpha = 1; 
-                })
+                this.fadeTileToPos(tile, pos.x, pos.y);
             }
             //or else, set it back to its place
             else {
@@ -251,6 +247,16 @@
             }
         }
 
+        public fadeTileToPos(tile: Tile, posx: number, posy: number,time:number=100) {
+            tile.lock();
+            createjs.Tween.get(tile).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(() => {
+                tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
+                this.arrangeZOrder();
+                tile.unlock();
+                tile.alpha = 1;
+            })
+        }
+
         public getHighestTileValue(): number {
             var highestTile = 0;
             for (var j in this.tiles)
@@ -261,6 +267,7 @@
         public lock() { this.tilesContainer.mouseEnabled = false;}
 
         public unlock() { this.tilesContainer.mouseEnabled = true; }
+
         // #endregion
 
         // #region behaviour ----------------------------------------------------------------------------------

@@ -51,6 +51,9 @@ var joinjelly;
                 // #region behaviour ==============================================
                 //set tile number
                 Jelly.prototype.setNumber = function (value) {
+                    if (this.currentValue == value)
+                        return;
+                    this.currentValue = value;
                     //update image 
                     this.imageContainer.removeAllChildren();
                     this.shadowContainer.removeAllChildren();

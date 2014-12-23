@@ -6,6 +6,8 @@
         public posx: number;
         public posy: number;
         private locked: boolean;
+        private enabled: boolean;
+
         private value: number;
 
         public jelly: view.Jelly;
@@ -45,23 +47,31 @@
 
         public isUnlocked(): boolean { return !this.locked; }
 
-        public lock() { this.locked = true; }
+        public lock() { 
+            this.locked = true;
+         }
+
         public unlock() {
             this.locked = false;
             this.jelly.setNumber(this.value);
-        }
+        } 
+
+        public enable() { this.enabled = true ; }
+
+        public disable() { this.enabled = false; }
+
+        public isEnabled():boolean { return this.enabled;}
 
         // set tile number
         public setNumber(value: number) {
+                this.value = value;
 
-            this.value = value;
+                if (this.isUnlocked()) {
+                    this.jelly.setNumber(value);
 
-            if (this.isUnlocked()) {
-                this.jelly.setNumber(value);
-
-                if (value > 0) this.mouseEnabled = true;
-                else this.mouseEnabled = false;
-            }
+                    if (value > 0) this.enable();
+                    else this.disable();
+                }
         }
 
         public getNumber(): number {

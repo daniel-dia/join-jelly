@@ -1,8 +1,8 @@
 ﻿module joinjelly.view {
     export class JellyContainer extends createjs.Container {
 
-        protected shadowContainer: createjs.Container;
-        protected imageContainer: createjs.Container;
+        public shadowContainer: createjs.Container;
+        public imageContainer: createjs.Container;
 
         private state: string;
 

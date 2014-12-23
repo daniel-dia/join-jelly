@@ -77,6 +77,8 @@ module joinjelly {
                 { id: "iconMenu", src: "assets/images_" + scale + "x/iconMenu.png" },
                 { id: "iconPause", src: "assets/images_" + scale + "x/iconPause.png" },
                 { id: "iconPlay", src: "assets/images_" + scale + "x/iconPlay.png" },
+                { id: "j-1", src: "assets/images_" + scale + "x/j-1.png" },
+                { id: "e-1", src: "assets/images_" + scale + "x/e-1.png" },
                 { id: "j1", src: "assets/images_" + scale + "x/j1.png" },
                 { id: "j128", src: "assets/images_" + scale + "x/j128.png" },
                 { id: "j16", src: "assets/images_" + scale + "x/j16.png" },

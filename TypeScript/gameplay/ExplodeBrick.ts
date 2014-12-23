@@ -2,51 +2,44 @@
 
     export class ExplodeBricks extends GamePlayScreen {
 
+        private initialDirtyProbability: number = 0.1;
+        private finalDirtyProbability: number = 0.6;
+        private easeDirtyProbability: number = 0.98;
+
         // add a random tile with value 1 on board
         protected addRandomTileOnBoard() {
 
-            var badChance = Math.random() * 10;
-            var value = 1;
-            if (badChance > 5) value = -1;
+            super.addRandomTileOnBoard();
 
-
-            // if there is no more empty tiles, ends the game
-            var empty = this.board.getEmptyTiles();
-            if (empty.length > 0) {
-                var i = Math.floor(Math.random() * empty.length);
-                var tile = empty[i];
-
-               
-                tile.setNumber(value);
-                if (value <= 0) tile.lock();
-
-                return true;
-
-            }
-            return false;
+            // randomly adda a dirty to the board
+            if (this.getDirtyProbabilityByLevel(this.level, this.initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
+                setTimeout(() => { super.addRandomTileOnBoard(-1); }, 500);
         }
 
         // verifies if a tile can pair another, and make it happens
-        protected match(origin: Tile, target: Tile): boolean {
-            var ok = super.match(origin, target);
-            if (ok) {
+        protected match(origin: Tile, target: Tile) {
+            var match = super.match(origin, target);
+            if (match) {
 
                 var neighborTiles = this.board.getNeighborTiles(target);
 
                 for (var t in neighborTiles) {
                     var tile = neighborTiles[t];
+
                     if (tile && tile.getNumber() < 0) {
-                        tile.unlock();
+                        var posx = target.x + (tile.x - target.x) * 1.5;
+                        var posy = target.y + (tile.y - target.y) * 1.5;
+                        this.board.fadeTileToPos(tile,posx, posy,200);
                         tile.setNumber(0);
                     }
                 }
             }
-            return ok;
+            return match;
         }
 
         // level up
-        protected levelUp(level) {
-            super.levelUp(level);
+        protected levelUpInterfaceEffect(level) {
+            super.levelUpInterfaceEffect(level);
             this.cleanDirty();
         }
 
@@ -58,5 +51,11 @@
                     tiles[t].setNumber(0);
             }
         }
+
+        // calculate time interval for a level.
+        protected getDirtyProbabilityByLevel(level: number, initialDirtyProbability: number, finalDirtyProbability: number, easeDirtyProbability: number): number {
+            return initialDirtyProbability * Math.pow(easeDirtyProbability, level) + finalDirtyProbability * (1 - Math.pow(easeDirtyProbability, level));
+        }
+
     }
 }

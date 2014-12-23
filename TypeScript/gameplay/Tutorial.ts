@@ -28,7 +28,6 @@
                 this.executeTutorialStep();
             });
 
-            clearInterval(this.gamePlayLoop);
             this.resetTutorialStep();
             this.executeTutorialStep();
 

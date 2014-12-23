@@ -20,9 +20,13 @@ var joinjelly;
             //#region =================================== initialization ==========================================================
             function GamePlayScreen(userData) {
                 _super.call(this);
+                this.matches = 0;
                 this.boardSize = 5;
-                // count moves for log
-                this.moves = 0;
+                // parameters
+                this.timeByLevel = 10000;
+                this.initialInterval = 800;
+                this.finalInterval = 150;
+                this.easeInterval = 0.97;
                 this.UserData = userData;
                 this.score = 0;
                 this.createBackground();
@@ -102,59 +106,42 @@ var joinjelly;
             // #region =================================== interface =======================================================
             // update GUI iformaion
             GamePlayScreen.prototype.updateInterfaceInfos = function () {
-                var score = this.score;
-                var level = this.getLevelByScore(score);
-                var nextLevelScore = this.getScoreByLevel(level);
-                var previousLevelScore = this.getScoreByLevel(level - 1);
-                var percent = (score - previousLevelScore) / (nextLevelScore - previousLevelScore) * 100;
+                //calculate interval 
+                var nextLevelScore = this.getMovesByLevel(this.level);
+                var currentLevelScore = this.getMovesByLevel(this.level - 1);
+                var percent = (this.matches - currentLevelScore) / (nextLevelScore - currentLevelScore) * 100;
                 // defines alarm condition
                 var emptySpaces = this.board.getPercentEmptySpaces();
                 var alarm = false;
                 if (emptySpaces < 0.25 && emptySpaces > 0)
                     var alarm = true;
                 // updates the header
-                this.gameHeader.updateStatus(score, level, percent, emptySpaces, alarm);
+                this.gameHeader.updateStatus(this.score, this.level, percent, emptySpaces, alarm);
                 // updates board shaking.
                 this.board.setAlarm(alarm);
-                // do level up
-                if (this.currentLevel != level && level > 1)
-                    this.levelUp(level);
-                // 
-                this.currentLevel = level;
             };
             // level up
-            GamePlayScreen.prototype.levelUp = function (level) {
+            GamePlayScreen.prototype.levelUpInterfaceEffect = function (level) {
                 this.gameLevelIndicator.showLevel(level);
                 createjs.Sound.play("Interface Sound-11");
                 this.board.levelUpEffect();
-            };
-            // returns a score based on level
-            GamePlayScreen.prototype.getScoreByLevel = function (level) {
-                if (level == 0)
-                    return 0;
-                return 50 * Math.pow(2, level);
-            };
-            //return a level based on a score
-            GamePlayScreen.prototype.getLevelByScore = function (score) {
-                if (!score)
-                    score = 1;
-                return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2)) + 1;
             };
             // #endregion
             // #region =================================== gamelay =======================================================
             // Starts the game
             GamePlayScreen.prototype.start = function () {
-                var _this = this;
+                this.level = 1;
+                this.matches = 0;
+                // board initialization
                 this.board.cleanBoard();
                 this.board.unlock();
-                this.step();
+                // update interfaces
                 this.updateInterfaceInfos();
-                this.timeInterval = 300;
+                // play music
                 gameui.AssetsManager.playMusic("music1");
-                this.gamePlayLoop = setInterval(function () {
-                    _this.step();
-                }, 10);
+                // initialize gameloop
                 this.gamestate = 1 /* playing */;
+                this.step();
                 // log game start event
                 joinjelly.JoinJelly.analytics.logGameStart();
             };
@@ -166,6 +153,7 @@ var joinjelly;
             // finishes the game
             GamePlayScreen.prototype.endGame = function () {
                 var _this = this;
+                this.gamestate = 3 /* ended */;
                 var score = this.score;
                 var highScore = joinjelly.JoinJelly.userData.getHighScore();
                 var highJelly = this.board.getHighestTileValue();
@@ -182,11 +170,8 @@ var joinjelly;
                 this.finishMenu.setValues(score, highScore, highJelly);
                 // move the board a little up
                 createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut);
-                // stop game loop
-                if (this.gamePlayLoop)
-                    clearInterval(this.gamePlayLoop);
                 // log event
-                joinjelly.JoinJelly.analytics.logEndGame(this.moves, this.score, this.currentLevel, highJelly);
+                joinjelly.JoinJelly.analytics.logEndGame(this.matches, this.score, this.level, highJelly);
                 // play end soud
                 gameui.AssetsManager.playSound("end");
                 // move board to top
@@ -201,18 +186,9 @@ var joinjelly;
             };
             // time step for adding tiles.
             GamePlayScreen.prototype.step = function () {
+                var _this = this;
                 // if is not playing, than does not execute a step
-                if (this.gamestate != 1 /* playing */)
-                    return;
-                // wait until interval 
-                if (this.gameNextDrop > 0) {
-                    this.gameNextDrop--;
-                }
-                else {
-                    // defines next drop time interval
-                    this.gameNextDrop = this.timeInterval / 10;
-                    // decreate time interval
-                    this.decreateInterval();
+                if (this.gamestate == 1 /* playing */) {
                     // add a new tile  on board
                     this.addRandomTileOnBoard();
                     // updates interafce information
@@ -220,7 +196,47 @@ var joinjelly;
                     // verifies if game is ended
                     if (this.verifyGameLoose())
                         this.endGame();
+                    // update currentLevel
+                    this.updateCurrentLevel();
                 }
+                // set timeout to another iteraction if game is not over
+                if (this.gamestate != 3 /* ended */)
+                    setTimeout(function () {
+                        _this.step();
+                    }, this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
+            };
+            // update current level
+            GamePlayScreen.prototype.updateCurrentLevel = function () {
+                var newLevel = this.getLevelByMoves(this.matches);
+                if (newLevel > this.level)
+                    this.levelUpInterfaceEffect(newLevel);
+                this.level = newLevel;
+            };
+            // calculate current level by moves. 
+            // once level calculation is a iterative processe, this method uses a iterative calculation
+            GamePlayScreen.prototype.getLevelByMoves = function (moves) {
+                var totalMoves = 0;
+                var level = 0;
+                while (totalMoves < moves) {
+                    var interval = this.getTimeInterval(level, this.initialInterval, this.finalInterval, this.easeInterval);
+                    var levelMoves = this.timeByLevel / interval;
+                    totalMoves += levelMoves;
+                    level++;
+                }
+                return Math.max(level, 1);
+            };
+            GamePlayScreen.prototype.getMovesByLevel = function (level) {
+                var totalMoves = 0;
+                for (var calculatedLevel = 0; calculatedLevel < level; calculatedLevel++) {
+                    var interval = this.getTimeInterval(calculatedLevel, this.initialInterval, this.finalInterval, this.easeInterval);
+                    var levelMoves = this.timeByLevel / interval;
+                    totalMoves += levelMoves;
+                }
+                return totalMoves;
+            };
+            // calculate time interval for a level.
+            GamePlayScreen.prototype.getTimeInterval = function (level, initialInterval, finalInterval, intervalEase) {
+                return initialInterval * Math.pow(intervalEase, level) + finalInterval * (1 - Math.pow(intervalEase, level));
             };
             // Verifies if game is over
             GamePlayScreen.prototype.verifyGameLoose = function () {
@@ -230,27 +246,15 @@ var joinjelly;
                 return false;
             };
             // add a random tile with value 1 on board
-            GamePlayScreen.prototype.addRandomTileOnBoard = function () {
+            GamePlayScreen.prototype.addRandomTileOnBoard = function (value) {
+                if (value === void 0) { value = 1; }
                 var empty = this.board.getEmptyTiles();
                 // if there is no more empty tiles, ends the game
                 if (empty.length > 0) {
                     var i = Math.floor(Math.random() * empty.length);
                     var tile = empty[i];
-                    tile.setNumber(1);
+                    tile.setNumber(value);
                 }
-            };
-            //return a time interval for jelly addition based on user level;
-            GamePlayScreen.prototype.decreateInterval = function () {
-                var time = this.timeInterval;
-                if (time < 500)
-                    time -= 2;
-                if (time < 400)
-                    time -= 1;
-                else
-                    time -= 3;
-                this.timeInterval = time;
-                document.title = time.toString();
-                return time;
             };
             //called when a tile is dragged
             GamePlayScreen.prototype.dragged = function (origin, target) {
@@ -261,7 +265,9 @@ var joinjelly;
             GamePlayScreen.prototype.match = function (origin, target) {
                 //check if match is correct
                 if (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked) {
-                    this.moves++;
+                    this.matches++;
+                    // update currentLevel
+                    this.updateCurrentLevel();
                     //calculate new value
                     var newValue = target.getNumber() + origin.getNumber();
                     //sum the tiles values
@@ -270,7 +276,9 @@ var joinjelly;
                     origin.setNumber(0);
                     //animate the mach
                     this.board.match(origin, target);
+                    // update score
                     this.score += newValue * 10 + Math.floor(Math.random() * newValue);
+                    // update score
                     this.UserData.setScore(this.score);
                     this.UserData.setLastJelly(newValue);
                     this.updateInterfaceInfos();
@@ -278,7 +286,7 @@ var joinjelly;
                     if (this.matchNotify)
                         this.matchNotify();
                     // log event
-                    joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.board.getEmptyTiles().length);
+                    joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
                     return true;
                 }
                 return false;

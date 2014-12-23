@@ -9,20 +9,22 @@
 
     export class GamePlayScreen extends gameui.ScreenState {
 
+
+        // gameplay Control
+
         protected  gamestate: GameState;
 
-        protected  boardSize = 5;
-
-        protected board: Board;
-
-        private currentLevel: number;
+        protected level: number;
 
         private score: number;
 
-        private timeInterval: number;
+        private matches: number = 0;
 
-        private gameNextDrop: number;
 
+        //interface
+
+        protected board: Board;
+        
         private gameHeader: view.GameHeader;
 
         private gameLevelIndicator: view.LevelIndicator;
@@ -33,10 +35,16 @@
 
         private pauseMenu: view.PauseMenu;
 
-        protected gamePlayLoop: number;
+        protected  boardSize = 5;
 
-        // count moves for log
-        private moves: number = 0;
+        // parameters
+        private timeByLevel: number =	10000
+
+        private initialInterval: number = 800;
+        private finalInterval: number = 150;
+        private easeInterval: number = 0.97;
+
+
 
         protected matchNotify: () => void;
 
@@ -117,6 +125,7 @@
                 this.pauseGame();
                 this.pauseMenu.show();
             });
+
             this.pauseMenu.addEventListener("play", () => {
                 this.continueGame();
                 this.pauseMenu.hide();
@@ -141,13 +150,11 @@
         // update GUI iformaion
         private updateInterfaceInfos() {
 
-            var score = this.score;
-
-            var level = this.getLevelByScore(score);
-
-            var nextLevelScore = this.getScoreByLevel(level);
-            var previousLevelScore = this.getScoreByLevel(level - 1);
-            var percent = (score - previousLevelScore) / (nextLevelScore - previousLevelScore) * 100;
+            //calculate interval 
+            var nextLevelScore = this.getMovesByLevel(this.level);
+            var currentLevelScore = this.getMovesByLevel(this.level-1);
+            
+            var percent = (this.matches - currentLevelScore) / (nextLevelScore - currentLevelScore) *100;
 
             // defines alarm condition
             var emptySpaces = this.board.getPercentEmptySpaces();
@@ -156,55 +163,43 @@
                 var alarm = true;
 
             // updates the header
-            this.gameHeader.updateStatus(score, level, percent, emptySpaces, alarm);
+            this.gameHeader.updateStatus(this.score, this.level, percent, emptySpaces, alarm);
 
             // updates board shaking.
             this.board.setAlarm(alarm);
-
-            // do level up
-            if (this.currentLevel != level && level > 1)
-                this.levelUp(level);
-
-            // 
-            this.currentLevel = level
+           
         }
 
         // level up
-        protected levelUp(level:number) {
+        protected levelUpInterfaceEffect(level:number) {
             this.gameLevelIndicator.showLevel(level);
             createjs.Sound.play("Interface Sound-11");
             this.board.levelUpEffect();
         }
         
-        // returns a score based on level
-        private getScoreByLevel(level: number): number {
-            if (level == 0) return 0;
-            return 50 * Math.pow(2, level);
-        }
-
-        //return a level based on a score
-        private getLevelByScore(score: number): number {
-            if (!score) score = 1;
-            return Math.floor(Math.log(Math.max(1, score / 50)) / Math.log(2)) + 1
-        }
-
         // #endregion
 
         // #region =================================== gamelay =======================================================
 
         // Starts the game
         protected start() {
+
+            this.level = 1;
+            this.matches = 0;
+
+            // board initialization
             this.board.cleanBoard();
             this.board.unlock();
-            this.step();
+            
+            // update interfaces
             this.updateInterfaceInfos();
-            this.timeInterval = 300;
 
+            // play music
             gameui.AssetsManager.playMusic("music1");
 
-            this.gamePlayLoop = setInterval(() => { this.step(); }, 10)
-
+            // initialize gameloop
             this.gamestate = GameState.playing;
+            this.step();
 
             // log game start event
             JoinJelly.analytics.logGameStart();
@@ -218,6 +213,8 @@
 
         // finishes the game
         private endGame() {
+
+            this.gamestate = GameState.ended;
 
             var score = this.score;
             var highScore = JoinJelly.userData.getHighScore();
@@ -239,11 +236,8 @@
             // move the board a little up
             createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut)
 
-            // stop game loop
-            if (this.gamePlayLoop) clearInterval(this.gamePlayLoop);
-
             // log event
-            JoinJelly.analytics.logEndGame(this.moves, this.score, this.currentLevel, highJelly)
+            JoinJelly.analytics.logEndGame(this.matches, this.score, this.level, highJelly)
 
             // play end soud
             gameui.AssetsManager.playSound("end");
@@ -266,20 +260,8 @@
         protected step() {
 
             // if is not playing, than does not execute a step
-            if (this.gamestate != GameState.playing) return;
-
-            // wait until interval 
-            if (this.gameNextDrop > 0) {
-                this.gameNextDrop--;
-            }
-            else {
-
-                // defines next drop time interval
-                this.gameNextDrop = this.timeInterval / 10;
-
-                // decreate time interval
-                this.decreateInterval()
-
+            if (this.gamestate == GameState.playing) {
+                
                 // add a new tile  on board
                 this.addRandomTileOnBoard();
 
@@ -288,7 +270,62 @@
 
                 // verifies if game is ended
                 if (this.verifyGameLoose()) this.endGame();
+
+                // update currentLevel
+                this.updateCurrentLevel();
             }
+
+            // set timeout to another iteraction if game is not over
+            if(this.gamestate != GameState.ended)
+            setTimeout(
+                () => { this.step() },
+                this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval)
+                );
+            
+        }
+        
+        // update current level
+        private updateCurrentLevel() {
+            var newLevel = this.getLevelByMoves(this.matches);
+            if (newLevel > this.level) 
+                this.levelUpInterfaceEffect(newLevel);
+
+            this.level = newLevel;
+        }
+
+        // calculate current level by moves. 
+        // once level calculation is a iterative processe, this method uses a iterative calculation
+        protected getLevelByMoves(moves: number): number {
+            var totalMoves = 0;
+            var level = 0;
+
+            // calculate moves ammount for each level, once it reches more than current moves, it returns the calculated level
+            while (totalMoves<moves) {
+                var interval = this.getTimeInterval(level, this.initialInterval, this.finalInterval, this.easeInterval);
+                var levelMoves = this.timeByLevel / interval;
+                totalMoves += levelMoves;
+                level++
+            }
+
+            return Math.max(level, 1);
+        }
+
+        protected getMovesByLevel(level: number): number {
+            var totalMoves = 0;
+          
+            // calculate moves ammount for each level, once it reches more than current moves, it returns the calculated level
+            for (var calculatedLevel = 0; calculatedLevel < level; calculatedLevel++) {
+                var interval = this.getTimeInterval(calculatedLevel, this.initialInterval, this.finalInterval, this.easeInterval);
+                var levelMoves = this.timeByLevel / interval;
+                totalMoves += levelMoves;
+           }
+
+            return totalMoves;
+        }
+
+        // calculate time interval for a level.
+        protected getTimeInterval(level: number, initialInterval: number, finalInterval: number, intervalEase: number): number {
+            return initialInterval * Math.pow(intervalEase, level) + finalInterval * (1 - Math.pow(intervalEase, level));
         }
 
         // Verifies if game is over
@@ -303,7 +340,7 @@
         }
 
         // add a random tile with value 1 on board
-        protected addRandomTileOnBoard() {
+        protected addRandomTileOnBoard(value:number=1) {
 
             var empty = this.board.getEmptyTiles();
 
@@ -311,24 +348,8 @@
             if (empty.length > 0) {
                 var i = Math.floor(Math.random() * empty.length);
                 var tile = empty[i];
-                tile.setNumber(1);
+                tile.setNumber(value);
             }
-        }
-
-        //return a time interval for jelly addition based on user level;
-        private decreateInterval(): number {
-
-            var time = this.timeInterval;
-
-            if (time < 500) time -= 2;
-            if (time < 400) time -= 1;
-            else time -= 3;
-
-            this.timeInterval = time;
-
-            document.title = time.toString();
-            return time;
-
         }
 
         //called when a tile is dragged
@@ -341,9 +362,15 @@
         //verifies if a tile can pair another, and make it happens
         protected match(origin: Tile, target: Tile): boolean{
             //check if match is correct
-            if (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked){
+            if (origin.getNumber() != 0 && 
+                target != origin && 
+                target.getNumber() == origin.getNumber() && 
+                target.isUnlocked){
 
-                this.moves++;
+                this.matches++;
+
+                // update currentLevel
+                this.updateCurrentLevel()
 
                 //calculate new value
                 var newValue = target.getNumber() + origin.getNumber();
@@ -357,8 +384,10 @@
                 //animate the mach
                 this.board.match(origin, target);
 
+                // update score
                 this.score += newValue * 10 + Math.floor(Math.random() * newValue);
 
+                // update score
                 this.UserData.setScore(this.score);
                 this.UserData.setLastJelly(newValue);
 
@@ -369,7 +398,7 @@
                     this.matchNotify()
 
                 // log event
-                joinjelly.JoinJelly.analytics.logMove(this.moves, this.score, this.currentLevel, this.board.getEmptyTiles().length);
+                joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
 
                 return true;
             }

@@ -44,15 +44,24 @@ var joinjelly;
                 this.locked = false;
                 this.jelly.setNumber(this.value);
             };
+            Tile.prototype.enable = function () {
+                this.enabled = true;
+            };
+            Tile.prototype.disable = function () {
+                this.enabled = false;
+            };
+            Tile.prototype.isEnabled = function () {
+                return this.enabled;
+            };
             // set tile number
             Tile.prototype.setNumber = function (value) {
                 this.value = value;
                 if (this.isUnlocked()) {
                     this.jelly.setNumber(value);
                     if (value > 0)
-                        this.mouseEnabled = true;
+                        this.enable();
                     else
-                        this.mouseEnabled = false;
+                        this.disable();
                 }
             };
             Tile.prototype.getNumber = function () {

@@ -30,12 +30,12 @@ var joinjelly;
                 for (var x = 0; x < boardWidth; x++) {
                     for (var y = 0; y < boardHeight; y++) {
                         var tileDO = new gameplay.Tile(x, y, tileSize);
-                        // add a tile background
-                        if ((x + y) % 2 == 0) {
-                            var shape = new createjs.Shape();
-                            this.tilesContainer.addChild(shape);
-                            shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
-                        }
+                        //// add a tile background
+                        //if ((x + y) % 2 == 0) {
+                        //    var shape = new createjs.Shape();
+                        //    this.tilesContainer.addChild(shape);
+                        //    shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
+                        //}
                         // add a jelly on tile
                         this.tiles.push(tileDO);
                         this.tilesContainer.addChild(tileDO);
@@ -46,7 +46,7 @@ var joinjelly;
                 }
                 this.tilesContainer.addEventListener("mousedown", function (e) {
                     var tile = _this.getTileByRawPos(e.localX, e.localY, tileSize);
-                    if (tile && tile.isUnlocked()) {
+                    if (tile && tile.isUnlocked() && tile.isEnabled()) {
                         tile.lock();
                         _this.touchDictionary[e.pointerID] = tile;
                         //store offset mouse position
@@ -149,6 +149,7 @@ var joinjelly;
                 return parseInt(tile.name);
             };
             Board.prototype.getNeighborTiles = function (tile) {
+                // TODO, consider edges
                 var position = this.getTilePosition(tile);
                 var neighborPos = [
                     position + 1,
@@ -182,12 +183,7 @@ var joinjelly;
                 //if tiles match
                 if (match && target) {
                     var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
-                    createjs.Tween.get(tile).to({ x: pos.x, y: pos.y, alpha: 0 }, 100, createjs.Ease.quadInOut).call(function () {
-                        tile.set(_this.getTilePositionByCoords(tile.posx, tile.posy, _this.tileSize));
-                        _this.arrangeZOrder();
-                        tile.unlock();
-                        tile.alpha = 1;
-                    });
+                    this.fadeTileToPos(tile, pos.x, pos.y);
                 }
                 else {
                     tile.release();
@@ -197,6 +193,17 @@ var joinjelly;
                         tile.unlock();
                     });
                 }
+            };
+            Board.prototype.fadeTileToPos = function (tile, posx, posy, time) {
+                var _this = this;
+                if (time === void 0) { time = 100; }
+                tile.lock();
+                createjs.Tween.get(tile).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(function () {
+                    tile.set(_this.getTilePositionByCoords(tile.posx, tile.posy, _this.tileSize));
+                    _this.arrangeZOrder();
+                    tile.unlock();
+                    tile.alpha = 1;
+                });
             };
             Board.prototype.getHighestTileValue = function () {
                 var highestTile = 0;

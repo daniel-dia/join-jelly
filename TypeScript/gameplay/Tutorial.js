@@ -26,7 +26,6 @@ var joinjelly;
                 this.tutorialMessage.addEventListener("closed", function () {
                     _this.executeTutorialStep();
                 });
-                clearInterval(this.gamePlayLoop);
                 this.resetTutorialStep();
                 this.executeTutorialStep();
             };

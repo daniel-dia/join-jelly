@@ -3,7 +3,7 @@
     export class Jelly extends joinjelly.view.JellyContainer {
 
         private joinFx: createjs.DisplayObject;
-
+        private currentValue: number;
         // #region initialization =========================================
 
         constructor() {
@@ -14,8 +14,6 @@
             this.joinFx.regX = 100;
             this.joinFx.regY = 100;
             this.joinFx.y = -115;
-
-
         }
 
         private createJelly(value: number) {
@@ -58,6 +56,9 @@
 
         //set tile number
         public setNumber(value: number) {
+
+            if (this.currentValue == value) return;
+            this.currentValue = value;
 
             //update image 
             this.imageContainer.removeAllChildren();

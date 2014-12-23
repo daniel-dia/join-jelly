@@ -22,7 +22,7 @@
             bg.x = 0;
 
             //add pause button
-            var pauseButton = new gameui.ImageButton("pause", () => {
+            var pauseButton = new gameui.ImageButton("btPause", () => {
                 this.dispatchEvent("pause");
                 createjs.Sound.play("Interface Sound-06");
             });
