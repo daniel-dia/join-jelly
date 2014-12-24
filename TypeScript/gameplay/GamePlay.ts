@@ -20,7 +20,6 @@
 
         private matches: number = 0;
 
-
         //interface
 
         protected board: Board;
@@ -40,7 +39,7 @@
         // parameters
         private timeByLevel: number =	10000
 
-        private initialInterval: number = 800;
+        private initialInterval: number = 900;
         private finalInterval: number = 150;
         private easeInterval: number = 0.97;
 
@@ -280,7 +279,7 @@
             setTimeout(
                 () => { this.step() },
                 this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval)
-                );
+            );
             
         }
         

@@ -1,6 +1,6 @@
 ﻿module joinjelly.gameplay {
 
-    export class Tutorial extends GamePlayScreen {
+    export class Tutorial extends ExplodeBricks {
 
         // tutoral current step
         private currentTutorialStep = 0;
@@ -33,6 +33,8 @@
 
         }
 
+        protected step() {}
+        
         private resetTutorialStep() {
             this.currentTutorialStep = -1;
         }
@@ -73,7 +75,7 @@
                 },
                 () => {
                     this.board.getTileById(24).setNumber(2);
-                    this.board.getTileById(16).mouseEnabled = false;
+                    this.board.getTileById(16).disable();
                     this.showTutorialMove(24, 16)
                     this.tutorialwaitMatch();
                 },
@@ -82,12 +84,28 @@
                     this.hideTutorialMove();
                     this.tutorialWait(700);
                 },
-                () => {
-                    this.showTutorialMessage("Perfect! Now I'm ...,\nLet's play this game.");
-                },
-                () => {
+                  () => {
                     this.tutorialWait(500);
                 },
+                () => {
+                    this.board.getTileById(17).setNumber(-1);
+                    this.board.getTileById(19).setNumber(-1);
+                    this.showTutorialMessage("Ow, a dirty appears");
+                },
+                () => {
+                    this.showTutorialMessage("Join two jelly near to destroy it.");
+                    this.board.getTileById(18).setNumber(1);
+                    this.board.getTileById(24).setNumber(1);
+                    this.board.getTileById(18).disable();
+                },
+                () => {
+                    this.showTutorialMove(24, 18)
+                    this.tutorialwaitMatch();
+                },
+                () => {
+                    this.showTutorialMessage("Perfect!\nNow let's play this game.");
+                },
+            
                 () => {
                     this.showTutorialMessage("but be careful, \ndo not let the board fill, \nthis is the end for us.");
                 },

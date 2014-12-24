@@ -29,6 +29,8 @@ var joinjelly;
                 this.resetTutorialStep();
                 this.executeTutorialStep();
             };
+            Tutorial.prototype.step = function () {
+            };
             Tutorial.prototype.resetTutorialStep = function () {
                 this.currentTutorialStep = -1;
             };
@@ -67,7 +69,7 @@ var joinjelly;
                     },
                     function () {
                         _this.board.getTileById(24).setNumber(2);
-                        _this.board.getTileById(16).mouseEnabled = false;
+                        _this.board.getTileById(16).disable();
                         _this.showTutorialMove(24, 16);
                         _this.tutorialwaitMatch();
                     },
@@ -76,10 +78,25 @@ var joinjelly;
                         _this.tutorialWait(700);
                     },
                     function () {
-                        _this.showTutorialMessage("Perfect! Now I'm ...,\nLet's play this game.");
+                        _this.tutorialWait(500);
                     },
                     function () {
-                        _this.tutorialWait(500);
+                        _this.board.getTileById(17).setNumber(-1);
+                        _this.board.getTileById(19).setNumber(-1);
+                        _this.showTutorialMessage("Ow, a dirty appears");
+                    },
+                    function () {
+                        _this.showTutorialMessage("Join two jelly near to destroy it.");
+                        _this.board.getTileById(18).setNumber(1);
+                        _this.board.getTileById(24).setNumber(1);
+                        _this.board.getTileById(18).disable();
+                    },
+                    function () {
+                        _this.showTutorialMove(24, 18);
+                        _this.tutorialwaitMatch();
+                    },
+                    function () {
+                        _this.showTutorialMessage("Perfect!\nNow let's play this game.");
                     },
                     function () {
                         _this.showTutorialMessage("but be careful, \ndo not let the board fill, \nthis is the end for us.");
@@ -117,7 +134,7 @@ var joinjelly;
                 this.tutorialMoveIndicator.hide();
             };
             return Tutorial;
-        })(gameplay.GamePlayScreen);
+        })(gameplay.ExplodeBricks);
         gameplay.Tutorial = Tutorial;
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));

@@ -24,7 +24,7 @@ var joinjelly;
                 this.boardSize = 5;
                 // parameters
                 this.timeByLevel = 10000;
-                this.initialInterval = 800;
+                this.initialInterval = 900;
                 this.finalInterval = 150;
                 this.easeInterval = 0.97;
                 this.UserData = userData;
