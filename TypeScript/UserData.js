@@ -1,5 +1,7 @@
 var UserData = (function () {
     function UserData() {
+        gameui.AssetsManager.setSoundVeolume(this.getSoundVol());
+        gameui.AssetsManager.setMusicVolume(this.getMusicVol());
     }
     // #region score
     UserData.prototype.setScore = function (score) {
@@ -27,13 +29,13 @@ var UserData = (function () {
     //#endregion
     //#region options
     UserData.prototype.getMusicVol = function () {
-        return UserData.loadValue("music", true);
+        return UserData.loadValue("music", 1);
     };
     UserData.prototype.setMusicVol = function (volume) {
         UserData.saveValue("music", volume);
     };
     UserData.prototype.getSoundVol = function () {
-        return UserData.loadValue("sound", true);
+        return UserData.loadValue("sound", 1);
     };
     UserData.prototype.setSoundVol = function (volume) {
         UserData.saveValue("sound", volume);

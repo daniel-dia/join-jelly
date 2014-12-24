@@ -55,8 +55,11 @@ module gameui {
                 }
             });
 
-            if (!this.soundId) this.soundId = Button.DefaultSoundId;
-            if (this.soundId)AssetsManager.playSound(this.soundId);
+            if (!this.soundId) 
+                this.soundId = Button.DefaultSoundId;
+
+            if (this.soundId)  
+                 AssetsManager.playSound(this.soundId);
             
         }
 

@@ -66,7 +66,7 @@ var joinjelly;
                 var tbt = new gameui.ImageButton("GameOverBoard", function () {
                     _this.finishMenu.show();
                     tbt.fadeOut();
-                    createjs.Sound.play("Interface Sound-06");
+                    gameui.AssetsManager.playSound("Interface Sound-06");
                 });
                 tbt.set({ x: 150, y: -150, visible: false });
                 this.footer.addChild(tbt);
@@ -123,7 +123,7 @@ var joinjelly;
             // level up
             GamePlayScreen.prototype.levelUpInterfaceEffect = function (level) {
                 this.gameLevelIndicator.showLevel(level);
-                createjs.Sound.play("Interface Sound-11");
+                gameui.AssetsManager.playSound("Interface Sound-11");
                 this.board.levelUpEffect();
             };
             // #endregion

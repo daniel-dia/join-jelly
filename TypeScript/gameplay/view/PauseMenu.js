@@ -23,21 +23,18 @@ var joinjelly;
                     //add continue button;
                     var ok = new gameui.ImageButton("PlayBt", (function () {
                         _this.dispatchEvent("play");
-                        createjs.Sound.play("Interface Sound-08");
                     }));
                     ok.set({ x: 771, y: 1599 });
                     this.addChild(ok);
                     //add share button;
                     var board = new gameui.ImageButton("Home", (function () {
                         _this.dispatchEvent("home");
-                        createjs.Sound.play("Interface Sound-08");
                     }));
                     board.set({ x: 353, y: 1570 });
                     this.addChild(board);
                     //add showBoard button
                     var share = new gameui.ImageButton("Restart", (function () {
                         _this.dispatchEvent("restart");
-                        createjs.Sound.play("Interface Sound-06");
                     }));
                     share.set({ x: 1190, y: 1570 });
                     this.addChild(share);
@@ -53,51 +50,59 @@ var joinjelly;
                     t.regX = t.getBounds().width / 2;
                     this.addChild(t);
                     //add continue button;
-                    var music = new gameui.ImageButton("BtMusic", (function () {
-                        music.fadeOut();
-                        musicOFf.fadeIn();
-                        _this.setMusic(false);
+                    this.musicBtOn = new gameui.ImageButton("BtMusic", (function () {
+                        _this.setMusic(0);
                     }));
-                    music.set({ x: 623, y: y });
-                    this.addChild(music);
+                    this.musicBtOn.set({ x: 623, y: y });
+                    this.addChild(this.musicBtOn);
                     //add share button;
-                    var sound = new gameui.ImageButton("BtSound", (function () {
-                        sound.fadeOut();
-                        soundOff.fadeIn();
-                        _this.setSound(false);
+                    this.soundBtOn = new gameui.ImageButton("BtSound", (function () {
+                        _this.setSound(0);
                     }));
-                    sound.set({ x: 923, y: y });
-                    this.addChild(sound);
+                    this.soundBtOn.set({ x: 923, y: y });
+                    this.addChild(this.soundBtOn);
                     //add continue button;
-                    var musicOFf = new gameui.ImageButton("BtMusicOff", (function () {
-                        musicOFf.fadeOut();
-                        music.fadeIn();
-                        _this.setMusic(true);
+                    this.musicBtOff = new gameui.ImageButton("BtMusicOff", (function () {
+                        _this.setMusic(1);
                     }));
-                    musicOFf.set({ x: 623, y: y });
-                    this.addChild(musicOFf);
+                    this.musicBtOff.set({ x: 623, y: y });
+                    this.addChild(this.musicBtOff);
                     //add share button;
-                    var soundOff = new gameui.ImageButton("BtSoundOff", (function () {
-                        soundOff.fadeOut();
-                        sound.fadeIn();
-                        _this.setSound(true);
+                    this.soundBtOff = new gameui.ImageButton("BtSoundOff", (function () {
+                        _this.setSound(1);
                     }));
-                    soundOff.set({ x: 923, y: y });
-                    this.addChild(soundOff);
+                    this.soundBtOff.set({ x: 923, y: y });
+                    this.addChild(this.soundBtOff);
                     var mus = joinjelly.JoinJelly.userData.getMusicVol();
                     var snd = joinjelly.JoinJelly.userData.getSoundVol();
-                    musicOFf.visible = !mus;
-                    soundOff.visible = !snd;
-                    music.visible = !!mus;
-                    sound.visible = !!snd;
+                    this.musicBtOff.visible = !mus;
+                    this.soundBtOff.visible = !snd;
+                    this.musicBtOn.visible = !!mus;
+                    this.soundBtOn.visible = !!snd;
                 };
                 PauseMenu.prototype.setMusic = function (value) {
+                    if (value) {
+                        this.musicBtOff.fadeOut();
+                        this.musicBtOn.fadeIn();
+                    }
+                    else {
+                        this.musicBtOn.fadeOut();
+                        this.musicBtOff.fadeIn();
+                    }
                     joinjelly.JoinJelly.userData.setMusicVol(value);
-                    //Todo make it communicate with sound
+                    gameui.AssetsManager.setMusicVolume(value ? 1 : 0);
                 };
                 PauseMenu.prototype.setSound = function (value) {
+                    if (value) {
+                        this.soundBtOff.fadeOut();
+                        this.soundBtOn.fadeIn();
+                    }
+                    else {
+                        this.soundBtOn.fadeOut();
+                        this.soundBtOff.fadeIn();
+                    }
                     joinjelly.JoinJelly.userData.setSoundVol(value);
-                    //Todo make it communicate with sound
+                    gameui.AssetsManager.setSoundVeolume(value ? 1 : 0);
                 };
                 return PauseMenu;
             })(joinjelly.menus.view.FlyOutMenu);

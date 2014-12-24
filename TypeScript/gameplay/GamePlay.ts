@@ -100,7 +100,7 @@
                 this.finishMenu.show();
                 tbt.fadeOut();
 
-                createjs.Sound.play("Interface Sound-06");
+                gameui.AssetsManager.playSound("Interface Sound-06");
             });
             tbt.set({ x: 150, y: -150, visible: false });
             this.footer.addChild(tbt);
@@ -172,7 +172,7 @@
         // level up
         protected levelUpInterfaceEffect(level:number) {
             this.gameLevelIndicator.showLevel(level);
-            createjs.Sound.play("Interface Sound-11");
+            gameui.AssetsManager.playSound("Interface Sound-11");
             this.board.levelUpEffect();
         }
         

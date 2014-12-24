@@ -88,13 +88,7 @@
             return null;
         }
         
-        //DEPRECIATED
-        //get a movie clip
-        public static getMovieClip(name: string): createjs.Sprite {
-            var t: createjs.Sprite = new window[name];
-            return t;
-        }
-
+  
         //return a sprite according to the image
         public static getSprite (name: string, play:boolean=true): createjs.Sprite {
             var data = this.spriteSheets[name];
@@ -107,18 +101,30 @@
             return sprite;
         }
 
-        public static playSound(name: string,interrupt?:boolean,delay:number=0,offset?:number,loop?:number,volume:number=1):createjs.SoundInstance {
-            return createjs.Sound.play(name, interrupt, delay,offset,loop,volume);
-        }
+
+
+        // #region sound
 
         private static currentMusicName: string;
         private static currentMusic: createjs.SoundInstance
+        private static musicVolue: number;
+        private static soundVolume: number;
+
+        public static setMusicVolume(volume: number) {
+            if (this.currentMusic) this.currentMusic.volume = volume;
+            this.musicVolue = volume; 
+        }
+
+        public static setSoundVeolume(volume: number) { 
+            this.soundVolume = volume;
+        }
+
+        public static getMusicVolume(): number { return this.musicVolue; }
+
+        public static getSoundVeolume(): number { return this.soundVolume; } 
 
         public static playMusic(name: string,volume:number=1) {
-
-
-
-            if (this.currentMusic) {
+              if (this.currentMusic) {
                 this.currentMusic.setVolume(volume);
                 if (this.currentMusicName == name) return;
 
@@ -128,9 +134,13 @@
 
             this.currentMusicName = name;
             this.currentMusic = createjs.Sound.play(name,null,null,null,-1);
-            this.currentMusic.setVolume(volume);
-
-
+            this.currentMusic.setVolume(volume * this.getMusicVolume());
         }
+
+        public static playSound(name: string, interrupt?: boolean, delay: number= 0, offset?: number, loop?: number, volume: number= 1): createjs.SoundInstance {
+            return createjs.Sound.play(name, interrupt, delay, offset, loop, volume*this.getSoundVeolume());
+        }
+
+        // #endregion
     }
 }

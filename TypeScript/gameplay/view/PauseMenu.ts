@@ -2,6 +2,11 @@
  
     export class PauseMenu extends joinjelly.menus.view.FlyOutMenu{
 
+        private soundBtOn: gameui.Button;
+        private soundBtOff: gameui.Button;
+        private musicBtOn: gameui.Button;
+        private musicBtOff: gameui.Button;
+
         constructor() {
             super("PAUSED");
             this.addButtons();
@@ -14,7 +19,6 @@
             //add continue button;
             var ok = new gameui.ImageButton("PlayBt", (() => {
                 this.dispatchEvent("play")
-                createjs.Sound.play("Interface Sound-08");
             }));
             ok.set({ x: 771, y: 1599 });
             this.addChild(ok);
@@ -22,7 +26,6 @@
             //add share button;
             var board = new gameui.ImageButton("Home", (() => {
                 this.dispatchEvent("home")
-                createjs.Sound.play("Interface Sound-08");
             }));
             board.set({ x: 353, y: 1570 });
             this.addChild(board);
@@ -30,7 +33,6 @@
             //add showBoard button
             var share = new gameui.ImageButton("Restart", (() => {
                 this.dispatchEvent("restart")
-                createjs.Sound.play("Interface Sound-06");
             }));
             share.set({ x: 1190, y: 1570 });
             this.addChild(share);
@@ -49,43 +51,56 @@
             this.addChild(t)
 
             //add continue button;
-            var music = new gameui.ImageButton("BtMusic", (() => { music.fadeOut(); musicOFf.fadeIn(); this.setMusic(false) }));
-            music.set({ x: 623, y: y });
-            this.addChild(music);
+            this.musicBtOn = new gameui.ImageButton("BtMusic", (() => { this.setMusic(0) }));
+            this.musicBtOn.set({ x: 623, y: y });
+            this.addChild(this.musicBtOn);
 
             //add share button;
-            var sound = new gameui.ImageButton("BtSound", (() => { sound.fadeOut(); soundOff.fadeIn();this.setSound(false) }));
-            sound.set({ x: 923, y: y });
-            this.addChild(sound);
+            this. soundBtOn = new gameui.ImageButton("BtSound", (() => { this.setSound(0) }));
+            this.soundBtOn.set({ x: 923, y: y });
+            this.addChild(this.soundBtOn);
 
             //add continue button;
-            var musicOFf = new gameui.ImageButton("BtMusicOff", (() => { musicOFf.fadeOut(); music.fadeIn(); this.setMusic(true)}));
-            musicOFf .set({ x: 623, y: y });
-            this.addChild(musicOFf );
+            this. musicBtOff = new gameui.ImageButton("BtMusicOff", (() => { this.setMusic(1)}));
+            this.musicBtOff .set({ x: 623, y: y });
+            this.addChild(this.musicBtOff);
 
             //add share button;
-            var soundOff = new gameui.ImageButton("BtSoundOff", (() => { soundOff.fadeOut(); sound.fadeIn();this.setSound(true) }));
-            soundOff.set({ x: 923, y: y });
-            this.addChild(soundOff);
+            this. soundBtOff = new gameui.ImageButton("BtSoundOff", (() => { this.setSound(1) }));
+            this.soundBtOff.set({ x: 923, y: y });
+            this.addChild(this.soundBtOff);
 
             var mus = JoinJelly.userData.getMusicVol();
             var snd = JoinJelly.userData.getSoundVol();
 
-            musicOFf.visible = !mus;
-            soundOff.visible = !snd;
-            music.visible = !!mus;
-            sound.visible = !!snd;
+            this.musicBtOff.visible = !mus;
+            this.soundBtOff.visible = !snd;
+            this.musicBtOn.visible = !!mus;
+            this.soundBtOn.visible = !!snd;
 
         }
 
-        private setMusic(value: boolean) {
+        private setMusic(value: number) {
+            if (value) {
+                this.musicBtOff.fadeOut(); this.musicBtOn.fadeIn();
+            }
+            else {
+                this.musicBtOn.fadeOut(); this.musicBtOff.fadeIn();
+            }
+
             JoinJelly.userData.setMusicVol(value);
-            //Todo make it communicate with sound
+            gameui.AssetsManager.setMusicVolume(value ? 1 : 0);
         }
 
-        private setSound(value: boolean) {
+        private setSound(value: number) {
+            if (value) {
+                this.soundBtOff.fadeOut(); this.soundBtOn.fadeIn();
+            }
+            else {
+                this.soundBtOn.fadeOut(); this.soundBtOff.fadeIn();}
+
             JoinJelly.userData.setSoundVol(value);
-            //Todo make it communicate with sound
+            gameui.AssetsManager.setSoundVeolume(value ? 1 : 0);
         }
     }
 }

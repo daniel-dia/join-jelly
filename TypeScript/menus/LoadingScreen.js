@@ -37,6 +37,8 @@ var joinjelly;
                     _this.loaded();
                 return true;
             });
+            //set default sound button
+            gameui.Button.DefaultSoundId = "Interface Sound-06";
             //load font
             debussy = createSpriteSheetFromFont(debussyFont, "assets/images_" + assetscale + "x/");
             gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);

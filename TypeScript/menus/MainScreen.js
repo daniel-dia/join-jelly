@@ -29,7 +29,6 @@ var joinjelly;
             //add pedia button
             var aboutBt = new gameui.ImageButton("btJelly", function () {
                 joinjelly.JoinJelly.showPedia();
-                createjs.Sound.play("Interface Sound-06");
             });
             aboutBt.y = -150;
             aboutBt.x = defaultWidth - 650;
@@ -37,7 +36,6 @@ var joinjelly;
             //add about bt
             var aboutBt = new gameui.ImageButton("btInfo", function () {
                 joinjelly.JoinJelly.showAboutScreen();
-                createjs.Sound.play("Interface Sound-06");
             });
             aboutBt.y = -150;
             aboutBt.x = defaultWidth - 150;
@@ -45,7 +43,6 @@ var joinjelly;
             //add tutorial bt
             var tutorialBt = new gameui.ImageButton("btHelp", function () {
                 joinjelly.JoinJelly.startTutorial();
-                createjs.Sound.play("Interface Sound-06");
             });
             tutorialBt.y = -150;
             tutorialBt.x = defaultWidth - 400;
@@ -56,7 +53,6 @@ var joinjelly;
                     joinjelly.JoinJelly.startLevel();
                 else
                     joinjelly.JoinJelly.startTutorial();
-                createjs.Sound.play("Interface Sound-06");
             });
             button.y = 1168;
             button.x = 768;
