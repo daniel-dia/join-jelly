@@ -44,14 +44,14 @@ var joinjelly;
                         _this.board.getTileById(16).mouseEnabled = false;
                     },
                     function () {
-                        _this.showTutorialMessage("Hello, \nI'm little Jelly");
+                        _this.showTutorialMessage(StringResources.tutorial.msg1);
                     },
                     function () {
                         _this.tutorialWait(700);
                     },
                     function () {
                         _this.board.getTileById(18).setNumber(1);
-                        _this.showTutorialMessage("Help me to evolve\nJoin another jelly to me");
+                        _this.showTutorialMessage(StringResources.tutorial.msg2);
                         _this.board.getTileById(18).mouseEnabled = false;
                     },
                     function () {
@@ -65,7 +65,7 @@ var joinjelly;
                         _this.tutorialWait(700);
                     },
                     function () {
-                        _this.showTutorialMessage("Great! now I'm bigger, \nevolve me once more");
+                        _this.showTutorialMessage(StringResources.tutorial.msg3);
                     },
                     function () {
                         _this.board.getTileById(24).setNumber(2);
@@ -83,10 +83,10 @@ var joinjelly;
                     function () {
                         _this.board.getTileById(17).setNumber(-1);
                         _this.board.getTileById(19).setNumber(-1);
-                        _this.showTutorialMessage("Ow, a dirty appears");
+                        _this.showTutorialMessage(StringResources.tutorial.msg4);
                     },
                     function () {
-                        _this.showTutorialMessage("Join two jelly near to destroy it.");
+                        _this.showTutorialMessage(StringResources.tutorial.msg5);
                         _this.board.getTileById(18).setNumber(1);
                         _this.board.getTileById(24).setNumber(1);
                         _this.board.getTileById(18).disable();
@@ -96,10 +96,10 @@ var joinjelly;
                         _this.tutorialwaitMatch();
                     },
                     function () {
-                        _this.showTutorialMessage("Perfect!\nNow let's play this game.");
+                        _this.showTutorialMessage(StringResources.tutorial.msg6);
                     },
                     function () {
-                        _this.showTutorialMessage("but be careful, \ndo not let the board fill, \nthis is the end for us.");
+                        _this.showTutorialMessage(StringResources.tutorial.msg7);
                     },
                     function () {
                         joinjelly.JoinJelly.startLevel();

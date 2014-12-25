@@ -28,7 +28,7 @@ var joinjelly;
             this.content.addChild(text);
             //add update% functtion
             queue.addEventListener("progress", function (evt) {
-                text.text = "Loading" + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
+                text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
                 return true;
             });
             //creates load complete action

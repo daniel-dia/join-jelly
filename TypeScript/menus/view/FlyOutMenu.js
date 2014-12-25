@@ -31,7 +31,7 @@ var joinjelly;
                 // creates menu title
                 FlyOutMenu.prototype.addTitle = function (title) {
                     //create "points" text
-                    var tx = gameui.AssetsManager.getBitmapText(title, "debussy");
+                    var tx = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussy");
                     tx.set({ x: defaultWidth / 2, y: 600 });
                     this.addChild(tx);
                     // tx.scaleX = tx.scaleY = 2;

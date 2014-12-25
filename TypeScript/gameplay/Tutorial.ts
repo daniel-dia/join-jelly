@@ -50,14 +50,14 @@
                     this.board.getTileById(16).mouseEnabled = false;
                 },
                 () => {
-                    this.showTutorialMessage("Hello, \nI'm little Jelly");
+                    this.showTutorialMessage(StringResources.tutorial.msg1);
                 },
                 () => {
                     this.tutorialWait(700);
                 },
                 () => {
                     this.board.getTileById(18).setNumber(1);
-                    this.showTutorialMessage("Help me to evolve\nJoin another jelly to me");
+                    this.showTutorialMessage(StringResources.tutorial.msg2);
                     this.board.getTileById(18).mouseEnabled = false;
                 },
                 () => {
@@ -71,7 +71,7 @@
                     this.tutorialWait(700);
                 },
                 () => {
-                    this.showTutorialMessage("Great! now I'm bigger, \nevolve me once more");
+                    this.showTutorialMessage(StringResources.tutorial.msg3);
                 },
                 () => {
                     this.board.getTileById(24).setNumber(2);
@@ -90,10 +90,10 @@
                 () => {
                     this.board.getTileById(17).setNumber(-1);
                     this.board.getTileById(19).setNumber(-1);
-                    this.showTutorialMessage("Ow, a dirty appears");
+                    this.showTutorialMessage(StringResources.tutorial.msg4);
                 },
                 () => {
-                    this.showTutorialMessage("Join two jelly near to destroy it.");
+                    this.showTutorialMessage(StringResources.tutorial.msg5);
                     this.board.getTileById(18).setNumber(1);
                     this.board.getTileById(24).setNumber(1);
                     this.board.getTileById(18).disable();
@@ -103,11 +103,11 @@
                     this.tutorialwaitMatch();
                 },
                 () => {
-                    this.showTutorialMessage("Perfect!\nNow let's play this game.");
+                    this.showTutorialMessage(StringResources.tutorial.msg6);
                 },
             
                 () => {
-                    this.showTutorialMessage("but be careful, \ndo not let the board fill, \nthis is the end for us.");
+                    this.showTutorialMessage(StringResources.tutorial.msg7);
                 },
                 () => {
                     JoinJelly.startLevel();

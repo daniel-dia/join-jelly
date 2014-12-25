@@ -7,7 +7,7 @@
             this.createContent(userData.getLastJelly(), jellyInfos);
         }
 
-        private createContent(lastJelly: number, jellyInfos: Array<jellyInfo>) {
+        private createContent(lastJelly: number, jellyInfos: Array<any>) {
 
             // add Background
             this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
@@ -17,7 +17,7 @@
             bg.y = (defaultHeight - 1788) / 2;
 
             // add Title
-            var title = gameui.AssetsManager.getBitmapText("JELLYPEDIA", "debussy");
+            var title = gameui.AssetsManager.getBitmapText(StringResources.menus.jellypedia.toUpperCase(), "debussy");
             this.content.addChild(title);
             title.y = bg.y+50;
             title.x = defaultWidth/2;

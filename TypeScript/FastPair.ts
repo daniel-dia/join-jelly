@@ -40,7 +40,7 @@
         } 
         
         public static showPedia() {
-            this.gameScreen.switchScreen(new Jellypedia(this.userData,jellyInfos));
+            this.gameScreen.switchScreen(new Jellypedia(this.userData,StringResources.jellys));
         }
     }
 }

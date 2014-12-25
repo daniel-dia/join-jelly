@@ -43,7 +43,7 @@
             this.levelBar = levelBar;
 
             //add scores text
-            var score = gameui.AssetsManager.getBitmapText("score", "debussy")
+            var score = gameui.AssetsManager.getBitmapText(StringResources.menus.score, "debussy")
             //score.textBaseline = "middle";
             score.x = 323;
             score.y = 124 -80;
@@ -51,7 +51,7 @@
             this.addChild(score);
 
             //add scores text
-            var level = gameui.AssetsManager.getBitmapText("level", "debussy")
+            var level = gameui.AssetsManager.getBitmapText(StringResources.menus.level, "debussy")
             //level.textBaseline = "middle";
             level.x = 1099;
             level.y = 242 -200;
@@ -69,7 +69,7 @@
 
         // updates level ad score status
         public updateStatus(score: number,level:number,percent?:number,emptyPercent?:number, alarm?:boolean) {
-            this.scoreText.text = "SCORE " + score.toString();
+            this.scoreText.text =StringResources.menus.score.toUpperCase() + " " + score.toString();
             this.levelText.text = level.toString();
 
             var value = 1;

@@ -40,14 +40,14 @@ var joinjelly;
                     levelBar.y = 151;
                     this.levelBar = levelBar;
                     //add scores text
-                    var score = gameui.AssetsManager.getBitmapText("score", "debussy");
+                    var score = gameui.AssetsManager.getBitmapText(StringResources.menus.score, "debussy");
                     //score.textBaseline = "middle";
                     score.x = 323;
                     score.y = 124 - 80;
                     this.scoreText = score;
                     this.addChild(score);
                     //add scores text
-                    var level = gameui.AssetsManager.getBitmapText("level", "debussy");
+                    var level = gameui.AssetsManager.getBitmapText(StringResources.menus.level, "debussy");
                     //level.textBaseline = "middle";
                     level.x = 1099;
                     level.y = 242 - 200;
@@ -63,7 +63,7 @@ var joinjelly;
                 // updates level ad score status
                 GameHeader.prototype.updateStatus = function (score, level, percent, emptyPercent, alarm) {
                     var _this = this;
-                    this.scoreText.text = "SCORE " + score.toString();
+                    this.scoreText.text = StringResources.menus.score.toUpperCase() + " " + score.toString();
                     this.levelText.text = level.toString();
                     var value = 1;
                     //updates timebar

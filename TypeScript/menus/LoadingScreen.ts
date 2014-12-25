@@ -31,7 +31,7 @@ module joinjelly {
 
             //add update% functtion
             queue.addEventListener("progress", (evt: Object): boolean => {
-                text.text = /*stringResources.ld*/ "Loading" + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
+                text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
                 return true;
             });
 

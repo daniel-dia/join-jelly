@@ -13,7 +13,7 @@ var joinjelly;
             var FinishMenu = (function (_super) {
                 __extends(FinishMenu, _super);
                 function FinishMenu() {
-                    _super.call(this, "GAME OVER", 1250);
+                    _super.call(this, StringResources.menus.gameOver.toUpperCase(), 1250);
                     this.addButtons();
                     this.addPoints();
                     this.addLastJelly();
@@ -77,7 +77,7 @@ var joinjelly;
                     bg.set({ x: defaultWidth / 2, y: 951, regX: 797 / 2 });
                     container.addChild(bg);
                     //add "LastJelly" Text
-                    var tx = gameui.AssetsManager.getBitmapText("Last Jelly", "debussy");
+                    var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.highJelly, "debussy");
                     tx.set({ x: 420, y: 820 });
                     //container.addChild(tx);
                     tx.scaleX = tx.scaleY = 0.7;
@@ -108,9 +108,9 @@ var joinjelly;
                         if (t.value >= 1)
                             clearInterval(interval);
                     }, 30);
-                    this.higghScoreText.text = "High Score: " + best.toString();
+                    this.higghScoreText.text = StringResources.menus.highScore + ": " + best.toString();
                     this.jelly.setNumber(jelly);
-                    this.jellyText.text = jellyInfos[jelly].name;
+                    this.jellyText.text = StringResources.jellys[jelly].name;
                     this.jellyText.regX = this.jellyText.getBounds().width / 2;
                     this.higghScoreText.regX = this.higghScoreText.getBounds().width;
                 };

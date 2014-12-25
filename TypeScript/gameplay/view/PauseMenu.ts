@@ -8,7 +8,7 @@
         private musicBtOff: gameui.Button;
 
         constructor() {
-            super("PAUSED");
+            super(StringResources.menus.pause);
             this.addButtons();
             this.addSoundOptions();
         }
@@ -45,7 +45,7 @@
             f.set({x:(defaultWidth-1056)/2,y:870 })
             this.addChild(f);
 
-            var t = gameui.AssetsManager.getBitmapText("Sound", "debussy")
+            var t = gameui.AssetsManager.getBitmapText(StringResources.menus.sound, "debussy")
             t.set({ x: defaultWidth/2, y: 810 });
             t.regX = t.getBounds().width / 2;
             this.addChild(t)

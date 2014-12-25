@@ -86,7 +86,7 @@
 
         private createFooter() {
             if (this.userData) {
-                this.scoreText = gameui.AssetsManager.getBitmapText("High Score " + this.userData.getHighScore(), "debussy");
+                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore + " " + this.userData.getHighScore(), "debussy");
                 this.scoreText.x = 50;
                 this.scoreText.y = -100;
                 this.scoreText.scaleX = this.scoreText.scaleY = 0.8;    

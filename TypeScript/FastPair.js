@@ -29,7 +29,7 @@ var joinjelly;
             this.gameScreen.switchScreen(new joinjelly.gameplay.Tutorial(this.userData));
         };
         JoinJelly.showPedia = function () {
-            this.gameScreen.switchScreen(new joinjelly.Jellypedia(this.userData, jellyInfos));
+            this.gameScreen.switchScreen(new joinjelly.Jellypedia(this.userData, StringResources.jellys));
         };
         return JoinJelly;
     })();

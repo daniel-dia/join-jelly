@@ -9,7 +9,7 @@
         
 
         constructor() {
-            super("GAME OVER",1250);
+            super(StringResources.menus.gameOver.toUpperCase(),1250);
             this.addButtons();
             this.addPoints();
             this.addLastJelly();
@@ -90,7 +90,7 @@
             container.addChild(bg);
 
             //add "LastJelly" Text
-            var tx = gameui.AssetsManager.getBitmapText("Last Jelly", "debussy")
+            var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.highJelly, "debussy")
             tx.set({ x: 420, y:820});
             //container.addChild(tx);
             tx.scaleX = tx.scaleY = 0.7;
@@ -130,10 +130,10 @@
             }, 30);
         
         
-            this.higghScoreText.text = "High Score: " + best.toString();
+            this.higghScoreText.text = StringResources.menus.highScore +": " + best.toString();
             this.jelly.setNumber(jelly);
 
-            this.jellyText.text = jellyInfos[jelly].name;
+            this.jellyText.text = StringResources.jellys[jelly].name;
             this.jellyText.regX = this.jellyText.getBounds().width / 2;
             this.higghScoreText.regX = this.higghScoreText.getBounds().width;
 
