@@ -26,17 +26,12 @@
                 this.executeTutorialStep();
             });
 
-
             super.createGUI();
-
-
         }
 
         public start() {
 
             super.start();
-
-
             this.resetTutorialStep();
             this.executeTutorialStep();
 

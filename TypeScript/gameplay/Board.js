@@ -22,28 +22,34 @@ var joinjelly;
                 this.boardHeight = boardHeight;
                 this.boardWidth = boardWidth;
                 this.addTiles(boardWidth, boardHeight, tileSize, img);
+                this.addMouseEvents(tileSize);
             }
             // add tiles on the board
             Board.prototype.addTiles = function (boardWidth, boardHeight, tileSize, img) {
+                for (var x = 0; x < boardWidth; x++)
+                    for (var y = 0; y < boardHeight; y++)
+                        this.addTile(x, y, tileSize);
+            };
+            // add a single tile on board
+            Board.prototype.addTile = function (x, y, tileSize) {
+                var tileDO = new gameplay.Tile(x, y, tileSize);
+                //// add a tile background
+                //if ((x + y) % 2 == 0) {
+                //    var shape = new createjs.Shape();
+                //    this.tilesContainer.addChild(shape);
+                //    shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
+                //}
+                // add a jelly on tile
+                this.tiles.push(tileDO);
+                this.tilesContainer.addChild(tileDO);
+                tileDO.setNumber(0);
+                tileDO.name = (this.boardWidth * y + x).toString();
+                tileDO.set(this.getTilePositionByCoords(x, y, tileSize));
+            };
+            // add mouse board interacion
+            Board.prototype.addMouseEvents = function (tileSize) {
                 var _this = this;
                 var touchOffset = [];
-                for (var x = 0; x < boardWidth; x++) {
-                    for (var y = 0; y < boardHeight; y++) {
-                        var tileDO = new gameplay.Tile(x, y, tileSize);
-                        //// add a tile background
-                        //if ((x + y) % 2 == 0) {
-                        //    var shape = new createjs.Shape();
-                        //    this.tilesContainer.addChild(shape);
-                        //    shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
-                        //}
-                        // add a jelly on tile
-                        this.tiles.push(tileDO);
-                        this.tilesContainer.addChild(tileDO);
-                        tileDO.setNumber(0);
-                        tileDO.name = (this.boardWidth * y + x).toString();
-                        tileDO.set(this.getTilePositionByCoords(x, y, tileSize));
-                    }
-                }
                 this.tilesContainer.addEventListener("mousedown", function (e) {
                     var tile = _this.getTileByRawPos(e.localX, e.localY, tileSize);
                     if (tile && tile.isUnlocked() && tile.isEnabled()) {
@@ -107,14 +113,20 @@ var joinjelly;
             // get tile coordinates by pointer position
             Board.prototype.getTileCoordsByRawPos = function (rawx, rawy, tileSize) {
                 var x = Math.floor(rawx / tileSize);
-                var y = Math.floor(rawy / tileSize);
+                var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
+                var y = Math.floor((rawy - hexaOffset) / tileSize);
                 return { x: x, y: y };
+            };
+            Board.prototype.getTileByCoords = function (x, y) {
+                var id = this.boardWidth * y + x;
+                return this.getTileById(id);
             };
             // get a new position for a tile based on its index
             Board.prototype.getTilePositionByCoords = function (x, y, tileSize) {
+                var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
                 return {
                     x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
-                    y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5
+                    y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5 + hexaOffset
                 };
             };
             // get a tile object by its id
@@ -145,25 +157,28 @@ var joinjelly;
             Board.prototype.getAllTiles = function () {
                 return this.tiles;
             };
-            Board.prototype.getTilePosition = function (tile) {
+            Board.prototype.getTileId = function (tile) {
                 return parseInt(tile.name);
             };
+            // get all neighbor tiles 
             Board.prototype.getNeighborTiles = function (tile) {
-                // TODO, consider edges
-                var position = this.getTilePosition(tile);
-                var neighborPos = [
-                    position + 1,
-                    position - 1,
-                    position + this.boardWidth,
-                    position - this.boardWidth,
-                    position + this.boardWidth + 1,
-                    position - this.boardWidth + 1,
-                    position + this.boardWidth - 1,
-                    position - this.boardWidth - 1,
-                ];
                 var neighbor = [];
-                for (var p in neighborPos)
-                    neighbor.push(this.getTileById(neighborPos[p]));
+                var tileId = this.getTileId(tile);
+                var hexaOffset = (tile.posx == 1 || tile.posx == 3) ? 1 : -1;
+                // consider all neighbores
+                var neighborCoords = [
+                    { x: tile.posx, y: tile.posy - 1 },
+                    { x: tile.posx, y: tile.posy + 1 },
+                    { x: tile.posx - 1, y: tile.posy },
+                    { x: tile.posx + 1, y: tile.posy },
+                    { x: tile.posx - 1, y: tile.posy + hexaOffset },
+                    { x: tile.posx + 1, y: tile.posy + hexaOffset },
+                ];
+                for (var p in neighborCoords)
+                    // remove beyound borders
+                    if (neighborCoords[p].x >= 0 && neighborCoords[p].y >= 0 && neighborCoords[p].x < this.boardWidth && neighborCoords[p].y < this.boardHeight)
+                        // add to array
+                        neighbor.push(this.getTileByCoords(neighborCoords[p].x, neighborCoords[p].y));
                 return neighbor;
             };
             // calculate a percent 
@@ -194,17 +209,6 @@ var joinjelly;
                     });
                 }
             };
-            Board.prototype.fadeTileToPos = function (tile, posx, posy, time) {
-                var _this = this;
-                if (time === void 0) { time = 100; }
-                tile.lock();
-                createjs.Tween.get(tile).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(function () {
-                    tile.set(_this.getTilePositionByCoords(tile.posx, tile.posy, _this.tileSize));
-                    _this.arrangeZOrder();
-                    tile.unlock();
-                    tile.alpha = 1;
-                });
-            };
             Board.prototype.getHighestTileValue = function () {
                 var highestTile = 0;
                 for (var j in this.tiles)
@@ -219,7 +223,7 @@ var joinjelly;
                 this.tilesContainer.mouseEnabled = true;
             };
             // #endregion
-            // #region behaviour ----------------------------------------------------------------------------------
+            // #region behaviour ---------------------------------------------------------------------------
             // organize all z-order
             Board.prototype.arrangeZOrder = function () {
                 for (var t = 0; t < this.tiles.length; t++)
@@ -238,7 +242,18 @@ var joinjelly;
                     this.tiles[t].setNumber(0);
             };
             // #endregion
-            // #region Animations ----------------------------------------------------------------------------------
+            // #region Animations --------------------------------------------------------------------------
+            Board.prototype.fadeTileToPos = function (tile, posx, posy, time) {
+                var _this = this;
+                if (time === void 0) { time = 100; }
+                tile.lock();
+                createjs.Tween.get(tile).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(function () {
+                    tile.set(_this.getTilePositionByCoords(tile.posx, tile.posy, _this.tileSize));
+                    _this.arrangeZOrder();
+                    tile.unlock();
+                    tile.alpha = 1;
+                });
+            };
             // create and execute a level up effect on tiles
             Board.prototype.levelUpEffect = function () {
                 var _this = this;

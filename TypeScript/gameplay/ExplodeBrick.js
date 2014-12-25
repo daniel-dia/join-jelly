@@ -12,7 +12,7 @@ var joinjelly;
             __extends(ExplodeBricks, _super);
             function ExplodeBricks() {
                 _super.apply(this, arguments);
-                this.initialDirtyProbability = 0.1;
+                this.initialDirtyProbability = 1;
                 this.finalDirtyProbability = 0.6;
                 this.easeDirtyProbability = 0.98;
             }
@@ -36,7 +36,7 @@ var joinjelly;
                         if (tile && tile.getNumber() < 0) {
                             var posx = target.x + (tile.x - target.x) * 1.5;
                             var posy = target.y + (tile.y - target.y) * 1.5;
-                            this.board.fadeTileToPos(tile, posx, posy, 200);
+                            this.board.fadeTileToPos(tile, posx, posy, 500);
                             tile.setNumber(0);
                         }
                     }

@@ -28,40 +28,49 @@
             this.boardWidth = boardWidth;
 
             this.addTiles(boardWidth, boardHeight, tileSize, img);
+            this.addMouseEvents(tileSize);
 
         }
 
         // add tiles on the board
         private addTiles(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
+           
+
+            for (var x = 0; x < boardWidth; x++) 
+                for (var y = 0; y < boardHeight; y++) 
+                    this.addTile(x, y, tileSize);
+
+     
+        }
+
+        // add a single tile on board
+        private addTile(x: number, y: number, tileSize:number) {
+            var tileDO = new Tile(x, y, tileSize);
+
+            //// add a tile background
+            //if ((x + y) % 2 == 0) {
+            //    var shape = new createjs.Shape();
+            //    this.tilesContainer.addChild(shape);
+            //    shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
+            //}
+
+            // add a jelly on tile
+            this.tiles.push(tileDO);
+            this.tilesContainer.addChild(tileDO);
+            tileDO.setNumber(0);
+            tileDO.name = (this.boardWidth * y + x).toString();
+            tileDO.set(this.getTilePositionByCoords(x, y, tileSize));
+
+        }
+
+        // add mouse board interacion
+        private addMouseEvents(tileSize:number) {
             var touchOffset = [];
-
-            for (var x = 0; x < boardWidth; x++) {
-                for (var y = 0; y < boardHeight; y++) {
-                    var tileDO = new Tile(x, y, tileSize);
-
-                    //// add a tile background
-                    //if ((x + y) % 2 == 0) {
-                    //    var shape = new createjs.Shape();
-                    //    this.tilesContainer.addChild(shape);
-                    //    shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
-                    //}
-
-                    // add a jelly on tile
-                    this.tiles.push(tileDO);
-                    this.tilesContainer.addChild(tileDO);
-                    tileDO.setNumber(0);
-                    tileDO.name = (this.boardWidth * y + x).toString();
-                    tileDO.set(this.getTilePositionByCoords(x, y, tileSize));
-
-
-                }
-            }
-
             this.tilesContainer.addEventListener("mousedown", (e: createjs.MouseEvent) => {
                 var tile = this.getTileByRawPos(e.localX, e.localY, tileSize);
 
-                if (tile && tile.isUnlocked() && tile.isEnabled()){
-                    
+                if (tile && tile.isUnlocked() && tile.isEnabled()) {
+
                     tile.lock();
 
                     this.touchDictionary[e.pointerID] = tile;
@@ -137,19 +146,31 @@
 
         // get tile coordinates by pointer position
         private getTileCoordsByRawPos(rawx: number, rawy: number, tileSize: number): point {
+        
+        
             var x = Math.floor(rawx / tileSize);
-            var y = Math.floor(rawy / tileSize);
+            var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
+            var y = Math.floor((rawy -hexaOffset)/ tileSize);
+
             return { x: x, y: y };
+        }
+
+        private getTileByCoords(x:number, y:number):Tile {
+            var id = this.boardWidth * y + x;
+            return this.getTileById(id);
         }
 
         // get a new position for a tile based on its index
         private getTilePositionByCoords(x: number, y: number, tileSize: number): point {
+
+            var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
             return {
                 x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
-                y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5
+                y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5 + hexaOffset
             }
         }
 
+  
         // get a tile object by its id
         public getTileById(id: number): Tile {
             return <Tile> this.tilesContainer.getChildByName(id.toString());
@@ -188,29 +209,40 @@
             return this.tiles;
         }
 
-        public getTilePosition(tile:Tile): number {
+        public getTileId(tile:Tile): number {
             return parseInt(tile.name);
         }
 
+        // get all neighbor tiles 
         public getNeighborTiles(tile:Tile): Array<Tile> {
             
-            // TODO, consider edges
-            var position = this.getTilePosition(tile);
+            var neighbor: Array<Tile> = [];
 
-            var neighborPos = [
-                position + 1,
-                position - 1,
-                position + this.boardWidth,
-                position - this.boardWidth,
-                position + this.boardWidth + 1,
-                position - this.boardWidth + 1,
-                position + this.boardWidth - 1,
-                position - this.boardWidth - 1,
+            var tileId = this.getTileId(tile);
+            var hexaOffset = (tile.posx == 1 || tile.posx == 3) ? 1 : -1;
+            
+            // consider all neighbores
+            var neighborCoords = [
+                {x:tile.posx,y:tile.posy-1},
+                {x:tile.posx,y:tile.posy+1},
+
+                {x:tile.posx-1,y:tile.posy},
+                {x:tile.posx+1,y:tile.posy},
+
+                { x: tile.posx - 1, y: tile.posy + hexaOffset},
+                { x: tile.posx + 1, y: tile.posy + hexaOffset},
             ]
 
-            var neighbor: Array<Tile> = [];
-            for (var p in neighborPos) 
-                neighbor.push(this.getTileById(neighborPos[p]));
+
+            // for each
+            for (var p in neighborCoords) 
+                // remove beyound borders
+                if( neighborCoords[p].x >= 0 && 
+                    neighborCoords[p].y >= 0 && 
+                    neighborCoords[p].x<this.boardWidth && 
+                    neighborCoords[p].y< this.boardHeight)
+                        // add to array
+                        neighbor.push(this.getTileByCoords(neighborCoords[p].x, neighborCoords[p].y));
 
             return neighbor;
         }
@@ -247,17 +279,7 @@
             }
         }
 
-        public fadeTileToPos(tile: Tile, posx: number, posy: number,time:number=100) {
-            tile.lock();
-            createjs.Tween.get(tile).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(() => {
-                tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
-                this.arrangeZOrder();
-                tile.unlock();
-                tile.alpha = 1;
-            })
-        }
-
-        public getHighestTileValue(): number {
+       public getHighestTileValue(): number {
             var highestTile = 0;
             for (var j in this.tiles)
                 if (this.tiles[j].getNumber() > highestTile) highestTile = this.tiles[j].getNumber();
@@ -270,7 +292,7 @@
 
         // #endregion
 
-        // #region behaviour ----------------------------------------------------------------------------------
+        // #region behaviour ---------------------------------------------------------------------------
 
         // organize all z-order
         private arrangeZOrder() {
@@ -297,9 +319,18 @@
                
         // #endregion
        
-        // #region Animations ----------------------------------------------------------------------------------
+        // #region Animations --------------------------------------------------------------------------
 
-   
+        public fadeTileToPos(tile: Tile, posx: number, posy: number,time:number=100) {
+            tile.lock();
+            createjs.Tween.get(tile).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(() => {
+                tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
+                this.arrangeZOrder();
+                tile.unlock();
+                tile.alpha = 1;
+            })
+        }
+            
         // create and execute a level up effect on tiles
         public levelUpEffect() {
 

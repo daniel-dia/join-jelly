@@ -2,7 +2,7 @@
 
     export class ExplodeBricks extends GamePlayScreen {
 
-        private initialDirtyProbability: number = 0.1;
+        private initialDirtyProbability: number = 1;
         private finalDirtyProbability: number = 0.6;
         private easeDirtyProbability: number = 0.98;
 
@@ -29,7 +29,7 @@
                     if (tile && tile.getNumber() < 0) {
                         var posx = target.x + (tile.x - target.x) * 1.5;
                         var posy = target.y + (tile.y - target.y) * 1.5;
-                        this.board.fadeTileToPos(tile,posx, posy,200);
+                        this.board.fadeTileToPos(tile,posx, posy,500);
                         tile.setNumber(0);
                     }
                 }
