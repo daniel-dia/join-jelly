@@ -16,9 +16,8 @@ var joinjelly;
                 this.currentTutorialStep = 0;
             }
             // #region tutorial ====================================================================================================
-            Tutorial.prototype.start = function () {
+            Tutorial.prototype.createGUI = function () {
                 var _this = this;
-                _super.prototype.start.call(this);
                 this.tutorialMoveIndicator = new gameplay.view.TutorialMove();
                 this.tutorialMessage = new gameplay.view.TutoralMessage();
                 this.content.addChild(this.tutorialMoveIndicator);
@@ -26,6 +25,10 @@ var joinjelly;
                 this.tutorialMessage.addEventListener("closed", function () {
                     _this.executeTutorialStep();
                 });
+                _super.prototype.createGUI.call(this);
+            };
+            Tutorial.prototype.start = function () {
+                _super.prototype.start.call(this);
                 this.resetTutorialStep();
                 this.executeTutorialStep();
             };
@@ -96,6 +99,7 @@ var joinjelly;
                         _this.tutorialwaitMatch();
                     },
                     function () {
+                        _this.hideTutorialMove();
                         _this.showTutorialMessage(StringResources.tutorial.msg6);
                     },
                     function () {

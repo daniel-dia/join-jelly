@@ -28,12 +28,16 @@ var joinjelly;
                     t.y = 50;
                     this.bitmapText = t;
                     t.mouseEnabled = false;
+                    // add hitArea
+                    this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-this.x + this.regX, -this.y + this.regY, defaultWidth, defaultHeight));
+                    // add click event
                     this.addEventListener("click", function () {
                         _this.fadeOut();
                         _this.dispatchEvent("closed");
                         gameui.AssetsManager.playSound("Interface Sound-15");
                     });
                 }
+                // show a text on screen
                 TutoralMessage.prototype.show = function (text) {
                     this.bitmapText.text = text;
                     this.fadeIn();

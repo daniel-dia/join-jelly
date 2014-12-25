@@ -16,10 +16,13 @@
 
         // creates menu background
         private AddBG(heigth:number) {
-            var title = gameui.AssetsManager.getBitmap("FlyBG");
-            title.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
-            title.scaleY = heigth / 1022;
-            this.addChild(title);
+            var bg = gameui.AssetsManager.getBitmap("FlyBG");
+            bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
+            bg.scaleY = heigth / 1022;
+            this.addChild(bg);
+
+            bg.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-bg.x + bg.regX, -bg.y + bg.regY, defaultWidth, defaultHeight));
+     
         }
 
         // creates menu title

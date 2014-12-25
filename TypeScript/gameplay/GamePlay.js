@@ -35,7 +35,8 @@ var joinjelly;
             }
             // create game background
             GamePlayScreen.prototype.createBackground = function () {
-                this.background.addChild(gameui.AssetsManager.getBitmap("Background"));
+                var bg = gameui.AssetsManager.getBitmap("Background");
+                this.background.addChild(bg);
             };
             // create a new board
             GamePlayScreen.prototype.createBoard = function () {

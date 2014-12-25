@@ -63,7 +63,8 @@
 
         // create game background
         private createBackground() {
-            this.background.addChild(gameui.AssetsManager.getBitmap("Background"));
+            var bg = gameui.AssetsManager.getBitmap("Background");
+             this.background.addChild(bg);
         }
 
         // create a new board
@@ -77,7 +78,7 @@
         }
 
         // creates the game GUI
-        private createGUI() {
+        protected createGUI() {
 
             // creates game level indicator
             this.gameLevelIndicator = new view.LevelIndicator();

@@ -14,9 +14,7 @@
 
         // #region tutorial ====================================================================================================
 
-        public start() {
-
-            super.start();
+        protected createGUI() {
 
             this.tutorialMoveIndicator = new view.TutorialMove();
             this.tutorialMessage = new view.TutoralMessage();
@@ -27,6 +25,17 @@
             this.tutorialMessage.addEventListener("closed", () => {
                 this.executeTutorialStep();
             });
+
+
+            super.createGUI();
+
+
+        }
+
+        public start() {
+
+            super.start();
+
 
             this.resetTutorialStep();
             this.executeTutorialStep();
@@ -103,6 +112,7 @@
                     this.tutorialwaitMatch();
                 },
                 () => {
+                    this.hideTutorialMove();
                     this.showTutorialMessage(StringResources.tutorial.msg6);
                 },
             
