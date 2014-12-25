@@ -123,12 +123,10 @@
 
             this.gameHeader.addEventListener("pause", () => {
                 this.pauseGame();
-                this.pauseMenu.show();
             });
 
             this.pauseMenu.addEventListener("play", () => {
                 this.continueGame();
-                this.pauseMenu.hide();
             });
 
             this.pauseMenu.addEventListener("home", () => {
@@ -207,8 +205,20 @@
 
         // pause game
         private pauseGame() {
+
+            this.pauseMenu.show();
             this.gamestate = GameState.paused;
             this.board.lock();
+            this.gameHeader.mouseEnabled = false;
+        }
+
+        // unpause game
+        private continueGame() {
+
+            this.pauseMenu.hide();
+            this.gamestate = GameState.playing;
+            this.board.unlock();
+            this.gameHeader.mouseEnabled = true;
         }
 
         // finishes the game
@@ -250,11 +260,8 @@
 
         }
 
-        // unpause game
-        private continueGame() {
-            this.gamestate = GameState.playing;
-            this.board.unlock();
-        }
+
+
 
         // time step for adding tiles.
         protected step() {

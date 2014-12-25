@@ -84,11 +84,9 @@ var joinjelly;
                 });
                 this.gameHeader.addEventListener("pause", function () {
                     _this.pauseGame();
-                    _this.pauseMenu.show();
                 });
                 this.pauseMenu.addEventListener("play", function () {
                     _this.continueGame();
-                    _this.pauseMenu.hide();
                 });
                 this.pauseMenu.addEventListener("home", function () {
                     _this.pauseMenu.hide();
@@ -148,8 +146,17 @@ var joinjelly;
             };
             // pause game
             GamePlayScreen.prototype.pauseGame = function () {
+                this.pauseMenu.show();
                 this.gamestate = 2 /* paused */;
                 this.board.lock();
+                this.gameHeader.mouseEnabled = false;
+            };
+            // unpause game
+            GamePlayScreen.prototype.continueGame = function () {
+                this.pauseMenu.hide();
+                this.gamestate = 1 /* playing */;
+                this.board.unlock();
+                this.gameHeader.mouseEnabled = true;
             };
             // finishes the game
             GamePlayScreen.prototype.endGame = function () {
@@ -179,11 +186,6 @@ var joinjelly;
                 createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
                 // play end game effect
                 this.board.endGameEffect();
-            };
-            // unpause game
-            GamePlayScreen.prototype.continueGame = function () {
-                this.gamestate = 1 /* playing */;
-                this.board.unlock();
             };
             // time step for adding tiles.
             GamePlayScreen.prototype.step = function () {

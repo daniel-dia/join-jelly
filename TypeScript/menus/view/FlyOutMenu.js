@@ -40,9 +40,9 @@ var joinjelly;
                 };
                 // animates menu entrance
                 FlyOutMenu.prototype.animateIn = function () {
+                    createjs.Tween.removeTweens(this);
                     // shows menus
                     this.visible = true;
-                    // animate all
                     this.y -= 500;
                     this.alpha = 0;
                     this.scaleX = 0.5;
@@ -52,6 +52,7 @@ var joinjelly;
                 FlyOutMenu.prototype.animateOut = function () {
                     var _this = this;
                     // animate all
+                    createjs.Tween.removeTweens(this);
                     this.alpha = 1;
                     this.scaleX = 1;
                     this.scaleY = 1;
@@ -60,8 +61,6 @@ var joinjelly;
                     });
                 };
                 FlyOutMenu.prototype.show = function () {
-                    if (this.visible)
-                        return;
                     this.animateIn();
                     gameui.AssetsManager.playSound("Interface Sound-14");
                 };
