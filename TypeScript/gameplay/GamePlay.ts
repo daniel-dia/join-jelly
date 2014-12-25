@@ -42,12 +42,10 @@
         private initialInterval: number = 900;
         private finalInterval: number = 150;
         private easeInterval: number = 0.97;
-
-
-
+        
         protected matchNotify: () => void;
 
-        //#region =================================== initialization ==========================================================
+        //#region =================================== initialization ================================================
 
         constructor(userData: UserData) {
             super();
@@ -143,7 +141,7 @@
 
         //#endregion
 
-        // #region =================================== interface =======================================================
+        // #region =================================== interface =====================================================
 
         // update GUI iformaion
         private updateInterfaceInfos() {
@@ -222,7 +220,7 @@
         }
 
         // finishes the game
-        private endGame() {
+        private endGame(message?:string) {
 
             this.gamestate = GameState.ended;
 
@@ -241,7 +239,7 @@
 
             // shows finished game menu
             setTimeout(() => { this.finishMenu.show(); }, 1200);
-            this.finishMenu.setValues(score, highScore, highJelly);
+            this.finishMenu.setValues(score, highScore, highJelly,message);
 
             // move the board a little up
             createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut)
@@ -260,7 +258,11 @@
 
         }
 
-
+        // winTheGame
+        private winGame() { 
+           this.endGame(StringResources.menus.gameOver);
+            // TODO something great
+        }
 
 
         // time step for adding tiles.
@@ -403,6 +405,11 @@
                 // notify match
                 if (this.matchNotify)
                     this.matchNotify()
+
+
+                // verify winGame
+                if (newValue >= 8192)
+                    this.winGame();
 
                 // log event
                 joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);

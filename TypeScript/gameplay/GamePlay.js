@@ -17,7 +17,7 @@ var joinjelly;
         })(GameState || (GameState = {}));
         var GamePlayScreen = (function (_super) {
             __extends(GamePlayScreen, _super);
-            //#region =================================== initialization ==========================================================
+            //#region =================================== initialization ================================================
             function GamePlayScreen(userData) {
                 _super.call(this);
                 this.matches = 0;
@@ -102,7 +102,7 @@ var joinjelly;
                 });
             };
             //#endregion
-            // #region =================================== interface =======================================================
+            // #region =================================== interface =====================================================
             // update GUI iformaion
             GamePlayScreen.prototype.updateInterfaceInfos = function () {
                 //calculate interval 
@@ -159,7 +159,7 @@ var joinjelly;
                 this.gameHeader.mouseEnabled = true;
             };
             // finishes the game
-            GamePlayScreen.prototype.endGame = function () {
+            GamePlayScreen.prototype.endGame = function (message) {
                 var _this = this;
                 this.gamestate = 3 /* ended */;
                 var score = this.score;
@@ -175,7 +175,7 @@ var joinjelly;
                 setTimeout(function () {
                     _this.finishMenu.show();
                 }, 1200);
-                this.finishMenu.setValues(score, highScore, highJelly);
+                this.finishMenu.setValues(score, highScore, highJelly, message);
                 // move the board a little up
                 createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut);
                 // log event
@@ -186,6 +186,11 @@ var joinjelly;
                 createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
                 // play end game effect
                 this.board.endGameEffect();
+            };
+            // winTheGame
+            GamePlayScreen.prototype.winGame = function () {
+                this.endGame(StringResources.menus.gameOver);
+                // TODO something great
             };
             // time step for adding tiles.
             GamePlayScreen.prototype.step = function () {
@@ -288,6 +293,9 @@ var joinjelly;
                     // notify match
                     if (this.matchNotify)
                         this.matchNotify();
+                    // verify winGame
+                    if (newValue >= 8192)
+                        this.winGame();
                     // log event
                     joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
                     return true;

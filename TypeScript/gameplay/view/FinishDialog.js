@@ -98,8 +98,10 @@ var joinjelly;
                     return container;
                 };
                 //set values
-                FinishMenu.prototype.setValues = function (score, best, jelly) {
+                FinishMenu.prototype.setValues = function (score, best, jelly, title) {
                     var _this = this;
+                    if (title)
+                        this.setTitle(title);
                     var t = { value: 0 };
                     createjs.Tween.get(t).to({ value: 1 }, 3000, createjs.Ease.quadOut);
                     var interval = setInterval(function () {

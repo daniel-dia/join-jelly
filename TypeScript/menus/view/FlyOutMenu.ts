@@ -2,6 +2,8 @@
 
     export class FlyOutMenu extends createjs.Container {
 
+        private title: createjs.BitmapText;
+
         constructor(title: string, heigth:number=1022) {
             super();
 
@@ -12,6 +14,11 @@
             this.addTitle(title);
 
             this.visible=false;
+        }
+
+        public setTitle(title: string) {
+            this.title.text = title.toUpperCase()
+            this.title.regX = this.title.getBounds().width / 2;
         }
 
         // creates menu background
@@ -29,12 +36,11 @@
         private addTitle(title:string) {
             //create "points" text
             
-            var tx = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussy")
-            tx.set({ x: defaultWidth / 2, y: 600 });
-            this.addChild(tx);
+            this.title = gameui.AssetsManager.getBitmapText("", "debussy")
+            this.title .set({ x: defaultWidth / 2, y: 600 });
+            this.addChild(this.title );
 
-           // tx.scaleX = tx.scaleY = 2;
-            tx.regX = tx.getBounds().width / 2;
+            this.setTitle(title);
         }
 
 

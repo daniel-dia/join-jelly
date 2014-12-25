@@ -116,8 +116,10 @@
         }
 
         //set values
-        public setValues(score: number, best: number, jelly?: number) {
+        public setValues(score: number, best: number, jelly?: number, title?:string) {
 
+            if (title)
+                this.setTitle(title);
 
             var t = {value:0};
 

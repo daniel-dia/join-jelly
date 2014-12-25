@@ -21,6 +21,10 @@ var joinjelly;
                     this.addTitle(title);
                     this.visible = false;
                 }
+                FlyOutMenu.prototype.setTitle = function (title) {
+                    this.title.text = title.toUpperCase();
+                    this.title.regX = this.title.getBounds().width / 2;
+                };
                 // creates menu background
                 FlyOutMenu.prototype.AddBG = function (heigth) {
                     var bg = gameui.AssetsManager.getBitmap("FlyBG");
@@ -32,11 +36,10 @@ var joinjelly;
                 // creates menu title
                 FlyOutMenu.prototype.addTitle = function (title) {
                     //create "points" text
-                    var tx = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussy");
-                    tx.set({ x: defaultWidth / 2, y: 600 });
-                    this.addChild(tx);
-                    // tx.scaleX = tx.scaleY = 2;
-                    tx.regX = tx.getBounds().width / 2;
+                    this.title = gameui.AssetsManager.getBitmapText("", "debussy");
+                    this.title.set({ x: defaultWidth / 2, y: 600 });
+                    this.addChild(this.title);
+                    this.setTitle(title);
                 };
                 // animates menu entrance
                 FlyOutMenu.prototype.animateIn = function () {
