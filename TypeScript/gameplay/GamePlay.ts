@@ -424,7 +424,12 @@
         //acivate the screen
         activate(parameters?: any) {
             super.activate(parameters);
-            this.start();
+            this.gameHeader.alpha = 0;
+
+            setTimeout(() => {
+                createjs.Tween.get(this.gameHeader).to({ alpha: 1 }, 500);
+                this.start();
+            }, 500);
         }
     }
 }

@@ -305,8 +305,13 @@ var joinjelly;
             // #endregion
             //acivate the screen
             GamePlayScreen.prototype.activate = function (parameters) {
+                var _this = this;
                 _super.prototype.activate.call(this, parameters);
-                this.start();
+                this.gameHeader.alpha = 0;
+                setTimeout(function () {
+                    createjs.Tween.get(_this.gameHeader).to({ alpha: 1 }, 500);
+                    _this.start();
+                }, 500);
             };
             return GamePlayScreen;
         })(gameui.ScreenState);

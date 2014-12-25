@@ -21,7 +21,7 @@ module gameui{
         private viewerOffset: number;
 
         //Screen state
-        private currentScreen: ScreenState;
+        public currentScreen: ScreenState;
 
         //screen content
         private screenContainer: createjs.Container;
@@ -63,32 +63,71 @@ module gameui{
         //switch current screen, optionaly with a pre defined transition
         public switchScreen(newScreen: ScreenState, parameters?: any, transition?: Transition) {
 
-            //applies a default trainsition
-            //TODO to it better
-            if (!transition) transition = new Transition();
-
             //save oldscreen
             var oldScreen = this.currentScreen;
+            //applies a default trainsition
+            if (!transition) transition = new Transition();
+
+            var x = 0;
+            var y = 0;
+            var alpha = 1;
 
             //if transition
             if (transition && oldScreen) {
 
-                //and transition = fade
-                if (transition.type == "fade") {
 
-                    //fade between transitions
-                    newScreen.view.alpha = 0;
+                switch (transition.type) {
+                    case "fade":
+                        alpha: 0;
+                        break;
+
+                    case "top":
+                        y = defaultHeight;
+                        break;
+
+                    case "bottom":
+                        y = -defaultHeight;
+                        break;
+
+                    case "left":
+                        x = -defaultWidth;
+                        break;
+
+                    case "right":
+                        x = defaultWidth;
+                        break;
+
+                    case "none":
+                        transition.time = 0;
+                        break;
+
+                }
+
+                //and transition = fade
+                if (transition.type && transition.type != "none") {
+
                     newScreen.view.mouseEnabled = false;
                     oldScreen.view.mouseEnabled = false;
-                    createjs.Tween.get(newScreen.view).to({ alpha: 1 }, transition.time).call(() => {
+
+                    //fade between transitions
+                    newScreen.view.set({ alpha: alpha, x: -x, y: -y })
+                    oldScreen.view.set({ 1: alpha, x: 0, y: 0 })
+
+                    //fade old screen out
+                    createjs.Tween.get(oldScreen.view).to({ alpha: alpha, x: x, y: y }, transition.time,createjs.Ease.quadInOut);
+                    createjs.Tween.get(newScreen.view).to({ alpha: 1, x: 0, y: 0 }, transition.time, createjs.Ease.quadInOut).call(() => {
+                       
+                        oldScreen.view.set({ 1: alpha, x: 0, y: 0 })
+                        newScreen.view.set({ 1: alpha, x: 0, y: 0 })
+
                         newScreen.view.mouseEnabled = true;
                         oldScreen.view.mouseEnabled = true;
+
                         this.removeOldScreen(oldScreen)
                         oldScreen = null;
                     });
 
-                    //fade old screen out
-                    createjs.Tween.get(oldScreen.view).to({ alpha: 0 }, transition.time);
+
                 }
                 else {
                     this.removeOldScreen(oldScreen);

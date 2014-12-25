@@ -20,16 +20,30 @@ var joinjelly;
             alert("beta");
         };
         JoinJelly.showMainMenu = function () {
-            this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData));
+            var transition;
+            if (this.gameScreen.currentScreen instanceof joinjelly.gameplay.GamePlayScreen)
+                transition = { type: "top", time: 500 };
+            if (this.gameScreen.currentScreen instanceof joinjelly.Jellypedia)
+                transition = { type: "right", time: 500 };
+            this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         };
         JoinJelly.startLevel = function () {
-            this.gameScreen.switchScreen(new joinjelly.gameplay.ExplodeBricks(this.userData));
+            var transition;
+            if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
+                transition = { type: "bottom", time: 500 };
+            this.gameScreen.switchScreen(new joinjelly.gameplay.ExplodeBricks(this.userData), null, transition);
         };
         JoinJelly.startTutorial = function () {
-            this.gameScreen.switchScreen(new joinjelly.gameplay.Tutorial(this.userData));
+            var transition;
+            if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
+                transition = { type: "bottom", time: 500 };
+            this.gameScreen.switchScreen(new joinjelly.gameplay.Tutorial(this.userData), null, transition);
         };
         JoinJelly.showPedia = function () {
-            this.gameScreen.switchScreen(new joinjelly.Jellypedia(this.userData, StringResources.jellys));
+            var transition;
+            if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
+                transition = { type: "left", time: 500 };
+            this.gameScreen.switchScreen(new joinjelly.Jellypedia(this.userData, StringResources.jellys), null, transition);
         };
         return JoinJelly;
     })();

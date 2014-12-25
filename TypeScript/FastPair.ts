@@ -2,7 +2,7 @@
     export class JoinJelly{
 
         public static userData: UserData;
-        private static gameScreen: gameui.GameScreen;
+        public static gameScreen: gameui.GameScreen;
         public static analytics: Analytics;
 
         public static init() {
@@ -28,19 +28,32 @@
         }
 
         public static showMainMenu() {
-            this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData));
+            var transition;
+            if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };
+            if (this.gameScreen.currentScreen instanceof Jellypedia) transition = { type: "right", time: 500 };
+
+           this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         }
 
         public static startLevel() {
-            this.gameScreen.switchScreen(new gameplay.ExplodeBricks(this.userData));
+
+            var transition;
+            if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "bottom", time: 500 };
+
+            this.gameScreen.switchScreen(new gameplay.ExplodeBricks(this.userData), null, transition);
         }
      
         public static startTutorial() {
-            this.gameScreen.switchScreen(new gameplay.Tutorial(this.userData));
+            var transition;
+            if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "bottom", time: 500 };
+
+            this.gameScreen.switchScreen(new gameplay.Tutorial(this.userData), null, transition);
         } 
         
         public static showPedia() {
-            this.gameScreen.switchScreen(new Jellypedia(this.userData,StringResources.jellys));
+            var transition;
+            if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };
+            this.gameScreen.switchScreen(new Jellypedia(this.userData, StringResources.jellys), null, transition);
         }
     }
 }
