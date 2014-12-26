@@ -61,11 +61,14 @@
     <script src="TypeScript/UserData.js"></script>
     <script src="TypeScript/FastPair.js"></script>
     
-    <script src="app.js"></script>
-
     <script src="assets/ChubbyFont.js"></script>
     <script src="assets/Deburil.js"></script>
 
+    <script>
+        window.onload = function() {
+            joinjelly.JoinJelly.init();
+        }
+    </script>
 </head>
 <body>
     <canvas id="gameCanvas" width="5" height="5"></canvas>

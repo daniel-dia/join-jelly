@@ -414,7 +414,6 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="gameui\AssetsManager.ts" />
     <TypeScriptCompile Include="gameui\Button.ts" />
     <TypeScriptCompile Include="gameui\GameScreen.ts" />
@@ -460,7 +459,6 @@
     <TypeScriptCompile Include="TypeScript\menus\view\JellyLobby.ts" />
     <TypeScriptCompile Include="TypeScript\Message.ts" />
     <TypeScriptCompile Include="TypeScript\UserData.ts" />
-    <TypeScriptCompile Include="_references.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\ChubbyFont.ai" />
