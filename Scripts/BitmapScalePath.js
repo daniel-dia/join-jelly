@@ -72,7 +72,7 @@ createjs.BitmapText.prototype._drawText = function (ctx, bounds) {
 				if (character=="\r" && this.text.charAt(i+1) == "\n") { i++; } // crlf
 				if (x-rx > maxX) { maxX = x-rx; }
 				x = 0;
-				y += lineH;
+				y += lineH /assetscale;
 				continue;
 			}
 
