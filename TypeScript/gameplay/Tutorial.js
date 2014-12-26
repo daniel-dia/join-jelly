@@ -33,6 +33,7 @@ var joinjelly;
                 this.executeTutorialStep();
             };
             Tutorial.prototype.step = function () {
+                //do nothing
             };
             Tutorial.prototype.resetTutorialStep = function () {
                 this.currentTutorialStep = -1;
@@ -86,16 +87,20 @@ var joinjelly;
                     function () {
                         _this.board.getTileById(17).setNumber(-1);
                         _this.board.getTileById(19).setNumber(-1);
+                        _this.board.getTileById(23).setNumber(-1);
+                        _this.board.getTileById(22).setNumber(-1);
+                        _this.board.getTileById(24).setNumber(-1);
+                        _this.board.getTileById(13).setNumber(-1);
                         _this.showTutorialMessage(StringResources.tutorial.msg4);
                     },
                     function () {
                         _this.showTutorialMessage(StringResources.tutorial.msg5);
                         _this.board.getTileById(18).setNumber(1);
-                        _this.board.getTileById(24).setNumber(1);
+                        _this.board.getTileById(20).setNumber(1);
                         _this.board.getTileById(18).disable();
                     },
                     function () {
-                        _this.showTutorialMove(24, 18);
+                        _this.showTutorialMove(20, 18);
                         _this.tutorialwaitMatch();
                     },
                     function () {

@@ -37,8 +37,10 @@
 
         }
 
-        protected step() {}
-        
+        protected step() {
+            //do nothing
+        }
+
         private resetTutorialStep() {
             this.currentTutorialStep = -1;
         }
@@ -88,29 +90,32 @@
                     this.hideTutorialMove();
                     this.tutorialWait(700);
                 },
-                  () => {
+                () => {
                     this.tutorialWait(500);
                 },
                 () => {
                     this.board.getTileById(17).setNumber(-1);
                     this.board.getTileById(19).setNumber(-1);
+                    this.board.getTileById(23).setNumber(-1);
+                    this.board.getTileById(22).setNumber(-1);
+                    this.board.getTileById(24).setNumber(-1);
+                    this.board.getTileById(13).setNumber(-1);
                     this.showTutorialMessage(StringResources.tutorial.msg4);
                 },
                 () => {
                     this.showTutorialMessage(StringResources.tutorial.msg5);
                     this.board.getTileById(18).setNumber(1);
-                    this.board.getTileById(24).setNumber(1);
+                    this.board.getTileById(20).setNumber(1);
                     this.board.getTileById(18).disable();
                 },
                 () => {
-                    this.showTutorialMove(24, 18)
+                    this.showTutorialMove(20, 18)
                     this.tutorialwaitMatch();
                 },
                 () => {
                     this.hideTutorialMove();
                     this.showTutorialMessage(StringResources.tutorial.msg6);
                 },
-            
                 () => {
                     this.showTutorialMessage(StringResources.tutorial.msg7);
                 },
