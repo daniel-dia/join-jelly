@@ -33,7 +33,7 @@ module gameui {
             this.content.visible = false;
         }
 
-        public redim(headerY: number, footerY: number, width: number) {
+        public redim(headerY: number, footerY: number, width: number,heigth:number) {
 
             this.footer.y = footerY;
             this.header.y = headerY;
@@ -52,6 +52,12 @@ module gameui {
             }
 
             this.background.scaleX = this.background.scaleY = scale;
+           
+            var mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, -(heigth - defaultHeight) / 2, width, heigth))
+            this.background.mask = mask;
+            this.footer.mask = mask;
+            this.header.mask = mask;
+            this.content.mask = mask;
         }
 
         public back(): void {

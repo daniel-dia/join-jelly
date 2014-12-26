@@ -1,3 +1,4 @@
+//TODO remove universal variable defaultWidth and DefaultHeigth
 var gameui;
 (function (gameui) {
     var GameScreen = (function () {
@@ -52,16 +53,16 @@ var gameui;
                         alpha: 0;
                         break;
                     case "top":
-                        y = defaultHeight;
+                        y = this.currentHeight;
                         break;
                     case "bottom":
-                        y = -defaultHeight;
+                        y = -this.currentHeight;
                         break;
                     case "left":
-                        x = -defaultWidth;
+                        x = -this.currentWidth;
                         break;
                     case "right":
-                        x = defaultWidth;
+                        x = this.currentWidth;
                         break;
                     case "none":
                         transition.time = 0;
@@ -100,7 +101,7 @@ var gameui;
             this.currentScreen = newScreen;
             //updates current screen
             if (this.currentScreen)
-                this.currentScreen.redim(this.headerPosition, this.footerPosition, this.defaultWidth);
+                this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
         };
         //resize GameScreen to a diferent scale
         GameScreen.prototype.resizeGameScreen = function (deviceWidth, deviceHeight, updateCSS) {
@@ -117,23 +118,22 @@ var gameui;
             this.myCanvas.width = deviceWidth;
             this.myCanvas.height = deviceHeight;
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
-            //if (updateCSS) setMobileScale(deviceWidth)
         };
         //updates screen viewer scale
         GameScreen.prototype.updateViewerScale = function (realWidth, realHeight, defaultWidth, defaultHeight) {
             var scale = realWidth / defaultWidth;
-            var currentHeight = realHeight / scale;
-            var currentWidth = realWidth / scale;
+            this.currentHeight = realHeight / scale;
+            this.currentWidth = realWidth / scale;
             this.defaultWidth = defaultWidth;
             //set header and footer positions
-            this.headerPosition = -(currentHeight - defaultHeight) / 2;
-            this.footerPosition = defaultHeight + (currentHeight - defaultHeight) / 2;
+            this.headerPosition = -(this.currentHeight - defaultHeight) / 2;
+            this.footerPosition = defaultHeight + (this.currentHeight - defaultHeight) / 2;
             //set the viewer offset to centralize in window
             this.screenContainer.scaleX = this.screenContainer.scaleY = scale;
-            this.screenContainer.y = this.viewerOffset = (currentHeight - defaultHeight) / 2 * scale;
+            this.screenContainer.y = this.viewerOffset = (this.currentHeight - defaultHeight) / 2 * scale;
             //updates current screen
             if (this.currentScreen)
-                this.currentScreen.redim(this.headerPosition, this.footerPosition, this.defaultWidth);
+                this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
         };
         //deletes old screen
         GameScreen.prototype.removeOldScreen = function (oldScreen) {

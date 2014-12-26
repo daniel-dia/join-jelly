@@ -2,6 +2,8 @@ declare function getQueryVariable(variable: string);
 declare function setMobileScale(a: number);
 declare var assetscale: number;
 
+//TODO remove universal variable defaultWidth and DefaultHeigth
+
 module gameui{
 
     export class GameScreen {
@@ -19,6 +21,9 @@ module gameui{
         private headerPosition: number;
         private footerPosition: number;
         private viewerOffset: number;
+
+        private currentWidth:number;
+        private currentHeight:number;
 
         //Screen state
         public currentScreen: ScreenState;
@@ -82,19 +87,19 @@ module gameui{
                         break;
 
                     case "top":
-                        y = defaultHeight;
+                        y = this.currentHeight;
                         break;
 
                     case "bottom":
-                        y = -defaultHeight;
+                        y = -this.currentHeight;
                         break;
 
                     case "left":
-                        x = -defaultWidth;
+                        x = -this.currentWidth;
                         break;
 
                     case "right":
-                        x = defaultWidth;
+                        x = this.currentWidth;
                         break;
 
                     case "none":
@@ -148,7 +153,7 @@ module gameui{
             this.currentScreen = newScreen;
 
             //updates current screen
-            if (this.currentScreen) this.currentScreen.redim(this.headerPosition, this.footerPosition, this.defaultWidth);
+            if (this.currentScreen) this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth,this.currentHeight);
         }
 
 
@@ -171,27 +176,26 @@ module gameui{
             this.myCanvas.height = deviceHeight;
 
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
-            //if (updateCSS) setMobileScale(deviceWidth)
         }
 
         //updates screen viewer scale
         private updateViewerScale(realWidth: number, realHeight: number, defaultWidth: number, defaultHeight: number) {
 
             var scale = realWidth / defaultWidth;
-            var currentHeight = realHeight / scale;
-            var currentWidth = realWidth / scale;
+            this.currentHeight = realHeight / scale;
+            this.currentWidth = realWidth / scale;
             this.defaultWidth = defaultWidth;
 
             //set header and footer positions
-            this.headerPosition = -(currentHeight - defaultHeight) / 2;
-            this.footerPosition = defaultHeight + (currentHeight - defaultHeight) / 2;
+            this.headerPosition = -(this.currentHeight - defaultHeight) / 2;
+            this.footerPosition = defaultHeight + (this.currentHeight - defaultHeight) / 2;
 
             //set the viewer offset to centralize in window
             this.screenContainer.scaleX = this.screenContainer.scaleY = scale;
-            this.screenContainer.y = this.viewerOffset = (currentHeight - defaultHeight) / 2 * scale;
+            this.screenContainer.y = this.viewerOffset = (this.currentHeight - defaultHeight) / 2 * scale;
 
             //updates current screen
-            if (this.currentScreen) this.currentScreen.redim(this.headerPosition, this.footerPosition, this.defaultWidth);
+            if (this.currentScreen) this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth,this.currentHeight);
         }
 
         //deletes old screen

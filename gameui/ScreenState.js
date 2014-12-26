@@ -18,7 +18,7 @@ var gameui;
         ScreenState.prototype.desactivate = function (parameters) {
             this.content.visible = false;
         };
-        ScreenState.prototype.redim = function (headerY, footerY, width) {
+        ScreenState.prototype.redim = function (headerY, footerY, width, heigth) {
             this.footer.y = footerY;
             this.header.y = headerY;
             var dh = footerY + headerY;
@@ -34,6 +34,11 @@ var gameui;
                 this.background.x = -(width * scale - width) / 2;
             }
             this.background.scaleX = this.background.scaleY = scale;
+            var mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, -(heigth - defaultHeight) / 2, width, heigth));
+            this.background.mask = mask;
+            this.footer.mask = mask;
+            this.header.mask = mask;
+            this.content.mask = mask;
         };
         ScreenState.prototype.back = function () {
             exitApp();
