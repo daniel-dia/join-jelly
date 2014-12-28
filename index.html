@@ -5,7 +5,33 @@
     <meta charset="utf-8" />
     <title>Join Jelly</title>
     <meta name="viewport" content="user-scalable=no " />
-    <link rel="stylesheet" href="app.css" type="text/css" />
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -ms-scroll-translation: vertical-to-horizontal;
+            -webkit-scroll-translation: vertical-to-horizontal;
+            scroll-translation: vertical-to-horizontal;
+            -ms-content-zooming: none;
+            -webkit-content-zooming: none;
+            content-zooming: none;
+            background-color: black;
+            background-image: url(assets/htmlBG.jpg);
+            background-size: cover;
+            background-repeat: repeat-y;
+            background-position-x: center;
+        }
+
+        canvas {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+
     <script src="Scripts/jquery-2.1.1.min.js"></script>
     <script src="Scripts/md5.js"></script>
     <script src="Scripts/createjs-2013.12.12.min.js"></script>
@@ -14,7 +40,7 @@
     <script src="Scripts/ImageHitAreaPatch.js"></script>
     <script src="Scripts/fontConverter.js"></script>
     <script src="Scripts/CocoonJStouchPathc.js"></script>
-    
+
 
     <script src="gameui/AssetsManager.js"></script>
     <script src="gameui/GameScreen.js"></script>
@@ -60,12 +86,12 @@
     <script src="TypeScript/Message.js"></script>
     <script src="TypeScript/UserData.js"></script>
     <script src="TypeScript/FastPair.js"></script>
-    
+
     <script src="assets/ChubbyFont.js"></script>
     <script src="assets/Deburil.js"></script>
 
     <script>
-        window.onload = function() {
+        window.onload = function () {
             joinjelly.JoinJelly.init();
         }
     </script>

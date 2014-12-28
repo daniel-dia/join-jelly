@@ -17,7 +17,6 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="app.css" />
     <Content Include="assets\Deburil.js" />
     <Content Include="assets\d\j1.png" />
     <Content Include="assets\d\j128.png" />

@@ -12,7 +12,7 @@ var joinjelly;
             __extends(ExplodeBricks, _super);
             function ExplodeBricks() {
                 _super.apply(this, arguments);
-                this.initialDirtyProbability = 1;
+                this.initialDirtyProbability = 0.1;
                 this.finalDirtyProbability = 0.6;
                 this.easeDirtyProbability = 0.98;
             }

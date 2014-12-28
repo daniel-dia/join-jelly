@@ -2,7 +2,7 @@
 
     export class ExplodeBricks extends GamePlayScreen {
 
-        private initialDirtyProbability: number = 1;
+        private initialDirtyProbability: number = 0.1;
         private finalDirtyProbability: number = 0.6;
         private easeDirtyProbability: number = 0.98;
 
