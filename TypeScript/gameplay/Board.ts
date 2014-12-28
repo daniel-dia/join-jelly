@@ -321,9 +321,9 @@
        
         // #region Animations --------------------------------------------------------------------------
 
-        public fadeTileToPos(tile: Tile, posx: number, posy: number,time:number=100) {
+        public fadeTileToPos(tile: Tile, posx: number, posy: number,time:number=100, delay:number=0) {
             tile.lock();
-            createjs.Tween.get(tile).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(() => {
+            createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(() => {
                 tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
                 this.arrangeZOrder();
                 tile.unlock();

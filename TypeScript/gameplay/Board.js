@@ -243,11 +243,12 @@ var joinjelly;
             };
             // #endregion
             // #region Animations --------------------------------------------------------------------------
-            Board.prototype.fadeTileToPos = function (tile, posx, posy, time) {
+            Board.prototype.fadeTileToPos = function (tile, posx, posy, time, delay) {
                 var _this = this;
                 if (time === void 0) { time = 100; }
+                if (delay === void 0) { delay = 0; }
                 tile.lock();
-                createjs.Tween.get(tile).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(function () {
+                createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(function () {
                     tile.set(_this.getTilePositionByCoords(tile.posx, tile.posy, _this.tileSize));
                     _this.arrangeZOrder();
                     tile.unlock();

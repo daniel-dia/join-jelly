@@ -25,6 +25,7 @@
         protected board: Board;
         
         private gameHeader: view.GameHeader;
+        private gameFooter: view.GameFooter;
 
         private gameLevelIndicator: view.LevelIndicator;
 
@@ -42,8 +43,15 @@
         private initialInterval: number = 900;
         private finalInterval: number = 150;
         private easeInterval: number = 0.97;
-        
+        private intervalMultiplier: number = 1;
+
         protected matchNotify: () => void;
+
+        // effect 
+        private freezeEffect: createjs.DisplayObject;
+        private fastEffect: createjs.DisplayObject;
+        private reviveEffect: createjs.DisplayObject;
+        private cleanEffect: createjs.DisplayObject;
 
         //#region =================================== initialization ================================================
 
@@ -57,7 +65,38 @@
             this.createBackground();
             this.createBoard();
             this.createGUI();
+
+            this.createEffects();
        }
+
+        // create game effects
+        private createEffects() {
+
+            this.freezeEffect = gameui.AssetsManager.getBitmap("freezeEffect");
+            this.content.addChild(this.freezeEffect);
+            this.freezeEffect.visible = false;
+            this.freezeEffect.scaleX = this.freezeEffect.scaleY = 2;
+            this.freezeEffect.mouseEnabled = false;
+
+            this.fastEffect = gameui.AssetsManager.getBitmap("fastEffect");
+            this.content.addChild(this.fastEffect);
+            this.fastEffect.visible = false;
+            this.fastEffect.scaleX = this.fastEffect.scaleY = 2;
+            this.fastEffect.mouseEnabled = false;
+
+            this.reviveEffect = gameui.AssetsManager.getBitmap("reviveEffect");
+            this.content.addChild(this.reviveEffect);
+            this.reviveEffect.visible = false;
+            this.reviveEffect.scaleX = this.reviveEffect.scaleY = 2;
+            this.reviveEffect.mouseEnabled = false;
+
+            this.cleanEffect = gameui.AssetsManager.getBitmap("cleanEffect");
+            this.content.addChild(this.cleanEffect);
+            this.cleanEffect.visible = false;
+            this.cleanEffect.scaleX = this.cleanEffect.scaleY = 2;
+            this.cleanEffect.mouseEnabled = false;
+
+        }
 
         // create game background
         private createBackground() {
@@ -86,6 +125,11 @@
             this.gameHeader = new view.GameHeader();
             this.header.addChild(this.gameHeader);
 
+            // create game footer
+            this.gameFooter = new view.GameFooter(["time", "clean", "fast", "revive"]);
+            this.footer.addChild(this.gameFooter);
+            this.gameFooter.addEventListener("useitem", (e:createjs.Event) => { this.useItem(e.target) });
+
             // creates pause menu
             this.pauseMenu = new view.PauseMenu();
             this.content.addChild(this.pauseMenu);
@@ -103,7 +147,6 @@
             });
             tbt.set({ x: 150, y: -150, visible: false });
             this.footer.addChild(tbt);
-
 
             //add eventListener
             this.finishMenu.addEventListener("ok", () => {
@@ -250,8 +293,11 @@
             // play end soud
             gameui.AssetsManager.playSound("end");
 
-            // move board to top
-            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn)
+            // remove other ui items
+            this.gameHeader.mouseEnabled = false;
+            this.gameFooter.mouseEnabled = false;
+            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
+            createjs.Tween.get(this.gameFooter).to({ y: 230}, 200, createjs.Ease.quadIn);
 
             // play end game effect
             this.board.endGameEffect();
@@ -263,8 +309,7 @@
            this.endGame(StringResources.menus.gameOver);
             // TODO something great
         }
-
-
+        
         // time step for adding tiles.
         protected step() {
 
@@ -285,10 +330,10 @@
             }
 
             // set timeout to another iteraction if game is not over
-            if(this.gamestate != GameState.ended)
-            setTimeout(
-                () => { this.step() },
-                this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval)
+            if (this.gamestate != GameState.ended)
+                setTimeout(
+                    () => { this.step() },
+                    this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval) * this.intervalMultiplier
             );
             
         }
@@ -319,6 +364,7 @@
             return Math.max(level, 1);
         }
 
+        // get how moves is needed for each level;
         protected getMovesByLevel(level: number): number {
             var totalMoves = 0;
           
@@ -417,6 +463,85 @@
                 return true;
             }
             return false;
+        }
+
+        // #endregion
+
+        // #region Items
+
+        private useItem(item:string) {
+            switch (item) {
+                case "time":
+                    this.useTime();
+                      break;
+                case "fast":
+                    this.useFast();
+                    break;
+                case "clean":
+                    this.useClean();
+                    break;
+                case "revive":
+                    this.useRevive();
+                    break;
+            }
+        }
+
+        // reduces jellys per time during 5 seconds.
+        private useTime() {
+            if (this.gamestate == GameState.ended) return;
+            this.intervalMultiplier = 3;
+            setTimeout(() => { this.intervalMultiplier = 1 }, 5000);
+
+            //cast effects
+            this.freezeEffect.alpha = 0;
+            this.freezeEffect.visible = true;
+            createjs.Tween.removeTweens(this.freezeEffect);
+            createjs.Tween.get(this.freezeEffect).to({ alpha: 1 }, 1000).to({ alpha: 0 }, 4000).call(() => {
+                this.freezeEffect.visible = false
+            });
+        }
+
+        //clan all simple jellys
+        private useClean() {
+            if (this.gamestate == GameState.ended) return;
+            var tiles = this.board.getAllTiles();
+            for (var t in tiles)
+                if (tiles[t].getNumber() < 2) {
+                    this.board.fadeTileToPos(tiles[t], tiles[t].x, tiles[t].y - 100, 200, 300*Math.random());
+                    tiles[t].setNumber(0); 
+                }
+            this.updateInterfaceInfos()
+
+
+
+            //cast effects
+            this.cleanEffect.alpha = 1;
+            this.cleanEffect.visible = true;
+            createjs.Tween.removeTweens(this.cleanEffect);
+            createjs.Tween.get(this.cleanEffect).to({ alpha: 0 }, 500).call(() => {
+                this.cleanEffect.visible = false
+            });
+  
+        }
+
+        // revive after game end
+        private useRevive() {
+            this.useTime();
+        }
+
+        // match 5 pair of jelly if avaliabe
+        private useFast() {
+            if (this.gamestate == GameState.ended) return;
+            for (var i = 0; i<5 ; i++) {
+            }
+
+            //cast effects
+            this.fastEffect.alpha = 1;
+            this.fastEffect.visible = true;
+            createjs.Tween.removeTweens(this.fastEffect);
+            createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(() => {
+                this.fastEffect.visible = false
+            });
         }
 
         // #endregion
