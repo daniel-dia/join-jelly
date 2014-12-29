@@ -27,7 +27,6 @@ var joinjelly;
                 this.initialInterval = 900;
                 this.finalInterval = 150;
                 this.easeInterval = 0.97;
-                this.intervalMultiplier = 1;
                 this.UserData = userData;
                 this.score = 0;
                 this.createBackground();
@@ -171,9 +170,33 @@ var joinjelly;
                 gameui.AssetsManager.playMusic("music1");
                 // initialize gameloop
                 this.gamestate = 1 /* playing */;
-                this.step();
+                this.step(500);
                 // log game start event
                 joinjelly.JoinJelly.analytics.logGameStart();
+            };
+            // time step for adding tiles.
+            GamePlayScreen.prototype.step = function (timeout) {
+                var _this = this;
+                clearInterval(this.timeoutInterval);
+                this.timeoutInterval = setTimeout(function () {
+                    // if is not playing, than does not execute a step
+                    if (_this.gamestate == 1 /* playing */)
+                        _this.gameInteraction();
+                    // set timeout to another iteraction if game is not over
+                    if (_this.gamestate != 3 /* ended */)
+                        _this.step(_this.getTimeInterval(_this.level, _this.initialInterval, _this.finalInterval, _this.easeInterval));
+                }, timeout);
+            };
+            GamePlayScreen.prototype.gameInteraction = function () {
+                // add a new tile  on board
+                this.addRandomTileOnBoard();
+                // updates interafce information
+                this.updateInterfaceInfos();
+                // verifies if game is ended
+                if (this.verifyGameLoose())
+                    this.endGame();
+                // update currentLevel
+                this.updateCurrentLevel();
             };
             // pause game
             GamePlayScreen.prototype.pauseGame = function () {
@@ -225,27 +248,6 @@ var joinjelly;
             GamePlayScreen.prototype.winGame = function () {
                 this.endGame(StringResources.menus.gameOver);
                 // TODO something great
-            };
-            // time step for adding tiles.
-            GamePlayScreen.prototype.step = function () {
-                var _this = this;
-                // if is not playing, than does not execute a step
-                if (this.gamestate == 1 /* playing */) {
-                    // add a new tile  on board
-                    this.addRandomTileOnBoard();
-                    // updates interafce information
-                    this.updateInterfaceInfos();
-                    // verifies if game is ended
-                    if (this.verifyGameLoose())
-                        this.endGame();
-                    // update currentLevel
-                    this.updateCurrentLevel();
-                }
-                // set timeout to another iteraction if game is not over
-                if (this.gamestate != 3 /* ended */)
-                    setTimeout(function () {
-                        _this.step();
-                    }, this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval) * this.intervalMultiplier);
             };
             // update current level
             GamePlayScreen.prototype.updateCurrentLevel = function () {
@@ -338,7 +340,7 @@ var joinjelly;
                 return false;
             };
             // #endregion
-            // #region Items
+            // #region =================================== Items =========================================================
             GamePlayScreen.prototype.useItem = function (item) {
                 switch (item) {
                     case "time":
@@ -360,10 +362,7 @@ var joinjelly;
                 var _this = this;
                 if (this.gamestate == 3 /* ended */)
                     return;
-                this.intervalMultiplier = 3;
-                setTimeout(function () {
-                    _this.intervalMultiplier = 1;
-                }, 5000);
+                this.step(5000);
                 //cast effects
                 this.freezeEffect.alpha = 0;
                 this.freezeEffect.visible = true;
@@ -395,6 +394,8 @@ var joinjelly;
             // revive after game end
             GamePlayScreen.prototype.useRevive = function () {
                 this.useTime();
+                this.gamestate = 1 /* playing */;
+                this.step(4000);
             };
             // match 5 pair of jelly if avaliabe
             GamePlayScreen.prototype.useFast = function () {

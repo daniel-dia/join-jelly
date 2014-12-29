@@ -39,11 +39,12 @@
 
         // parameters
         private timeByLevel: number =	10000
+        
+        private timeoutInterval: number;
 
         private initialInterval: number = 900;
         private finalInterval: number = 150;
         private easeInterval: number = 0.97;
-        private intervalMultiplier: number = 1;
 
         protected matchNotify: () => void;
 
@@ -238,10 +239,44 @@
 
             // initialize gameloop
             this.gamestate = GameState.playing;
-            this.step();
+            this.step(500);
 
             // log game start event
             JoinJelly.analytics.logGameStart();
+        }
+
+        // time step for adding tiles.
+        protected step(timeout: number) {
+            clearInterval(this.timeoutInterval);
+
+            this.timeoutInterval = setTimeout(() => {
+
+                // if is not playing, than does not execute a step
+                if (this.gamestate == GameState.playing)
+                    this.gameInteraction();
+                
+                // set timeout to another iteraction if game is not over
+                if (this.gamestate != GameState.ended)
+                    this.step(this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval) );
+
+            }, timeout);
+        }
+
+
+        protected gameInteraction() {
+
+            // add a new tile  on board
+            this.addRandomTileOnBoard();
+
+            // updates interafce information
+            this.updateInterfaceInfos();
+
+            // verifies if game is ended
+            if (this.verifyGameLoose())
+                this.endGame();
+
+            // update currentLevel
+            this.updateCurrentLevel();
         }
 
         // pause game
@@ -309,35 +344,7 @@
            this.endGame(StringResources.menus.gameOver);
             // TODO something great
         }
-        
-        // time step for adding tiles.
-        protected step() {
-
-            // if is not playing, than does not execute a step
-            if (this.gamestate == GameState.playing) {
-                
-                // add a new tile  on board
-                this.addRandomTileOnBoard();
-
-                // updates interafce information
-                this.updateInterfaceInfos();
-
-                // verifies if game is ended
-                if (this.verifyGameLoose()) this.endGame();
-
-                // update currentLevel
-                this.updateCurrentLevel();
-            }
-
-            // set timeout to another iteraction if game is not over
-            if (this.gamestate != GameState.ended)
-                setTimeout(
-                    () => { this.step() },
-                    this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval) * this.intervalMultiplier
-            );
-            
-        }
-        
+         
         // update current level
         private updateCurrentLevel() {
             var newLevel = this.getLevelByMoves(this.matches);
@@ -467,7 +474,7 @@
 
         // #endregion
 
-        // #region Items
+        // #region =================================== Items =========================================================
 
         private useItem(item:string) {
             switch (item) {
@@ -489,8 +496,8 @@
         // reduces jellys per time during 5 seconds.
         private useTime() {
             if (this.gamestate == GameState.ended) return;
-            this.intervalMultiplier = 3;
-            setTimeout(() => { this.intervalMultiplier = 1 }, 5000);
+
+            this.step(5000);
 
             //cast effects
             this.freezeEffect.alpha = 0;
@@ -527,6 +534,9 @@
         // revive after game end
         private useRevive() {
             this.useTime();
+            this.gamestate = GameState.playing;
+            this.step(4000);
+
         }
 
         // match 5 pair of jelly if avaliabe
