@@ -15,6 +15,7 @@ var joinjelly;
                 function FlyOutMenu(title, heigth) {
                     if (heigth === void 0) { heigth = 1022; }
                     _super.call(this);
+                    this.top = defaultHeight / 2 + 1022 - heigth;
                     this.regX = this.x = defaultWidth / 2;
                     this.regY = this.y = defaultHeight / 2;
                     this.AddBG(heigth);
@@ -46,11 +47,11 @@ var joinjelly;
                     createjs.Tween.removeTweens(this);
                     // shows menus
                     this.visible = true;
-                    this.y -= 500;
+                    this.y = this.top - 500;
                     this.alpha = 0;
                     this.scaleX = 0.5;
                     this.scaleY = 2;
-                    createjs.Tween.get(this).to({ x: defaultWidth / 2, y: defaultHeight / 2, alpha: 1, scaleX: 1, scaleY: 1 }, 1400, createjs.Ease.elasticOut);
+                    createjs.Tween.get(this).to({ x: defaultWidth / 2, y: this.top, alpha: 1, scaleX: 1, scaleY: 1 }, 1400, createjs.Ease.elasticOut);
                 };
                 FlyOutMenu.prototype.animateOut = function () {
                     var _this = this;

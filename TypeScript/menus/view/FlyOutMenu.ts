@@ -3,9 +3,12 @@
     export class FlyOutMenu extends createjs.Container {
 
         private title: createjs.BitmapText;
+        private top:number;
 
         constructor(title: string, heigth:number=1022) {
             super();
+
+            this.top = defaultHeight / 2 + 1022 - heigth;
 
             this.regX = this.x = defaultWidth / 2;
             this.regY = this.y = defaultHeight / 2;
@@ -50,11 +53,11 @@
             createjs.Tween.removeTweens(this);
             // shows menus
             this.visible = true;
-            this.y -= 500;
+            this.y = this.top - 500;
             this.alpha = 0;
             this.scaleX = 0.5;
             this.scaleY = 2;
-            createjs.Tween.get(this).to({ x: defaultWidth / 2, y: defaultHeight / 2, alpha: 1, scaleX: 1, scaleY: 1 }, 1400, createjs.Ease.elasticOut);
+            createjs.Tween.get(this).to({ x: defaultWidth / 2, y: this.top, alpha: 1, scaleX: 1, scaleY: 1 }, 1400, createjs.Ease.elasticOut);
         }
 
         private animateOut() {

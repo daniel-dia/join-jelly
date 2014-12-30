@@ -23,6 +23,8 @@ var joinjelly;
                 this.boardWidth = boardWidth;
                 this.addTiles(boardWidth, boardHeight, tileSize, img);
                 this.addMouseEvents(tileSize);
+                this.regX = (boardWidth * tileSize / 2);
+                this.regY = (boardHeight * tileSize / 2);
             }
             // add tiles on the board
             Board.prototype.addTiles = function (boardWidth, boardHeight, tileSize, img) {
@@ -303,12 +305,12 @@ var joinjelly;
                 if (alarm) {
                     if (this.alarming)
                         return;
-                    createjs.Tween.get(this, { loop: true }).to({ x: -10 }, 50).to({ x: +10 }, 100).to({ x: -10 }, 100).to({ x: 0 }, 50).wait(200);
+                    createjs.Tween.get(this.tilesContainer, { loop: true }).to({ x: -10 }, 50).to({ x: +10 }, 100).to({ x: -10 }, 100).to({ x: 0 }, 50).wait(200);
                 }
                 else {
                     if (!this.alarming)
                         return;
-                    createjs.Tween.removeTweens(this);
+                    createjs.Tween.removeTweens(this.tilesContainer);
                 }
                 this.alarming = alarm;
             };

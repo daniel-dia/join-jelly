@@ -35,6 +35,8 @@
 
         private pauseMenu: view.PauseMenu;
 
+        private showBoardButton: gameui.Button;
+
         protected  boardSize = 5;
 
         // parameters
@@ -111,8 +113,12 @@
             this.board.addEventListener("tileMove", (e: createjs.MouseEvent) => {
                 this.dragged(e.target.origin, e.target.target);
             });
-            this.board.y = (2048 - 1536) / 2 + 100;
             this.content.addChild(this.board);
+
+
+            this.board.x = defaultWidth / 2;
+            this.board.y = defaultHeight / 2;
+
         }
 
         // creates the game GUI
@@ -127,10 +133,10 @@
             this.header.addChild(this.gameHeader);
 
             // create game footer
-            this.gameFooter = new view.GameFooter(["time", "clean", "fast", "revive"]);
+            this.gameFooter = new view.GameFooter(["time", "clean", "fast"]);
             this.footer.addChild(this.gameFooter);
             this.gameFooter.addEventListener("useitem", (e:createjs.Event) => { this.useItem(e.target) });
-
+       
             // creates pause menu
             this.pauseMenu = new view.PauseMenu();
             this.content.addChild(this.pauseMenu);
@@ -138,6 +144,7 @@
             // creates a end menu
             this.finishMenu = new view.FinishMenu();
             this.content.addChild(this.finishMenu);
+            this.finishMenu.y = -200;
 
             // creates a toggle button
             var tbt = new gameui.ImageButton("GameOverBoard", () => {
@@ -148,6 +155,7 @@
             });
             tbt.set({ x: 150, y: -150, visible: false });
             this.footer.addChild(tbt);
+            this.showBoardButton = tbt;
 
             //add eventListener
             this.finishMenu.addEventListener("ok", () => {
@@ -230,7 +238,7 @@
             // board initialization
             this.board.cleanBoard();
             this.board.unlock();
-            
+
             // update interfaces
             this.updateInterfaceInfos();
 
@@ -299,7 +307,7 @@
 
         // finishes the game
         private endGame(message?:string) {
-
+            
             this.gamestate = GameState.ended;
 
             var score = this.score;
@@ -308,6 +316,7 @@
 
             // disable mouse interaction
             this.board.lock();
+            this.board.setAlarm(false);
 
             // releases all jellys
             this.board.releaseAll();
@@ -315,28 +324,32 @@
             // save high score
             JoinJelly.userData.setScore(score);
 
+            // remove other ui items
+            this.gameHeader.mouseEnabled = false;
+            this.gameFooter.mouseEnabled = false; 
+            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
+            createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
+
             // shows finished game menu
-            setTimeout(() => { this.finishMenu.show(); }, 1200);
+            setTimeout(() => { 
+                this.finishMenu.show();
+                this.gameFooter.mouseEnabled = true;
+
+                // set footer items form revive
+                this.gameFooter.setItems(["revive"]);
+                createjs.Tween.get(this.gameFooter).to({ y:0 }, 200, createjs.Ease.quadIn);
+
+            }, 1200);
             this.finishMenu.setValues(score, highScore, highJelly,message);
-
-            // move the board a little up
-            createjs.Tween.get(this.board).to({ y: this.board.y - 200 }, 800, createjs.Ease.quadInOut)
-
+            
             // log event
             JoinJelly.analytics.logEndGame(this.matches, this.score, this.level, highJelly)
 
             // play end soud
             gameui.AssetsManager.playSound("end");
 
-            // remove other ui items
-            this.gameHeader.mouseEnabled = false;
-            this.gameFooter.mouseEnabled = false;
-            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
-            createjs.Tween.get(this.gameFooter).to({ y: 230}, 200, createjs.Ease.quadIn);
-
             // play end game effect
             this.board.endGameEffect();
-
         }
 
         // winTheGame
@@ -519,13 +532,13 @@
                 }
             this.updateInterfaceInfos()
 
-
-
             //cast effects
-            this.cleanEffect.alpha = 1;
-            this.cleanEffect.visible = true;
+            this.cleanEffect.alpha = 0;
+            this.cleanEffect.visible = true; 
+
             createjs.Tween.removeTweens(this.cleanEffect);
-            createjs.Tween.get(this.cleanEffect).to({ alpha: 0 }, 500).call(() => {
+            createjs.Tween.get(this.cleanEffect).to({ alpha: 0 }, 200).to({ alpha: 1 }, 200).to({ alpha: 0 }, 200);
+            createjs.Tween.get(this.cleanEffect).to({ x: -600, y: 2000 }).to({ x: 300, y: -500 }, 600).call(() => {
                 this.cleanEffect.visible = false
             });
   
@@ -533,10 +546,27 @@
 
         // revive after game end
         private useRevive() {
+
             this.useTime();
             this.gamestate = GameState.playing;
             this.step(4000);
+            this.board.unlock();
+            this.finishMenu.hide();
 
+            this.updateInterfaceInfos();
+
+            this.board.setAlarm(true);
+            
+            // hide show board button
+            this.showBoardButton.fadeOut();
+
+            // set footer items
+            this.gameFooter.setItems(["time", "clean", "fast"]);
+
+            // remove other ui items
+            this.gameHeader.mouseEnabled = true;
+            createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
+          
         }
 
         // match 5 pair of jelly if avaliabe
@@ -555,6 +585,19 @@
         }
 
         // #endregion
+
+        public redim(headerY: number, footerY: number, width: number, heigth: number) {
+
+            super.redim(headerY, footerY, width, heigth) 
+
+
+            var relativeScale = (this.screenHeight - 2048) / 400;
+            if (relativeScale < 0) relativeScale = 0;
+            if (relativeScale > 1) relativeScale = 1;
+
+            this.board.scaleX = this.board.scaleY = 1 -(0.2- relativeScale * 0.2);
+            }
+
 
         //acivate the screen
         activate(parameters?: any) {

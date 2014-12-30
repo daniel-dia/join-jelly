@@ -123,6 +123,7 @@ var joinjelly;
                 { id: "itemfast", src: "assets/images_" + scale + "x/itemFast.png" },
                 { id: "itemrevive", src: "assets/images_" + scale + "x/itemRevive.png" },
                 { id: "itemtime", src: "assets/images_" + scale + "x/itemTime.png" },
+                { id: "itemBG", src: "assets/images_" + scale + "x/itemBG.png" },
                 { id: "About", src: "assets/images_" + scale + "x/About.png" },
                 { id: "tutorialFinger", src: "assets/images_" + scale + "x/tutorialFinger.png" },
                 { id: "ballon", src: "assets/images_" + scale + "x/ballon.png" },

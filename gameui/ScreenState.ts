@@ -10,6 +10,9 @@ module gameui {
 
         public view: createjs.Container;
 
+        public screenHeight: number;
+        public screenWidth: number;
+
         public bgmusic:   createjs.SoundInstance;
 
         constructor() {
@@ -34,6 +37,9 @@ module gameui {
         }
 
         public redim(headerY: number, footerY: number, width: number,heigth:number) {
+
+            this.screenHeight = heigth;
+            this.screenWidth = width;
 
             this.footer.y = footerY;
             this.header.y = headerY;

@@ -14,10 +14,30 @@ var joinjelly;
                 __extends(GameFooter, _super);
                 function GameFooter(items) {
                     _super.call(this);
+                    this.items = [];
                     this.addObjects();
+                    this.setItems(items);
+                }
+                // add all button items
+                GameFooter.prototype.setItems = function (items) {
+                    this.cleanButtons();
+                    if (!items)
+                        return;
                     for (var i in items)
                         this.addItem(items[i], i);
-                }
+                    for (var i in items) {
+                        //set button position
+                        this.items[items[i]].y = -150;
+                        this.items[items[i]].x = (defaultWidth - (items.length - 1) * 370) / 2 + i * 370;
+                    }
+                };
+                // clean buttons
+                GameFooter.prototype.cleanButtons = function () {
+                    for (var i in this.items)
+                        this.removeChild(this.items[i]);
+                    this.items = [];
+                };
+                // add objects to the footer
                 GameFooter.prototype.addObjects = function () {
                     //add background
                     var bg = gameui.AssetsManager.getBitmap("footer");
@@ -25,14 +45,21 @@ var joinjelly;
                     bg.y = -162;
                     bg.x = (defaultWidth - 1161) / 2;
                 };
+                //add a single item button to the footer
                 GameFooter.prototype.addItem = function (item, pos) {
                     var _this = this;
-                    var itemDO = new gameui.ImageButton("item" + item, function () {
+                    //create button
+                    var bt = new view.ItemButton(item);
+                    this.addChild(bt);
+                    //add event listener
+                    bt.addEventListener("click", function () {
                         _this.dispatchEvent("useitem", item);
                     });
-                    this.addChild(itemDO);
-                    itemDO.y = -150;
-                    itemDO.x = 300 * pos + 300;
+                    this.items[item] = bt;
+                };
+                // set item ammount
+                GameFooter.prototype.setItemAmmount = function (item, ammount) {
+                    this.items[item].setAmmount(ammount);
                 };
                 return GameFooter;
             })(createjs.Container);

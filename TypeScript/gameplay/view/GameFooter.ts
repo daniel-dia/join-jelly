@@ -1,15 +1,41 @@
 ﻿module joinjelly.gameplay.view {
     export class GameFooter extends createjs.Container {
 
+        private items: Array<ItemButton>
 
-        constructor(items: Array<string>) {
+        constructor(items?: Array<string>) {
             super();
+            this.items = [];
             this.addObjects();
-
-            for (var i in items)
-                this.addItem(items[i],i);
+            this.setItems(items);
         }
 
+        // add all button items
+        public setItems(items: Array<string>) {
+            this.cleanButtons();
+
+            if (!items) return;
+
+            for (var i in items)
+                this.addItem(items[i], i);
+
+            // set button positions
+            for (var i in items) {
+                //set button position
+                this.items[items[i]].y = -150;
+                this.items[items[i]].x = (defaultWidth - (items.length - 1) * 370) / 2 + i * 370;
+            }
+        }
+
+        // clean buttons
+        public cleanButtons() {
+            for (var i in this.items)
+                this.removeChild(this.items[i]);
+            this.items = [];
+        }
+
+
+        // add objects to the footer
         private addObjects() {
             //add background
             var bg = gameui.AssetsManager.getBitmap("footer");
@@ -18,18 +44,21 @@
             bg.x = (defaultWidth - 1161) / 2;
         }
 
-        
-        private addItem(item: string,pos:number) {
+        //add a single item button to the footer
+        private addItem(item: string, pos: number) {
 
-            var itemDO = new gameui.ImageButton("item" + item, () => {
-                this.dispatchEvent("useitem",item);
-            });
+            //create button
+            var bt = new ItemButton(item);
+            this.addChild(bt);
 
-            this.addChild(itemDO);
-            itemDO.y = -150;
-            itemDO.x = 300 * pos + 300;
+            //add event listener
+            bt.addEventListener("click", () => { this.dispatchEvent("useitem", item); });
+            this.items[item] = bt;
+        }
 
-
+        // set item ammount
+        public setItemAmmount(item: string, ammount: number) {
+            this.items[item].setAmmount(ammount);
         }
     }
 } 

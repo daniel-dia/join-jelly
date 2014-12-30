@@ -156,7 +156,6 @@ module gameui{
             if (this.currentScreen) this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth,this.currentHeight);
         }
 
-
         //resize GameScreen to a diferent scale
         public resizeGameScreen(deviceWidth: number, deviceHeight: number, updateCSS: boolean= true) {
 

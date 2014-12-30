@@ -19,6 +19,8 @@ var gameui;
             this.content.visible = false;
         };
         ScreenState.prototype.redim = function (headerY, footerY, width, heigth) {
+            this.screenHeight = heigth;
+            this.screenWidth = width;
             this.footer.y = footerY;
             this.header.y = headerY;
             var dh = footerY + headerY;
