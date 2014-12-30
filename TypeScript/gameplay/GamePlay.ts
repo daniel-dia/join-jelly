@@ -23,7 +23,7 @@
         //interface
 
         protected board: Board;
-        
+
         private gameHeader: view.GameHeader;
         private gameFooter: view.GameFooter;
 
@@ -40,11 +40,11 @@
         protected  boardSize = 5;
 
         // parameters
-        private timeByLevel: number =	10000
-        
+        private timeByLevel: number = 10000
+
         private timeoutInterval: number;
 
-        private initialInterval: number = 900;
+        private initialInterval: number = 200;
         private finalInterval: number = 150;
         private easeInterval: number = 0.97;
 
@@ -70,7 +70,7 @@
             this.createGUI();
 
             this.createEffects();
-       }
+        }
 
         // create game effects
         private createEffects() {
@@ -104,7 +104,7 @@
         // create game background
         private createBackground() {
             var bg = gameui.AssetsManager.getBitmap("Background");
-             this.background.addChild(bg);
+            this.background.addChild(bg);
         }
 
         // create a new board
@@ -135,8 +135,8 @@
             // create game footer
             this.gameFooter = new view.GameFooter(["time", "clean", "fast"]);
             this.footer.addChild(this.gameFooter);
-            this.gameFooter.addEventListener("useitem", (e:createjs.Event) => { this.useItem(e.target) });
-       
+            this.gameFooter.addEventListener("useitem", (e: createjs.Event) => { this.useItem(e.target) });
+
             // creates pause menu
             this.pauseMenu = new view.PauseMenu();
             this.content.addChild(this.pauseMenu);
@@ -200,9 +200,9 @@
 
             //calculate interval 
             var nextLevelScore = this.getMovesByLevel(this.level);
-            var currentLevelScore = this.getMovesByLevel(this.level-1);
-            
-            var percent = (this.matches - currentLevelScore) / (nextLevelScore - currentLevelScore) *100;
+            var currentLevelScore = this.getMovesByLevel(this.level - 1);
+
+            var percent = (this.matches - currentLevelScore) / (nextLevelScore - currentLevelScore) * 100;
 
             // defines alarm condition
             var emptySpaces = this.board.getPercentEmptySpaces();
@@ -215,16 +215,16 @@
 
             // updates board shaking.
             this.board.setAlarm(alarm);
-           
+
         }
 
         // level up
-        protected levelUpInterfaceEffect(level:number) {
+        protected levelUpInterfaceEffect(level: number) {
             this.gameLevelIndicator.showLevel(level);
             gameui.AssetsManager.playSound("Interface Sound-11");
             this.board.levelUpEffect();
         }
-        
+
         // #endregion
 
         // #region =================================== gamelay =======================================================
@@ -262,14 +262,13 @@
                 // if is not playing, than does not execute a step
                 if (this.gamestate == GameState.playing)
                     this.gameInteraction();
-                
+
                 // set timeout to another iteraction if game is not over
                 if (this.gamestate != GameState.ended)
-                    this.step(this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval) );
+                    this.step(this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
 
             }, timeout);
         }
-
 
         protected gameInteraction() {
 
@@ -279,9 +278,8 @@
             // updates interafce information
             this.updateInterfaceInfos();
 
-            // verifies if game is ended
-            if (this.verifyGameLoose())
-                this.endGame();
+            // verifies if game is loosed after 500ms again. if them both than loose game
+            if (this.verifyGameLoose()) this.endGame();
 
             // update currentLevel
             this.updateCurrentLevel();
@@ -306,8 +304,8 @@
         }
 
         // finishes the game
-        private endGame(message?:string) {
-            
+        private endGame(message?: string) {
+
             this.gamestate = GameState.ended;
 
             var score = this.score;
@@ -326,22 +324,22 @@
 
             // remove other ui items
             this.gameHeader.mouseEnabled = false;
-            this.gameFooter.mouseEnabled = false; 
+            this.gameFooter.mouseEnabled = false;
             createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
 
             // shows finished game menu
-            setTimeout(() => { 
+            setTimeout(() => {
                 this.finishMenu.show();
                 this.gameFooter.mouseEnabled = true;
 
                 // set footer items form revive
                 this.gameFooter.setItems(["revive"]);
-                createjs.Tween.get(this.gameFooter).to({ y:0 }, 200, createjs.Ease.quadIn);
+                createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
 
             }, 1200);
-            this.finishMenu.setValues(score, highScore, highJelly,message);
-            
+            this.finishMenu.setValues(score, highScore, highJelly, message);
+
             // log event
             JoinJelly.analytics.logEndGame(this.matches, this.score, this.level, highJelly)
 
@@ -353,15 +351,15 @@
         }
 
         // winTheGame
-        private winGame() { 
-           this.endGame(StringResources.menus.gameOver);
+        private winGame() {
+            this.endGame(StringResources.menus.gameOver);
             // TODO something great
         }
-         
+
         // update current level
         private updateCurrentLevel() {
             var newLevel = this.getLevelByMoves(this.matches);
-            if (newLevel > this.level) 
+            if (newLevel > this.level)
                 this.levelUpInterfaceEffect(newLevel);
 
             this.level = newLevel;
@@ -374,7 +372,7 @@
             var level = 0;
 
             // calculate moves ammount for each level, once it reches more than current moves, it returns the calculated level
-            while (totalMoves<moves) {
+            while (totalMoves < moves) {
                 var interval = this.getTimeInterval(level, this.initialInterval, this.finalInterval, this.easeInterval);
                 var levelMoves = this.timeByLevel / interval;
                 totalMoves += levelMoves;
@@ -387,13 +385,13 @@
         // get how moves is needed for each level;
         protected getMovesByLevel(level: number): number {
             var totalMoves = 0;
-          
+
             // calculate moves ammount for each level, once it reches more than current moves, it returns the calculated level
             for (var calculatedLevel = 0; calculatedLevel < level; calculatedLevel++) {
                 var interval = this.getTimeInterval(calculatedLevel, this.initialInterval, this.finalInterval, this.easeInterval);
                 var levelMoves = this.timeByLevel / interval;
                 totalMoves += levelMoves;
-           }
+            }
 
             return totalMoves;
         }
@@ -407,15 +405,16 @@
         private verifyGameLoose(): boolean {
 
             var empty = this.board.getEmptyTiles();
+            var locked = this.board.getLockedTiles();
 
-            if (empty.length == 0)
+            if (empty.length == 0 && locked.length == 0)
                 return true;
 
             return false;
         }
 
         // add a random tile with value 1 on board
-        protected addRandomTileOnBoard(value:number=1) {
+        protected addRandomTileOnBoard(value: number= 1) {
 
             var empty = this.board.getEmptyTiles();
 
@@ -435,12 +434,12 @@
         }
 
         //verifies if a tile can pair another, and make it happens
-        protected match(origin: Tile, target: Tile): boolean{
+        protected match(origin: Tile, target: Tile): boolean {
             //check if match is correct
-            if (origin.getNumber() != 0 && 
-                target != origin && 
-                target.getNumber() == origin.getNumber() && 
-                target.isUnlocked){
+            if (origin.getNumber() != 0 &&
+                target != origin &&
+                target.getNumber() == origin.getNumber() &&
+                target.isUnlocked) {
 
                 this.matches++;
 
@@ -452,10 +451,10 @@
 
                 //sum the tiles values
                 target.setNumber(newValue);
-                              
+
                 //reset the previous tile
                 origin.setNumber(0);
- 
+
                 //animate the mach
                 this.board.match(origin, target);
 
@@ -489,11 +488,11 @@
 
         // #region =================================== Items =========================================================
 
-        private useItem(item:string) {
+        private useItem(item: string) {
             switch (item) {
                 case "time":
                     this.useTime();
-                      break;
+                    break;
                 case "fast":
                     this.useFast();
                     break;
@@ -527,21 +526,21 @@
             var tiles = this.board.getAllTiles();
             for (var t in tiles)
                 if (tiles[t].getNumber() < 2) {
-                    this.board.fadeTileToPos(tiles[t], tiles[t].x, tiles[t].y - 100, 200, 300*Math.random());
-                    tiles[t].setNumber(0); 
+                    this.board.fadeTileToPos(tiles[t], tiles[t].x, tiles[t].y - 100, 200, 300 * Math.random());
+                    tiles[t].setNumber(0);
                 }
             this.updateInterfaceInfos()
 
             //cast effects
             this.cleanEffect.alpha = 0;
-            this.cleanEffect.visible = true; 
+            this.cleanEffect.visible = true;
 
             createjs.Tween.removeTweens(this.cleanEffect);
             createjs.Tween.get(this.cleanEffect).to({ alpha: 0 }, 200).to({ alpha: 1 }, 200).to({ alpha: 0 }, 200);
             createjs.Tween.get(this.cleanEffect).to({ x: -600, y: 2000 }).to({ x: 300, y: -500 }, 600).call(() => {
                 this.cleanEffect.visible = false
             });
-  
+
         }
 
         // revive after game end
@@ -556,7 +555,7 @@
             this.updateInterfaceInfos();
 
             this.board.setAlarm(true);
-            
+
             // hide show board button
             this.showBoardButton.fadeOut();
 
@@ -566,14 +565,38 @@
             // remove other ui items
             this.gameHeader.mouseEnabled = true;
             createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
-          
+
         }
 
         // match 5 pair of jelly if avaliabe
         private useFast() {
             if (this.gamestate == GameState.ended) return;
-            for (var i = 0; i<5 ; i++) {
+            var tiles = this.board.getAllTiles();
+            var matches = [];
+            // 5 times
+            for (var i = 0; i < 4; i++) {
+                for (var t in tiles) {
+                    var tile = tiles[t];
+
+                    if (tile.getNumber() > 0 && tile.isUnlocked()) {
+
+                        for (var t2 in tiles) {
+                            var tile2 = tiles[t2];
+
+                            if (tile2 != tile && tile.getNumber() == tile2.getNumber() && tile.isUnlocked() && tile2.isUnlocked()) {
+                                tile.lock();
+                                tile2.lock();
+                                matches.push([tile, tile2]);
+                            }
+                        }
+                    }
+                }
             }
+
+            for (var m in matches) 
+               this.matchWithFade(matches[m][0], matches[m][1]);
+              
+            
 
             //cast effects
             this.fastEffect.alpha = 1;
@@ -584,20 +607,28 @@
             });
         }
 
+        private matchWithFade(origin: Tile, target: Tile) {
+            this.board.fadeTileToPos(origin, target.x, target.y, 400,200*Math.random(),1);
+            setTimeout(() => {
+                this.match(origin, target)
+                target.unlock();
+            }, 300);
+        }
+
+
         // #endregion
 
         public redim(headerY: number, footerY: number, width: number, heigth: number) {
 
-            super.redim(headerY, footerY, width, heigth) 
+            super.redim(headerY, footerY, width, heigth)
 
 
             var relativeScale = (this.screenHeight - 2048) / 400;
             if (relativeScale < 0) relativeScale = 0;
             if (relativeScale > 1) relativeScale = 1;
 
-            this.board.scaleX = this.board.scaleY = 1 -(0.2- relativeScale * 0.2);
-            }
-
+            this.board.scaleX = this.board.scaleY = 1 - (0.2 - relativeScale * 0.2);
+        }
 
         //acivate the screen
         activate(parameters?: any) {

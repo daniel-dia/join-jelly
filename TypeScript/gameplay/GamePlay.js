@@ -24,7 +24,7 @@ var joinjelly;
                 this.boardSize = 5;
                 // parameters
                 this.timeByLevel = 10000;
-                this.initialInterval = 20; // 900
+                this.initialInterval = 200;
                 this.finalInterval = 150;
                 this.easeInterval = 0.97;
                 this.UserData = userData;
@@ -195,7 +195,7 @@ var joinjelly;
                 this.addRandomTileOnBoard();
                 // updates interafce information
                 this.updateInterfaceInfos();
-                // verifies if game is ended
+                // verifies if game is loosed after 500ms again. if them both than loose game
                 if (this.verifyGameLoose())
                     this.endGame();
                 // update currentLevel
@@ -292,7 +292,8 @@ var joinjelly;
             // Verifies if game is over
             GamePlayScreen.prototype.verifyGameLoose = function () {
                 var empty = this.board.getEmptyTiles();
-                if (empty.length == 0)
+                var locked = this.board.getLockedTiles();
+                if (empty.length == 0 && locked.length == 0)
                     return true;
                 return false;
             };
@@ -420,8 +421,25 @@ var joinjelly;
                 var _this = this;
                 if (this.gamestate == 3 /* ended */)
                     return;
-                for (var i = 0; i < 5; i++) {
+                var tiles = this.board.getAllTiles();
+                var matches = [];
+                for (var i = 0; i < 4; i++) {
+                    for (var t in tiles) {
+                        var tile = tiles[t];
+                        if (tile.getNumber() > 0 && tile.isUnlocked()) {
+                            for (var t2 in tiles) {
+                                var tile2 = tiles[t2];
+                                if (tile2 != tile && tile.getNumber() == tile2.getNumber() && tile.isUnlocked() && tile2.isUnlocked()) {
+                                    tile.lock();
+                                    tile2.lock();
+                                    matches.push([tile, tile2]);
+                                }
+                            }
+                        }
+                    }
                 }
+                for (var m in matches)
+                    this.matchWithFade(matches[m][0], matches[m][1]);
                 //cast effects
                 this.fastEffect.alpha = 1;
                 this.fastEffect.visible = true;
@@ -429,6 +447,14 @@ var joinjelly;
                 createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(function () {
                     _this.fastEffect.visible = false;
                 });
+            };
+            GamePlayScreen.prototype.matchWithFade = function (origin, target) {
+                var _this = this;
+                this.board.fadeTileToPos(origin, target.x, target.y, 400, 200 * Math.random(), 1);
+                setTimeout(function () {
+                    _this.match(origin, target);
+                    target.unlock();
+                }, 300);
             };
             // #endregion
             GamePlayScreen.prototype.redim = function (headerY, footerY, width, heigth) {

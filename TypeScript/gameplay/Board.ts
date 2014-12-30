@@ -198,16 +198,28 @@
 
             //get next jelly
             var total = this.boardHeight * this.boardWidth;
-            var emptyTiles:Array<Tile> = [];
+            var tiles:Array<Tile> = [];
 
             //get all empty tiles
             for (var t = 0; t < total; t++) 
                 if (this.tiles[t].isEmpty())
-                    emptyTiles.push(this.tiles[t]);
+                    tiles.push(this.tiles[t]);
             
-            return emptyTiles;
+            return tiles;
         }
+        public getLockedTiles(): Array<Tile> {
 
+            //get next jelly
+            var total = this.boardHeight * this.boardWidth;
+            var tiles: Array<Tile> = [];
+
+            //get all empty tiles
+            for (var t = 0; t < total; t++)
+                if (!this.tiles[t].isUnlocked())
+                    tiles.push(this.tiles[t]);
+
+            return tiles;
+        }
         public getAllTiles(): Array<Tile> {
             return this.tiles;
         }
@@ -324,9 +336,9 @@
        
         // #region Animations --------------------------------------------------------------------------
 
-        public fadeTileToPos(tile: Tile, posx: number, posy: number,time:number=100, delay:number=0) {
+        public fadeTileToPos(tile: Tile, posx: number, posy: number,time:number=100, delay:number=0,  alpha:number=0) {
             tile.lock();
-            createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(() => {
+            createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: alpha }, time, createjs.Ease.quadInOut).call(() => {
                 tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
                 this.arrangeZOrder();
                 tile.unlock();

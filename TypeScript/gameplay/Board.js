@@ -150,11 +150,20 @@ var joinjelly;
             Board.prototype.getEmptyTiles = function () {
                 //get next jelly
                 var total = this.boardHeight * this.boardWidth;
-                var emptyTiles = [];
+                var tiles = [];
                 for (var t = 0; t < total; t++)
                     if (this.tiles[t].isEmpty())
-                        emptyTiles.push(this.tiles[t]);
-                return emptyTiles;
+                        tiles.push(this.tiles[t]);
+                return tiles;
+            };
+            Board.prototype.getLockedTiles = function () {
+                //get next jelly
+                var total = this.boardHeight * this.boardWidth;
+                var tiles = [];
+                for (var t = 0; t < total; t++)
+                    if (!this.tiles[t].isUnlocked())
+                        tiles.push(this.tiles[t]);
+                return tiles;
             };
             Board.prototype.getAllTiles = function () {
                 return this.tiles;
@@ -245,12 +254,13 @@ var joinjelly;
             };
             // #endregion
             // #region Animations --------------------------------------------------------------------------
-            Board.prototype.fadeTileToPos = function (tile, posx, posy, time, delay) {
+            Board.prototype.fadeTileToPos = function (tile, posx, posy, time, delay, alpha) {
                 var _this = this;
                 if (time === void 0) { time = 100; }
                 if (delay === void 0) { delay = 0; }
+                if (alpha === void 0) { alpha = 0; }
                 tile.lock();
-                createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: 0 }, time, createjs.Ease.quadInOut).call(function () {
+                createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: alpha }, time, createjs.Ease.quadInOut).call(function () {
                     tile.set(_this.getTilePositionByCoords(tile.posx, tile.posy, _this.tileSize));
                     _this.arrangeZOrder();
                     tile.unlock();
