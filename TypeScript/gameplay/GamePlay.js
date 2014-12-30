@@ -401,6 +401,7 @@ var joinjelly;
             };
             // revive after game end
             GamePlayScreen.prototype.useRevive = function () {
+                var _this = this;
                 this.useTime();
                 this.gamestate = 1 /* playing */;
                 this.step(4000);
@@ -415,6 +416,13 @@ var joinjelly;
                 // remove other ui items
                 this.gameHeader.mouseEnabled = true;
                 createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
+                //cast effects
+                this.reviveEffect.alpha = 0;
+                this.reviveEffect.visible = true;
+                createjs.Tween.removeTweens(this.reviveEffect);
+                createjs.Tween.get(this.reviveEffect).to({ y: 1000 }).to({ y: 500, alpha: 1 }, 500).to({ y: 0, alpha: 0 }, 500).call(function () {
+                    _this.reviveEffect.visible = false;
+                });
             };
             // match 5 pair of jelly if avaliabe
             GamePlayScreen.prototype.useFast = function () {

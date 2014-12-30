@@ -44,7 +44,7 @@
 
         private timeoutInterval: number;
 
-        private initialInterval: number = 200;
+        private initialInterval: number = 900;
         private finalInterval: number = 150;
         private easeInterval: number = 0.97;
 
@@ -565,6 +565,15 @@
             // remove other ui items
             this.gameHeader.mouseEnabled = true;
             createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
+
+            //cast effects
+            this.reviveEffect.alpha = 0;
+            this.reviveEffect.visible = true;
+
+            createjs.Tween.removeTweens(this.reviveEffect);
+            createjs.Tween.get(this.reviveEffect).to({ y: 1000 }).to({ y: 500 ,alpha:1},500).to({  y: 0,alpha:0 }, 500).call(() => {
+                this.reviveEffect.visible = false
+            });
 
         }
 
