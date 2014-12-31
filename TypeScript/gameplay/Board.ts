@@ -17,7 +17,7 @@
 
         constructor(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
             super();
-            
+
             this.tilesContainer = new createjs.Container();
             this.addChild(this.tilesContainer);
 
@@ -37,17 +37,17 @@
 
         // add tiles on the board
         private addTiles(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
-           
 
-            for (var x = 0; x < boardWidth; x++) 
-                for (var y = 0; y < boardHeight; y++) 
+
+            for (var x = 0; x < boardWidth; x++)
+                for (var y = 0; y < boardHeight; y++)
                     this.addTile(x, y, tileSize);
 
-     
+
         }
 
         // add a single tile on board
-        private addTile(x: number, y: number, tileSize:number) {
+        private addTile(x: number, y: number, tileSize: number) {
             var tileDO = new Tile(x, y, tileSize);
 
             //// add a tile background
@@ -67,7 +67,7 @@
         }
 
         // add mouse board interacion
-        private addMouseEvents(tileSize:number) {
+        private addMouseEvents(tileSize: number) {
             var touchOffset = [];
             this.tilesContainer.addEventListener("mousedown", (e: createjs.MouseEvent) => {
                 var tile = this.getTileByRawPos(e.localX, e.localY, tileSize);
@@ -149,16 +149,16 @@
 
         // get tile coordinates by pointer position
         private getTileCoordsByRawPos(rawx: number, rawy: number, tileSize: number): point {
-        
-        
+
+
             var x = Math.floor(rawx / tileSize);
             var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
-            var y = Math.floor((rawy -hexaOffset)/ tileSize);
+            var y = Math.floor((rawy - hexaOffset) / tileSize);
 
             return { x: x, y: y };
         }
 
-        private getTileByCoords(x:number, y:number):Tile {
+        private getTileByCoords(x: number, y: number): Tile {
             var id = this.boardWidth * y + x;
             return this.getTileById(id);
         }
@@ -173,7 +173,7 @@
             }
         }
 
-  
+
         // get a tile object by its id
         public getTileById(id: number): Tile {
             return <Tile> this.tilesContainer.getChildByName(id.toString());
@@ -186,25 +186,25 @@
 
         }
 
-        public sumAllTiles() :number{
+        public sumAllTiles(): number {
             var sum = 0;
             for (var t in this.tiles) {
                 sum += this.tiles[t].getNumber();
             }
             return sum;
-         }
+        }
 
-        public getEmptyTiles(): Array<Tile> { 
+        public getEmptyTiles(): Array<Tile> {
 
             //get next jelly
             var total = this.boardHeight * this.boardWidth;
-            var tiles:Array<Tile> = [];
+            var tiles: Array<Tile> = [];
 
             //get all empty tiles
-            for (var t = 0; t < total; t++) 
+            for (var t = 0; t < total; t++)
                 if (this.tiles[t].isEmpty())
                     tiles.push(this.tiles[t]);
-            
+
             return tiles;
         }
         public getLockedTiles(): Array<Tile> {
@@ -224,40 +224,40 @@
             return this.tiles;
         }
 
-        public getTileId(tile:Tile): number {
+        public getTileId(tile: Tile): number {
             return parseInt(tile.name);
         }
 
         // get all neighbor tiles 
-        public getNeighborTiles(tile:Tile): Array<Tile> {
-            
+        public getNeighborTiles(tile: Tile): Array<Tile> {
+
             var neighbor: Array<Tile> = [];
 
             var tileId = this.getTileId(tile);
             var hexaOffset = (tile.posx == 1 || tile.posx == 3) ? 1 : -1;
-            
+
             // consider all neighbores
             var neighborCoords = [
-                {x:tile.posx,y:tile.posy-1},
-                {x:tile.posx,y:tile.posy+1},
+                { x: tile.posx, y: tile.posy - 1 },
+                { x: tile.posx, y: tile.posy + 1 },
 
-                {x:tile.posx-1,y:tile.posy},
-                {x:tile.posx+1,y:tile.posy},
+                { x: tile.posx - 1, y: tile.posy },
+                { x: tile.posx + 1, y: tile.posy },
 
-                { x: tile.posx - 1, y: tile.posy + hexaOffset},
-                { x: tile.posx + 1, y: tile.posy + hexaOffset},
+                { x: tile.posx - 1, y: tile.posy + hexaOffset },
+                { x: tile.posx + 1, y: tile.posy + hexaOffset },
             ]
 
 
             // for each
-            for (var p in neighborCoords) 
+            for (var p in neighborCoords)
                 // remove beyound borders
-                if( neighborCoords[p].x >= 0 && 
-                    neighborCoords[p].y >= 0 && 
-                    neighborCoords[p].x<this.boardWidth && 
-                    neighborCoords[p].y< this.boardHeight)
-                        // add to array
-                        neighbor.push(this.getTileByCoords(neighborCoords[p].x, neighborCoords[p].y));
+                if (neighborCoords[p].x >= 0 &&
+                    neighborCoords[p].y >= 0 &&
+                    neighborCoords[p].x < this.boardWidth &&
+                    neighborCoords[p].y < this.boardHeight)
+                    // add to array
+                    neighbor.push(this.getTileByCoords(neighborCoords[p].x, neighborCoords[p].y));
 
             return neighbor;
         }
@@ -294,14 +294,14 @@
             }
         }
 
-       public getHighestTileValue(): number {
+        public getHighestTileValue(): number {
             var highestTile = 0;
             for (var j in this.tiles)
                 if (this.tiles[j].getNumber() > highestTile) highestTile = this.tiles[j].getNumber();
             return highestTile;
         }
-        
-        public lock() { this.tilesContainer.mouseEnabled = false;}
+
+        public lock() { this.tilesContainer.mouseEnabled = false; }
 
         public unlock() { this.tilesContainer.mouseEnabled = true; }
 
@@ -311,13 +311,13 @@
 
         // organize all z-order
         private arrangeZOrder() {
-            for (var t = 0 ; t < this.tiles.length; t++)
-                this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.getNumChildren()-1);
+            for (var t = 0; t < this.tiles.length; t++)
+                this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.getNumChildren() - 1);
         }
 
         // match 2 tiles
         public match(origin: Tile, target: Tile) {
-            
+
             this.releaseDrag(origin, true, target);
 
             target.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
@@ -331,12 +331,12 @@
             for (var t in this.tiles)
                 this.tiles[t].setNumber(0);
         }
-               
+
         // #endregion
-       
+
         // #region Animations --------------------------------------------------------------------------
 
-        public fadeTileToPos(tile: Tile, posx: number, posy: number,time:number=100, delay:number=0,  alpha:number=0) {
+        public fadeTileToPos(tile: Tile, posx: number, posy: number, time: number= 100, delay: number= 0, alpha: number= 0) {
             tile.lock();
             createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: alpha }, time, createjs.Ease.quadInOut).call(() => {
                 tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
@@ -345,7 +345,7 @@
                 tile.alpha = 1;
             })
         }
-            
+
         // create and execute a level up effect on tiles
         public levelUpEffect() {
 
@@ -372,7 +372,7 @@
 
                     // unlocks it
                     tile.unlock();
-             
+
                     // increment effect timeOut id
                     currentTile++
 
@@ -381,7 +381,7 @@
         }
 
         // create and execute a end game effect on tiles
-        public endGameEffect(){
+        public endGameEffect() {
 
             // reseteffect timeOut id
             var currentTile = 0;
@@ -408,7 +408,7 @@
                 }, 20 * t);
             }
         }
- 
+
         public setAlarm(alarm: boolean) {
 
             if (alarm) {
@@ -430,7 +430,6 @@
         }
 
         // #endregion
-        
-     }
 
+    }
 }

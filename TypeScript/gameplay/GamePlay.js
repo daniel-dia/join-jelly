@@ -23,8 +23,9 @@ var joinjelly;
                 this.matches = 0;
                 this.boardSize = 5;
                 // parameters
+                this.itemProbability = 0.005;
                 this.timeByLevel = 10000;
-                this.initialInterval = 200;
+                this.initialInterval = 900;
                 this.finalInterval = 150;
                 this.easeInterval = 0.97;
                 this.UserData = userData;
@@ -83,7 +84,7 @@ var joinjelly;
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
                 // create game footer
-                this.gameFooter = new gameplay.view.GameFooter(["time", "clean", "fast"]);
+                this.gameFooter = new gameplay.view.GameFooter(["time", "clean", "fast", "revive"]);
                 this.footer.addChild(this.gameFooter);
                 this.gameFooter.addEventListener("useitem", function (e) {
                     _this.useItem(e.target);
@@ -160,7 +161,7 @@ var joinjelly;
             };
             // #endregion
             // #region =================================== gamelay =======================================================
-            // Starts the game
+            // starts the game
             GamePlayScreen.prototype.start = function () {
                 this.level = 1;
                 this.matches = 0;
@@ -190,6 +191,7 @@ var joinjelly;
                         _this.step(_this.getTimeInterval(_this.level, _this.initialInterval, _this.finalInterval, _this.easeInterval));
                 }, timeout);
             };
+            // executes a game interaction
             GamePlayScreen.prototype.gameInteraction = function () {
                 // add a new tile  on board
                 this.addRandomTileOnBoard();
@@ -262,8 +264,7 @@ var joinjelly;
                     this.levelUpInterfaceEffect(newLevel);
                 this.level = newLevel;
             };
-            // calculate current level by moves. 
-            // once level calculation is a iterative processe, this method uses a iterative calculation
+            // calculate current level by moves. once level calculation is a iterative processe, this method uses a iterative calculation
             GamePlayScreen.prototype.getLevelByMoves = function (moves) {
                 var totalMoves = 0;
                 var level = 0;
@@ -313,38 +314,81 @@ var joinjelly;
                 //try to match the tiles
                 this.match(origin, target);
             };
+            GamePlayScreen.prototype.canMatch = function (origin, target) {
+                return (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked());
+            };
             //verifies if a tile can pair another, and make it happens
             GamePlayScreen.prototype.match = function (origin, target) {
                 //check if match is correct
-                if (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked) {
-                    this.matches++;
-                    // update currentLevel
-                    this.updateCurrentLevel();
-                    //calculate new value
-                    var newValue = target.getNumber() + origin.getNumber();
-                    //sum the tiles values
-                    target.setNumber(newValue);
-                    //reset the previous tile
-                    origin.setNumber(0);
-                    //animate the mach
-                    this.board.match(origin, target);
-                    // update score
-                    this.score += newValue * 10 + Math.floor(Math.random() * newValue);
-                    // update score
-                    this.UserData.setScore(this.score);
-                    this.UserData.setLastJelly(newValue);
-                    this.updateInterfaceInfos();
-                    // notify match
-                    if (this.matchNotify)
-                        this.matchNotify();
-                    // verify winGame
-                    if (newValue >= 8192)
-                        this.winGame();
-                    // log event
-                    joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
-                    return true;
+                if (!this.canMatch(origin, target))
+                    return false;
+                this.matches++;
+                // update currentLevel
+                this.updateCurrentLevel();
+                //calculate new value
+                var newValue = target.getNumber() + origin.getNumber();
+                //sum the tiles values
+                target.setNumber(newValue);
+                //reset the previous tile
+                origin.setNumber(0);
+                //animate the mach
+                this.board.match(origin, target);
+                // increase score
+                var sum = newValue * 10 + Math.floor(Math.random() * newValue);
+                this.score += sum;
+                //this.animateScore(target, sum); // animate a score number
+                // chance to win a item
+                var item = this.giveItemChance(["time", "clean", "fast", "revive"]);
+                if (item)
+                    this.animateItemFromTile(target, item);
+                // update score
+                this.UserData.setScore(this.score);
+                this.UserData.setLastJelly(newValue);
+                this.updateInterfaceInfos();
+                // notify match
+                if (this.matchNotify)
+                    this.matchNotify();
+                // verify winGame
+                if (newValue >= 8192)
+                    this.winGame();
+                // log event
+                joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
+                return true;
+            };
+            //give item to user
+            GamePlayScreen.prototype.giveItemChance = function (items) {
+                var item = null;
+                // calculate random change to win a item
+                var goodChance = (Math.random() < this.itemProbability);
+                goodChance = true;
+                // if true
+                if (goodChance) {
+                    item = items[Math.floor(Math.random() * items.length)];
                 }
-                return false;
+                return item;
+            };
+            GamePlayScreen.prototype.animateItemFromTile = function (tile, item) {
+                var _this = this;
+                // create item Object
+                var itemDO = gameui.AssetsManager.getBitmap("item" + item);
+                itemDO.mouseEnabled = false;
+                itemDO.regX = itemDO.getBounds().width / 2;
+                itemDO.regY = itemDO.getBounds().height / 2;
+                this.content.addChild(itemDO);
+                // animate item to footer
+                var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
+                var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
+                var xf = defaultWidth / 2;
+                var yf = this.footer.y;
+                ;
+                var footerItem = this.gameFooter.getItem(item);
+                if (footerItem) {
+                    xf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).x;
+                    yf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).y;
+                }
+                createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(function () {
+                    _this.content.removeChild(itemDO);
+                });
             };
             // #endregion
             // #region =================================== Items =========================================================
@@ -402,17 +446,22 @@ var joinjelly;
             // revive after game end
             GamePlayScreen.prototype.useRevive = function () {
                 var _this = this;
-                this.useTime();
+                // back state to playing
                 this.gamestate = 1 /* playing */;
-                this.step(4000);
+                //ullock board
                 this.board.unlock();
+                // hide finish menu
                 this.finishMenu.hide();
+                // set next iteraction after 4 seconds
+                this.step(4000);
+                // update all interface
                 this.updateInterfaceInfos();
+                // set board alarm
                 this.board.setAlarm(true);
                 // hide show board button
                 this.showBoardButton.fadeOut();
                 // set footer items
-                this.gameFooter.setItems(["time", "clean", "fast"]);
+                this.gameFooter.setItems(["time", "clean", "fast", "revive"]);
                 // remove other ui items
                 this.gameHeader.mouseEnabled = true;
                 createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
@@ -431,23 +480,25 @@ var joinjelly;
                     return;
                 var tiles = this.board.getAllTiles();
                 var matches = [];
-                for (var i = 0; i < 4; i++) {
-                    for (var t in tiles) {
-                        var tile = tiles[t];
-                        if (tile.getNumber() > 0 && tile.isUnlocked()) {
-                            for (var t2 in tiles) {
-                                var tile2 = tiles[t2];
-                                if (tile2 != tile && tile.getNumber() == tile2.getNumber() && tile.isUnlocked() && tile2.isUnlocked()) {
-                                    tile.lock();
-                                    tile2.lock();
-                                    matches.push([tile, tile2]);
-                                }
+                for (var t in tiles) {
+                    // 5 times
+                    if (matches.length >= 5)
+                        break;
+                    var origin = tiles[t];
+                    if (origin.getNumber() > 0 && origin.isUnlocked()) {
+                        for (var t2 in tiles) {
+                            var target = tiles[t2];
+                            if (this.canMatch(origin, target)) {
+                                origin.lock();
+                                target.lock();
+                                matches.push([origin, target]);
+                                break;
                             }
                         }
                     }
                 }
                 for (var m in matches)
-                    this.matchWithFade(matches[m][0], matches[m][1]);
+                    this.matchJelly(matches[m][0], matches[m][1]);
                 //cast effects
                 this.fastEffect.alpha = 1;
                 this.fastEffect.visible = true;
@@ -456,15 +507,18 @@ var joinjelly;
                     _this.fastEffect.visible = false;
                 });
             };
-            GamePlayScreen.prototype.matchWithFade = function (origin, target) {
+            // match two jellys with animation
+            GamePlayScreen.prototype.matchJelly = function (origin, target) {
                 var _this = this;
                 this.board.fadeTileToPos(origin, target.x, target.y, 400, 200 * Math.random(), 1);
                 setTimeout(function () {
-                    _this.match(origin, target);
                     target.unlock();
+                    origin.unlock();
+                    _this.match(origin, target);
                 }, 300);
             };
             // #endregion
+            // redim screen
             GamePlayScreen.prototype.redim = function (headerY, footerY, width, heigth) {
                 _super.prototype.redim.call(this, headerY, footerY, width, heigth);
                 var relativeScale = (this.screenHeight - 2048) / 400;

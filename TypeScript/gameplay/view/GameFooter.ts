@@ -33,8 +33,7 @@
                 this.removeChild(this.items[i]);
             this.items = [];
         }
-
-
+        
         // add objects to the footer
         private addObjects() {
             //add background
@@ -50,10 +49,15 @@
             //create button
             var bt = new ItemButton(item);
             this.addChild(bt);
+            this.items[item] = bt;
 
             //add event listener
             bt.addEventListener("click", () => { this.dispatchEvent("useitem", item); });
-            this.items[item] = bt;
+
+        }
+
+        public getItem(item: string): createjs.DisplayObject {
+            return this.items[item];
         }
 
         // set item ammount

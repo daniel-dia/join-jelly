@@ -51,11 +51,14 @@ var joinjelly;
                     //create button
                     var bt = new view.ItemButton(item);
                     this.addChild(bt);
+                    this.items[item] = bt;
                     //add event listener
                     bt.addEventListener("click", function () {
                         _this.dispatchEvent("useitem", item);
                     });
-                    this.items[item] = bt;
+                };
+                GameFooter.prototype.getItem = function (item) {
+                    return this.items[item];
                 };
                 // set item ammount
                 GameFooter.prototype.setItemAmmount = function (item, ammount) {
