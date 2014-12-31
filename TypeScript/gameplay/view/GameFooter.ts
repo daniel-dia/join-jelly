@@ -2,6 +2,7 @@
     export class GameFooter extends createjs.Container {
 
         private items: Array<ItemButton>
+        private itemSize:number = 370;
 
         constructor(items?: Array<string>) {
             super();
@@ -12,10 +13,13 @@
 
         // add all button items
         public setItems(items: Array<string>) {
+
+            // clean all buttons
             this.cleanButtons();
 
             if (!items) return;
 
+            // add all items
             for (var i in items)
                 this.addItem(items[i], i);
 
@@ -23,7 +27,7 @@
             for (var i in items) {
                 //set button position
                 this.items[items[i]].y = -150;
-                this.items[items[i]].x = (defaultWidth - (items.length - 1) * 370) / 2 + i * 370;
+                this.items[items[i]].x = (defaultWidth - (items.length - 1) * this.itemSize) / 2 + i * this.itemSize;
             }
         }
 
@@ -56,7 +60,8 @@
 
         }
 
-        public getItem(item: string): createjs.DisplayObject {
+        // get a item display object
+        public getItemButton(item: string): createjs.DisplayObject {
             return this.items[item];
         }
 

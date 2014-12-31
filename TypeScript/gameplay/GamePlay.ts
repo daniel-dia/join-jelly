@@ -525,7 +525,7 @@
             var xf = defaultWidth/2;
             var yf = this.footer.y;;
 
-            var footerItem = this.gameFooter.getItem(item) 
+            var footerItem = this.gameFooter.getItemButton(item) 
             if (footerItem) {
                 xf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).x;
                 yf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).y;

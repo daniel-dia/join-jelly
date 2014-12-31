@@ -14,12 +14,14 @@ var joinjelly;
                 __extends(GameFooter, _super);
                 function GameFooter(items) {
                     _super.call(this);
+                    this.itemSize = 370;
                     this.items = [];
                     this.addObjects();
                     this.setItems(items);
                 }
                 // add all button items
                 GameFooter.prototype.setItems = function (items) {
+                    // clean all buttons
                     this.cleanButtons();
                     if (!items)
                         return;
@@ -28,7 +30,7 @@ var joinjelly;
                     for (var i in items) {
                         //set button position
                         this.items[items[i]].y = -150;
-                        this.items[items[i]].x = (defaultWidth - (items.length - 1) * 370) / 2 + i * 370;
+                        this.items[items[i]].x = (defaultWidth - (items.length - 1) * this.itemSize) / 2 + i * this.itemSize;
                     }
                 };
                 // clean buttons
@@ -57,7 +59,8 @@ var joinjelly;
                         _this.dispatchEvent("useitem", item);
                     });
                 };
-                GameFooter.prototype.getItem = function (item) {
+                // get a item display object
+                GameFooter.prototype.getItemButton = function (item) {
                     return this.items[item];
                 };
                 // set item ammount
