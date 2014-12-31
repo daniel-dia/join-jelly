@@ -84,8 +84,10 @@ var joinjelly;
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
                 // create game footer
-                this.gameFooter = new gameplay.view.GameFooter(["time", "clean", "fast", "revive"]);
+                var items = ["time", "clean", "fast", "revive"];
+                this.gameFooter = new gameplay.view.GameFooter(items);
                 this.footer.addChild(this.gameFooter);
+                this.updateFooter();
                 this.gameFooter.addEventListener("useitem", function (e) {
                     _this.useItem(e.target);
                 });
@@ -338,7 +340,7 @@ var joinjelly;
                 this.score += sum;
                 //this.animateScore(target, sum); // animate a score number
                 // chance to win a item
-                var item = this.giveItemChance(["time", "clean", "fast", "revive"]);
+                var item = this.giveItemChance(joinjelly.ItemsData.items);
                 if (item)
                     this.animateItemFromTile(target, item);
                 // update score
@@ -364,6 +366,8 @@ var joinjelly;
                 // if true
                 if (goodChance) {
                     item = items[Math.floor(Math.random() * items.length)];
+                    // give item to user (user data)
+                    joinjelly.JoinJelly.itemData.increaseItemAmmount(item);
                 }
                 return item;
             };
@@ -388,24 +392,32 @@ var joinjelly;
                 }
                 createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(function () {
                     _this.content.removeChild(itemDO);
+                    _this.updateFooter();
                 });
             };
             // #endregion
             // #region =================================== Items =========================================================
             GamePlayScreen.prototype.useItem = function (item) {
-                switch (item) {
-                    case "time":
-                        this.useTime();
-                        break;
-                    case "fast":
-                        this.useFast();
-                        break;
-                    case "clean":
-                        this.useClean();
-                        break;
-                    case "revive":
-                        this.useRevive();
-                        break;
+                if (joinjelly.JoinJelly.itemData.getItemAmmount(item) > 0) {
+                    var sucess = false;
+                    switch (item) {
+                        case "time":
+                            sucess = this.useTime();
+                            break;
+                        case "fast":
+                            sucess = this.useFast();
+                            break;
+                        case "clean":
+                            sucess = this.useClean();
+                            break;
+                        case "revive":
+                            sucess = this.useRevive();
+                            break;
+                    }
+                    if (sucess) {
+                        joinjelly.JoinJelly.itemData.decreaseItemAmmount(item);
+                        this.gameFooter.setItemAmmount(item, joinjelly.JoinJelly.itemData.getItemAmmount(item));
+                    }
                 }
             };
             // reduces jellys per time during 5 seconds.
@@ -421,6 +433,7 @@ var joinjelly;
                 createjs.Tween.get(this.freezeEffect).to({ alpha: 1 }, 1000).to({ alpha: 0 }, 4000).call(function () {
                     _this.freezeEffect.visible = false;
                 });
+                return true;
             };
             //clan all simple jellys
             GamePlayScreen.prototype.useClean = function () {
@@ -442,10 +455,13 @@ var joinjelly;
                 createjs.Tween.get(this.cleanEffect).to({ x: -600, y: 2000 }).to({ x: 300, y: -500 }, 600).call(function () {
                     _this.cleanEffect.visible = false;
                 });
+                return true;
             };
             // revive after game end
             GamePlayScreen.prototype.useRevive = function () {
                 var _this = this;
+                if (this.gamestate != 3 /* ended */)
+                    return false;
                 // back state to playing
                 this.gamestate = 1 /* playing */;
                 //ullock board
@@ -472,6 +488,7 @@ var joinjelly;
                 createjs.Tween.get(this.reviveEffect).to({ y: 1000 }).to({ y: 500, alpha: 1 }, 500).to({ y: 0, alpha: 0 }, 500).call(function () {
                     _this.reviveEffect.visible = false;
                 });
+                return true;
             };
             // match 5 pair of jelly if avaliabe
             GamePlayScreen.prototype.useFast = function () {
@@ -506,6 +523,7 @@ var joinjelly;
                 createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(function () {
                     _this.fastEffect.visible = false;
                 });
+                return true;
             };
             // match two jellys with animation
             GamePlayScreen.prototype.matchJelly = function (origin, target) {
@@ -516,6 +534,12 @@ var joinjelly;
                     origin.unlock();
                     _this.match(origin, target);
                 }, 300);
+            };
+            // update footer
+            GamePlayScreen.prototype.updateFooter = function () {
+                var items = joinjelly.ItemsData.items;
+                for (var i in items)
+                    this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
             };
             // #endregion
             // redim screen

@@ -4,11 +4,13 @@
         public static userData: UserData;
         public static gameScreen: gameui.GameScreen;
         public static analytics: Analytics;
+        public static itemData: ItemsData;
 
         public static init() {
 
             this.analytics = new Analytics();
-                
+            this.itemData = new ItemsData();
+            
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight);
             this.gameScreen.stage.enableMouseOver(60);
             this.gameScreen.stage.mouseMoveOutside = true;

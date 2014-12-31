@@ -40,6 +40,14 @@ var UserData = (function () {
     UserData.prototype.setSoundVol = function (volume) {
         UserData.saveValue("sound", volume);
     };
+    //#endregion
+    // #region items
+    UserData.saveItems = function (items) {
+        return this.saveValue("items", items);
+    };
+    UserData.loadItems = function () {
+        return this.loadValue("items", {});
+    };
     UserData.saveValue = function (key, value) {
         var serialized = JSON.stringify(value);
         localStorage.setItem(UserData.prefix + key, serialized);
@@ -50,7 +58,7 @@ var UserData = (function () {
             return defaultVaule;
         return JSON.parse(value);
     };
-    //#endregion
+    // #endregion
     // #region generic
     UserData.prefix = "FastPair_";
     return UserData;

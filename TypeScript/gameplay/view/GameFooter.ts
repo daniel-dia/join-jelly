@@ -2,7 +2,7 @@
     export class GameFooter extends createjs.Container {
 
         private items: Array<ItemButton>
-        private itemSize:number = 370;
+        private itemSize:number = 270;
 
         constructor(items?: Array<string>) {
             super();

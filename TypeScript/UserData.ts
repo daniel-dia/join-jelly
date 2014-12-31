@@ -1,14 +1,12 @@
 ﻿class UserData {
-
-
+    
     constructor() {
 
         gameui.AssetsManager.setSoundVeolume(this.getSoundVol());
         gameui.AssetsManager.setMusicVolume(this.getMusicVol());
 
     }
-
-
+    
     // #region score
     public setScore(score) {
         var highscore = this.getHighScore();
@@ -55,6 +53,17 @@
 
     //#endregion
 
+    // #region items
+    public static saveItems(items:Array<number>) {
+        return this.saveValue("items", items);
+    }
+
+    public static loadItems(): Array<number> {
+        return this.loadValue("items", {});
+    }
+
+    // #endregion
+
     // #region generic
     private static prefix = "FastPair_";
 
@@ -70,6 +79,7 @@
         return JSON.parse(value);
     }
     // #endregion
+
 }
 
 

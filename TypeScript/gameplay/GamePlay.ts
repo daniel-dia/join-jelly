@@ -135,9 +135,14 @@
             this.header.addChild(this.gameHeader);
 
             // create game footer
-            this.gameFooter = new view.GameFooter(["time", "clean", "fast","revive"]);
+            var items = ["time", "clean", "fast", "revive"];
+            this.gameFooter = new view.GameFooter(items);
             this.footer.addChild(this.gameFooter);
+            this.updateFooter();
+
             this.gameFooter.addEventListener("useitem", (e: createjs.Event) => { this.useItem(e.target) });
+
+
 
             // creates pause menu
             this.pauseMenu = new view.PauseMenu();
@@ -467,7 +472,7 @@
             //this.animateScore(target, sum); // animate a score number
 
             // chance to win a item
-            var item = this.giveItemChance(["time", "clean", "fast", "revive"])
+            var item = this.giveItemChance(ItemsData.items)
             if (item) this.animateItemFromTile(target, item);
 
             // update score
@@ -505,7 +510,8 @@
                 item = items[Math.floor(Math.random() * items.length)];
 
                 // give item to user (user data)
-                // userData.addItem
+                JoinJelly.itemData.increaseItemAmmount(item);
+                
             }
             return item;
         }
@@ -533,6 +539,7 @@
 
             createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1}, 400, createjs.Ease.quadInOut).to({x:xf,y:yf}, 1000, createjs.Ease.quadInOut).call(() => { 
                 this.content.removeChild(itemDO);
+                this.updateFooter();
             });
 
 
@@ -543,24 +550,35 @@
         // #region =================================== Items =========================================================
 
         private useItem(item: string) {
-            switch (item) {
-                case "time":
-                    this.useTime();
-                    break;
-                case "fast":
-                    this.useFast();
-                    break;
-                case "clean":
-                    this.useClean();
-                    break;
-                case "revive":
-                    this.useRevive();
-                    break;
+
+            if (JoinJelly.itemData.getItemAmmount(item) > 0) {
+
+                var sucess:boolean = false;
+
+                switch (item) {
+                    case "time":
+                        sucess = this.useTime();
+                        break;
+                    case "fast":
+                        sucess = this.useFast();
+                        break;
+                    case "clean":
+                        sucess = this.useClean();
+                        break;
+                    case "revive":
+                        sucess = this.useRevive();
+                        break;
+                }
+
+                if (sucess) {
+                    JoinJelly.itemData.decreaseItemAmmount(item);
+                    this.gameFooter.setItemAmmount(item, JoinJelly.itemData.getItemAmmount(item));
+                }
             }
         }
 
         // reduces jellys per time during 5 seconds.
-        private useTime() {
+        private useTime() :boolean{
             if (this.gamestate == GameState.ended) return;
 
             this.step(5000);
@@ -572,10 +590,12 @@
             createjs.Tween.get(this.freezeEffect).to({ alpha: 1 }, 1000).to({ alpha: 0 }, 4000).call(() => {
                 this.freezeEffect.visible = false
             });
+
+            return true;
         }
 
         //clan all simple jellys
-        private useClean() {
+        private useClean(): boolean {
             if (this.gamestate == GameState.ended) return;
             var tiles = this.board.getAllTiles();
             for (var t in tiles)
@@ -595,10 +615,13 @@
                 this.cleanEffect.visible = false
             });
 
+            return true;
         }
 
         // revive after game end
-        private useRevive() {
+        private useRevive(): boolean {
+
+            if (this.gamestate != GameState.ended) return false;
 
             // back state to playing
             this.gamestate = GameState.playing;
@@ -636,10 +659,11 @@
                 this.reviveEffect.visible = false
             });
 
+            return true;
         }
 
         // match 5 pair of jelly if avaliabe
-        private useFast() {
+        private useFast(): boolean {
             if (this.gamestate == GameState.ended) return;
             var tiles = this.board.getAllTiles();
             var matches = [];
@@ -677,6 +701,8 @@
             createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(() => {
                 this.fastEffect.visible = false
             });
+
+            return true;
         }
 
         // match two jellys with animation
@@ -688,7 +714,14 @@
                 this.match(origin, target);
             }, 300);
         }
-        
+
+        // update footer
+        private updateFooter() {
+            var items = ItemsData.items;
+            for (var i in items)
+                this.gameFooter.setItemAmmount(items[i], JoinJelly.itemData.getItemAmmount(items[i]));
+        }
+
         // #endregion
 
         // redim screen

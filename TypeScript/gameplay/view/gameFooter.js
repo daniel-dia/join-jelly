@@ -14,7 +14,7 @@ var joinjelly;
                 __extends(GameFooter, _super);
                 function GameFooter(items) {
                     _super.call(this);
-                    this.itemSize = 370;
+                    this.itemSize = 270;
                     this.items = [];
                     this.addObjects();
                     this.setItems(items);

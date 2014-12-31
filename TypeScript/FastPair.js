@@ -5,6 +5,7 @@ var joinjelly;
         }
         JoinJelly.init = function () {
             this.analytics = new Analytics();
+            this.itemData = new joinjelly.ItemsData();
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight);
             this.gameScreen.stage.enableMouseOver(60);
             this.gameScreen.stage.mouseMoveOutside = true;
