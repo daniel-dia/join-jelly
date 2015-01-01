@@ -8,21 +8,14 @@ var joinjelly;
 (function (joinjelly) {
     var gameplay;
     (function (gameplay) {
-        var GameState;
-        (function (GameState) {
-            GameState[GameState["starting"] = 0] = "starting";
-            GameState[GameState["playing"] = 1] = "playing";
-            GameState[GameState["paused"] = 2] = "paused";
-            GameState[GameState["ended"] = 3] = "ended";
-        })(GameState || (GameState = {}));
         var GamePlayScreen = (function (_super) {
             __extends(GamePlayScreen, _super);
             //#region =================================== initialization ================================================
             function GamePlayScreen(userData) {
                 _super.call(this);
                 this.matches = 0;
-                this.boardSize = 5;
                 // parameters
+                this.boardSize = 5;
                 this.itemProbability = 0.005;
                 this.timeByLevel = 10000;
                 this.initialInterval = 900;
@@ -136,6 +129,26 @@ var joinjelly;
                         joinjelly.JoinJelly.startLevel();
                     }, 200);
                 });
+            };
+            // redim screen
+            GamePlayScreen.prototype.redim = function (headerY, footerY, width, heigth) {
+                _super.prototype.redim.call(this, headerY, footerY, width, heigth);
+                var relativeScale = (this.screenHeight - 2048) / 400;
+                if (relativeScale < 0)
+                    relativeScale = 0;
+                if (relativeScale > 1)
+                    relativeScale = 1;
+                this.board.scaleX = this.board.scaleY = 1 - (0.2 - relativeScale * 0.2);
+            };
+            //acivate the screen
+            GamePlayScreen.prototype.activate = function (parameters) {
+                var _this = this;
+                _super.prototype.activate.call(this, parameters);
+                this.gameHeader.alpha = 0;
+                setTimeout(function () {
+                    createjs.Tween.get(_this.gameHeader).to({ alpha: 1 }, 500);
+                    _this.start();
+                }, 500);
             };
             //#endregion
             // #region =================================== interface =====================================================
@@ -316,10 +329,11 @@ var joinjelly;
                 //try to match the tiles
                 this.match(origin, target);
             };
+            // verifies if 2 tiles can match
             GamePlayScreen.prototype.canMatch = function (origin, target) {
                 return (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked());
             };
-            //verifies if a tile can pair another, and make it happens
+            // verifies if a tile can pair another, and make it happens
             GamePlayScreen.prototype.match = function (origin, target) {
                 //check if match is correct
                 if (!this.canMatch(origin, target))
@@ -336,9 +350,9 @@ var joinjelly;
                 //animate the mach
                 this.board.match(origin, target);
                 // increase score
-                var sum = newValue * 10 + Math.floor(Math.random() * newValue);
+                var sum = newValue * 10 + Math.floor(Math.random() * newValue * 10);
                 this.score += sum;
-                //this.animateScore(target, sum); // animate a score number
+                this.animateScoreFromTile(target, sum); // animate a score number
                 // chance to win a item
                 var item = this.giveItemChance(joinjelly.ItemsData.items);
                 if (item)
@@ -362,7 +376,6 @@ var joinjelly;
                 var item = null;
                 // calculate random change to win a item
                 var goodChance = (Math.random() < this.itemProbability);
-                goodChance = true;
                 // if true
                 if (goodChance) {
                     item = items[Math.floor(Math.random() * items.length)];
@@ -371,6 +384,7 @@ var joinjelly;
                 }
                 return item;
             };
+            // animate a item moving from tile to the footer
             GamePlayScreen.prototype.animateItemFromTile = function (tile, item) {
                 var _this = this;
                 // create item Object
@@ -393,6 +407,20 @@ var joinjelly;
                 createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(function () {
                     _this.content.removeChild(itemDO);
                     _this.updateFooter();
+                });
+            };
+            // animate a score in the board
+            GamePlayScreen.prototype.animateScoreFromTile = function (tile, score) {
+                var _this = this;
+                // create text Object
+                var textDO = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
+                textDO.regX = textDO.getBounds().width / 2;
+                textDO.mouseEnabled = false;
+                this.content.addChild(textDO);
+                var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
+                var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
+                createjs.Tween.get(textDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 170, alpha: 1 }, 400, createjs.Ease.quadOut).to({ alpha: 0 }, 400).call(function () {
+                    _this.content.removeChild(textDO);
                 });
             };
             // #endregion
@@ -541,30 +569,16 @@ var joinjelly;
                 for (var i in items)
                     this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
             };
-            // #endregion
-            // redim screen
-            GamePlayScreen.prototype.redim = function (headerY, footerY, width, heigth) {
-                _super.prototype.redim.call(this, headerY, footerY, width, heigth);
-                var relativeScale = (this.screenHeight - 2048) / 400;
-                if (relativeScale < 0)
-                    relativeScale = 0;
-                if (relativeScale > 1)
-                    relativeScale = 1;
-                this.board.scaleX = this.board.scaleY = 1 - (0.2 - relativeScale * 0.2);
-            };
-            //acivate the screen
-            GamePlayScreen.prototype.activate = function (parameters) {
-                var _this = this;
-                _super.prototype.activate.call(this, parameters);
-                this.gameHeader.alpha = 0;
-                setTimeout(function () {
-                    createjs.Tween.get(_this.gameHeader).to({ alpha: 1 }, 500);
-                    _this.start();
-                }, 500);
-            };
             return GamePlayScreen;
         })(gameui.ScreenState);
         gameplay.GamePlayScreen = GamePlayScreen;
+        var GameState;
+        (function (GameState) {
+            GameState[GameState["starting"] = 0] = "starting";
+            GameState[GameState["playing"] = 1] = "playing";
+            GameState[GameState["paused"] = 2] = "paused";
+            GameState[GameState["ended"] = 3] = "ended";
+        })(GameState || (GameState = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=GamePlay.js.map

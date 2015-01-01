@@ -1,57 +1,34 @@
 ﻿module joinjelly.gameplay {
 
-    enum GameState {
-        starting,
-        playing,
-        paused,
-        ended
-    }
-
     export class GamePlayScreen extends gameui.ScreenState {
 
 
         // gameplay Control
-
         protected  gamestate: GameState;
-
         protected level: number;
-
         private score: number;
-
         private matches: number = 0;
+        private UserData: UserData;
+        protected matchNotify: () => void;
 
         //interface
-
         protected board: Board;
-
         private gameHeader: view.GameHeader;
         private gameFooter: view.GameFooter;
-
         private gameLevelIndicator: view.LevelIndicator;
-
-        private UserData: UserData;
-
         private finishMenu: view.FinishMenu;
-
         private pauseMenu: view.PauseMenu;
-
         private showBoardButton: gameui.Button;
 
-        protected  boardSize = 5;
-
         // parameters
+        private boardSize: number = 5;
         private itemProbability: number = 0.005;
-
         private timeByLevel: number = 10000
-
         private timeoutInterval: number;
-
         private initialInterval: number = 900;
         private finalInterval: number = 150;
         private easeInterval: number = 0.97;
-
-        protected matchNotify: () => void;
-
+        
         // effect 
         private freezeEffect: createjs.DisplayObject;
         private fastEffect: createjs.DisplayObject;
@@ -116,11 +93,9 @@
                 this.dragged(e.target.origin, e.target.target);
             });
             this.content.addChild(this.board);
-
-
+            
             this.board.x = defaultWidth / 2;
             this.board.y = defaultHeight / 2;
-
         }
 
         // creates the game GUI
@@ -196,6 +171,29 @@
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 
+        }
+
+        // redim screen
+        public redim(headerY: number, footerY: number, width: number, heigth: number) {
+
+            super.redim(headerY, footerY, width, heigth)
+
+            var relativeScale = (this.screenHeight - 2048) / 400;
+            if (relativeScale < 0) relativeScale = 0;
+            if (relativeScale > 1) relativeScale = 1;
+
+            this.board.scaleX = this.board.scaleY = 1 - (0.2 - relativeScale * 0.2);
+        }
+
+        //acivate the screen
+        activate(parameters?: any) {
+            super.activate(parameters);
+            this.gameHeader.alpha = 0;
+
+            setTimeout(() => {
+                createjs.Tween.get(this.gameHeader).to({ alpha: 1 }, 500);
+                this.start();
+            }, 500);
         }
 
         //#endregion
@@ -439,12 +437,13 @@
             //try to match the tiles
             this.match(origin, target);
         }
-
+    
+        // verifies if 2 tiles can match
         protected canMatch(origin: Tile, target: Tile): boolean {
             return (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked());
         }
 
-        //verifies if a tile can pair another, and make it happens
+        // verifies if a tile can pair another, and make it happens
         protected match(origin: Tile, target: Tile): boolean {
             //check if match is correct
             if (!this.canMatch(origin, target)) return false;
@@ -467,9 +466,9 @@
             this.board.match(origin, target);
 
             // increase score
-            var sum = newValue * 10 + Math.floor(Math.random() * newValue);
+            var sum = newValue * 10 + Math.floor(Math.random() * newValue*10);
             this.score += sum;
-            //this.animateScore(target, sum); // animate a score number
+            this.animateScoreFromTile(target, sum); // animate a score number
 
             // chance to win a item
             var item = this.giveItemChance(ItemsData.items)
@@ -503,8 +502,7 @@
 
             // calculate random change to win a item
             var goodChance: boolean = (Math.random() < this.itemProbability);
-            goodChance = true;
-
+            
             // if true
             if (goodChance) {
                 item = items[Math.floor(Math.random() * items.length)];
@@ -516,6 +514,7 @@
             return item;
         }
 
+        // animate a item moving from tile to the footer
         private animateItemFromTile(tile: Tile, item: string) {
 
             // create item Object
@@ -542,6 +541,24 @@
                 this.updateFooter();
             });
 
+
+        }
+
+        // animate a score in the board
+        private animateScoreFromTile(tile: Tile, score: number) {
+
+            // create text Object
+            var textDO = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
+            textDO.regX = textDO.getBounds().width / 2;
+            textDO.mouseEnabled = false;
+            this.content.addChild(textDO);
+
+            var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
+            var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
+                        
+            createjs.Tween.get(textDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi-170, alpha: 1 }, 400, createjs.Ease.quadOut).to({alpha:0},400).call(() => {
+                this.content.removeChild(textDO);
+            });
 
         }
 
@@ -724,27 +741,12 @@
 
         // #endregion
 
-        // redim screen
-        public redim(headerY: number, footerY: number, width: number, heigth: number) {
+    }
 
-            super.redim(headerY, footerY, width, heigth)
-            
-            var relativeScale = (this.screenHeight - 2048) / 400;
-            if (relativeScale < 0) relativeScale = 0;
-            if (relativeScale > 1) relativeScale = 1;
-
-            this.board.scaleX = this.board.scaleY = 1 - (0.2 - relativeScale * 0.2);
-        }
-
-        //acivate the screen
-        activate(parameters?: any) {
-            super.activate(parameters);
-            this.gameHeader.alpha = 0;
-
-            setTimeout(() => {
-                createjs.Tween.get(this.gameHeader).to({ alpha: 1 }, 500);
-                this.start();
-            }, 500);
-        }
+    enum GameState {
+        starting,
+        playing,
+        paused,
+        ended
     }
 }
