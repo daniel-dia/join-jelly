@@ -39,6 +39,7 @@
 
         public release() {
             this.jelly.executeAimationRelease();
+            this.unlock();
         }
 
         public drag() {
@@ -64,14 +65,13 @@
 
         // set tile number
         public setNumber(value: number) {
-                this.value = value;
+            this.value = value;
 
-                if (this.isUnlocked()) {
-                    this.jelly.setNumber(value);
+            if (value > 0) this.enable();
+            else this.disable();
 
-                    if (value > 0) this.enable();
-                    else this.disable();
-                }
+            if (this.isUnlocked())
+                this.jelly.setNumber(value);
         }
 
         public getNumber(): number {

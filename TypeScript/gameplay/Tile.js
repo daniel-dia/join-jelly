@@ -30,6 +30,7 @@ var joinjelly;
             }
             Tile.prototype.release = function () {
                 this.jelly.executeAimationRelease();
+                this.unlock();
             };
             Tile.prototype.drag = function () {
                 this.jelly.executeAnimationHold();
@@ -56,13 +57,12 @@ var joinjelly;
             // set tile number
             Tile.prototype.setNumber = function (value) {
                 this.value = value;
-                if (this.isUnlocked()) {
+                if (value > 0)
+                    this.enable();
+                else
+                    this.disable();
+                if (this.isUnlocked())
                     this.jelly.setNumber(value);
-                    if (value > 0)
-                        this.enable();
-                    else
-                        this.disable();
-                }
             };
             Tile.prototype.getNumber = function () {
                 return this.value;

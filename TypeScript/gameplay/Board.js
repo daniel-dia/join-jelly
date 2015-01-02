@@ -214,8 +214,9 @@ var joinjelly;
                 else {
                     tile.release();
                     createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut).call(function () {
-                        //set the z-order
+                        // set the z-order
                         _this.arrangeZOrder();
+                        // unlock that tile
                         tile.unlock();
                     });
                 }

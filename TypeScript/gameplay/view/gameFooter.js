@@ -65,7 +65,8 @@ var joinjelly;
                 };
                 // set item ammount
                 GameFooter.prototype.setItemAmmount = function (item, ammount) {
-                    this.items[item].setAmmount(ammount);
+                    if (this.items[item])
+                        this.items[item].setAmmount(ammount);
                 };
                 return GameFooter;
             })(createjs.Container);

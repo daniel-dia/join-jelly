@@ -172,8 +172,7 @@
                 y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5 + hexaOffset
             }
         }
-
-
+        
         // get a tile object by its id
         public getTileById(id: number): Tile {
             return <Tile> this.tilesContainer.getChildByName(id.toString());
@@ -283,12 +282,14 @@
                 var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
                 this.fadeTileToPos(tile, pos.x, pos.y);
             }
+
             //or else, set it back to its place
             else {
                 tile.release();
                 createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut).call(() => {
-                    //set the z-order
+                    // set the z-order
                     this.arrangeZOrder();
+                    // unlock that tile
                     tile.unlock();
                 });
             }

@@ -4,12 +4,12 @@
 
 
         // gameplay Control
-        protected  gamestate: GameState;
+        protected matchNotify: () => void;
+        protected gamestate: GameState;
         protected level: number;
         private score: number;
         private matches: number = 0;
         private UserData: UserData;
-        protected matchNotify: () => void;
 
         //interface
         protected board: Board;
@@ -567,7 +567,6 @@
         // #region =================================== Items =========================================================
 
         private useItem(item: string) {
-
             if (JoinJelly.itemData.getItemAmmount(item) > 0) {
 
                 var sucess:boolean = false;
@@ -587,11 +586,11 @@
                         break;
                 }
 
-                if (sucess) {
+                if (sucess) 
                     JoinJelly.itemData.decreaseItemAmmount(item);
-                    this.gameFooter.setItemAmmount(item, JoinJelly.itemData.getItemAmmount(item));
-                }
             }
+
+            this.updateFooter();
         }
 
         // reduces jellys per time during 5 seconds.

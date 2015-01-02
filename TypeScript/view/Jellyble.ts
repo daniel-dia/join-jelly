@@ -74,7 +74,6 @@
                     scaleX: 0.8,
                     scaleY: 1.2
                 }, 5, createjs.Ease.sineInOut)
-            //.to({ scaleY: 0.7, scaleX: 1.3 }, 200, createjs.Ease.sineInOut)
                 .to({
                     scaleX: 1,
                     scaleY: 1

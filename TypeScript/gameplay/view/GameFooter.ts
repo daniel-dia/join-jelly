@@ -67,7 +67,8 @@
 
         // set item ammount
         public setItemAmmount(item: string, ammount: number) {
-            this.items[item].setAmmount(ammount);
+            if(this.items[item])
+                this.items[item].setAmmount(ammount);
         }
     }
 } 

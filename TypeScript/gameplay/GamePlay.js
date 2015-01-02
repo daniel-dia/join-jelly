@@ -442,11 +442,10 @@ var joinjelly;
                             sucess = this.useRevive();
                             break;
                     }
-                    if (sucess) {
+                    if (sucess)
                         joinjelly.JoinJelly.itemData.decreaseItemAmmount(item);
-                        this.gameFooter.setItemAmmount(item, joinjelly.JoinJelly.itemData.getItemAmmount(item));
-                    }
                 }
+                this.updateFooter();
             };
             // reduces jellys per time during 5 seconds.
             GamePlayScreen.prototype.useTime = function () {
