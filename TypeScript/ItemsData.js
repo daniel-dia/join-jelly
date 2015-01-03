@@ -24,7 +24,7 @@ var joinjelly;
             this.items[item] = ammount;
             UserData.saveItems(this.items);
         };
-        ItemsData.items = ["time", "clean", "fast", "revive"];
+        ItemsData.items = ["time", "clean", "fast", "revive", "lucky"];
         return ItemsData;
     })();
     joinjelly.ItemsData = ItemsData;

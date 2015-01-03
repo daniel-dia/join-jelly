@@ -9,7 +9,7 @@
         protected level: number;
         private score: number;
         private matches: number = 0;
-        private UserData: UserData;
+        private userData: UserData;
 
         //interface
         protected board: Board;
@@ -40,7 +40,7 @@
         constructor(userData: UserData) {
             super();
 
-            this.UserData = userData;
+            this.userData = userData;
 
             this.score = 0;
 
@@ -475,8 +475,8 @@
             if (item) this.animateItemFromTile(target, item);
 
             // update score
-            this.UserData.setScore(this.score);
-            this.UserData.setLastJelly(newValue);
+            this.userData.setScore(this.score);
+            this.userData.setLastJelly(newValue);
 
             this.updateInterfaceInfos();
 
@@ -499,9 +499,10 @@
         private giveItemChance(items: Array<string>): string {
 
             var item = null;
+            var lucky = 2; //TODO read it from items
 
             // calculate random change to win a item
-            var goodChance: boolean = (Math.random() < this.itemProbability);
+            var goodChance: boolean = (Math.random() < this.itemProbability*lucky);
             
             // if true
             if (goodChance) {

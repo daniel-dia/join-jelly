@@ -21,7 +21,7 @@ var joinjelly;
                 this.initialInterval = 900;
                 this.finalInterval = 150;
                 this.easeInterval = 0.97;
-                this.UserData = userData;
+                this.userData = userData;
                 this.score = 0;
                 this.createBackground();
                 this.createBoard();
@@ -358,8 +358,8 @@ var joinjelly;
                 if (item)
                     this.animateItemFromTile(target, item);
                 // update score
-                this.UserData.setScore(this.score);
-                this.UserData.setLastJelly(newValue);
+                this.userData.setScore(this.score);
+                this.userData.setLastJelly(newValue);
                 this.updateInterfaceInfos();
                 // notify match
                 if (this.matchNotify)
@@ -374,8 +374,9 @@ var joinjelly;
             //give item to user
             GamePlayScreen.prototype.giveItemChance = function (items) {
                 var item = null;
+                var lucky = 2; //TODO read it from items
                 // calculate random change to win a item
-                var goodChance = (Math.random() < this.itemProbability);
+                var goodChance = (Math.random() < this.itemProbability * lucky);
                 // if true
                 if (goodChance) {
                     item = items[Math.floor(Math.random() * items.length)];

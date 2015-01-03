@@ -36,6 +36,39 @@ var StringResources = {
         4096: { name: "Phanton4 Jelly", description: "description" },
         8192: { name: "Phanton5 Jelly", description: "description" },
     },
+    items: {
+        clean: "Clean",
+        fast: "Fast",
+        time: "Time",
+        revive: "Revive",
+    },
+    store: {
+        title: "Store",
+        clean: {
+            name: "Clean 3x",
+            desc: "Remove all dirt and small jellies",
+        },
+        fast: {
+            name: "Fast 3x",
+            desc: "Join 5 avaliable jellies",
+        },
+        time: {
+            name: "Freeze Time 3x",
+            desc: "Freeze times for 5 seconds",
+        },
+        revive: {
+            name: "Revive 3x",
+            desc: "Return to play after losing",
+        },
+        lucky: {
+            name: "Lucky clover",
+            desc: "Doubles the chance of finding an item",
+        },
+        pack: {
+            name: "Item Pack",
+            desc: "A package with 3 units of each item",
+        },
+    },
     credit: {}
 };
 //# sourceMappingURL=StringResources.js.map

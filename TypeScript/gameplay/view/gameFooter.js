@@ -15,7 +15,7 @@ var joinjelly;
                 function GameFooter(items) {
                     _super.call(this);
                     this.itemSize = 270;
-                    this.items = [];
+                    this.itemsButtons = [];
                     this.addObjects();
                     this.setItems(items);
                 }
@@ -29,15 +29,15 @@ var joinjelly;
                         this.addItem(items[i], i);
                     for (var i in items) {
                         //set button position
-                        this.items[items[i]].y = -150;
-                        this.items[items[i]].x = (defaultWidth - (items.length - 1) * this.itemSize) / 2 + i * this.itemSize;
+                        this.itemsButtons[items[i]].y = -150;
+                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * this.itemSize) / 2 + i * this.itemSize;
                     }
                 };
                 // clean buttons
                 GameFooter.prototype.cleanButtons = function () {
-                    for (var i in this.items)
-                        this.removeChild(this.items[i]);
-                    this.items = [];
+                    for (var i in this.itemsButtons)
+                        this.removeChild(this.itemsButtons[i]);
+                    this.itemsButtons = [];
                 };
                 // add objects to the footer
                 GameFooter.prototype.addObjects = function () {
@@ -46,6 +46,14 @@ var joinjelly;
                     this.addChild(bg);
                     bg.y = -162;
                     bg.x = (defaultWidth - 1161) / 2;
+                    // add Lucky clover
+                    // TODO verify with item
+                    var lucky = gameui.AssetsManager.getBitmap("lucky");
+                    this.addChild(lucky);
+                    lucky.y = -210;
+                    lucky.x = 1285;
+                    this.lucky = lucky;
+                    // lucky.visible = false;
                 };
                 //add a single item button to the footer
                 GameFooter.prototype.addItem = function (item, pos) {
@@ -53,7 +61,7 @@ var joinjelly;
                     //create button
                     var bt = new view.ItemButton(item);
                     this.addChild(bt);
-                    this.items[item] = bt;
+                    this.itemsButtons[item] = bt;
                     //add event listener
                     bt.addEventListener("click", function () {
                         _this.dispatchEvent("useitem", item);
@@ -61,12 +69,14 @@ var joinjelly;
                 };
                 // get a item display object
                 GameFooter.prototype.getItemButton = function (item) {
-                    return this.items[item];
+                    return this.itemsButtons[item];
                 };
                 // set item ammount
                 GameFooter.prototype.setItemAmmount = function (item, ammount) {
-                    if (this.items[item])
-                        this.items[item].setAmmount(ammount);
+                    if (this.itemsButtons[item])
+                        this.itemsButtons[item].setAmmount(ammount);
+                    if (item == "lucky")
+                        this.lucky.visible = (ammount > 0);
                 };
                 return GameFooter;
             })(createjs.Container);

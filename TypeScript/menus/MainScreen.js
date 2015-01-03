@@ -26,27 +26,6 @@ var joinjelly;
             lobby.x = defaultWidth / 2;
             lobby.y = 1000;
             this.content.addChild(lobby);
-            //add pedia button
-            var aboutBt = new gameui.ImageButton("btJelly", function () {
-                joinjelly.JoinJelly.showPedia();
-            });
-            aboutBt.y = -150;
-            aboutBt.x = defaultWidth - 650;
-            this.footer.addChild(aboutBt);
-            //add about bt
-            var aboutBt = new gameui.ImageButton("btInfo", function () {
-                joinjelly.JoinJelly.showAboutScreen();
-            });
-            aboutBt.y = -150;
-            aboutBt.x = defaultWidth - 150;
-            this.footer.addChild(aboutBt);
-            //add tutorial bt
-            var tutorialBt = new gameui.ImageButton("btHelp", function () {
-                joinjelly.JoinJelly.startTutorial();
-            });
-            tutorialBt.y = -150;
-            tutorialBt.x = defaultWidth - 400;
-            this.footer.addChild(tutorialBt);
             // play button
             var button = new gameui.ImageButton("PlayBt", function () {
                 if (joinjelly.JoinJelly.userData.getLastJelly() > 1)
@@ -68,6 +47,7 @@ var joinjelly;
         MainScreen.prototype.createHeader = function () {
         };
         MainScreen.prototype.createFooter = function () {
+            var _this = this;
             if (this.userData) {
                 this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore + " " + this.userData.getHighScore(), "debussy");
                 this.scoreText.x = 50;
@@ -75,6 +55,36 @@ var joinjelly;
                 this.scoreText.scaleX = this.scoreText.scaleY = 0.8;
                 this.footer.addChild(this.scoreText);
             }
+            var x = defaultWidth + 150;
+            var space = 250;
+            //add pedia button
+            var aboutBt = new gameui.ImageButton("btJelly", function () {
+                joinjelly.JoinJelly.showPedia();
+            });
+            aboutBt.y = -150;
+            aboutBt.x = x -= space;
+            this.footer.addChild(aboutBt);
+            //add about bt
+            var aboutBt = new gameui.ImageButton("btInfo", function () {
+                joinjelly.JoinJelly.showAboutScreen();
+            });
+            aboutBt.y = -150;
+            aboutBt.x = x -= space;
+            this.footer.addChild(aboutBt);
+            //add tutorial bt
+            var tutorialBt = new gameui.ImageButton("btHelp", function () {
+                joinjelly.JoinJelly.startTutorial();
+            });
+            tutorialBt.y = -150;
+            tutorialBt.x = x -= space;
+            this.footer.addChild(tutorialBt);
+            //add store bt
+            var storeBt = new gameui.ImageButton("StoreBt", function () {
+                joinjelly.JoinJelly.showStore(_this);
+            });
+            storeBt.y = -150;
+            storeBt.x = x -= space;
+            this.footer.addChild(storeBt);
         };
         return MainScreen;
     })(gameui.ScreenState);

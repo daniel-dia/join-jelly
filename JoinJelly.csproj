@@ -431,10 +431,14 @@
     <TypeScriptCompile Include="Scripts\typings\tweenjs\tweenjs.d.ts" />
     <TypeScriptCompile Include="TypeScript\Analytics.ts" />
     <TypeScriptCompile Include="TypeScript\Definitions.ts" />
-    <TypeScriptCompile Include="TypeScript\FastPair.ts" />
+    <TypeScriptCompile Include="TypeScript\JoinJelly.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\GameFooter.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\view\ItemButton.ts" />
     <TypeScriptCompile Include="TypeScript\ItemsData.ts" />
+    <TypeScriptCompile Include="TypeScript\menus\ScrollabePage.ts" />
+    <TypeScriptCompile Include="TypeScript\menus\StoreMenu.ts" />
+    <TypeScriptCompile Include="TypeScript\menus\view\StoreItem.ts" />
+    <TypeScriptCompile Include="TypeScript\Products.ts" />
     <TypeScriptCompile Include="TypeScript\StringResources.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\ExplodeBrick.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\Tutorial.ts" />

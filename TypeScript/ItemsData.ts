@@ -2,7 +2,8 @@
     export class ItemsData {
 
         private items: Array<number>;
-        public static items = ["time", "clean", "fast", "revive"];
+        
+        public static items = ["time", "clean", "fast", "revive","lucky"];
 
         constructor() {
             this.items = <Array<number>>(new Object());
@@ -28,5 +29,6 @@
             this.items[item] = ammount;
             UserData.saveItems(this.items);
         }
+
     }
 }
