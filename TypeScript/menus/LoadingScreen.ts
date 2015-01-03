@@ -93,6 +93,9 @@ module joinjelly {
                 { id: "j8", src: "assets/images_" + scale + "x/j8.png" },
                 { id: "pause", src: "assets/images_" + scale + "x/pause.png" },
                 { id: "PlayBt", src: "assets/images_" + scale + "x/PlayBt.png" },
+                { id: "StoreBt", src: "assets/images_" + scale + "x/StoreBt.png" },
+                { id: "SettingsBt", src: "assets/images_" + scale + "x/SettingsBt.png" },
+                { id: "RefreshBt", src: "assets/images_" + scale + "x/RefreshBt.png" },
                 { id: "time_bar", src: "assets/images_" + scale + "x/time_bar.png" },
                 { id: "time_bar_red", src: "assets/images_" + scale + "x/time_bar_red.png" },
                 { id: "time_bar_bright", src: "assets/images_" + scale + "x/time_bar_bright.png" },
@@ -104,8 +107,7 @@ module joinjelly {
                 { id: "btInfo", src: "assets/images_" + scale + "x/btInfo.png" },
                 { id: "btJelly", src: "assets/images_" + scale + "x/btJelly.png" },
                 { id: "btPause", src: "assets/images_" + scale + "x/btPause.png" },
-
-
+                
                 { id: "GameOverBgJelly", src: "assets/images_" + scale + "x/GameOverBgJelly.png" },
                 { id: "GameOverBgPoints", src: "assets/images_" + scale + "x/GameOverBgPoints.png" },
                 { id: "GameOverBoard", src: "assets/images_" + scale + "x/GameOverBoard.png" },
@@ -137,6 +139,7 @@ module joinjelly {
                 { id: "itemfast", src: "assets/images_" + scale + "x/itemFast.png" },
                 { id: "itemrevive", src: "assets/images_" + scale + "x/itemRevive.png" },
                 { id: "itemtime", src: "assets/images_" + scale + "x/itemTime.png" },
+                { id: "lucky", src: "assets/images_" + scale + "x/lucky.png" },
                 { id: "itemBG", src: "assets/images_" + scale + "x/itemBG.png" },
              
                 { id: "About", src: "assets/images_" + scale + "x/About.png" },
@@ -154,30 +157,30 @@ module joinjelly {
                 { id: "reviveEffect", src: "assets/images_" + scale + "x/reviveEffect.png" }, 
                 { id: "cleanEffect", src: "assets/images_" + scale + "x/cleanEffect.png" }, 
                 
-                { id: "bg1", src: "Sounds/bg1.mp3" },
-                { id: "sound_h1", src: "Sounds/h1.mp3" },
-                { id: "sound_r1", src: "Sounds/r1.mp3" },
-                
-                { id: "sound_s1", src: "Sounds/s1.mp3" },
-                { id: "sound_s2", src: "Sounds/s2.mp3" },
-                { id: "sound_s3", src: "Sounds/s3.mp3" },
-                
-                { id: "sound_j1", src: "Sounds/j1.mp3" },
-                { id: "sound_j2", src: "Sounds/j2.mp3" },
-                { id: "sound_j3", src: "Sounds/j3.mp3" },
-                { id: "sound_j4", src: "Sounds/j4.mp3" },
-                
-                { id: "Interface Sound-06", src: "Sounds/Interface Sound-06.mp3" },
-                { id: "Interface Sound-07", src: "Sounds/Interface Sound-07.mp3" },
-                { id: "Interface Sound-08", src: "Sounds/Interface Sound-08.mp3" },
-                { id: "Interface Sound-09", src: "Sounds/Interface Sound-09.mp3" },
-                { id: "Interface Sound-11", src: "Sounds/Interface Sound-11.mp3" },
-                { id: "Interface Sound-14", src: "Sounds/Interface Sound-14.mp3" },
-                { id: "Interface Sound-15", src: "Sounds/Interface Sound-15.mp3" },
-                { id: "end", src: "Sounds/end.mp3" },
-                
-                { id: "musicIntro", src: "Sounds/musicIntro.mp3" },
-                { id: "music1", src: "Sounds/music1.mp3" },
+                //{ id: "bg1", src: "Sounds/bg1.mp3" },
+                //{ id: "sound_h1", src: "Sounds/h1.mp3" },
+                //{ id: "sound_r1", src: "Sounds/r1.mp3" },
+                //
+                //{ id: "sound_s1", src: "Sounds/s1.mp3" },
+                //{ id: "sound_s2", src: "Sounds/s2.mp3" },
+                //{ id: "sound_s3", src: "Sounds/s3.mp3" },
+                //
+                //{ id: "sound_j1", src: "Sounds/j1.mp3" },
+                //{ id: "sound_j2", src: "Sounds/j2.mp3" },
+                //{ id: "sound_j3", src: "Sounds/j3.mp3" },
+                //{ id: "sound_j4", src: "Sounds/j4.mp3" },
+                //
+                //{ id: "Interface Sound-06", src: "Sounds/Interface Sound-06.mp3" },
+                //{ id: "Interface Sound-07", src: "Sounds/Interface Sound-07.mp3" },
+                //{ id: "Interface Sound-08", src: "Sounds/Interface Sound-08.mp3" },
+                //{ id: "Interface Sound-09", src: "Sounds/Interface Sound-09.mp3" },
+                //{ id: "Interface Sound-11", src: "Sounds/Interface Sound-11.mp3" },
+                //{ id: "Interface Sound-14", src: "Sounds/Interface Sound-14.mp3" },
+                //{ id: "Interface Sound-15", src: "Sounds/Interface Sound-15.mp3" },
+                //{ id: "end", src: "Sounds/end.mp3" },
+                //
+                //{ id: "musicIntro", src: "Sounds/musicIntro.mp3" },
+                //{ id: "music1", src: "Sounds/music1.mp3" },
 
             ]
         }
