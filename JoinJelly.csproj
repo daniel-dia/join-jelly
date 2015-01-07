@@ -438,7 +438,7 @@
     <TypeScriptCompile Include="TypeScript\menus\ScrollabePage.ts" />
     <TypeScriptCompile Include="TypeScript\menus\StoreMenu.ts" />
     <TypeScriptCompile Include="TypeScript\menus\view\StoreItem.ts" />
-    <TypeScriptCompile Include="TypeScript\Products.ts" />
+    <TypeScriptCompile Include="TypeScript\InAppPurchases.ts" />
     <TypeScriptCompile Include="TypeScript\StringResources.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\ExplodeBrick.ts" />
     <TypeScriptCompile Include="TypeScript\gameplay\Tutorial.ts" />
@@ -465,6 +465,7 @@
     <TypeScriptCompile Include="TypeScript\menus\view\JellyLobby.ts" />
     <TypeScriptCompile Include="TypeScript\Message.ts" />
     <TypeScriptCompile Include="TypeScript\UserData.ts" />
+    <TypeScriptCompile Include="TypeScript\view\LoadingBall.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\ChubbyFont.ai" />

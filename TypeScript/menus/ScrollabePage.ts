@@ -2,7 +2,7 @@
     export class ScrollablePage extends gameui.ScreenState {
 
         protected scrollableContent: createjs.Container;
-        protected maxScroll: number = 1000;
+        protected maxScroll: number = 1700;
 
         constructor(title:string) {
             super();
@@ -27,10 +27,9 @@
             titleObj.x = defaultWidth / 2;
             titleObj.regX = titleObj.getBounds().width / 2;
             titleObj.scaleX = titleObj.scaleY = 1.5;
-
         }
 
- 
+       
         private addScrollableArea() {
             var scrollContent = new createjs.Container();
             var ScrollArea = new createjs.Container();
@@ -39,25 +38,28 @@
 
             this.scrollableContent = scrollContent;
 
-
             var g = new createjs.Graphics().f("rgb(254,254,254)").p("EALkCFSYAAomAAocAAomYAAgUAKgUAAgUYAAjwgKjwAKj6YAKi+AKi+AAi+YAKjwAKjmAKjwYAKiMAKiWAKiMYAylUB4lADIkiYEYmaFykEH0hQYDcgeDcgeDcgeYAKAAAAAAAKAAYAAAogKAoAAAoYAABuAKBkgKBuYgKC0AACqAAC0YgKCMA8BuBuBaYBkBQB4AUB4AAcArmAAAArmAAAArmAAAYAUAAAKAAAUAAYEOgKC+i+gKkOYAAiCAAh4AAh4YgKi+gKi+AAi+YAeAAAeAAAeAAYAKAAAKAKAUAAYDSAUDIAeDSAoYFUA8EiCgDwDwYCgCqCCDIBkDcYBuDmBGDwAUEEYAKCCAKB4AACCYAKDwAKDwAUDwYAABQgKBQAUBQYAAA8AAAyAAA8YgKAyAAA8AAAyYgKIIAKH+gKIIYAACqAACqAAC0YgKD6gKD6AAD6YgKC0AAC0AAC0YgUGQgKGGgKGQYgKC+gKDIAAC+YgUEigKEsgKEiYgKCqgKCqgKCqYgKD6gKDwgKD6YgKDcgUDcgKDmYgKDSgKDSgKDSYgKDcgUDcgKDcYgKC+gKDIgKC+YgKCWAACWgyCMYgoB4geB4gyB4YiWFKjIEYkYDcYjSCgjmBukYAKYi0AKi+AKi+AKYjSAKjSAAjSAKYiMAKiMgKiMAKYi0AKi0AAi0AAYnCAAnCAUnMgKYhaAAhQAAhaAAYgUAAgUAAgUAKYywAAy6AAywAAYgUAAgKgKgUAAYlyAAlyAAlygKYiCAAiCAAiCgKYkEAAkOgKkEgKYiqgKigAAiqgKYg8AAhGgKhGgUYjwg8i+iCi0igYiWiMhuiWhuigYiMjmhaj6g8kEYgeh4AKh4gKh4YgKjSgKjSgKjSYgUjmgKjwgKjmYgKkEgKj6gKkEYgKk2gUk2gKk2YgKjmAAjcgKjmYgKmkgUmkgKmkYgKlKAAlKgKlUYAAj6gKkEAAj6YAAjSAAjcAAjSYAAgUgKgKAAgU").cp().ef();
             var s = new createjs.Shape(g);
-            ScrollArea.mask = s
+            ScrollArea.mask = s;
 
             // add scroll event
+            var targetY =0;
             var last;
             this.content.addEventListener("pressmove", (evt: createjs.MouseEvent) => {
                 if (!last) last = evt.localY;
-                ScrollArea.y += evt.localY - last;
-                if (ScrollArea.y > 400) ScrollArea.y = 400;
-                if (ScrollArea.y < -this.maxScroll) ScrollArea.y = -this.maxScroll;
+                targetY += (evt.localY - last)*1.3;
+                if (targetY > 400) targetY = 400;
+                if (targetY < -this.maxScroll) targetY = -this.maxScroll;
                 last = evt.localY;
             });
 
             this.content.addEventListener("pressup", (evt: createjs.MouseEvent) => {
                 last = null;
             });
-
+                        
+            this.content.addEventListener("tick" , () => {
+                ScrollArea.y = (ScrollArea.y*2+  targetY) / 3;
+            })
         }
 
         private addButton() {

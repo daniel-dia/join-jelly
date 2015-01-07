@@ -51,7 +51,7 @@
         public static showStore(previousScreen: gameui.ScreenState) {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "right", time: 500 };
-            this.gameScreen.switchScreen(new StoreMenu(previousScreen), null, transition);
+            this.gameScreen.switchScreen(new menus.StoreMenu(previousScreen), null, transition);
         }
 
         public static showPedia() {

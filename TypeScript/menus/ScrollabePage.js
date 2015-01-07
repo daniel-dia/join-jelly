@@ -10,7 +10,7 @@ var joinjelly;
         __extends(ScrollablePage, _super);
         function ScrollablePage(title) {
             _super.call(this);
-            this.maxScroll = 1000;
+            this.maxScroll = 1700;
             this.addBackground(title);
             this.addScrollableArea();
             this.addButton();
@@ -41,19 +41,23 @@ var joinjelly;
             var s = new createjs.Shape(g);
             ScrollArea.mask = s;
             // add scroll event
+            var targetY = 0;
             var last;
             this.content.addEventListener("pressmove", function (evt) {
                 if (!last)
                     last = evt.localY;
-                ScrollArea.y += evt.localY - last;
-                if (ScrollArea.y > 400)
-                    ScrollArea.y = 400;
-                if (ScrollArea.y < -_this.maxScroll)
-                    ScrollArea.y = -_this.maxScroll;
+                targetY += (evt.localY - last) * 1.3;
+                if (targetY > 400)
+                    targetY = 400;
+                if (targetY < -_this.maxScroll)
+                    targetY = -_this.maxScroll;
                 last = evt.localY;
             });
             this.content.addEventListener("pressup", function (evt) {
                 last = null;
+            });
+            this.content.addEventListener("tick", function () {
+                ScrollArea.y = (ScrollArea.y * 2 + targetY) / 3;
             });
         };
         ScrollablePage.prototype.addButton = function () {

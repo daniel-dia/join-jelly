@@ -1,7 +1,7 @@
-var Products = (function () {
-    function Products() {
+var InAppPurchases = (function () {
+    function InAppPurchases() {
     }
-    Products.prototype.requestProductList = function (callback) {
+    InAppPurchases.requestProductList = function (callback) {
         setTimeout(function () {
             callback([
                 { productId: "time3x", name: "3x Time", description: "desc", price: "R$1,99", icon: "" },
@@ -13,10 +13,10 @@ var Products = (function () {
             ]);
         }, 1000);
     };
-    Products.prototype.purchaseProductRequest = function (productId, callback) {
+    InAppPurchases.purchaseProductRequest = function (productId, callback) {
     };
-    Products.prototype.reportProductFullfillment = function (productId, callback) {
+    InAppPurchases.reportProductFullfillment = function (productId, callback) {
     };
-    return Products;
+    return InAppPurchases;
 })();
 //# sourceMappingURL=Products.js.map

@@ -20,12 +20,17 @@ var joinjelly;
             if (window.innerWidth <= 384)
                 assetscale = 0.25;
             var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale)); //, spriteSheets, images);
-            //var loader = Assets.loadAssets();
+            //loader text
             var text = new createjs.Text("", "90px Arial", "#FFF");
             text.x = defaultWidth / 2;
             text.y = defaultHeight / 2;
             text.textAlign = "center";
             this.content.addChild(text);
+            //loading animation
+            var anim = new joinjelly.view.LoadingBall();
+            anim.x = defaultWidth / 2;
+            anim.y = defaultHeight / 2 + 400;
+            this.content.addChild(anim);
             //add update% functtion
             queue.addEventListener("progress", function (evt) {
                 text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
@@ -126,6 +131,7 @@ var joinjelly;
                 { id: "itemfast", src: "assets/images_" + scale + "x/itemFast.png" },
                 { id: "itemrevive", src: "assets/images_" + scale + "x/itemRevive.png" },
                 { id: "itemtime", src: "assets/images_" + scale + "x/itemTime.png" },
+                { id: "itemPack", src: "assets/images_" + scale + "x/itemPack.png" },
                 { id: "lucky", src: "assets/images_" + scale + "x/lucky.png" },
                 { id: "itemBG", src: "assets/images_" + scale + "x/itemBG.png" },
                 { id: "About", src: "assets/images_" + scale + "x/About.png" },
@@ -138,6 +144,29 @@ var joinjelly;
                 { id: "fastEffect", src: "assets/images_" + scale + "x/fastEffect.png" },
                 { id: "reviveEffect", src: "assets/images_" + scale + "x/reviveEffect.png" },
                 { id: "cleanEffect", src: "assets/images_" + scale + "x/cleanEffect.png" },
+                { id: "check", src: "assets/images_" + scale + "x/check.png" },
+                { id: "unchecked", src: "assets/images_" + scale + "x/unchecked.png" },
+                { id: "MessageBox", src: "assets/images_" + scale + "x/MessageBox.png" },
+                { id: "sound_h1", src: "Sounds/h1.mp3" },
+                { id: "sound_r1", src: "Sounds/r1.mp3" },
+                { id: "sound_s1", src: "Sounds/s1.mp3" },
+                { id: "sound_s2", src: "Sounds/s2.mp3" },
+                { id: "sound_s3", src: "Sounds/s3.mp3" },
+                { id: "sound_j1", src: "Sounds/j1.mp3" },
+                { id: "sound_j2", src: "Sounds/j2.mp3" },
+                { id: "sound_j3", src: "Sounds/j3.mp3" },
+                { id: "sound_j4", src: "Sounds/j4.mp3" },
+                { id: "levelUp", src: "Sounds/levelUp.mp3" },
+                { id: "Interface Sound-06", src: "Sounds/Interface Sound-06.mp3" },
+                { id: "Interface Sound-07", src: "Sounds/Interface Sound-07.mp3" },
+                { id: "Interface Sound-08", src: "Sounds/Interface Sound-08.mp3" },
+                { id: "Interface Sound-09", src: "Sounds/Interface Sound-09.mp3" },
+                { id: "Interface Sound-11", src: "Sounds/Interface Sound-11.mp3" },
+                { id: "Interface Sound-14", src: "Sounds/Interface Sound-14.mp3" },
+                { id: "Interface Sound-15", src: "Sounds/Interface Sound-15.mp3" },
+                { id: "end", src: "Sounds/end.mp3" },
+                { id: "musicIntro", src: "Sounds/musicIntro.mp3" },
+                { id: "music1", src: "Sounds/music1.mp3" },
             ];
         };
         return Loading;

@@ -226,7 +226,7 @@
         // level up
         protected levelUpInterfaceEffect(level: number) {
             this.gameLevelIndicator.showLevel(level);
-            gameui.AssetsManager.playSound("Interface Sound-11");
+            gameui.AssetsManager.playSound("levelUp");
             this.board.levelUpEffect();
         }
 
@@ -341,6 +341,7 @@
 
                 // set footer items form revive
                 this.gameFooter.setItems(["revive"]);
+                this.updateFooter();
                 createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
 
             }, 1200);
@@ -471,7 +472,7 @@
             this.animateScoreFromTile(target, sum); // animate a score number
 
             // chance to win a item
-            var item = this.giveItemChance(ItemsData.items)
+            var item = this.giveItemChance(["time", "clean", "fast", "revive"]);
             if (item) this.animateItemFromTile(target, item);
 
             // update score
@@ -499,7 +500,7 @@
         private giveItemChance(items: Array<string>): string {
 
             var item = null;
-            var lucky = 2; //TODO read it from items
+            var lucky = 10; //TODO read it from items
 
             // calculate random change to win a item
             var goodChance: boolean = (Math.random() < this.itemProbability*lucky);
@@ -517,6 +518,8 @@
 
         // animate a item moving from tile to the footer
         private animateItemFromTile(tile: Tile, item: string) {
+            // play sound
+            gameui.AssetsManager.playSound("Interface Sound-11");
 
             // create item Object
             var itemDO = gameui.AssetsManager.getBitmap("item" + item);
@@ -672,7 +675,7 @@
             this.reviveEffect.alpha = 0;
             this.reviveEffect.visible = true;
             createjs.Tween.removeTweens(this.reviveEffect);
-            createjs.Tween.get(this.reviveEffect).to({ y: 1000 }).to({ y: 500, alpha: 1 }, 500).to({ y: 0, alpha: 0 }, 500).call(() => {
+            createjs.Tween.get(this.reviveEffect).to({ y: 1200 }).to({ y: 600, alpha: 1 }, 600).to({ y: 0, alpha: 0 }, 600).call(() => {
                 this.reviveEffect.visible = false
             });
 

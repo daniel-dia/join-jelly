@@ -171,7 +171,7 @@ var joinjelly;
             // level up
             GamePlayScreen.prototype.levelUpInterfaceEffect = function (level) {
                 this.gameLevelIndicator.showLevel(level);
-                gameui.AssetsManager.playSound("Interface Sound-11");
+                gameui.AssetsManager.playSound("levelUp");
                 this.board.levelUpEffect();
             };
             // #endregion
@@ -257,6 +257,7 @@ var joinjelly;
                     _this.gameFooter.mouseEnabled = true;
                     // set footer items form revive
                     _this.gameFooter.setItems(["revive"]);
+                    _this.updateFooter();
                     createjs.Tween.get(_this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
                 }, 1200);
                 this.finishMenu.setValues(score, highScore, highJelly, message);
@@ -354,7 +355,7 @@ var joinjelly;
                 this.score += sum;
                 this.animateScoreFromTile(target, sum); // animate a score number
                 // chance to win a item
-                var item = this.giveItemChance(joinjelly.ItemsData.items);
+                var item = this.giveItemChance(["time", "clean", "fast", "revive"]);
                 if (item)
                     this.animateItemFromTile(target, item);
                 // update score
@@ -374,7 +375,7 @@ var joinjelly;
             //give item to user
             GamePlayScreen.prototype.giveItemChance = function (items) {
                 var item = null;
-                var lucky = 2; //TODO read it from items
+                var lucky = 10; //TODO read it from items
                 // calculate random change to win a item
                 var goodChance = (Math.random() < this.itemProbability * lucky);
                 // if true
@@ -388,6 +389,8 @@ var joinjelly;
             // animate a item moving from tile to the footer
             GamePlayScreen.prototype.animateItemFromTile = function (tile, item) {
                 var _this = this;
+                // play sound
+                gameui.AssetsManager.playSound("Interface Sound-11");
                 // create item Object
                 var itemDO = gameui.AssetsManager.getBitmap("item" + item);
                 itemDO.mouseEnabled = false;
@@ -513,7 +516,7 @@ var joinjelly;
                 this.reviveEffect.alpha = 0;
                 this.reviveEffect.visible = true;
                 createjs.Tween.removeTweens(this.reviveEffect);
-                createjs.Tween.get(this.reviveEffect).to({ y: 1000 }).to({ y: 500, alpha: 1 }, 500).to({ y: 0, alpha: 0 }, 500).call(function () {
+                createjs.Tween.get(this.reviveEffect).to({ y: 1200 }).to({ y: 600, alpha: 1 }, 600).to({ y: 0, alpha: 0 }, 600).call(function () {
                     _this.reviveEffect.visible = false;
                 });
                 return true;

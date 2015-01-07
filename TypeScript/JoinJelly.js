@@ -44,7 +44,7 @@ var joinjelly;
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
                 transition = { type: "right", time: 500 };
-            this.gameScreen.switchScreen(new joinjelly.StoreMenu(previousScreen), null, transition);
+            this.gameScreen.switchScreen(new joinjelly.menus.StoreMenu(previousScreen), null, transition);
         };
         JoinJelly.showPedia = function () {
             var transition;

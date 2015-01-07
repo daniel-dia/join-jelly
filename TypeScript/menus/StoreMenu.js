@@ -6,14 +6,123 @@ var __extends = this.__extends || function (d, b) {
 };
 var joinjelly;
 (function (joinjelly) {
-    var StoreMenu = (function (_super) {
-        __extends(StoreMenu, _super);
-        function StoreMenu(previousScreen) {
-            _super.call(this, StringResources.store.title);
-            this.previousScreen = previousScreen;
-        }
-        return StoreMenu;
-    })(joinjelly.ScrollablePage);
-    joinjelly.StoreMenu = StoreMenu;
+    var menus;
+    (function (menus) {
+        var StoreMenu = (function (_super) {
+            __extends(StoreMenu, _super);
+            function StoreMenu(previousScreen) {
+                var _this = this;
+                _super.call(this, StringResources.store.title);
+                this.previousScreen = previousScreen;
+                // add loading info
+                var loading = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
+                loading.y = 500;
+                loading.x = defaultWidth / 2;
+                loading.regX = loading.getBounds().width / 2;
+                this.scrollableContent.addChild(loading);
+                var ball = new joinjelly.view.LoadingBall();
+                this.scrollableContent.addChild(ball);
+                ball.y = 800;
+                ball.x = defaultWidth / 2;
+                // request product list
+                InAppPurchases.requestProductList(function (productList) {
+                    _this.scrollableContent.removeChild(loading);
+                    _this.scrollableContent.removeChild(ball);
+                    _this.fillProducts(productList);
+                });
+                // add Footer
+                this.gameFooter = new joinjelly.gameplay.view.GameFooter(["time", "clean", "fast", "revive"]);
+                this.footer.addChild(this.gameFooter);
+                this.updateFooter();
+                this.content.y -= 200;
+            }
+            StoreMenu.prototype.fillProducts = function (productList) {
+                var _this = this;
+                for (var p in productList) {
+                    var pi = new menus.view.StoreItem(productList[p]);
+                    this.scrollableContent.addChild(pi);
+                    pi.y = p * 430 + 430;
+                    pi.x = 70;
+                    // executa a compra do app.
+                    pi.addEventListener("buy", function (event) {
+                        var si = event.currentTarget;
+                        si.setPurchasing();
+                        _this.lockUI();
+                        _this.purchaseProduct(event.target, function (sucess) {
+                            if (sucess) {
+                                si.setPurchased();
+                                gameui.AssetsManager.playSound("Interface Sound-11");
+                            }
+                            _this.updateFooter();
+                            _this.unlockUI();
+                        });
+                    });
+                }
+            };
+            // call for product purchasing
+            StoreMenu.prototype.purchaseProduct = function (productId, callback) {
+                var _this = this;
+                InAppPurchases.purchaseProductRequest(productId, function (productId, sucess) {
+                    _this.fullFillPurchase(productId);
+                    InAppPurchases.reportProductFullfillment(productId);
+                    callback(sucess);
+                });
+            };
+            StoreMenu.prototype.lockUI = function (timeout) {
+                var _this = this;
+                if (timeout === void 0) { timeout = 5000; }
+                this.content.mouseEnabled = false;
+                setTimeout(function () {
+                    _this.unlockUI();
+                }, timeout);
+            };
+            //locks unlocks ui
+            StoreMenu.prototype.unlockUI = function () {
+                this.content.mouseEnabled = true;
+            };
+            StoreMenu.prototype.updateProductsAvaliability = function () {
+            };
+            StoreMenu.prototype.fullFillPurchase = function (productId) {
+                switch (productId) {
+                    case "time3x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 3);
+                        break;
+                    case "fast3x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 3);
+                        break;
+                    case "clean3x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 3);
+                        break;
+                    case "revive3x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 3);
+                        break;
+                    case "pack3x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 3);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 3);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 3);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 3);
+                        break;
+                    case "pack9x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 10);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 10);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 10);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 10);
+                        break;
+                    case "lucky":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("lucky", 1);
+                        break;
+                }
+                return true;
+            };
+            // update footer
+            StoreMenu.prototype.updateFooter = function () {
+                var items = joinjelly.ItemsData.items;
+                for (var i in items)
+                    this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
+            };
+            return StoreMenu;
+        })(joinjelly.ScrollablePage);
+        menus.StoreMenu = StoreMenu;
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=StoreMenu.js.map
