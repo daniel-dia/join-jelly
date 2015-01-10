@@ -12,6 +12,7 @@ var joinjelly;
             __extends(GamePlayScreen, _super);
             //#region =================================== initialization ================================================
             function GamePlayScreen(userData) {
+                var _this = this;
                 _super.call(this);
                 this.matches = 0;
                 // parameters
@@ -27,6 +28,9 @@ var joinjelly;
                 this.createBoard();
                 this.createGUI();
                 this.createEffects();
+                setTimeout(function () {
+                    _this.start();
+                }, 500);
             }
             // create game effects
             GamePlayScreen.prototype.createEffects = function () {
@@ -147,8 +151,8 @@ var joinjelly;
                 this.gameHeader.alpha = 0;
                 setTimeout(function () {
                     createjs.Tween.get(_this.gameHeader).to({ alpha: 1 }, 500);
-                    _this.start();
                 }, 500);
+                this.updateFooter();
             };
             //#endregion
             // #region =================================== interface =====================================================
@@ -448,6 +452,10 @@ var joinjelly;
                     }
                     if (sucess)
                         joinjelly.JoinJelly.itemData.decreaseItemAmmount(item);
+                }
+                else {
+                    this.pauseGame();
+                    joinjelly.JoinJelly.showStore(this);
                 }
                 this.updateFooter();
             };

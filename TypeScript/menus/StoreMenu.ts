@@ -28,9 +28,13 @@
             // add Footer
             this.gameFooter = new gameplay.view.GameFooter(["time", "clean", "fast", "revive"]);
             this.footer.addChild(this.gameFooter);
+            this.gameFooter.mouseEnabled = false;
             this.updateFooter();
 
             this.content.y -= 200;
+
+            this.okButtonAction = () => { joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen); };
+
         }
 
         // add all products in the list

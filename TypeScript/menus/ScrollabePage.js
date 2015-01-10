@@ -61,9 +61,13 @@ var joinjelly;
             });
         };
         ScrollablePage.prototype.addButton = function () {
+            var _this = this;
             // add ok button
             var okButton = new gameui.ImageButton("GameOverOk", function () {
-                joinjelly.JoinJelly.showMainMenu();
+                if (_this.okButtonAction)
+                    _this.okButtonAction();
+                else
+                    joinjelly.JoinJelly.showMainMenu();
             });
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;

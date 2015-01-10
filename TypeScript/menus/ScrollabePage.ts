@@ -3,6 +3,7 @@
 
         protected scrollableContent: createjs.Container;
         protected maxScroll: number = 1700;
+        public okButtonAction: () => void;
 
         constructor(title:string) {
             super();
@@ -64,7 +65,10 @@
 
         private addButton() {
             // add ok button
-            var okButton = new gameui.ImageButton("GameOverOk", () => { joinjelly.JoinJelly.showMainMenu() });
+            var okButton = new gameui.ImageButton("GameOverOk", () => { 
+                if (this.okButtonAction) this.okButtonAction();
+                else
+                joinjelly.JoinJelly.showMainMenu() });
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);

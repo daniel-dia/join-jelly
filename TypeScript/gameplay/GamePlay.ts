@@ -49,6 +49,10 @@
             this.createGUI();
 
             this.createEffects();
+
+            setTimeout(() => {
+                this.start();
+            }, 500);
         }
 
         // create game effects
@@ -192,8 +196,9 @@
 
             setTimeout(() => {
                 createjs.Tween.get(this.gameHeader).to({ alpha: 1 }, 500);
-                this.start();
             }, 500);
+
+            this.updateFooter();
         }
 
         //#endregion
@@ -573,7 +578,7 @@
         private useItem(item: string) {
             if (JoinJelly.itemData.getItemAmmount(item) > 0) {
 
-                var sucess:boolean = false;
+                var sucess: boolean = false;
 
                 switch (item) {
                     case "time":
@@ -590,9 +595,15 @@
                         break;
                 }
 
-                if (sucess) 
+                if (sucess)
                     JoinJelly.itemData.decreaseItemAmmount(item);
             }
+            // if there is no item, them show purchase menu
+            else {
+                this.pauseGame();
+                joinjelly.JoinJelly.showStore(this);
+            }
+
 
             this.updateFooter();
         }

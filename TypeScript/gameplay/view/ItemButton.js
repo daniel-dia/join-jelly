@@ -15,6 +15,7 @@ var joinjelly;
                 function ItemButton(item) {
                     var _this = this;
                     _super.call(this);
+                    this.ammount = 0;
                     this.item = item;
                     this.addEventListener("click", function () {
                         _this.dispatchEvent("useitem", item);
@@ -51,6 +52,7 @@ var joinjelly;
                     this.text = text;
                 }
                 ItemButton.prototype.setAmmount = function (ammout) {
+                    this.ammount = ammout;
                     if (ammout == 0)
                         this.disabled.visible = true;
                     else

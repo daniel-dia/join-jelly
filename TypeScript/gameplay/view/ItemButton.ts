@@ -4,6 +4,7 @@
         private text: createjs.BitmapText;
         public item: string;
         public disabled: createjs.DisplayObject;
+        public ammount: number = 0;
 
         constructor(item: string) {
             super();
@@ -49,6 +50,7 @@
         }
 
         public setAmmount(ammout: number) {
+            this.ammount = ammout;
             if (ammout == 0) this.disabled.visible = true;
             else this.disabled.visible = false;
             this.text.text = ammout.toString();

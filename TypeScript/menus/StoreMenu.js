@@ -33,8 +33,12 @@ var joinjelly;
                 // add Footer
                 this.gameFooter = new joinjelly.gameplay.view.GameFooter(["time", "clean", "fast", "revive"]);
                 this.footer.addChild(this.gameFooter);
+                this.gameFooter.mouseEnabled = false;
                 this.updateFooter();
                 this.content.y -= 200;
+                this.okButtonAction = function () {
+                    joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen);
+                };
             }
             // add all products in the list
             StoreMenu.prototype.fillProducts = function (productList) {

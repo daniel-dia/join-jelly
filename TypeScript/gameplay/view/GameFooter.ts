@@ -66,7 +66,9 @@
             this.itemsButtons[item] = bt;
 
             //add event listener
-            bt.addEventListener("click", () => { this.dispatchEvent("useitem", item); });
+            bt.addEventListener("click", () => {
+                this.dispatchEvent("useitem", item);
+            });
 
         }
 
