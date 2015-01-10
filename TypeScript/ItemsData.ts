@@ -23,7 +23,7 @@
         }
 
         public setItemAmmount(item: string, ammount: number) {
-            if (ammount > 9) ammount = 9;
+            if (ammount > 99) ammount = 99;
             if (ammount < 0) ammount = 0;
 
             this.items[item] = ammount;
