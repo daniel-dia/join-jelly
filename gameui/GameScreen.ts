@@ -83,7 +83,7 @@ module gameui{
 
                 switch (transition.type) {
                     case "fade":
-                        alpha: 0;
+                        alpha= 0;
                         break;
 
                     case "top":

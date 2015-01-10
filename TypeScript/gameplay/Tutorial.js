@@ -26,6 +26,7 @@ var joinjelly;
                     _this.executeTutorialStep();
                 });
                 _super.prototype.createGUI.call(this);
+                this.gameFooter.visible = false;
             };
             Tutorial.prototype.start = function () {
                 _super.prototype.start.call(this);
@@ -137,7 +138,7 @@ var joinjelly;
             Tutorial.prototype.showTutorialMove = function (source, target) {
                 var sourceTile = this.board.getTileById(source);
                 var targetTile = this.board.getTileById(target);
-                this.tutorialMoveIndicator.show(sourceTile.x, sourceTile.y + this.board.y, targetTile.x, targetTile.y + this.board.y);
+                this.tutorialMoveIndicator.show(sourceTile.x, sourceTile.y + this.board.y - this.board.regY, targetTile.x, targetTile.y + this.board.y - this.board.regY);
             };
             Tutorial.prototype.hideTutorialMove = function () {
                 this.tutorialMoveIndicator.hide();

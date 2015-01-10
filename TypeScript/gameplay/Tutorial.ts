@@ -27,6 +27,7 @@
             });
 
             super.createGUI();
+            this.gameFooter.visible = false;
         }
 
         public start() {
@@ -154,8 +155,8 @@
             var sourceTile = this.board.getTileById(source);
             var targetTile = this.board.getTileById(target);
             this.tutorialMoveIndicator.show(
-                sourceTile.x, sourceTile.y + this.board.y,
-                targetTile.x, targetTile.y + this.board.y);
+                sourceTile.x, sourceTile.y + this.board.y-this.board.regY,
+                targetTile.x, targetTile.y + this.board.y-this.board.regY);
         }
 
         private hideTutorialMove() {

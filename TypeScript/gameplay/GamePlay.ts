@@ -13,8 +13,8 @@
 
         //interface
         protected board: Board;
-        private gameHeader: view.GameHeader;
-        private gameFooter: view.GameFooter;
+        protected gameHeader: view.GameHeader;
+        protected gameFooter: view.GameFooter;
         private gameLevelIndicator: view.LevelIndicator;
         private finishMenu: view.FinishMenu;
         private pauseMenu: view.PauseMenu;

@@ -50,7 +50,7 @@ var gameui;
             if (transition && oldScreen) {
                 switch (transition.type) {
                     case "fade":
-                        alpha: 0;
+                        alpha = 0;
                         break;
                     case "top":
                         y = this.currentHeight;
