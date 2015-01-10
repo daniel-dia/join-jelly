@@ -611,6 +611,8 @@
                 this.freezeEffect.visible = false
             });
 
+            gameui.AssetsManager.playSound("sounditemtime");
+
             return true;
         }
 
@@ -634,6 +636,8 @@
             createjs.Tween.get(this.cleanEffect).to({ x: -600, y: 2000 }).to({ x: 300, y: -500 }, 600).call(() => {
                 this.cleanEffect.visible = false
             });
+
+            gameui.AssetsManager.playSound("sounditemclean");
 
             return true;
         }
@@ -679,6 +683,8 @@
                 this.reviveEffect.visible = false
             });
 
+            gameui.AssetsManager.playSound("sounditemrevive");
+
             return true;
         }
 
@@ -721,6 +727,8 @@
             createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(() => {
                 this.fastEffect.visible = false
             });
+
+            gameui.AssetsManager.playSound("sounditemfast");
 
             return true;
         }

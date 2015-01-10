@@ -29,4 +29,10 @@ var InAppPurchases = (function () {
     };
     return InAppPurchases;
 })();
+var ProductAvaliability;
+(function (ProductAvaliability) {
+    ProductAvaliability[ProductAvaliability["AVALIABLE"] = 0] = "AVALIABLE";
+    ProductAvaliability[ProductAvaliability["PURCHASED"] = 1] = "PURCHASED";
+    ProductAvaliability[ProductAvaliability["NOTAVALIABLE"] = 2] = "NOTAVALIABLE";
+})(ProductAvaliability || (ProductAvaliability = {}));
 //# sourceMappingURL=InAppPurchases.js.map

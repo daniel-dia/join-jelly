@@ -36,6 +36,7 @@ var joinjelly;
                 this.updateFooter();
                 this.content.y -= 200;
             }
+            // add all products in the list
             StoreMenu.prototype.fillProducts = function (productList) {
                 var _this = this;
                 for (var p in productList) {

@@ -15,8 +15,8 @@ var joinjelly;
             this.scrollableContent.addChild(itensContainer);
             itensContainer.y = 400;
             var index = 0;
-            for (var j = 1; j < 8192; j *= 2) {
-                if (j <= userData.getLastJelly())
+            for (var j = 1; j <= 8192; j *= 2) {
+                if (j <= 9000)
                     var pi = new joinjelly.menus.view.JellyPediaItem(j, jellyInfos[j].name, jellyInfos[j].description);
                 else
                     var pi = new joinjelly.menus.view.JellyPediaItem(0, "?", "");
@@ -25,7 +25,7 @@ var joinjelly;
                 pi.x = 150;
                 index++;
             }
-            this.maxScroll = 5200;
+            this.maxScroll = 5700;
         }
         return Jellypedia;
     })(joinjelly.ScrollablePage);

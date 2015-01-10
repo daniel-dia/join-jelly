@@ -10,8 +10,8 @@
             this.scrollableContent.addChild(itensContainer);
             itensContainer.y = 400;
             var index = 0;
-            for (var j = 1; j < 8192; j *= 2) {
-                if (j <= userData.getLastJelly())
+            for (var j = 1; j <= 8192; j *= 2) {
+                if (j <= 9000 )//userData.getLastJelly())
                     var pi = new menus.view.JellyPediaItem(j, jellyInfos[j].name, jellyInfos[j].description);
                 else
                     var pi = new menus.view.JellyPediaItem(0, "?", "");
@@ -20,7 +20,7 @@
                 pi.x = 150;
                 index++;
             }
-            this.maxScroll = 5200;
+            this.maxScroll = 5700;
         }
   
     }

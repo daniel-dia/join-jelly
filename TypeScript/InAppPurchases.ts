@@ -25,6 +25,14 @@
             if(callback) callback()
         }, 2000);
     }
+ 
+}
+
+enum ProductAvaliability {
+    AVALIABLE,
+    PURCHASED,
+    NOTAVALIABLE,
+
 }
 
 interface ProductListing {

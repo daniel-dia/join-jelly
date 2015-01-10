@@ -33,6 +33,7 @@
             this.content.y -= 200;
         }
 
+        // add all products in the list
         private fillProducts(productList: Array<ProductListing>) {
 
             for (var p in productList) {

@@ -464,6 +464,7 @@ var joinjelly;
                 createjs.Tween.get(this.freezeEffect).to({ alpha: 1 }, 1000).to({ alpha: 0 }, 4000).call(function () {
                     _this.freezeEffect.visible = false;
                 });
+                gameui.AssetsManager.playSound("sounditemtime");
                 return true;
             };
             //clan all simple jellys
@@ -486,6 +487,7 @@ var joinjelly;
                 createjs.Tween.get(this.cleanEffect).to({ x: -600, y: 2000 }).to({ x: 300, y: -500 }, 600).call(function () {
                     _this.cleanEffect.visible = false;
                 });
+                gameui.AssetsManager.playSound("sounditemclean");
                 return true;
             };
             // revive after game end
@@ -519,6 +521,7 @@ var joinjelly;
                 createjs.Tween.get(this.reviveEffect).to({ y: 1200 }).to({ y: 600, alpha: 1 }, 600).to({ y: 0, alpha: 0 }, 600).call(function () {
                     _this.reviveEffect.visible = false;
                 });
+                gameui.AssetsManager.playSound("sounditemrevive");
                 return true;
             };
             // match 5 pair of jelly if avaliabe
@@ -554,6 +557,7 @@ var joinjelly;
                 createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(function () {
                     _this.fastEffect.visible = false;
                 });
+                gameui.AssetsManager.playSound("sounditemfast");
                 return true;
             };
             // match two jellys with animation
