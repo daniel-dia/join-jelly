@@ -26,20 +26,20 @@ var joinjelly;
                     // Add Icon
                     var iconId = "";
                     switch (product.ProductId) {
-                        case "time3x":
+                        case "time5x":
                             iconId = "itemtime";
                             break;
-                        case "fast3x":
+                        case "fast5x":
                             iconId = "itemfast";
                             break;
-                        case "revive3x":
+                        case "revive5x":
                             iconId = "itemrevive";
                             break;
-                        case "clean3x":
+                        case "clean5x":
                             iconId = "itemclean";
                             break;
-                        case "pack3x":
-                        case "pack9x":
+                        case "pack5x":
+                        case "pack10x":
                             iconId = "itemPack";
                             break;
                         case "lucky":

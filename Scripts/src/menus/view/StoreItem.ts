@@ -24,11 +24,11 @@
 
             var iconId = "";
             switch (product.ProductId) {
-                case "time3x": iconId = "itemtime"; break;
-                case "fast3x": iconId = "itemfast"; break;
-                case "revive3x": iconId = "itemrevive"; break;
-                case "clean3x": iconId = "itemclean"; break;
-                case "pack3x": case "pack9x": iconId = "itemPack"; break;
+                case "time5x": iconId = "itemtime"; break;
+                case "fast5x": iconId = "itemfast"; break;
+                case "revive5x": iconId = "itemrevive"; break;
+                case "clean5x": iconId = "itemclean"; break;
+                case "pack5x": case "pack10x": iconId = "itemPack"; break;
                 case "lucky": iconId = "lucky"; break;
             }
 

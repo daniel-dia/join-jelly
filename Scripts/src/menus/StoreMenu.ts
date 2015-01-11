@@ -92,17 +92,17 @@
         private fullFillPurchase(productId: string): boolean{
 
             switch (productId) {
-                case "time3x": JoinJelly.itemData.increaseItemAmmount("time", 3); break;
-                case "fast3x": JoinJelly.itemData.increaseItemAmmount("fast", 3); break;
-                case "clean3x": JoinJelly.itemData.increaseItemAmmount("clean", 3); break;
-                case "revive3x": JoinJelly.itemData.increaseItemAmmount("revive", 3); break;
-                case "pack3x": 
-                    JoinJelly.itemData.increaseItemAmmount("time", 3); 
-                    JoinJelly.itemData.increaseItemAmmount("clean", 3); 
-                    JoinJelly.itemData.increaseItemAmmount("fast", 3); 
-                    JoinJelly.itemData.increaseItemAmmount("revive", 3); 
+                case "time5x": JoinJelly.itemData.increaseItemAmmount("time", 5); break;
+                case "fast5x": JoinJelly.itemData.increaseItemAmmount("fast", 5); break;
+                case "clean5x": JoinJelly.itemData.increaseItemAmmount("clean", 5); break;
+                case "revive5x": JoinJelly.itemData.increaseItemAmmount("revive", 5); break;
+                case "pack5x": 
+                    JoinJelly.itemData.increaseItemAmmount("time", 5); 
+                    JoinJelly.itemData.increaseItemAmmount("clean", 5); 
+                    JoinJelly.itemData.increaseItemAmmount("fast", 5); 
+                    JoinJelly.itemData.increaseItemAmmount("revive", 5); 
                     break;
-                case "pack9x":
+                case "pack10x":
                     JoinJelly.itemData.increaseItemAmmount("clean", 10);
                     JoinJelly.itemData.increaseItemAmmount("fast", 10);
                     JoinJelly.itemData.increaseItemAmmount("time", 10);

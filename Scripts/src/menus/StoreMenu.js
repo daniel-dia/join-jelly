@@ -89,25 +89,25 @@ var joinjelly;
             };
             StoreMenu.prototype.fullFillPurchase = function (productId) {
                 switch (productId) {
-                    case "time3x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 3);
+                    case "time5x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 5);
                         break;
-                    case "fast3x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 3);
+                    case "fast5x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 5);
                         break;
-                    case "clean3x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 3);
+                    case "clean5x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 5);
                         break;
-                    case "revive3x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 3);
+                    case "revive5x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 5);
                         break;
-                    case "pack3x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 3);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 3);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 3);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 3);
+                    case "pack5x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 5);
                         break;
-                    case "pack9x":
+                    case "pack10x":
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 10);
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 10);
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 10);

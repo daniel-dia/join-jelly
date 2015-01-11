@@ -1,65 +1,69 @@
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var joinjelly;
-(function (joinjelly) {
-    var Loading = (function (_super) {
-        __extends(Loading, _super);
-        function Loading() {
-            _super.call(this);
-            this.initializeImages();
+﻿declare var debussy
+declare var debussyFont
+declare function createSpriteSheetFromFont(font: any, path: string);
+
+module joinjelly {
+
+    export class Loading extends gameui.ScreenState {
+
+        public loaded: () => any;
+
+        constructor() {
+            super();
+            this.initializeImages()
         }
-        Loading.prototype.initializeImages = function () {
-            var _this = this;
+
+        public initializeImages() {
+
             assetscale = 1;
-            if (window.innerWidth <= 1024)
-                assetscale = 0.5;
-            if (window.innerWidth <= 384)
-                assetscale = 0.25;
-            var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale)); //, spriteSheets, images);
+            if (window.innerWidth <= 1024) assetscale = 0.5;
+            if (window.innerWidth <= 384) assetscale = 0.25;
+         
+            var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale));//, spriteSheets, images);
+
             //loader text
             var text = new createjs.Text("", "90px Arial", "#FFF");
             text.x = defaultWidth / 2;
             text.y = defaultHeight / 2;
-            text.textAlign = "center";
+            text.textAlign = "center"
             this.content.addChild(text);
+
             //loading animation
-            var anim = new joinjelly.view.LoadingBall();
-            anim.x = defaultWidth / 2;
+            var anim = new view.LoadingBall();
+            anim.x = defaultWidth / 2 ;
             anim.y = defaultHeight / 2 + 400;
             this.content.addChild(anim);
+
             //add update% functtion
-            queue.addEventListener("progress", function (evt) {
+            queue.addEventListener("progress", (evt: Object): boolean => {
                 text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
                 return true;
             });
+
             //creates load complete action
-            queue.addEventListener("complete", function (evt) {
-                if (_this.loaded)
-                    _this.loaded();
+            queue.addEventListener("complete", (evt: Object): boolean => {
+                if (this.loaded) this.loaded();
                 return true;
             });
+
             //set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";
+
             //load font
             debussy = createSpriteSheetFromFont(debussyFont, "assets/images_" + assetscale + "x/");
             gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
-        };
-        Loading.prototype.getAssetsManifest = function (scale) {
+        }
+
+        private getAssetsManifest(scale: number): Array<any> {
             return [
                 { id: "j1024", src: "assets/images_" + scale + "x/j1024.png" },
                 { id: "j2048", src: "assets/images_" + scale + "x/j2048.png" },
                 { id: "j4096", src: "assets/images_" + scale + "x/j4096.png" },
                 { id: "j8192", src: "assets/images_" + scale + "x/j8192.png" },
                 { id: "Background", src: "assets/images_" + scale + "x/Background.jpg" },
-                { id: "Background2", src: "assets/images_" + scale + "x/Background2.jpg" },
                 { id: "backhome", src: "assets/images_" + scale + "x/BackMain.jpg" },
                 { id: "bonus_bar", src: "assets/images_" + scale + "x/bonus_bar.png" },
                 { id: "bonus_border", src: "assets/images_" + scale + "x/bonus_border.png" },
-                { id: "bt", src: "assets/images_" + scale + "x/bt.png" },
                 { id: "ChubbyFont", src: "assets/images_" + scale + "x/ChubbyFont.png" },
                 { id: "font", src: "assets/images_" + scale + "x/font.png" },
                 { id: "e1", src: "assets/images_" + scale + "x/e1.png" },
@@ -76,9 +80,9 @@ var joinjelly;
                 { id: "e2048", src: "assets/images_" + scale + "x/e2048.png" },
                 { id: "e4096", src: "assets/images_" + scale + "x/e4096.png" },
                 { id: "e8192", src: "assets/images_" + scale + "x/e8192.png" },
+               
                 { id: "footer", src: "assets/images_" + scale + "x/footer.png" },
                 { id: "header", src: "assets/images_" + scale + "x/header.png" },
-                { id: "htmlBG", src: "assets/images_" + scale + "x/htmlBG.jpg" },
                 { id: "iconMenu", src: "assets/images_" + scale + "x/iconMenu.png" },
                 { id: "iconPause", src: "assets/images_" + scale + "x/iconPause.png" },
                 { id: "iconPlay", src: "assets/images_" + scale + "x/iconPlay.png" },
@@ -94,7 +98,6 @@ var joinjelly;
                 { id: "j512", src: "assets/images_" + scale + "x/j512.png" },
                 { id: "j64", src: "assets/images_" + scale + "x/j64.png" },
                 { id: "j8", src: "assets/images_" + scale + "x/j8.png" },
-                { id: "pause", src: "assets/images_" + scale + "x/pause.png" },
                 { id: "PlayBt", src: "assets/images_" + scale + "x/PlayBt.png" },
                 { id: "StoreBt", src: "assets/images_" + scale + "x/StoreBt.png" },
                 { id: "SettingsBt", src: "assets/images_" + scale + "x/SettingsBt.png" },
@@ -104,24 +107,28 @@ var joinjelly;
                 { id: "time_bar_bright", src: "assets/images_" + scale + "x/time_bar_bright.png" },
                 { id: "time_border", src: "assets/images_" + scale + "x/time_border.png" },
                 { id: "shadow", src: "assets/images_" + scale + "x/shadow.png" },
-                { id: "particle", src: "assets/images_" + scale + "x/particle.png" },
+                { id: "particle", src: "assets/images_" + scale + "x/Particle.png" },
+
                 { id: "btHelp", src: "assets/images_" + scale + "x/btHelp.png" },
                 { id: "btInfo", src: "assets/images_" + scale + "x/btInfo.png" },
                 { id: "btJelly", src: "assets/images_" + scale + "x/btJelly.png" },
                 { id: "btPause", src: "assets/images_" + scale + "x/btPause.png" },
+                
                 { id: "GameOverBgJelly", src: "assets/images_" + scale + "x/GameOverBgJelly.png" },
                 { id: "GameOverBgPoints", src: "assets/images_" + scale + "x/GameOverBgPoints.png" },
                 { id: "GameOverBoard", src: "assets/images_" + scale + "x/GameOverBoard.png" },
                 { id: "GameOverOk", src: "assets/images_" + scale + "x/GameOverOk.png" },
                 { id: "GameOverShare", src: "assets/images_" + scale + "x/GameOverShare.png" },
-                { id: "GameOverBack", src: "assets/images_" + scale + "x/GameOverBack.png" },
+
                 { id: "fxJoin", src: "assets/images_" + scale + "x/fxJoin.png" },
+
                 { id: "t0", src: "assets/images_" + scale + "x/t0.png" },
                 { id: "t1", src: "assets/images_" + scale + "x/t1.png" },
                 { id: "t2", src: "assets/images_" + scale + "x/t2.png" },
                 { id: "t3", src: "assets/images_" + scale + "x/t3.png" },
                 { id: "t4", src: "assets/images_" + scale + "x/t4.png" },
                 { id: "t5", src: "assets/images_" + scale + "x/t5.png" },
+
                 { id: "Restart", src: "assets/images_" + scale + "x/Restart.png" },
                 { id: "Home", src: "assets/images_" + scale + "x/Home.png" },
                 { id: "FlyBG", src: "assets/images_" + scale + "x/FlyBG.png" },
@@ -130,6 +137,7 @@ var joinjelly;
                 { id: "BtMusicOff", src: "assets/images_" + scale + "x/BtMusicOff.png" },
                 { id: "BtSound", src: "assets/images_" + scale + "x/BtSound.png" },
                 { id: "BtSoundOff", src: "assets/images_" + scale + "x/BtSoundOff.png" },
+
                 { id: "footer", src: "assets/images_" + scale + "x/footer.png" },
                 { id: "itemclean", src: "assets/images_" + scale + "x/itemClean.png" },
                 { id: "itemfast", src: "assets/images_" + scale + "x/itemFast.png" },
@@ -137,49 +145,57 @@ var joinjelly;
                 { id: "itemtime", src: "assets/images_" + scale + "x/itemTime.png" },
                 { id: "itemPack", src: "assets/images_" + scale + "x/itemPack.png" },
                 { id: "lucky", src: "assets/images_" + scale + "x/lucky.png" },
-                { id: "itemBG", src: "assets/images_" + scale + "x/itemBG.png" },
-                { id: "itemBGDisabled", src: "assets/images_" + scale + "x/itemBGDisabled.png" },
-                { id: "About", src: "assets/images_" + scale + "x/About.png" },
+                { id: "itemBG", src: "assets/images_" + scale + "x/itemBg.png" },
+                { id: "itemBGDisabled", src: "assets/images_" + scale + "x/itemBgDisabled.png" },
+             
                 { id: "tutorialFinger", src: "assets/images_" + scale + "x/tutorialFinger.png" },
                 { id: "ballon", src: "assets/images_" + scale + "x/ballon.png" },
                 { id: "tutorial", src: "assets/images_" + scale + "x/tutorial.png" },
+
                 { id: "pediaItem", src: "assets/images_" + scale + "x/pediaItem.png" },
-                { id: "BigBG", src: "assets/images_" + scale + "x/BigBG.png" },
-                { id: "freezeEffect", src: "assets/images_" + scale + "x/freezeEffect.png" },
+                { id: "BigBG", src: "assets/images_" + scale + "x/BigBG.png" }, 
+
+
+                { id: "freezeEffect", src: "assets/images_" + scale + "x/freezeEffect.png" }, 
                 { id: "fastEffect", src: "assets/images_" + scale + "x/fastEffect.png" },
                 { id: "reviveEffect", src: "assets/images_" + scale + "x/reviveEffect.png" },
-                { id: "cleanEffect", src: "assets/images_" + scale + "x/cleanEffect.png" },
+                { id: "cleanEffect", src: "assets/images_" + scale + "x/cleanEffect.png" }, 
+                
                 { id: "check", src: "assets/images_" + scale + "x/check.png" },
                 { id: "unchecked", src: "assets/images_" + scale + "x/unchecked.png" },
                 { id: "MessageBox", src: "assets/images_" + scale + "x/MessageBox.png" },
-                { id: "sound_h1", src: "Sounds/h1.mp3" },
-                { id: "sound_r1", src: "Sounds/r1.mp3" },
-                { id: "sound_s1", src: "Sounds/s1.mp3" },
-                { id: "sound_s2", src: "Sounds/s2.mp3" },
-                { id: "sound_s3", src: "Sounds/s3.mp3" },
-                { id: "sound_j1", src: "Sounds/j1.mp3" },
-                { id: "sound_j2", src: "Sounds/j2.mp3" },
-                { id: "sound_j3", src: "Sounds/j3.mp3" },
-                { id: "sound_j4", src: "Sounds/j4.mp3" },
-                { id: "levelUp", src: "Sounds/levelUp.mp3" },
-                { id: "sounditemfast", src: "Sounds/itemfast.mp3" },
-                { id: "sounditemclean", src: "Sounds/itemclean.mp3" },
-                { id: "sounditemrevive", src: "Sounds/itemrevive.mp3" },
-                { id: "sounditemtime", src: "Sounds/itemtime.mp3" },
-                { id: "Interface Sound-06", src: "Sounds/Interface Sound-06.mp3" },
-                { id: "Interface Sound-07", src: "Sounds/Interface Sound-07.mp3" },
-                { id: "Interface Sound-08", src: "Sounds/Interface Sound-08.mp3" },
-                { id: "Interface Sound-09", src: "Sounds/Interface Sound-09.mp3" },
-                { id: "Interface Sound-11", src: "Sounds/Interface Sound-11.mp3" },
-                { id: "Interface Sound-14", src: "Sounds/Interface Sound-14.mp3" },
-                { id: "Interface Sound-15", src: "Sounds/Interface Sound-15.mp3" },
-                { id: "end", src: "Sounds/end.mp3" },
-                { id: "musicIntro", src: "Sounds/musicIntro.mp3" },
-                { id: "music1", src: "Sounds/music1.mp3" },
-            ];
-        };
-        return Loading;
-    })(gameui.ScreenState);
-    joinjelly.Loading = Loading;
-})(joinjelly || (joinjelly = {}));
-//# sourceMappingURL=LoadingScreen.js.map
+               
+                { id: "sound_h1", src: "assets/Sounds/h1.mp3" },
+                { id: "sound_r1", src: "assets/Sounds/r1.mp3" },
+                
+                { id: "sound_s1", src: "assets/Sounds/s1.mp3" },
+                { id: "sound_s2", src: "assets/Sounds/s2.mp3" },
+                { id: "sound_s3", src: "assets/Sounds/s3.mp3" },
+                                       
+                { id: "sound_j1", src: "assets/Sounds/j1.mp3" },
+                { id: "sound_j2", src: "assets/Sounds/j2.mp3" },
+                { id: "sound_j3", src: "assets/Sounds/j3.mp3" },
+                { id: "sound_j4", src: "assets/Sounds/j4.mp3" },
+                { id: "levelUp", src: "assets/Sounds/levelUp.mp3" },
+                
+                { id: "sounditemfast", src: "assets/Sounds/itemfast.mp3" },
+                { id: "sounditemclean", src: "assets/Sounds/itemclean.mp3" },
+                { id: "sounditemrevive", src: "assets/Sounds/itemrevive.mp3" },
+                { id: "sounditemtime", src: "assets/Sounds/itemtime.mp3" },
+                
+                { id: "Interface Sound-06", src: "assets/Sounds/Interface Sound-06.mp3" },
+                { id: "Interface Sound-07", src: "assets/Sounds/Interface Sound-07.mp3" },
+                { id: "Interface Sound-08", src: "assets/Sounds/Interface Sound-08.mp3" },
+                { id: "Interface Sound-09", src: "assets/Sounds/Interface Sound-09.mp3" },
+                { id: "Interface Sound-11", src: "assets/Sounds/Interface Sound-11.mp3" },
+                { id: "Interface Sound-14", src: "assets/Sounds/Interface Sound-14.mp3" },
+                { id: "Interface Sound-15", src: "assets/Sounds/Interface Sound-15.mp3" },
+                { id: "end", src: "assets/Sounds/end.mp3" },
+                
+                { id: "musicIntro", src: "assets/Sounds/musicIntro.mp3" },
+                { id: "music1", src: "assets/Sounds/music1.mp3" },
+
+            ]
+        }
+    }
+}
