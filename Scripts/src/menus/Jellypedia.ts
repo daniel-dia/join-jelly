@@ -11,7 +11,7 @@
             itensContainer.y = 400;
             var index = 0;
             for (var j = 1; j <= 8192; j *= 2) {
-                if (j <= 9000 )//userData.getLastJelly())
+                if (j <=  userData.getLastJelly())
                     var pi = new menus.view.JellyPediaItem(j, jellyInfos[j].name, jellyInfos[j].description);
                 else
                     var pi = new menus.view.JellyPediaItem(0, "?", "");
