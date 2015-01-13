@@ -126,9 +126,11 @@ var joinjelly;
                     setTimeout(function () {
                         joinjelly.JoinJelly.showMainMenu();
                     }, 200);
+                    _this.userData.deleteSaveGame();
                 });
                 this.pauseMenu.addEventListener("restart", function () {
                     _this.pauseMenu.hide();
+                    _this.userData.deleteSaveGame();
                     setTimeout(function () {
                         joinjelly.JoinJelly.startLevel();
                     }, 200);
@@ -196,6 +198,8 @@ var joinjelly;
                 this.step(500);
                 // log game start event
                 joinjelly.JoinJelly.analytics.logGameStart();
+                // try to load a saved Game
+                this.loadGame();
             };
             // time step for adding tiles.
             GamePlayScreen.prototype.step = function (timeout) {
@@ -239,6 +243,7 @@ var joinjelly;
             // finishes the game
             GamePlayScreen.prototype.endGame = function (message) {
                 var _this = this;
+                this.userData.deleteSaveGame();
                 this.gamestate = 3 /* ended */;
                 var score = this.score;
                 var highScore = joinjelly.JoinJelly.userData.getHighScore();
@@ -327,6 +332,7 @@ var joinjelly;
                     var i = Math.floor(Math.random() * empty.length);
                     var tile = empty[i];
                     tile.setNumber(value);
+                    this.saveGame();
                 }
             };
             //called when a tile is dragged
@@ -374,6 +380,7 @@ var joinjelly;
                     this.winGame();
                 // log event
                 joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
+                this.saveGame();
                 return true;
             };
             //give item to user
@@ -503,6 +510,7 @@ var joinjelly;
                 var _this = this;
                 if (this.gamestate != 3 /* ended */)
                     return false;
+                this.saveGame();
                 // back state to playing
                 this.gamestate = 1 /* playing */;
                 //ullock board
@@ -583,6 +591,30 @@ var joinjelly;
                 var items = joinjelly.ItemsData.items;
                 for (var i in items)
                     this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
+            };
+            // #endregion
+            // #region =================================== SaveGame =====================================================
+            GamePlayScreen.prototype.saveGame = function () {
+                var sg = {
+                    level: this.level,
+                    matches: this.matches,
+                    score: this.score,
+                    tiles: this.board.getAllTilesValues(),
+                };
+                this.userData.saveGame(sg);
+            };
+            GamePlayScreen.prototype.loadGame = function () {
+                var saveGame = this.userData.loadGame();
+                if (!saveGame || saveGame == null)
+                    return;
+                this.board.setTiles(saveGame.tiles);
+                this.score = saveGame.score;
+                this.matches = saveGame.matches;
+                this.level = saveGame.level;
+                this.updateCurrentLevel();
+                this.updateFooter();
+                this.updateInterfaceInfos();
+                this.pauseGame();
             };
             return GamePlayScreen;
         })(gameui.ScreenState);

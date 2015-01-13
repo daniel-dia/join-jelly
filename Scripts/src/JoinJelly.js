@@ -4,6 +4,7 @@ var joinjelly;
         function JoinJelly() {
         }
         JoinJelly.init = function () {
+            var _this = this;
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight);
@@ -12,8 +13,12 @@ var joinjelly;
             this.userData = new UserData();
             var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
+            // verifies if there is a savedGame
             loadingScreen.loaded = function () {
-                JoinJelly.showMainMenu();
+                if (_this.userData.loadGame())
+                    joinjelly.JoinJelly.startLevel();
+                else
+                    JoinJelly.showMainMenu();
             };
         };
         JoinJelly.showAboutScreen = function () {

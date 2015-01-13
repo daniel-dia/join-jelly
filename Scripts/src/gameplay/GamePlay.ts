@@ -168,10 +168,12 @@
             this.pauseMenu.addEventListener("home", () => {
                 this.pauseMenu.hide();
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
+                this.userData.deleteSaveGame();
             });
 
             this.pauseMenu.addEventListener("restart", () => {
                 this.pauseMenu.hide();
+                this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 
@@ -242,6 +244,7 @@
         // starts the game
         protected start() {
 
+
             this.level = 1;
             this.matches = 0;
 
@@ -261,6 +264,9 @@
 
             // log game start event
             JoinJelly.analytics.logGameStart();
+
+            // try to load a saved Game
+            this.loadGame();
         }
 
         // time step for adding tiles.
@@ -277,7 +283,9 @@
                 if (this.gamestate != GameState.ended)
                     this.step(this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
 
+
             }, timeout);
+
         }
 
         // executes a game interaction
@@ -317,6 +325,7 @@
         // finishes the game
         private endGame(message?: string) {
 
+            this.userData.deleteSaveGame();
             this.gamestate = GameState.ended;
 
             var score = this.score;
@@ -434,6 +443,10 @@
                 var i = Math.floor(Math.random() * empty.length);
                 var tile = empty[i];
                 tile.setNumber(value);
+
+
+                this.saveGame();
+
             }
         }
 
@@ -497,6 +510,9 @@
 
             // log event
             joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
+
+
+            this.saveGame();
 
             return true;
         }
@@ -658,6 +674,8 @@
 
             if (this.gamestate != GameState.ended) return false;
 
+            this.saveGame();
+
             // back state to playing
             this.gamestate = GameState.playing;
 
@@ -759,6 +777,37 @@
             var items = ItemsData.items;
             for (var i in items)
                 this.gameFooter.setItemAmmount(items[i], JoinJelly.itemData.getItemAmmount(items[i]));
+        }
+
+        // #endregion
+
+        // #region =================================== SaveGame =====================================================
+
+        public saveGame() {
+            var sg: SaveGame = {
+                level: this.level,
+                matches: this.matches,
+                score:this.score,
+                tiles:this.board.getAllTilesValues(),
+            }
+
+            this.userData.saveGame(sg);
+        }
+
+        public loadGame() {
+            var saveGame = this.userData.loadGame();
+            if (!saveGame || saveGame==null) return;
+
+            this.board.setTiles(saveGame.tiles);
+            this.score = saveGame.score;
+            this.matches = saveGame.matches;
+            this.level = saveGame.level;
+
+            this.updateCurrentLevel();
+            this.updateFooter();
+            this.updateInterfaceInfos();
+
+            this.pauseGame();
         }
 
         // #endregion

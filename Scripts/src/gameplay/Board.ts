@@ -124,6 +124,16 @@
 
         // #region Tile manager ------------------------------------------------------------------------
 
+        public setTiles(tiles: Array<number>) {
+            this.unlock();
+            for (var t in tiles) {
+
+                this.setTileValue(t, tiles[t]);
+                this.getTileById(t).unlock();
+                this.getTileById(t).enable();
+            }
+        }
+
         // set a tile value
         public setTileValue(tileId, value) {
             var t = this.getTileById(tileId)
@@ -222,7 +232,14 @@
         public getAllTiles(): Array<Tile> {
             return this.tiles;
         }
+        public getAllTilesValues(): Array<number> {
+            var values = new Array();
 
+            for (var t in this.tiles)
+                values[t] = this.tiles[t].getNumber();
+
+            return values;
+        }
         public getTileId(tile: Tile): number {
             return parseInt(tile.name);
         }

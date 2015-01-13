@@ -64,12 +64,33 @@
 
     // #endregion
 
+    //#region gamestate
+
+    public saveGame(savegame:SaveGame) {
+        UserData.saveValue("savegame", savegame);
+    }
+
+    public loadGame(): SaveGame {
+        return UserData.loadValue("savegame", undefined);
+    }
+
+    public deleteSaveGame() {
+        UserData.saveValue("savegame", null);
+    }
+    
+    //#endregion
+
     // #region generic
     private static prefix = "FastPair_";
 
     private static saveValue(key: string, value: any) {
-        var serialized = JSON.stringify(value);
-        localStorage.setItem(UserData.prefix + key, serialized);
+
+        if (value == null)
+            localStorage.removeItem(UserData.prefix + key);
+        else {
+            var serialized = JSON.stringify(value);
+            localStorage.setItem(UserData.prefix + key, serialized);
+        }
     }
 
     private static loadValue(key: string,defaultVaule?): any {
@@ -80,6 +101,13 @@
     }
     // #endregion
 
+}
+
+interface SaveGame {
+    tiles: Array<number>;
+    matches: number;
+    score: number;
+    level: number;
 }
 
 

@@ -48,9 +48,24 @@ var UserData = (function () {
     UserData.loadItems = function () {
         return this.loadValue("items", {});
     };
+    // #endregion
+    //#region gamestate
+    UserData.prototype.saveGame = function (savegame) {
+        UserData.saveValue("savegame", savegame);
+    };
+    UserData.prototype.loadGame = function () {
+        return UserData.loadValue("savegame", undefined);
+    };
+    UserData.prototype.deleteSaveGame = function () {
+        UserData.saveValue("savegame", null);
+    };
     UserData.saveValue = function (key, value) {
-        var serialized = JSON.stringify(value);
-        localStorage.setItem(UserData.prefix + key, serialized);
+        if (value == null)
+            localStorage.removeItem(UserData.prefix + key);
+        else {
+            var serialized = JSON.stringify(value);
+            localStorage.setItem(UserData.prefix + key, serialized);
+        }
     };
     UserData.loadValue = function (key, defaultVaule) {
         var value = localStorage.getItem(UserData.prefix + key);
@@ -58,7 +73,7 @@ var UserData = (function () {
             return defaultVaule;
         return JSON.parse(value);
     };
-    // #endregion
+    //#endregion
     // #region generic
     UserData.prefix = "FastPair_";
     return UserData;

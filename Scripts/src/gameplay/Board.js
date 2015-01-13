@@ -93,6 +93,14 @@ var joinjelly;
             };
             // #endregion
             // #region Tile manager ------------------------------------------------------------------------
+            Board.prototype.setTiles = function (tiles) {
+                this.unlock();
+                for (var t in tiles) {
+                    this.setTileValue(t, tiles[t]);
+                    this.getTileById(t).unlock();
+                    this.getTileById(t).enable();
+                }
+            };
             // set a tile value
             Board.prototype.setTileValue = function (tileId, value) {
                 var t = this.getTileById(tileId);
@@ -167,6 +175,12 @@ var joinjelly;
             };
             Board.prototype.getAllTiles = function () {
                 return this.tiles;
+            };
+            Board.prototype.getAllTilesValues = function () {
+                var values = new Array();
+                for (var t in this.tiles)
+                    values[t] = this.tiles[t].getNumber();
+                return values;
             };
             Board.prototype.getTileId = function (tile) {
                 return parseInt(tile.name);

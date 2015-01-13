@@ -19,7 +19,11 @@
             var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
 
+            // verifies if there is a savedGame
             loadingScreen.loaded = () => {
+                if (this.userData.loadGame())
+                    joinjelly.JoinJelly.startLevel();
+                else
                 JoinJelly.showMainMenu();
             }
         }
