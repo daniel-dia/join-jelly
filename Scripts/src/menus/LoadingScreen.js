@@ -20,22 +20,22 @@ var joinjelly;
             if (window.innerWidth <= 384)
                 assetscale = 0.25;
             var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale)); //, spriteSheets, images);
-            //loader text
-            var text = new createjs.Text("", "90px Arial", "#FFF");
-            text.x = defaultWidth / 2;
-            text.y = defaultHeight / 2;
-            text.textAlign = "center";
-            this.content.addChild(text);
+            ////loader text
+            //var text = new createjs.Text("", "90px Arial", "#FFF");
+            //text.x = defaultWidth / 2;
+            //text.y = defaultHeight / 2;
+            //text.textAlign = "center"
+            ////this.content.addChild(text);
             //loading animation
             var anim = new joinjelly.view.LoadingBall();
             anim.x = defaultWidth / 2;
             anim.y = defaultHeight / 2 + 400;
             this.content.addChild(anim);
             //add update% functtion
-            queue.addEventListener("progress", function (evt) {
-                text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
-                return true;
-            });
+            //queue.addEventListener("progress", (evt: Object): boolean => {
+            //    text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
+            //    return true;
+            //});
             //creates load complete action
             queue.addEventListener("complete", function (evt) {
                 if (_this.loaded)

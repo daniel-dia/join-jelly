@@ -22,6 +22,8 @@ var joinjelly;
                 this.initialInterval = 900;
                 this.finalInterval = 150;
                 this.easeInterval = 0.97;
+                // #endregion
+                this.log = "";
                 this.userData = userData;
                 this.score = 0;
                 this.createBackground();
@@ -184,6 +186,7 @@ var joinjelly;
             // #region =================================== gamelay =======================================================
             // starts the game
             GamePlayScreen.prototype.start = function () {
+                //this.selfPeformanceTest()
                 this.level = 1;
                 this.matches = 0;
                 // board initialization
@@ -615,6 +618,24 @@ var joinjelly;
                 this.updateFooter();
                 this.updateInterfaceInfos();
                 this.pauseGame();
+            };
+            GamePlayScreen.prototype.selfPeformanceTest = function () {
+                var _this = this;
+                setInterval(function () {
+                    _this.useRevive();
+                    _this.useFast();
+                    var value = _this.countChild(_this.view).toString() + "\t" + Math.floor(createjs.Ticker.getMeasuredFPS());
+                    document.title = value;
+                    _this.log += value + "\n";
+                    window.localStorage.setItem("log", _this.log);
+                }, 2000);
+            };
+            GamePlayScreen.prototype.countChild = function (container) {
+                var childrens = container.getNumChildren();
+                for (var c in container.children)
+                    if (container.children[c] instanceof createjs.Container)
+                        childrens += this.countChild(container.children[c]);
+                return childrens;
             };
             return GamePlayScreen;
         })(gameui.ScreenState);

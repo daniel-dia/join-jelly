@@ -371,6 +371,7 @@
     <Content Include="resources\Wallpaper-Puyo-Puyo-pink-background[1].jpg" />
     <Content Include="Scripts\BitmapScalePath.js" />
     <Content Include="Scripts\createjs-2013.12.12.min.js" />
+    <Content Include="Scripts\createjs-2014.12.12.min.js" />
     <Content Include="Scripts\fontConverter.js" />
     <Content Include="Scripts\ImageHitAreaPatch.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />
@@ -409,6 +410,8 @@
     <Content Include="assets\Sounds\s2.mp3" />
     <Content Include="assets\Sounds\s3.mp3" />
     <Content Include="assets\Sounds\tests.html" />
+    <Content Include="Scripts\SpriteContainer.js" />
+    <Content Include="Scripts\SpriteStage.js" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>

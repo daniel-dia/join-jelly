@@ -10,8 +10,7 @@ var gameui;
             this.defaultHeight = gameHeight;
             //Initializes canvas Context            
             this.myCanvas = document.getElementById(canvasElement);
-            var ctx = this.myCanvas.getContext("2d");
-            this.stage = new createjs.Stage(this.myCanvas);
+            this.stage = new createjs.Stage(canvasElement);
             createjs.Touch.enable(this.stage);
             createjs.Ticker.addEventListener("tick", function () {
                 _this.stage.update();

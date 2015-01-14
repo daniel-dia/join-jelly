@@ -244,6 +244,7 @@
         // starts the game
         protected start() {
 
+            //this.selfPeformanceTest()
 
             this.level = 1;
             this.matches = 0;
@@ -812,6 +813,28 @@
 
         // #endregion
 
+        private log: string = "";
+        private selfPeformanceTest() {
+            setInterval(() => {
+                this.useRevive();
+
+                this.useFast();
+                var value = this.countChild(this.view).toString() + "\t" + Math.floor(createjs.Ticker.getMeasuredFPS());
+                document.title = value;
+                this.log += value + "\n";
+                window.localStorage.setItem("log", this.log);
+            }, 2000);
+        }
+
+        private countChild(container:createjs.Container) :number{
+            var childrens: number = container.getNumChildren();
+
+            for (var c in container.children) 
+                if (container.children[c] instanceof createjs.Container)
+                    childrens += this.countChild(<createjs.Container>container.children[c]);
+            
+            return childrens;
+        }
     }
 
     enum GameState {

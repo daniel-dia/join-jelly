@@ -18,7 +18,7 @@
              parseInt(-char["@xoffset"]),
              parseInt(-char["@yoffset"])
              ];
-        animations[String.fromCharCode(char["@id"]).toString()] =[c];
+         animations[String.fromCharCode(char["@id"]).toString()] = parseInt(c);
     }
 
     return {

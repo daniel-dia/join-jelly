@@ -40,8 +40,7 @@ module gameui{
 
             //Initializes canvas Context            
             this.myCanvas = <HTMLCanvasElement> document.getElementById(canvasElement);
-            var ctx: any = this.myCanvas.getContext("2d");
-            this.stage = new createjs.Stage(this.myCanvas);
+            this.stage = new createjs.Stage(canvasElement);
             createjs.Touch.enable(this.stage);
             createjs.Ticker.addEventListener("tick", () => {this.stage.update();});
             createjs.Ticker.setFPS(fps);
