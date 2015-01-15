@@ -11,8 +11,8 @@
             this.analytics = new Analytics();
             this.itemData = new ItemsData();
 
-            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight);
-            this.gameScreen.stage.enableMouseOver(60);
+            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight,60,true);
+            
             this.gameScreen.stage.mouseMoveOutside = true;
 
             this.userData = new UserData();
@@ -21,8 +21,9 @@
 
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
-                if (this.userData.loadGame())
-                    joinjelly.JoinJelly.startLevel();
+                var loadedGame = this.userData.loadGame();
+                if (loadedGame)
+                    joinjelly.JoinJelly.startLevel(loadedGame);
                 else
                 JoinJelly.showMainMenu();
             }
@@ -40,10 +41,10 @@
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         }
 
-        public static startLevel() {
+        public static startLevel(loadedGame?:SaveGame) {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "bottom", time: 500 };
-            this.gameScreen.switchScreen(new gameplay.ExplodeBricks(this.userData), null, transition);
+            this.gameScreen.switchScreen(new gameplay.ExplodeBricks(this.userData,loadedGame), null, transition);
         }
 
         public static startTutorial() {

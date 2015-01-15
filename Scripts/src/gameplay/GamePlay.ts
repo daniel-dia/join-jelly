@@ -37,7 +37,7 @@
 
         //#region =================================== initialization ================================================
 
-        constructor(userData: UserData) {
+        constructor(userData: UserData,saveGame?:SaveGame) {
             super();
 
             this.userData = userData;
@@ -53,6 +53,10 @@
             setTimeout(() => {
                 this.start();
             }, 500);
+
+            if (saveGame) 
+                // try to load a saved Game
+                this.loadGame();
         }
 
         // create game effects
@@ -93,8 +97,9 @@
         // create a new board
         private createBoard() {
             this.board = new Board(this.boardSize, this.boardSize, 1536 / 5, true);
-            this.board.addEventListener("tileMove", (e: createjs.MouseEvent) => {
-                this.dragged(e.target.origin, e.target.target);
+            this.board.addEventListener("dragging", (e: createjs.MouseEvent) => {
+
+                this.dragged(e["originTile"], e["targetTile"]);
             });
             this.content.addChild(this.board);
             
@@ -119,7 +124,7 @@
             this.footer.addChild(this.gameFooter);
             this.updateFooter();
 
-            this.gameFooter.addEventListener("useitem", (e: createjs.Event) => { this.useItem(e.target) });
+            this.gameFooter.addEventListener("useitem", (e: createjs.Event) => { this.useItem(e.item) });
 
 
 
@@ -266,8 +271,6 @@
             // log game start event
             JoinJelly.analytics.logGameStart();
 
-            // try to load a saved Game
-            this.loadGame();
         }
 
         // time step for adding tiles.

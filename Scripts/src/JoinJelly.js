@@ -7,16 +7,16 @@ var joinjelly;
             var _this = this;
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
-            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight);
-            this.gameScreen.stage.enableMouseOver(60);
+            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, 60, true);
             this.gameScreen.stage.mouseMoveOutside = true;
             this.userData = new UserData();
             var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             // verifies if there is a savedGame
             loadingScreen.loaded = function () {
-                if (_this.userData.loadGame())
-                    joinjelly.JoinJelly.startLevel();
+                var loadedGame = _this.userData.loadGame();
+                if (loadedGame)
+                    joinjelly.JoinJelly.startLevel(loadedGame);
                 else
                     JoinJelly.showMainMenu();
             };
@@ -33,11 +33,11 @@ var joinjelly;
                 transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         };
-        JoinJelly.startLevel = function () {
+        JoinJelly.startLevel = function (loadedGame) {
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
                 transition = { type: "bottom", time: 500 };
-            this.gameScreen.switchScreen(new joinjelly.gameplay.ExplodeBricks(this.userData), null, transition);
+            this.gameScreen.switchScreen(new joinjelly.gameplay.ExplodeBricks(this.userData, loadedGame), null, transition);
         };
         JoinJelly.startTutorial = function () {
             var transition;

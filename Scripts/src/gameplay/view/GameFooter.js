@@ -64,7 +64,7 @@ var joinjelly;
                     this.itemsButtons[item] = bt;
                     //add event listener
                     bt.addEventListener("click", function () {
-                        _this.dispatchEvent("useitem", item);
+                        _this.dispatchEvent({ type: "useitem", item: item });
                     });
                 };
                 // get a item display object

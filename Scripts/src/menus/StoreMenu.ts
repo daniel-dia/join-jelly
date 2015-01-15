@@ -53,7 +53,7 @@
                     si.setPurchasing();
                     this.lockUI();
 
-                    this.purchaseProduct(event.target, (sucess: boolean) => { 
+                    this.purchaseProduct(event["product"], (sucess: boolean) => { 
                         if (sucess) {
                             si.setPurchased();
                             gameui.AssetsManager.playSound("Interface Sound-11");

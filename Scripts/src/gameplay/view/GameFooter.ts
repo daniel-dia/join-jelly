@@ -67,7 +67,7 @@
 
             //add event listener
             bt.addEventListener("click", () => {
-                this.dispatchEvent("useitem", item);
+                this.dispatchEvent({ type: "useitem", item: item });
             });
 
         }

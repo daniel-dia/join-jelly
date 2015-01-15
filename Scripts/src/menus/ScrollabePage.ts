@@ -46,6 +46,7 @@
             // add scroll event
             var targetY =0;
             var last;
+
             this.content.addEventListener("pressmove", (evt: createjs.MouseEvent) => {
                 if (!last) last = evt.localY;
                 targetY += (evt.localY - last)*1.3;

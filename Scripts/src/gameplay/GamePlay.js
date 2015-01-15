@@ -11,7 +11,7 @@ var joinjelly;
         var GamePlayScreen = (function (_super) {
             __extends(GamePlayScreen, _super);
             //#region =================================== initialization ================================================
-            function GamePlayScreen(userData) {
+            function GamePlayScreen(userData, saveGame) {
                 var _this = this;
                 _super.call(this);
                 this.matches = 0;
@@ -33,6 +33,9 @@ var joinjelly;
                 setTimeout(function () {
                     _this.start();
                 }, 500);
+                if (saveGame)
+                    // try to load a saved Game
+                    this.loadGame();
             }
             // create game effects
             GamePlayScreen.prototype.createEffects = function () {
@@ -66,8 +69,8 @@ var joinjelly;
             GamePlayScreen.prototype.createBoard = function () {
                 var _this = this;
                 this.board = new gameplay.Board(this.boardSize, this.boardSize, 1536 / 5, true);
-                this.board.addEventListener("tileMove", function (e) {
-                    _this.dragged(e.target.origin, e.target.target);
+                this.board.addEventListener("dragging", function (e) {
+                    _this.dragged(e["originTile"], e["targetTile"]);
                 });
                 this.content.addChild(this.board);
                 this.board.x = defaultWidth / 2;
@@ -88,7 +91,7 @@ var joinjelly;
                 this.footer.addChild(this.gameFooter);
                 this.updateFooter();
                 this.gameFooter.addEventListener("useitem", function (e) {
-                    _this.useItem(e.target);
+                    _this.useItem(e.item);
                 });
                 // creates pause menu
                 this.pauseMenu = new gameplay.view.PauseMenu();
@@ -201,8 +204,6 @@ var joinjelly;
                 this.step(500);
                 // log game start event
                 joinjelly.JoinJelly.analytics.logGameStart();
-                // try to load a saved Game
-                this.loadGame();
             };
             // time step for adding tiles.
             GamePlayScreen.prototype.step = function (timeout) {

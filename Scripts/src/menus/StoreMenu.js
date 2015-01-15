@@ -53,7 +53,7 @@ var joinjelly;
                         var si = event.currentTarget;
                         si.setPurchasing();
                         _this.lockUI();
-                        _this.purchaseProduct(event.target, function (sucess) {
+                        _this.purchaseProduct(event["product"], function (sucess) {
                             if (sucess) {
                                 si.setPurchased();
                                 gameui.AssetsManager.playSound("Interface Sound-11");

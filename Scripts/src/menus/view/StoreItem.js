@@ -93,7 +93,7 @@ var joinjelly;
                     this.addChild(loading);
                     // add purchase buttton
                     var button = new gameui.ImageButton("StoreBt", function () {
-                        _this.dispatchEvent("buy", _this.product.ProductId);
+                        _this.dispatchEvent({ type: "buy", product: _this.product.ProductId });
                     });
                     button.y = 152;
                     button.x = 1199;

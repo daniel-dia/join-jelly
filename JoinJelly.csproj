@@ -377,7 +377,6 @@
     <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\md5.js" />
-    <Content Include="assets\Sounds\bg1.mp3" />
     <Content Include="assets\Sounds\end.mp3" />
     <Content Include="assets\Sounds\h1.mp3" />
     <Content Include="assets\Sounds\Interface Sound-06.mp3" />
@@ -409,7 +408,6 @@
     <Content Include="assets\Sounds\s1.mp3" />
     <Content Include="assets\Sounds\s2.mp3" />
     <Content Include="assets\Sounds\s3.mp3" />
-    <Content Include="assets\Sounds\tests.html" />
     <Content Include="Scripts\SpriteContainer.js" />
     <Content Include="Scripts\SpriteStage.js" />
     <Content Include="web.config" />

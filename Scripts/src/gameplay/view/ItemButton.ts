@@ -10,7 +10,7 @@
             super();
 
             this.item = item;
-            this.addEventListener("click", () => { this.dispatchEvent("useitem", item); });
+            this.addEventListener("click", () => { this.dispatchEvent({ type: "useitem", item: item }); });
 
             //create Item
             var bg = gameui.AssetsManager.getBitmap("itemBG");

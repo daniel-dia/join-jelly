@@ -50,13 +50,6 @@
         private addTile(x: number, y: number, tileSize: number) {
             var tileDO = new Tile(x, y, tileSize);
 
-            //// add a tile background
-            //if ((x + y) % 2 == 0) {
-            //    var shape = new createjs.Shape();
-            //    this.tilesContainer.addChild(shape);
-            //    shape.graphics.beginFill("rgba(255,255,255,0.2)").drawRect(tileSize * x, tileSize * y + tileSize * 0.2, tileSize, tileSize);
-            //}
-
             // add a jelly on tile
             this.tiles.push(tileDO);
             this.tilesContainer.addChild(tileDO);
@@ -99,12 +92,17 @@
                     tile.x = e.localX + touchOffset[e.pointerID].x;
                     tile.y = e.localY + touchOffset[e.pointerID].y;
                     tile.lock();
-
+                    
                     //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
                     var target = this.getTileByRawPos(e.localX, e.localY, tileSize);
                     if (target && target.name.toString() != tile.name) {
-                        if (target.isUnlocked())
-                            this.dispatchEvent("tileMove", { origin: tile, target: target });
+                        if (target.isUnlocked()){
+                           var x= { origin: tile, target: target };
+                            var ev = new createjs.Event("dragging", false, false);
+                            ev["originTile"] = tile;
+                            ev["targetTile"] = target;
+                            this.dispatchEvent(ev);
+                        }
                     }
                 }
             });

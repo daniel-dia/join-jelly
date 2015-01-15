@@ -18,7 +18,7 @@ var joinjelly;
                     this.ammount = 0;
                     this.item = item;
                     this.addEventListener("click", function () {
-                        _this.dispatchEvent("useitem", item);
+                        _this.dispatchEvent({ type: "useitem", item: item });
                     });
                     //create Item
                     var bg = gameui.AssetsManager.getBitmap("itemBG");

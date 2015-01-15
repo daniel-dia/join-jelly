@@ -16,17 +16,17 @@ module joinjelly {
         public initializeImages() {
 
             assetscale = 1;
-            if (window.innerWidth <= 1024) assetscale = 0.5;
-            if (window.innerWidth <= 384) assetscale = 0.25;
+            //if (window.innerWidth <= 1024) assetscale = 0.5;
+            //if (window.innerWidth <= 384) assetscale = 0.25;
          
             var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(assetscale));//, spriteSheets, images);
 
-            ////loader text
-            //var text = new createjs.Text("", "90px Arial", "#FFF");
-            //text.x = defaultWidth / 2;
-            //text.y = defaultHeight / 2;
-            //text.textAlign = "center"
-            ////this.content.addChild(text);
+            //loader text
+            var text = new createjs.Text("", "90px Arial", "#FFF");
+            text.x = defaultWidth / 2;
+            text.y = defaultHeight / 2;
+            text.textAlign = "center"
+            this.content.addChild(text);
 
             //loading animation
             var anim = new view.LoadingBall();
@@ -35,10 +35,10 @@ module joinjelly {
             this.content.addChild(anim);
 
             //add update% functtion
-            //queue.addEventListener("progress", (evt: Object): boolean => {
-            //    text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
-            //    return true;
-            //});
+            queue.addEventListener("progress", (evt: Object): boolean => {
+                text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
+                return true;
+            });
 
             //creates load complete action
             queue.addEventListener("complete", (evt: Object): boolean => {
@@ -171,7 +171,7 @@ module joinjelly {
                 //{ id: "sound_s1", src: "assets/Sounds/s1.mp3" },
                 //{ id: "sound_s2", src: "assets/Sounds/s2.mp3" },
                 //{ id: "sound_s3", src: "assets/Sounds/s3.mp3" },
-                                       
+                                     
                 //{ id: "sound_j1", src: "assets/Sounds/j1.mp3" },
                 //{ id: "sound_j2", src: "assets/Sounds/j2.mp3" },
                 //{ id: "sound_j3", src: "assets/Sounds/j3.mp3" },
