@@ -17,21 +17,21 @@
         private addButtons() {
 
             //add continue button;
-            var ok = new gameui.ImageButton("PlayBt", (() => {
+            var ok = new gameui.ImageButton("BtPlay", (() => {
                 this.dispatchEvent("play")
             }));
             ok.set({ x: 771, y: 1599 });
             this.addChild(ok);
 
             //add share button;
-            var board = new gameui.ImageButton("Home", (() => {
+            var board = new gameui.ImageButton("BtHome", (() => {
                 this.dispatchEvent("home")
             }));
             board.set({ x: 353, y: 1570 });
             this.addChild(board);
 
             //add showBoard button
-            var share = new gameui.ImageButton("Restart", (() => {
+            var share = new gameui.ImageButton("BtRestart", (() => {
                 this.dispatchEvent("restart")
             }));
             share.set({ x: 1190, y: 1570 });

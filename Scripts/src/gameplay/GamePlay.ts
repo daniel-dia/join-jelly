@@ -138,7 +138,7 @@
             this.finishMenu.y = -200;
 
             // creates a toggle button
-            var tbt = new gameui.ImageButton("GameOverBoard", () => {
+            var tbt = new gameui.ImageButton("BtBoard", () => {
                 this.finishMenu.show();
                 tbt.fadeOut();
 

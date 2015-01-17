@@ -80,12 +80,8 @@ module joinjelly {
                 { id: "e2048", src: "assets/images_" + scale + "x/e2048.png" },
                 { id: "e4096", src: "assets/images_" + scale + "x/e4096.png" },
                 { id: "e8192", src: "assets/images_" + scale + "x/e8192.png" },
-               
                 { id: "footer", src: "assets/images_" + scale + "x/footer.png" },
                 { id: "header", src: "assets/images_" + scale + "x/header.png" },
-                { id: "iconMenu", src: "assets/images_" + scale + "x/iconMenu.png" },
-                { id: "iconPause", src: "assets/images_" + scale + "x/iconPause.png" },
-                { id: "iconPlay", src: "assets/images_" + scale + "x/iconPlay.png" },
                 { id: "j-1", src: "assets/images_" + scale + "x/j-1.png" },
                 { id: "e-1", src: "assets/images_" + scale + "x/e-1.png" },
                 { id: "j1", src: "assets/images_" + scale + "x/j1.png" },
@@ -98,10 +94,6 @@ module joinjelly {
                 { id: "j512", src: "assets/images_" + scale + "x/j512.png" },
                 { id: "j64", src: "assets/images_" + scale + "x/j64.png" },
                 { id: "j8", src: "assets/images_" + scale + "x/j8.png" },
-                { id: "PlayBt", src: "assets/images_" + scale + "x/PlayBt.png" },
-                { id: "StoreBt", src: "assets/images_" + scale + "x/StoreBt.png" },
-                { id: "SettingsBt", src: "assets/images_" + scale + "x/SettingsBt.png" },
-                { id: "RefreshBt", src: "assets/images_" + scale + "x/RefreshBt.png" },
                 { id: "time_bar", src: "assets/images_" + scale + "x/time_bar.png" },
                 { id: "time_bar_red", src: "assets/images_" + scale + "x/time_bar_red.png" },
                 { id: "time_bar_bright", src: "assets/images_" + scale + "x/time_bar_bright.png" },
@@ -109,16 +101,27 @@ module joinjelly {
                 { id: "shadow", src: "assets/images_" + scale + "x/shadow.png" },
                 { id: "particle", src: "assets/images_" + scale + "x/Particle.png" },
 
-                { id: "btHelp", src: "assets/images_" + scale + "x/btHelp.png" },
-                { id: "btInfo", src: "assets/images_" + scale + "x/btInfo.png" },
-                { id: "btJelly", src: "assets/images_" + scale + "x/btJelly.png" },
-                { id: "btPause", src: "assets/images_" + scale + "x/btPause.png" },
-                
+                { id: "BtRestart", src: "assets/images_" + scale + "x/BtRestart.png" },
+                { id: "BtHome", src: "assets/images_" + scale + "x/BtHome.png" },
+                { id: "BtPlay", src: "assets/images_" + scale + "x/BtPlay.png" },
+                { id: "BtStore", src: "assets/images_" + scale + "x/BtStore.png" },
+                { id: "BtSettings", src: "assets/images_" + scale + "x/BtSettings.png" },
+                { id: "BtRefresh", src: "assets/images_" + scale + "x/BtRefresh.png" },
+                { id: "BtHelp", src: "assets/images_" + scale + "x/BtHelp.png" },
+                { id: "BtInfo", src: "assets/images_" + scale + "x/BtInfo.png" },
+                { id: "BtJelly", src: "assets/images_" + scale + "x/BtJelly.png" },
+                { id: "BtPause", src: "assets/images_" + scale + "x/BtPause.png" },
+                { id: "BtMusic", src: "assets/images_" + scale + "x/BtMusic.png" },
+                { id: "BtMusicOff", src: "assets/images_" + scale + "x/BtMusicOff.png" },
+                { id: "BtSound", src: "assets/images_" + scale + "x/BtSound.png" },
+                { id: "BtSoundOff", src: "assets/images_" + scale + "x/BtSoundOff.png" },
+                { id: "BtTutorial", src: "assets/images_" + scale + "x/BtTutorial.png" },
+                { id: "BtBoard", src: "assets/images_" + scale + "x/BtBoard.png" },
+                { id: "BtOk", src: "assets/images_" + scale + "x/BtOk.png" },
+                { id: "BtShare", src: "assets/images_" + scale + "x/BtShare.png" },
+
                 { id: "GameOverBgJelly", src: "assets/images_" + scale + "x/GameOverBgJelly.png" },
                 { id: "GameOverBgPoints", src: "assets/images_" + scale + "x/GameOverBgPoints.png" },
-                { id: "GameOverBoard", src: "assets/images_" + scale + "x/GameOverBoard.png" },
-                { id: "GameOverOk", src: "assets/images_" + scale + "x/GameOverOk.png" },
-                { id: "GameOverShare", src: "assets/images_" + scale + "x/GameOverShare.png" },
 
                 { id: "fxJoin", src: "assets/images_" + scale + "x/fxJoin.png" },
 
@@ -129,14 +132,10 @@ module joinjelly {
                 { id: "t4", src: "assets/images_" + scale + "x/t4.png" },
                 { id: "t5", src: "assets/images_" + scale + "x/t5.png" },
 
-                { id: "Restart", src: "assets/images_" + scale + "x/Restart.png" },
-                { id: "Home", src: "assets/images_" + scale + "x/Home.png" },
+             
                 { id: "FlyBG", src: "assets/images_" + scale + "x/FlyBG.png" },
                 { id: "FlyGroup", src: "assets/images_" + scale + "x/FlyGroup.png" },
-                { id: "BtMusic", src: "assets/images_" + scale + "x/BtMusic.png" },
-                { id: "BtMusicOff", src: "assets/images_" + scale + "x/BtMusicOff.png" },
-                { id: "BtSound", src: "assets/images_" + scale + "x/BtSound.png" },
-                { id: "BtSoundOff", src: "assets/images_" + scale + "x/BtSoundOff.png" },
+             
 
                 { id: "footer", src: "assets/images_" + scale + "x/footer.png" },
                 { id: "itemclean", src: "assets/images_" + scale + "x/itemClean.png" },
@@ -150,8 +149,6 @@ module joinjelly {
              
                 { id: "tutorialFinger", src: "assets/images_" + scale + "x/tutorialFinger.png" },
                 { id: "ballon", src: "assets/images_" + scale + "x/ballon.png" },
-                { id: "tutorial", src: "assets/images_" + scale + "x/tutorial.png" },
-
                 { id: "pediaItem", src: "assets/images_" + scale + "x/pediaItem.png" },
                 { id: "BigBG", src: "assets/images_" + scale + "x/BigBG.png" }, 
 

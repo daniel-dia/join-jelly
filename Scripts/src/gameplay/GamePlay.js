@@ -101,7 +101,7 @@ var joinjelly;
                 this.content.addChild(this.finishMenu);
                 this.finishMenu.y = -200;
                 // creates a toggle button
-                var tbt = new gameui.ImageButton("GameOverBoard", function () {
+                var tbt = new gameui.ImageButton("BtBoard", function () {
                     _this.finishMenu.show();
                     tbt.fadeOut();
                     gameui.AssetsManager.playSound("Interface Sound-06");

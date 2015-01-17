@@ -84,7 +84,7 @@
             this.addChild(loading);
 
             // add purchase buttton
-            var button = new gameui.ImageButton("StoreBt", () => {
+            var button = new gameui.ImageButton("BtStore", () => {
                 this.dispatchEvent({ type: "buy", product: this.product.ProductId });
             });
             button.y = 152;

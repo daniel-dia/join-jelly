@@ -23,7 +23,7 @@
             bg.mouseEnabled = false;
 
             //add pause button
-            var pauseButton = new gameui.ImageButton("btPause", () => {
+            var pauseButton = new gameui.ImageButton("BtPause", () => {
                 this.dispatchEvent("pause");
             });
 

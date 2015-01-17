@@ -67,7 +67,7 @@
 
         private addButton() {
             // add ok button
-            var okButton = new gameui.ImageButton("GameOverOk", () => { 
+            var okButton = new gameui.ImageButton("BtOk", () => { 
                 if (this.okButtonAction) this.okButtonAction();
                 else
                 joinjelly.JoinJelly.showMainMenu() });

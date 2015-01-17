@@ -22,19 +22,19 @@ var joinjelly;
                 FinishMenu.prototype.addButtons = function () {
                     var _this = this;
                     //add continue button;
-                    var ok = new gameui.ImageButton("GameOverOk", (function () {
+                    var ok = new gameui.ImageButton("BtOk", (function () {
                         _this.dispatchEvent("ok");
                     }));
                     ok.set({ x: 771, y: 1810 });
                     this.addChild(ok);
                     //add share button;
-                    var board = new gameui.ImageButton("GameOverBoard", (function () {
+                    var board = new gameui.ImageButton("BtBoard", (function () {
                         _this.dispatchEvent("board");
                     }));
                     board.set({ x: 353, y: 1780 });
                     this.addChild(board);
                     //add showBoard button
-                    var share = new gameui.ImageButton("GameOverShare", (function () {
+                    var share = new gameui.ImageButton("BtShare", (function () {
                         _this.dispatchEvent("share");
                     }));
                     share.set({ x: 1190, y: 1780 });

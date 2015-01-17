@@ -27,7 +27,7 @@ var joinjelly;
             lobby.y = 1000;
             this.content.addChild(lobby);
             // play button
-            var button = new gameui.ImageButton("PlayBt", function () {
+            var button = new gameui.ImageButton("BtPlay", function () {
                 if (joinjelly.JoinJelly.userData.getLastJelly() > 1)
                     joinjelly.JoinJelly.startLevel();
                 else
@@ -58,28 +58,28 @@ var joinjelly;
             var x = defaultWidth + 150;
             var space = 250;
             //add pedia button
-            var aboutBt = new gameui.ImageButton("btJelly", function () {
+            var aboutBt = new gameui.ImageButton("BtJelly", function () {
                 joinjelly.JoinJelly.showPedia();
             });
             aboutBt.y = -150;
             aboutBt.x = x -= space;
             this.footer.addChild(aboutBt);
             //add about bt
-            var aboutBt = new gameui.ImageButton("btInfo", function () {
+            var aboutBt = new gameui.ImageButton("BtInfo", function () {
                 joinjelly.JoinJelly.showAboutScreen();
             });
             aboutBt.y = -150;
             aboutBt.x = x -= space;
             this.footer.addChild(aboutBt);
             //add tutorial bt
-            var tutorialBt = new gameui.ImageButton("btHelp", function () {
+            var tutorialBt = new gameui.ImageButton("BtHelp", function () {
                 joinjelly.JoinJelly.startTutorial();
             });
             tutorialBt.y = -150;
             tutorialBt.x = x -= space;
             this.footer.addChild(tutorialBt);
             //add store bt
-            var storeBt = new gameui.ImageButton("StoreBt", function () {
+            var storeBt = new gameui.ImageButton("BtStore", function () {
                 joinjelly.JoinJelly.showStore(_this);
             });
             storeBt.y = -150;

@@ -24,7 +24,7 @@ var joinjelly;
                     bg.x = 0;
                     bg.mouseEnabled = false;
                     //add pause button
-                    var pauseButton = new gameui.ImageButton("btPause", function () {
+                    var pauseButton = new gameui.ImageButton("BtPause", function () {
                         _this.dispatchEvent("pause");
                     });
                     pauseButton.x = 106;
