@@ -50,14 +50,20 @@ var gameui;
                     return this.getSprite(name, false);
             //if image is preloaded
             var image = this.getLoadedImage(name);
-            if (image)
-                return new createjs.Bitmap(image);
+            if (image) {
+                var imgobj = new createjs.Bitmap(image);
+                imgobj.mouseEnabled = false;
+                return imgobj;
+            }
             //or else try grab by filename
-            return new createjs.Bitmap(name);
+            var imgobj = new createjs.Bitmap(name);
+            imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
+            return imgobj;
         };
         AssetsManager.getBitmapText = function (text, bitmapFontId) {
             var bt = new createjs.BitmapText(text, new createjs.SpriteSheet(this.bitmapFontSpriteSheetDataArray[bitmapFontId]));
             bt.lineHeight = 100;
+            bt.mouseEnabled = AssetsManager.defaultMouseEnabled;
             return bt;
         };
         //Get a preloaded Image from assets

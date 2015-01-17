@@ -47,6 +47,8 @@
 
             this.text = text;
 
+            this.createHitArea();
+
         }
 
         public setAmmount(ammout: number) {

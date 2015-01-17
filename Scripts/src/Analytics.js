@@ -46,6 +46,7 @@ var Analytics = (function () {
     // }
     //======================================================================================================================
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, level, x, y) {
+        return;
         if (typeof $ == "undefined")
             return;
         var game_key = '8c544aeba45e500f2af6e9b1beee996a';

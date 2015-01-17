@@ -22,6 +22,7 @@ var joinjelly;
                     var bg = gameui.AssetsManager.getBitmap("header");
                     this.addChild(bg);
                     bg.x = 0;
+                    bg.mouseEnabled = false;
                     //add pause button
                     var pauseButton = new gameui.ImageButton("btPause", function () {
                         _this.dispatchEvent("pause");

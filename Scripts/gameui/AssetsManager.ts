@@ -8,6 +8,7 @@
         private static imagesArray: Array<HTMLImageElement>;
         private static bitmapFontSpriteSheetDataArray: Array<any>;
         private static assetsManifest: Array<any>;
+        private static defaultMouseEnabled: boolean;
 
         //load assets
         public static loadAssets(assetsManifest: Array<any>, spriteSheets?: Array<any>,imagesArray?:Array<HTMLImageElement>): createjs.LoadQueue {
@@ -67,18 +68,25 @@
 
             //if image is preloaded
             var image = this.getLoadedImage(name);
-            if (image)
-                return new createjs.Bitmap(image);
+            if (image) {
+                var imgobj = new createjs.Bitmap(image);
+                imgobj.mouseEnabled = false; 
+                return imgobj;
+            }
 
             //or else try grab by filename
-            return new createjs.Bitmap(name);
+            var imgobj = new createjs.Bitmap(name);
+            imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
+            return imgobj;
 
         }
 
         public static getBitmapText(text:string, bitmapFontId:string):createjs.BitmapText { 
             var bt = new createjs.BitmapText(text, new createjs.SpriteSheet(this.bitmapFontSpriteSheetDataArray[bitmapFontId]));
             bt.lineHeight = 100;
+            bt.mouseEnabled = AssetsManager.defaultMouseEnabled;
             return bt;
+            
         }
 
         //Get a preloaded Image from assets

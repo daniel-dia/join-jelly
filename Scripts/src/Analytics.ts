@@ -66,7 +66,8 @@ class Analytics {
 
     //======================================================================================================================
     private sendEvent(eventId: string, subEventId, value: number, level?: string, x?: number, y?: number) {
-        if (typeof $ == "undefined") return;
+        return;
+          if (typeof $ == "undefined") return;
 
         var game_key = '8c544aeba45e500f2af6e9b1beee996a'
         var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0'

@@ -50,6 +50,7 @@ var joinjelly;
                     name.regX = name.getBounds().width / 2;
                     name.name = 'value';
                     this.text = text;
+                    this.createHitArea();
                 }
                 ItemButton.prototype.setAmmount = function (ammout) {
                     this.ammount = ammout;

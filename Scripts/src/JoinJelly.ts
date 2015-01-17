@@ -12,9 +12,8 @@
             this.itemData = new ItemsData();
 
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight,60,true);
-            
-            this.gameScreen.stage.mouseMoveOutside = true;
-
+            this.gameScreen.stage.enableDOMEvents(false);
+          
             this.userData = new UserData();
             var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
