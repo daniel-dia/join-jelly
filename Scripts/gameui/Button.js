@@ -87,6 +87,7 @@ var gameui;
                         _this.centralizeImage();
                     };
             }
+            this.createHitArea();
         }
         ImageButton.prototype.centralizeImage = function () {
             this.width = this.background.getBounds().width;
@@ -94,7 +95,6 @@ var gameui;
             this.background.regX = this.width / 2;
             this.background.regY = this.height / 2;
             this.centered = true;
-            this.createHitArea();
         };
         return ImageButton;
     })(Button);
@@ -116,10 +116,26 @@ var gameui;
             }
             this.addChild(this.text);
             this.createHitArea();
+            this.createHitArea();
         }
         return TextButton;
     })(ImageButton);
     gameui.TextButton = TextButton;
+    var BitmapTextButton = (function (_super) {
+        __extends(BitmapTextButton, _super);
+        function BitmapTextButton(text, bitmapFontId, background, event, soundId) {
+            _super.call(this, background, event, soundId);
+            //add text into it.
+            text = text.toUpperCase();
+            this.bitmapText = gameui.AssetsManager.getBitmapText(text, bitmapFontId);
+            this.addChild(this.bitmapText);
+            this.bitmapText.regX = this.bitmapText.getBounds().width / 2;
+            this.bitmapText.regY = this.bitmapText.lineHeight / 2;
+            this.createHitArea();
+        }
+        return BitmapTextButton;
+    })(ImageButton);
+    gameui.BitmapTextButton = BitmapTextButton;
     var IconButton = (function (_super) {
         __extends(IconButton, _super);
         function IconButton(icon, text, font, color, background, event, soundId) {
@@ -142,6 +158,7 @@ var gameui;
                     _this.icon.regY = _this.icon.getBounds().height / 2;
                 };
             this.updateLabel(text);
+            this.createHitArea();
         }
         IconButton.prototype.updateLabel = function (value) {
             this.text.text = value;

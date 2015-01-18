@@ -57,6 +57,13 @@ var joinjelly;
             }
             var x = defaultWidth + 150;
             var space = 250;
+            //add settings button
+            var settingsBt = new gameui.ImageButton("BtSettings", function () {
+                joinjelly.JoinJelly.showSettings();
+            });
+            settingsBt.y = -150;
+            settingsBt.x = x -= space;
+            this.footer.addChild(settingsBt);
             //add pedia button
             var aboutBt = new gameui.ImageButton("BtJelly", function () {
                 joinjelly.JoinJelly.showPedia();
@@ -71,13 +78,6 @@ var joinjelly;
             aboutBt.y = -150;
             aboutBt.x = x -= space;
             this.footer.addChild(aboutBt);
-            //add tutorial bt
-            var tutorialBt = new gameui.ImageButton("BtHelp", function () {
-                joinjelly.JoinJelly.startTutorial();
-            });
-            tutorialBt.y = -150;
-            tutorialBt.x = x -= space;
-            this.footer.addChild(tutorialBt);
             //add store bt
             var storeBt = new gameui.ImageButton("BtStore", function () {
                 joinjelly.JoinJelly.showStore(_this);

@@ -57,6 +57,12 @@ var joinjelly;
                 transition = { type: "left", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.Jellypedia(this.userData, StringResources.jellys), null, transition);
         };
+        JoinJelly.showSettings = function () {
+            var transition;
+            if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
+                transition = { type: "left", time: 500 };
+            this.gameScreen.switchScreen(new joinjelly.MainMenu(), null, transition);
+        };
         return JoinJelly;
     })();
     joinjelly.JoinJelly = JoinJelly;

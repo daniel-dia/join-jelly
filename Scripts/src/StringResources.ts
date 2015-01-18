@@ -2,17 +2,24 @@
 
     menus: {
         highScore: "High Score",
-        loading:"loading",
+        loading: "loading",
         score: "score",
         level: "level",
         options: "options",
         highJelly: "High Jelly",
-        gameOver:"GAME OVER",
-        jellypedia:"Jellypedia",
-        pause:"paused",
-        sound:"Sound"
+        gameOver: "GAME OVER",
+        jellypedia: "Jellypedia",
+        pause: "paused",
+        sound: "Sound",
+        menu: "menu",
+                
+        reset: "Reset All Data",
+        resetWarning: "Are you sure. All you progress will be lost",
+        about: "About",
+        tutorial: "Tutorial",
+        shop: "shop",
+        
     },
-
     tutorial: {
         msg1: "Hello, \nI'm little Jelly",
         msg2: "Help me to evolve\nJoin another jelly to me",
@@ -22,7 +29,8 @@
         msg6: "Perfect!\nNow let's play this game.",
         msg7: "but be careful, \ndo not let the board fill, \nthis is the end for us.",
 
-    }, jellys: {
+    },
+    jellys: {
         1: { name: "Little Jelly", description: "description" },
         2: { name: "Go Jelly", description: "description" },
         4: { name: "Angry Jelly", description: "description" },
@@ -45,7 +53,7 @@
         revive: "Revive",
     },
     store: {
-        title:"Store",
+        title: "Store",
         clean: {
             name: "Clean 3x",
             desc: "Remove all dirt and small jellies",
@@ -72,6 +80,6 @@
         },
     },
     credit: {
-    }
+    },
 
 }

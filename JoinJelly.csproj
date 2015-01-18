@@ -424,6 +424,8 @@
     <TypeScriptCompile Include="Scripts\gameui\ScreenState.ts" />
     <TypeScriptCompile Include="Scripts\gameui\Transition.ts" />
     <TypeScriptCompile Include="Scripts\gameui\UIItem.ts" />
+    <TypeScriptCompile Include="Scripts\src\menus\MainMenu.ts" />
+    <TypeScriptCompile Include="Scripts\src\menus\view\SoundOptions.ts" />
     <TypeScriptCompile Include="Scripts\typings\createjs-lib\createjs-lib.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\createjs\createjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\easeljs\easeljs.d.ts" />

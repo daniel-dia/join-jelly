@@ -63,5 +63,11 @@
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };
             this.gameScreen.switchScreen(new Jellypedia(this.userData, StringResources.jellys), null, transition);
         }
+
+        public static showSettings() {
+            var transition;
+            if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };
+            this.gameScreen.switchScreen(new MainMenu(), null, transition);
+        }
     }
 }

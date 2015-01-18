@@ -15,7 +15,9 @@ var joinjelly;
                 function PauseMenu() {
                     _super.call(this, StringResources.menus.pause);
                     this.addButtons();
-                    this.addSoundOptions();
+                    var soundOptions = new joinjelly.menus.view.SoundOptions();
+                    this.addChild(soundOptions);
+                    soundOptions.set({ x: defaultWidth / 2, y: 1000 });
                 }
                 //creates buttons controls
                 PauseMenu.prototype.addButtons = function () {
@@ -38,71 +40,6 @@ var joinjelly;
                     }));
                     share.set({ x: 1190, y: 1570 });
                     this.addChild(share);
-                };
-                PauseMenu.prototype.addSoundOptions = function () {
-                    var _this = this;
-                    var y = 1000;
-                    var f = gameui.AssetsManager.getBitmap("FlyGroup");
-                    f.set({ x: (defaultWidth - 1056) / 2, y: 870 });
-                    this.addChild(f);
-                    var t = gameui.AssetsManager.getBitmapText(StringResources.menus.sound, "debussy");
-                    t.set({ x: defaultWidth / 2, y: 810 });
-                    t.regX = t.getBounds().width / 2;
-                    this.addChild(t);
-                    //add continue button;
-                    this.musicBtOn = new gameui.ImageButton("BtMusic", (function () {
-                        _this.setMusic(0);
-                    }));
-                    this.musicBtOn.set({ x: 623, y: y });
-                    this.addChild(this.musicBtOn);
-                    //add share button;
-                    this.soundBtOn = new gameui.ImageButton("BtSound", (function () {
-                        _this.setSound(0);
-                    }));
-                    this.soundBtOn.set({ x: 923, y: y });
-                    this.addChild(this.soundBtOn);
-                    //add continue button;
-                    this.musicBtOff = new gameui.ImageButton("BtMusicOff", (function () {
-                        _this.setMusic(1);
-                    }));
-                    this.musicBtOff.set({ x: 623, y: y });
-                    this.addChild(this.musicBtOff);
-                    //add share button;
-                    this.soundBtOff = new gameui.ImageButton("BtSoundOff", (function () {
-                        _this.setSound(1);
-                    }));
-                    this.soundBtOff.set({ x: 923, y: y });
-                    this.addChild(this.soundBtOff);
-                    var mus = joinjelly.JoinJelly.userData.getMusicVol();
-                    var snd = joinjelly.JoinJelly.userData.getSoundVol();
-                    this.musicBtOff.visible = !mus;
-                    this.soundBtOff.visible = !snd;
-                    this.musicBtOn.visible = !!mus;
-                    this.soundBtOn.visible = !!snd;
-                };
-                PauseMenu.prototype.setMusic = function (value) {
-                    if (value) {
-                        this.musicBtOff.fadeOut();
-                        this.musicBtOn.fadeIn();
-                    }
-                    else {
-                        this.musicBtOn.fadeOut();
-                        this.musicBtOff.fadeIn();
-                    }
-                    joinjelly.JoinJelly.userData.setMusicVol(value);
-                    gameui.AssetsManager.setMusicVolume(value ? 1 : 0);
-                };
-                PauseMenu.prototype.setSound = function (value) {
-                    if (value) {
-                        this.soundBtOff.fadeOut();
-                        this.soundBtOn.fadeIn();
-                    }
-                    else {
-                        this.soundBtOn.fadeOut();
-                        this.soundBtOff.fadeIn();
-                    }
-                    joinjelly.JoinJelly.userData.setSoundVol(value);
-                    gameui.AssetsManager.setSoundVeolume(value ? 1 : 0);
                 };
                 return PauseMenu;
             })(joinjelly.menus.view.FlyOutMenu);

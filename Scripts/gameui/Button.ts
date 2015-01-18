@@ -26,6 +26,8 @@ module gameui {
             this.addEventListener("mouseout", () => { this.mouse = false; });
 
             this.soundId = soundId;
+
+ 
         }                                      
 
         public returnStatus(): void {
@@ -94,7 +96,7 @@ module gameui {
             }
 
             
-
+            this.createHitArea();
         }
 
         centralizeImage() {
@@ -102,8 +104,7 @@ module gameui {
             this.height = this.background.getBounds().height;
             this.background.regX = this.width / 2;
             this.background.regY = this.height / 2;
-            this.centered = true;
-            this.createHitArea();
+            this.centered = true; 
         }
     }
 
@@ -120,6 +121,7 @@ module gameui {
             this.text = new createjs.Text(text, font, color);
             this.text.textBaseline = "middle";
             this.text.textAlign = "center";
+            
             //createHitArea
             if (background == null)
             {
@@ -129,8 +131,31 @@ module gameui {
             
             this.addChild(this.text);
             this.createHitArea();
+
+            this.createHitArea();
         }
     }
+
+    export class BitmapTextButton extends ImageButton {
+
+        public bitmapText: createjs.BitmapText;
+
+        constructor(text: string, bitmapFontId: string, background?: string, event?: (event?: createjs.MouseEvent) => any, soundId?: string) {
+            super(background, event, soundId);
+
+            //add text into it.
+            text = text.toUpperCase();
+
+            this.bitmapText = AssetsManager.getBitmapText(text, bitmapFontId);
+            this.addChild(this.bitmapText);
+             
+            this.bitmapText.regX = this.bitmapText.getBounds().width / 2;
+            this.bitmapText.regY = this.bitmapText.lineHeight/2 ;
+
+            this.createHitArea();
+        }
+    }
+
 
     export class IconButton extends TextButton {
 
@@ -157,6 +182,8 @@ module gameui {
                     }
             
             this.updateLabel(text);
+
+            this.createHitArea();
         }
 
         public updateLabel(value: string) {

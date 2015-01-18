@@ -11,7 +11,7 @@
         private static defaultMouseEnabled: boolean;
 
         //load assets
-        public static loadAssets(assetsManifest: Array<any>, spriteSheets?: Array<any>,imagesArray?:Array<HTMLImageElement>): createjs.LoadQueue {
+        public static loadAssets(assetsManifest: Array<any>,path:string="", spriteSheets?: Array<any>,imagesArray?:Array<HTMLImageElement>): createjs.LoadQueue {
 
             //cleans previous loaded assets.
             this.cleanAssets();
@@ -37,7 +37,7 @@
             });
             
             //loads entire manifest
-            this.loader.loadManifest(this.assetsManifest);
+            this.loader.loadManifest(this.assetsManifest,true,path);
 
             return this.loader;
         }

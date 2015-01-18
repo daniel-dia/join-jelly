@@ -5,8 +5,9 @@ var gameui;
         function AssetsManager() {
         }
         //load assets
-        AssetsManager.loadAssets = function (assetsManifest, spriteSheets, imagesArray) {
+        AssetsManager.loadAssets = function (assetsManifest, path, spriteSheets, imagesArray) {
             var _this = this;
+            if (path === void 0) { path = ""; }
             //cleans previous loaded assets.
             this.cleanAssets();
             // initialize objects
@@ -25,7 +26,7 @@ var gameui;
                 return true;
             });
             //loads entire manifest
-            this.loader.loadManifest(this.assetsManifest);
+            this.loader.loadManifest(this.assetsManifest, true, path);
             return this.loader;
         };
         AssetsManager.loadFontSpriteSheet = function (id, spritesheetData) {

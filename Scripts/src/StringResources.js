@@ -9,7 +9,13 @@ var StringResources = {
         gameOver: "GAME OVER",
         jellypedia: "Jellypedia",
         pause: "paused",
-        sound: "Sound"
+        sound: "Sound",
+        menu: "menu",
+        reset: "Reset All Data",
+        resetWarning: "Are you sure. All you progress will be lost",
+        about: "About",
+        tutorial: "Tutorial",
+        shop: "shop",
     },
     tutorial: {
         msg1: "Hello, \nI'm little Jelly",
@@ -69,6 +75,6 @@ var StringResources = {
             desc: "A package with 3 units of each item",
         },
     },
-    credit: {}
+    credit: {},
 };
 //# sourceMappingURL=StringResources.js.map
