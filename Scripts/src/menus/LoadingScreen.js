@@ -10,44 +10,7 @@ var joinjelly;
         __extends(Loading, _super);
         function Loading() {
             _super.call(this);
-            this.initializeImages();
-        }
-        Loading.prototype.initializeImages = function () {
-            var _this = this;
-            assetscale = 1;
-            //if (window.innerWidth <= 1024) assetscale = 0.5;
-            //if (window.innerWidth <= 384) assetscale = 0.25;
-            var queue = gameui.AssetsManager.loadAssets(this.getAssetsManifest(), "assets/images_" + assetscale + "x/"); //, spriteSheets, images);
-            //loader text
-            var text = new createjs.Text("", "90px Arial", "#FFF");
-            text.x = defaultWidth / 2;
-            text.y = defaultHeight / 2;
-            text.textAlign = "center";
-            this.content.addChild(text);
-            //loading animation
-            var anim = new joinjelly.view.LoadingBall();
-            anim.x = defaultWidth / 2;
-            anim.y = defaultHeight / 2 + 400;
-            this.content.addChild(anim);
-            //add update% functtion
-            queue.addEventListener("progress", function (evt) {
-                text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
-                return true;
-            });
-            //creates load complete action
-            queue.addEventListener("complete", function (evt) {
-                if (_this.loaded)
-                    _this.loaded();
-                return true;
-            });
-            //set default sound button
-            gameui.Button.DefaultSoundId = "Interface Sound-06";
-            //load font
-            debussy = createSpriteSheetFromFont(debussyFont, "/assets/images_" + assetscale + "x/");
-            gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
-        };
-        Loading.prototype.getAssetsManifest = function () {
-            return [
+            this.assetManifest = [
                 { id: "j1024", src: "j1024.png" },
                 { id: "j2048", src: "j2048.png" },
                 { id: "j4096", src: "j4096.png" },
@@ -111,6 +74,8 @@ var joinjelly;
                 { id: "BtOk", src: "BtOk.png" },
                 { id: "BtShare", src: "BtShare.png" },
                 { id: "BtTextBg", src: "BtTextBg.png" },
+                { id: "BtPlusMini", src: "BtPlusMini.png" },
+                { id: "BtMenu", src: "BtMenu.png" },
                 { id: "GameOverBgJelly", src: "GameOverBgJelly.png" },
                 { id: "GameOverBgPoints", src: "GameOverBgPoints.png" },
                 { id: "fxJoin", src: "fxJoin.png" },
@@ -143,6 +108,46 @@ var joinjelly;
                 { id: "unchecked", src: "unchecked.png" },
                 { id: "MessageBox", src: "MessageBox.png" },
             ];
+            this.initializeImages();
+        }
+        Loading.prototype.initializeImages = function () {
+            var _this = this;
+            assetscale = 1;
+            //if (window.innerWidth <= 1024) assetscale = 0.5;
+            //if (window.innerWidth <= 384) assetscale = 0.25;
+            var path;
+            if (assetscale == 1)
+                path = "/assets/images/";
+            else
+                path = "/assets/images_" + assetscale + "x/";
+            var queue = gameui.AssetsManager.loadAssets(this.assetManifest, path); //, spriteSheets, images);
+            //loader text
+            var text = new createjs.Text("", "90px Arial", "#FFF");
+            text.x = defaultWidth / 2;
+            text.y = defaultHeight / 2;
+            text.textAlign = "center";
+            this.content.addChild(text);
+            //loading animation
+            var anim = new joinjelly.view.LoadingBall();
+            anim.x = defaultWidth / 2;
+            anim.y = defaultHeight / 2 + 400;
+            this.content.addChild(anim);
+            //add update% functtion
+            queue.addEventListener("progress", function (evt) {
+                text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
+                return true;
+            });
+            //creates load complete action
+            queue.addEventListener("complete", function (evt) {
+                if (_this.loaded)
+                    _this.loaded();
+                return true;
+            });
+            //set default sound button
+            gameui.Button.DefaultSoundId = "Interface Sound-06";
+            //load font
+            debussy = createSpriteSheetFromFont(debussyFont, path);
+            gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
         };
         return Loading;
     })(gameui.ScreenState);

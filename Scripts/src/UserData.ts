@@ -101,6 +101,9 @@
     }
     // #endregion
 
+    public resetAll() {
+        localStorage.clear();
+    }
 }
 
 interface SaveGame {

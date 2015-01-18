@@ -1,4 +1,4 @@
-xcopy images_1x images_0.5x /y /s
+xcopy images images_0.5x /y /s
 cd images_0.5x
 for /r %%f in (*.*) do convert %%f -resize 50%% %%f
 cd..

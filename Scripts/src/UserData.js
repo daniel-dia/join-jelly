@@ -73,6 +73,10 @@ var UserData = (function () {
             return defaultVaule;
         return JSON.parse(value);
     };
+    // #endregion
+    UserData.prototype.resetAll = function () {
+        localStorage.clear();
+    };
     //#endregion
     // #region generic
     UserData.prefix = "FastPair_";

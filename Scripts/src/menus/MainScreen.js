@@ -55,10 +55,10 @@ var joinjelly;
                 this.scoreText.scaleX = this.scoreText.scaleY = 0.8;
                 this.footer.addChild(this.scoreText);
             }
-            var x = defaultWidth + 150;
+            var x = defaultWidth + 100;
             var space = 250;
             //add settings button
-            var settingsBt = new gameui.ImageButton("BtSettings", function () {
+            var settingsBt = new gameui.ImageButton("BtMenu", function () {
                 joinjelly.JoinJelly.showSettings();
             });
             settingsBt.y = -150;
@@ -67,13 +67,6 @@ var joinjelly;
             //add pedia button
             var aboutBt = new gameui.ImageButton("BtJelly", function () {
                 joinjelly.JoinJelly.showPedia();
-            });
-            aboutBt.y = -150;
-            aboutBt.x = x -= space;
-            this.footer.addChild(aboutBt);
-            //add about bt
-            var aboutBt = new gameui.ImageButton("BtInfo", function () {
-                joinjelly.JoinJelly.showAboutScreen();
             });
             aboutBt.y = -150;
             aboutBt.x = x -= space;

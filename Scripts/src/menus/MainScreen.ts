@@ -65,11 +65,11 @@
                 this.footer.addChild(this.scoreText);
             }
 
-            var x = defaultWidth + 150;
+            var x = defaultWidth + 100;
             var space = 250;
 
             //add settings button
-            var settingsBt = new gameui.ImageButton("BtSettings", () => {
+            var settingsBt = new gameui.ImageButton("BtMenu", () => {
                 JoinJelly.showSettings();
             });
             settingsBt.y = -150;
@@ -84,15 +84,6 @@
             aboutBt.y = -150;
             aboutBt.x = x-=space;
             this.footer.addChild(aboutBt);
-
-            //add about bt
-            var aboutBt = new gameui.ImageButton("BtInfo", () => {
-                JoinJelly.showAboutScreen();
-            });
-            aboutBt.y = -150;
-            aboutBt.x = x -= space;
-            this.footer.addChild(aboutBt);
- 
 
             //add store bt
             var storeBt = new gameui.ImageButton("BtStore", () => {

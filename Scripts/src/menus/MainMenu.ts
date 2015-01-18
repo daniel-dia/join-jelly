@@ -22,12 +22,12 @@
             this.scrollableContent.addChild(tutorial);
 
             // add About Button
-            var about = new gameui.BitmapTextButton(StringResources.menus.about, "debussy","BtTextBg")
+            var about = new gameui.BitmapTextButton(StringResources.menus.about, "debussy", "BtTextBg", () => { alert("beta"); })
             about.y = y += space;
             this.scrollableContent.addChild(about);
 
             // add Reset Button
-            var reset = new gameui.BitmapTextButton(StringResources.menus.reset, "debussy", "BtTextBg")
+            var reset = new gameui.BitmapTextButton(StringResources.menus.reset, "debussy", "BtTextBg", () => { if (confirm(StringResources.menus.resetWarning)) { JoinJelly.userData.resetAll(); JoinJelly.showMainMenu() }})
             reset.y = y += space;
             this.scrollableContent.addChild(reset);
 
