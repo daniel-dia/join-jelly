@@ -128,6 +128,7 @@ module joinjelly {
             { id: "BtTextBg", src: "BtTextBg.png" },
             { id: "BtPlusMini", src: "BtPlusMini.png" },
             { id: "BtMenu", src: "BtMenu.png" },
+            { id: "BtPlusMini", src: "BtPlusMini.png" },
 
             { id: "GameOverBgJelly", src: "GameOverBgJelly.png" },
             { id: "GameOverBgPoints", src: "GameOverBgPoints.png" },

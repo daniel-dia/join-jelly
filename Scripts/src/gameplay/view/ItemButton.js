@@ -26,12 +26,14 @@ var joinjelly;
                     var img = gameui.AssetsManager.getBitmap("item" + item);
                     var text = gameui.AssetsManager.getBitmapText("0", "debussy");
                     var name = gameui.AssetsManager.getBitmapText(StringResources.items[item], "debussy");
+                    var add = gameui.AssetsManager.getBitmap("BtPlusMini");
                     this.disabled = bgd;
                     this.addChild(bg);
                     this.addChild(bgd);
                     this.addChild(img);
                     this.addChild(text);
                     this.addChild(name);
+                    this.addChild(add);
                     //organize items
                     bgd.visible = false;
                     bgd.regX = bg.regX = bg.getBounds().width / 2;
@@ -49,15 +51,22 @@ var joinjelly;
                     name.x = 0;
                     name.regX = name.getBounds().width / 2;
                     name.name = 'value';
+                    add.y = 0;
+                    add.x = 55;
                     this.text = text;
                     this.createHitArea();
+                    this.addBt = add;
                 }
                 ItemButton.prototype.setAmmount = function (ammout) {
                     this.ammount = ammout;
-                    if (ammout == 0)
+                    if (ammout <= 0) {
                         this.disabled.visible = true;
-                    else
+                        this.addBt.visible = true;
+                    }
+                    else {
                         this.disabled.visible = false;
+                        this.addBt.visible = false;
+                    }
                     this.text.text = ammout.toString();
                 };
                 return ItemButton;

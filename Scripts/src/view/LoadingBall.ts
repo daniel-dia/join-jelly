@@ -5,7 +5,7 @@
 
             super();
 
-            var b = new createjs.Bitmap("assets/images_" + assetscale + "x/loadingBall.png");
+            var b = new createjs.Bitmap("assets/images/loadingBall.png");
             this.addChild(b);
             b.regX = 94/2;
             b.regY = 94;

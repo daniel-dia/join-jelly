@@ -15,14 +15,20 @@ var joinjelly;
                 _super.call(this);
                 this.touchDictionary = new Array();
                 this.alarming = false;
-                this.tilesContainer = new createjs.Container();
-                this.addChild(this.tilesContainer);
-                this.tileSize = tileSize;
+                //initialize variables
                 this.tiles = [];
                 this.boardHeight = boardHeight;
                 this.boardWidth = boardWidth;
+                this.tileSize = tileSize;
+                // create tiles container
+                this.tilesContainer = new createjs.Container();
+                this.addChild(this.tilesContainer);
+                //define cache for click
+                this.tilesContainer.hitArea = new createjs.Shape(new createjs.Graphics().f("red").r(0, 0, boardWidth * tileSize, boardHeight * tileSize));
+                // create all tiles
                 this.addTiles(boardWidth, boardHeight, tileSize, img);
                 this.addMouseEvents(tileSize);
+                //set pivot
                 this.regX = (boardWidth * tileSize / 2);
                 this.regY = (boardHeight * tileSize / 2);
             }

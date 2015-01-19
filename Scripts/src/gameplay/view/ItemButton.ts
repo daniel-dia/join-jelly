@@ -2,6 +2,7 @@
     export class ItemButton extends gameui.Button {
 
         private text: createjs.BitmapText;
+        private addBt: createjs.DisplayObject;
         public item: string;
         public disabled: createjs.DisplayObject;
         public ammount: number = 0;
@@ -18,6 +19,7 @@
             var img = gameui.AssetsManager.getBitmap("item" + item);
             var text = gameui.AssetsManager.getBitmapText("0", "debussy");
             var name = gameui.AssetsManager.getBitmapText(StringResources.items[item], "debussy");
+            var add = gameui.AssetsManager.getBitmap("BtPlusMini");
             this.disabled = bgd;
 
             this.addChild(bg);
@@ -25,6 +27,8 @@
             this.addChild(img);
             this.addChild(text);
             this.addChild(name);
+            this.addChild(add);
+            
 
             //organize items
             bgd.visible = false;
@@ -45,16 +49,24 @@
             name.regX = name.getBounds().width / 2;
             name.name = 'value';
 
+            add.y = 0;
+            add.x = 55;
+
             this.text = text;
-
             this.createHitArea();
-
+            this.addBt = add;
         }
 
         public setAmmount(ammout: number) {
             this.ammount = ammout;
-            if (ammout == 0) this.disabled.visible = true;
-            else this.disabled.visible = false;
+            if (ammout <= 0) {
+                this.disabled.visible = true;
+                this.addBt.visible = true;
+            }
+            else {
+                this.disabled.visible = false;
+                this.addBt.visible = false;
+            }
             this.text.text = ammout.toString();
         }
     }

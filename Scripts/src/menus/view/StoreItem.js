@@ -16,13 +16,14 @@ var joinjelly;
                     var _this = this;
                     _super.call(this);
                     this.product = product;
+                    var tContainer = new createjs.Container();
                     // Add Background
                     var bg = gameui.AssetsManager.getBitmap("FlyGroup");
                     bg.x = 232;
                     bg.y = 27;
                     bg.scaleY = 1.25;
                     bg.scaleX = 0.75;
-                    this.addChild(bg);
+                    tContainer.addChild(bg);
                     // Add Icon
                     var iconId = "";
                     switch (product.ProductId) {
@@ -52,7 +53,7 @@ var joinjelly;
                     icon.x = 225;
                     icon.y = 188;
                     icon.scaleX = icon.scaleY = 1.5;
-                    this.addChild(icon);
+                    tContainer.addChild(icon);
                     // Add Texts
                     var titleObj = gameui.AssetsManager.getBitmapText(product.Name, "debussy");
                     var descriptionObj = gameui.AssetsManager.getBitmapText(product.Description, "debussy");
@@ -61,15 +62,17 @@ var joinjelly;
                     titleObj.scaleX = titleObj.scaleY = 1.1;
                     descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
                     titleObj.x = descriptionObj.x = 400;
-                    this.addChild(titleObj);
-                    this.addChild(descriptionObj);
+                    tContainer.addChild(titleObj);
+                    tContainer.addChild(descriptionObj);
                     // add price
                     var priceDO = gameui.AssetsManager.getBitmapText(product.FormattedPrice, "debussy");
                     priceDO.y = 251;
                     priceDO.x = 1199;
                     priceDO.regX = priceDO.getBounds().width / 2;
                     priceDO.scaleX = priceDO.scaleY = 0.8;
-                    this.addChild(priceDO);
+                    tContainer.addChild(priceDO);
+                    this.addChild(tContainer);
+                    tContainer.cache(100, 27, 1250, 300);
                     // add Check
                     var unchecked = gameui.AssetsManager.getBitmap("unchecked");
                     unchecked.regX = unchecked.getBounds().width / 2;

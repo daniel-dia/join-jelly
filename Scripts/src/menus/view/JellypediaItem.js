@@ -17,6 +17,18 @@ var joinjelly;
                     // Add Background
                     var bg = gameui.AssetsManager.getBitmap("pediaItem");
                     this.addChild(bg);
+                    // Add Texts
+                    var tContainer = new createjs.Container();
+                    var titleObj = gameui.AssetsManager.getBitmapText(title, "debussy");
+                    var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
+                    titleObj.y = 30;
+                    descriptionObj.y = 130;
+                    titleObj.scaleX = titleObj.scaleY = 1.4;
+                    titleObj.x = descriptionObj.x = 450;
+                    tContainer.addChild(titleObj);
+                    tContainer.addChild(descriptionObj);
+                    this.addChild(tContainer);
+                    tContainer.cache(450, 0, 1000, 356);
                     // Add Jelly
                     var j = new joinjelly.gameplay.view.Jelly();
                     j.setNumber(value);
@@ -24,15 +36,6 @@ var joinjelly;
                     j.y = 332;
                     j.scaleX = j.scaleY = 1.4;
                     this.addChild(j);
-                    // Add Texts
-                    var titleObj = gameui.AssetsManager.getBitmapText(title, "debussy");
-                    var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
-                    titleObj.y = 30;
-                    descriptionObj.y = 130;
-                    titleObj.scaleX = titleObj.scaleY = 1.4;
-                    titleObj.x = descriptionObj.x = 450;
-                    this.addChild(titleObj);
-                    this.addChild(descriptionObj);
                 }
                 return JellyPediaItem;
             })(createjs.Container);
