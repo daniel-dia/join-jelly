@@ -166,6 +166,7 @@
 
         // #endregion 
 
-
+        // override savegame
+        public saveGame() {//null}
     }
 }
