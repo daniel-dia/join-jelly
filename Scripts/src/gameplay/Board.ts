@@ -47,8 +47,6 @@
             for (var x = 0; x < boardWidth; x++)
                 for (var y = 0; y < boardHeight; y++)
                     this.addTile(x, y, tileSize);
-
-
         }
 
         // add a single tile on board

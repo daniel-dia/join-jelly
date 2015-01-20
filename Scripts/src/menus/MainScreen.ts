@@ -68,7 +68,15 @@
             var x = defaultWidth + 100;
             var space = 250;
 
-            //add settings button
+            //add About button
+            var settingsBt = new gameui.ImageButton("BtInfo", () => {
+                JoinJelly.showAbout();
+            });
+            settingsBt.y =  150;
+            settingsBt.x = x - space;
+            this.header.addChild(settingsBt);
+
+            //add Menu button
             var settingsBt = new gameui.ImageButton("BtMenu", () => {
                 JoinJelly.showSettings();
             });

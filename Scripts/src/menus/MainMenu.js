@@ -24,12 +24,10 @@ var joinjelly;
             });
             tutorial.y = y += space;
             this.scrollableContent.addChild(tutorial);
-            // add About Button
-            var about = new gameui.BitmapTextButton(StringResources.menus.about, "debussy", "BtTextBg", function () {
-                alert("beta");
-            });
-            about.y = y += space;
-            this.scrollableContent.addChild(about);
+            //// add About Button
+            //var about = new gameui.BitmapTextButton(StringResources.menus.about, "debussy", "BtTextBg", () => { alert("beta"); })
+            //about.y = y += space;
+            //this.scrollableContent.addChild(about);
             // add Reset Button
             var reset = new gameui.BitmapTextButton(StringResources.menus.reset, "debussy", "BtTextBg", function () {
                 if (confirm(StringResources.menus.resetWarning)) {

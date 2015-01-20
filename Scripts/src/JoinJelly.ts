@@ -69,5 +69,8 @@
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };
             this.gameScreen.switchScreen(new MainMenu(), null, transition);
         }
+        public static showAbout() {
+            this.gameScreen.switchScreen(new About());
+        }
     }
 }

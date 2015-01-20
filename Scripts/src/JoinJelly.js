@@ -63,6 +63,9 @@ var joinjelly;
                 transition = { type: "left", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.MainMenu(), null, transition);
         };
+        JoinJelly.showAbout = function () {
+            this.gameScreen.switchScreen(new joinjelly.About());
+        };
         return JoinJelly;
     })();
     joinjelly.JoinJelly = JoinJelly;
