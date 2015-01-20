@@ -49,14 +49,12 @@
             this.createGUI();
 
             this.createEffects();
-
-            setTimeout(() => {
-                this.start();
-            }, 500);
-
-            if (saveGame) 
-                // try to load a saved Game
-                this.loadGame();
+                    
+            this.start();
+            
+            // try to load a saved Game
+            if (saveGame) this.loadGame();
+        
         }
 
         // create game effects
@@ -330,7 +328,7 @@
         private endGame(message?: string) {
 
             this.userData.deleteSaveGame();
-            this.gamestate = GameState.ended;
+            this.gamestate = GameState.standBy;
 
             var score = this.score;
             var highScore = JoinJelly.userData.getHighScore();
@@ -354,6 +352,8 @@
 
             // shows finished game menu
             setTimeout(() => {
+                this.gamestate = GameState.ended;
+
                 this.finishMenu.show();
                 this.gameFooter.mouseEnabled = true;
 
@@ -844,6 +844,7 @@
         starting,
         playing,
         paused,
-        ended
+        ended,
+        standBy
     }
 }

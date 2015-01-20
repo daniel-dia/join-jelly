@@ -12,7 +12,6 @@ var joinjelly;
             __extends(GamePlayScreen, _super);
             //#region =================================== initialization ================================================
             function GamePlayScreen(userData, saveGame) {
-                var _this = this;
                 _super.call(this);
                 this.matches = 0;
                 // parameters
@@ -30,11 +29,9 @@ var joinjelly;
                 this.createBoard();
                 this.createGUI();
                 this.createEffects();
-                setTimeout(function () {
-                    _this.start();
-                }, 500);
+                this.start();
+                // try to load a saved Game
                 if (saveGame)
-                    // try to load a saved Game
                     this.loadGame();
             }
             // create game effects
@@ -248,7 +245,7 @@ var joinjelly;
             GamePlayScreen.prototype.endGame = function (message) {
                 var _this = this;
                 this.userData.deleteSaveGame();
-                this.gamestate = 3 /* ended */;
+                this.gamestate = 4 /* standBy */;
                 var score = this.score;
                 var highScore = joinjelly.JoinJelly.userData.getHighScore();
                 var highJelly = this.board.getHighestTileValue();
@@ -266,6 +263,7 @@ var joinjelly;
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
                 // shows finished game menu
                 setTimeout(function () {
+                    _this.gamestate = 3 /* ended */;
                     _this.finishMenu.show();
                     _this.gameFooter.mouseEnabled = true;
                     // set footer items form revive
@@ -647,6 +645,7 @@ var joinjelly;
             GameState[GameState["playing"] = 1] = "playing";
             GameState[GameState["paused"] = 2] = "paused";
             GameState[GameState["ended"] = 3] = "ended";
+            GameState[GameState["standBy"] = 4] = "standBy";
         })(GameState || (GameState = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));

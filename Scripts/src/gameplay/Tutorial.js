@@ -143,6 +143,10 @@ var joinjelly;
             Tutorial.prototype.hideTutorialMove = function () {
                 this.tutorialMoveIndicator.hide();
             };
+            // #endregion 
+            // override savegame
+            Tutorial.prototype.saveGame = function () {
+            };
             return Tutorial;
         })(gameplay.ExplodeBricks);
         gameplay.Tutorial = Tutorial;
