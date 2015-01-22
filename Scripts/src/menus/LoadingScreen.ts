@@ -158,6 +158,7 @@ module joinjelly {
             { id: "itemBGDisabled", src: "itemBgDisabled.png" },
 
             { id: "tutorialFinger", src: "tutorialFinger.png" },
+            { id: "tutorialFingerDown", src: "tutorialFingerDown.png" },
             { id: "ballon", src: "ballon.png" },
             { id: "pediaItem", src: "pediaItem.png" },
             { id: "BigBG", src: "BigBG.png" },

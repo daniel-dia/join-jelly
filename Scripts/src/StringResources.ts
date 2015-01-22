@@ -21,12 +21,10 @@
         
     },
     tutorial: {
-        msg1: "Hello, \nI'm little Jelly",
         msg2: "Help me to evolve\nJoin another jelly to me",
         msg3: "Great! now I'm bigger, \nevolve me once more",
-        msg4: "Ow, a dirt appears",
-        msg5: "Join two jelly near to destroy it.",
-        msg6: "Perfect!\nNow let's play this game.",
+        msgDirt: "Ow, a dirt appears \n Join two jelly near to destroy it.",
+        msgPlay: "Perfect!\nNow let's play this game.",
         msg7: "but be careful, \ndo not let the board fill, \nthis is the end for us.",
 
     },

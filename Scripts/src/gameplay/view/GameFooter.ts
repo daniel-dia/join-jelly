@@ -73,7 +73,7 @@
         }
 
         // get a item display object
-        public getItemButton(item: string): createjs.DisplayObject {
+        public getItemButton(item: string): ItemButton {
             return this.itemsButtons[item];
         }
 
@@ -85,6 +85,27 @@
             if (item == "lucky")
                 this.lucky.visible = (ammount > 0);
 
+        }
+
+        // lock a item
+        public lockItem(itemId:string) {
+            var b = this.getItemButton(itemId);
+            b.lock();
+        }
+
+        public unlockItem(itemId: string) {
+            var b = this.getItemButton(itemId);
+            b.unlock();
+        }
+
+        public lockAll() {
+            for (var b in this.itemsButtons)
+                this.itemsButtons[b].lock();
+        }
+
+        public unlockAll() {
+            for (var b in this.itemsButtons)
+                this.itemsButtons[b].unlock();
         }
     }
 } 

@@ -5,6 +5,7 @@
 
         // gameplay Control
         protected matchNotify: () => void;
+        protected itemNotify: () => void;
         protected gamestate: GameState;
         protected level: number;
         private score: number;
@@ -119,6 +120,7 @@
             // create game footer
             var items = ["time", "clean", "fast", "revive"];
             this.gameFooter = new view.GameFooter(items);
+            this.gameFooter.lockItem("revive");
             this.footer.addChild(this.gameFooter);
             this.updateFooter();
 
@@ -359,6 +361,7 @@
 
                 // set footer items form revive
                 this.gameFooter.setItems(["revive"]);
+                this.gameFooter.unlockItem("revive");
                 this.updateFooter();
                 createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
 
@@ -522,7 +525,7 @@
         }
 
         //give item to user
-        private giveItemChance(items: Array<string>): string {
+        protected giveItemChance(items: Array<string>): string {
 
             var item = null;
             var lucky = 10; //TODO read it from items
@@ -595,7 +598,7 @@
 
         // #region =================================== Items =========================================================
 
-        private useItem(item: string) {
+        protected useItem(item: string) {
             if (JoinJelly.itemData.getItemAmmount(item) > 0) {
 
                 var sucess: boolean = false;
@@ -615,8 +618,13 @@
                         break;
                 }
 
-                if (sucess)
+                if (sucess) {
+                    // decrease item quantity
                     JoinJelly.itemData.decreaseItemAmmount(item);
+                    //notify utem used
+                    if (this.itemNotify) this.itemNotify();
+
+                }
             }
             // if there is no item, them show purchase menu
             else {
@@ -629,7 +637,7 @@
         }
 
         // reduces jellys per time during 5 seconds.
-        private useTime() :boolean{
+        protected useTime() :boolean{
             if (this.gamestate == GameState.ended) return;
 
             this.step(5000);
@@ -648,7 +656,7 @@
         }
 
         //clan all simple jellys
-        private useClean(): boolean {
+        protected useClean(): boolean {
             if (this.gamestate == GameState.ended) return;
             var tiles = this.board.getAllTiles();
             for (var t in tiles)
@@ -674,7 +682,7 @@
         }
 
         // revive after game end
-        private useRevive(): boolean {
+        protected useRevive(): boolean {
 
             if (this.gamestate != GameState.ended) return false;
 
@@ -703,6 +711,8 @@
 
             // set footer items
             this.gameFooter.setItems(["time", "clean", "fast", "revive"]);
+            this.gameFooter.unlockAll();
+            this.gameFooter.lockItem("revive");
 
             // remove other ui items
             this.gameHeader.mouseEnabled = true;
@@ -722,7 +732,7 @@
         }
 
         // match 5 pair of jelly if avaliabe
-        private useFast(): boolean {
+        protected useFast(): boolean {
             if (this.gamestate == GameState.ended) return;
             var tiles = this.board.getAllTiles();
             var matches = [];
@@ -777,7 +787,7 @@
         }
 
         // update footer
-        private updateFooter() {
+        protected updateFooter() {
             var items = ItemsData.items;
             for (var i in items)
                 this.gameFooter.setItemAmmount(items[i], JoinJelly.itemData.getItemAmmount(items[i]));

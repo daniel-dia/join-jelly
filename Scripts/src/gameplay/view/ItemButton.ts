@@ -6,6 +6,7 @@
         public item: string;
         public disabled: createjs.DisplayObject;
         public ammount: number = 0;
+        private locked: boolean = false;
 
         constructor(item: string) {
             super();
@@ -28,14 +29,14 @@
             this.addChild(text);
             this.addChild(name);
             this.addChild(add);
-            
+
 
             //organize items
             bgd.visible = false;
-            bgd.regX =bg.regX= bg.getBounds().width / 2;
-            bgd.regY =bg.regY= bg.getBounds().height / 2;
-            img.regX = img.getBounds().width / 2 ;
-            img.regY = img.getBounds().height / 2 ;
+            bgd.regX = bg.regX = bg.getBounds().width / 2;
+            bgd.regY = bg.regY = bg.getBounds().height / 2;
+            img.regX = img.getBounds().width / 2;
+            img.regY = img.getBounds().height / 2;
             img.scaleX = img.scaleY = 0.8;
             img.y = -25;
             text.scaleX = text.scaleY = 0.7;
@@ -57,9 +58,9 @@
             this.addBt = add;
         }
 
-        public setAmmount(ammout: number) {
-            this.ammount = ammout;
-            if (ammout <= 0) {
+        public setAmmount(ammount: number) {
+            this.ammount = ammount;
+            if (this.ammount <= 0) {
                 this.disabled.visible = true;
                 this.addBt.visible = true;
             }
@@ -67,7 +68,29 @@
                 this.disabled.visible = false;
                 this.addBt.visible = false;
             }
-            this.text.text = ammout.toString();
+
+            this.text.text = ammount.toString();
+            this.updateColor();
+        }
+
+        public lock() {
+            this.mouseEnabled = false;
+            this.locked = true;
+            this.updateColor();
+        }
+
+        public unlock() {
+            this.mouseEnabled = true;
+            this.locked = false;
+            this.updateColor();
+        }
+
+        private updateColor() {
+            if (this.locked || this.ammount <= 0)
+                this.disabled.visible = true;
+            else
+                this.disabled.visible = false;
+
         }
     }
 }

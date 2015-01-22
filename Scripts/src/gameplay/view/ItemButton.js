@@ -16,6 +16,7 @@ var joinjelly;
                     var _this = this;
                     _super.call(this);
                     this.ammount = 0;
+                    this.locked = false;
                     this.item = item;
                     this.addEventListener("click", function () {
                         _this.dispatchEvent({ type: "useitem", item: item });
@@ -57,9 +58,9 @@ var joinjelly;
                     this.createHitArea();
                     this.addBt = add;
                 }
-                ItemButton.prototype.setAmmount = function (ammout) {
-                    this.ammount = ammout;
-                    if (ammout <= 0) {
+                ItemButton.prototype.setAmmount = function (ammount) {
+                    this.ammount = ammount;
+                    if (this.ammount <= 0) {
                         this.disabled.visible = true;
                         this.addBt.visible = true;
                     }
@@ -67,7 +68,24 @@ var joinjelly;
                         this.disabled.visible = false;
                         this.addBt.visible = false;
                     }
-                    this.text.text = ammout.toString();
+                    this.text.text = ammount.toString();
+                    this.updateColor();
+                };
+                ItemButton.prototype.lock = function () {
+                    this.mouseEnabled = false;
+                    this.locked = true;
+                    this.updateColor();
+                };
+                ItemButton.prototype.unlock = function () {
+                    this.mouseEnabled = true;
+                    this.locked = false;
+                    this.updateColor();
+                };
+                ItemButton.prototype.updateColor = function () {
+                    if (this.locked || this.ammount <= 0)
+                        this.disabled.visible = true;
+                    else
+                        this.disabled.visible = false;
                 };
                 return ItemButton;
             })(gameui.Button);

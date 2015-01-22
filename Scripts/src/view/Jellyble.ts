@@ -116,9 +116,7 @@
                 case 0: this.executeIdle1(); break;
                 case 1: this.executeIdle2(); break;
                 case 2: this.executeIdle3(); break;
-
             }
-
         }
 
         private executeIdle1() {

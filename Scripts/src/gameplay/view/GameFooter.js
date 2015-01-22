@@ -78,6 +78,23 @@ var joinjelly;
                     if (item == "lucky")
                         this.lucky.visible = (ammount > 0);
                 };
+                // lock a item
+                GameFooter.prototype.lockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    b.lock();
+                };
+                GameFooter.prototype.unlockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    b.unlock();
+                };
+                GameFooter.prototype.lockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].lock();
+                };
+                GameFooter.prototype.unlockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].unlock();
+                };
                 return GameFooter;
             })(createjs.Container);
             view.GameFooter = GameFooter;

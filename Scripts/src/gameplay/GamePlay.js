@@ -85,6 +85,7 @@ var joinjelly;
                 // create game footer
                 var items = ["time", "clean", "fast", "revive"];
                 this.gameFooter = new gameplay.view.GameFooter(items);
+                this.gameFooter.lockItem("revive");
                 this.footer.addChild(this.gameFooter);
                 this.updateFooter();
                 this.gameFooter.addEventListener("useitem", function (e) {
@@ -268,6 +269,7 @@ var joinjelly;
                     _this.gameFooter.mouseEnabled = true;
                     // set footer items form revive
                     _this.gameFooter.setItems(["revive"]);
+                    _this.gameFooter.unlockItem("revive");
                     _this.updateFooter();
                     createjs.Tween.get(_this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
                 }, 1200);
@@ -459,8 +461,13 @@ var joinjelly;
                             sucess = this.useRevive();
                             break;
                     }
-                    if (sucess)
+                    if (sucess) {
+                        // decrease item quantity
                         joinjelly.JoinJelly.itemData.decreaseItemAmmount(item);
+                        //notify utem used
+                        if (this.itemNotify)
+                            this.itemNotify();
+                    }
                 }
                 else {
                     this.pauseGame();
@@ -529,6 +536,8 @@ var joinjelly;
                 this.showBoardButton.fadeOut();
                 // set footer items
                 this.gameFooter.setItems(["time", "clean", "fast", "revive"]);
+                this.gameFooter.unlockAll();
+                this.gameFooter.lockItem("revive");
                 // remove other ui items
                 this.gameHeader.mouseEnabled = true;
                 createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
