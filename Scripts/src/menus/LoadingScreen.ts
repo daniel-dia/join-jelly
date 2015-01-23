@@ -87,7 +87,7 @@ module joinjelly {
             { id: "e1024", src: "e1024.png" },
             { id: "e2048", src: "e2048.png" },
             { id: "e4096", src: "e4096.png" },
-            { id: "e8192", src: "e8192.png"
+            { id: "e8192", src: "e8192.png" },
             { id: "e16384", src: "e16384.png" },
             { id: "footer", src: "footer.png" },
             { id: "header", src: "header.png" },
