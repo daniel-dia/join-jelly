@@ -119,7 +119,7 @@
             this.header.addChild(this.gameHeader);
 
             // create game footer
-            var items = [Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE, Items.LUCKY];
+            var items = [Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE];
             this.gameFooter = new view.GameFooter(items);
             this.gameFooter.lockItem(Items.REVIVE);
             this.footer.addChild(this.gameFooter);
@@ -711,7 +711,7 @@
             this.showBoardButton.fadeOut();
 
             // set footer items
-            this.gameFooter.setItems([Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE, Items.LUCKY]);
+            this.gameFooter.setItems([Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE]);
             this.gameFooter.unlockAll();
             this.gameFooter.lockItem(Items.REVIVE);
 

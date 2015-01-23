@@ -83,7 +83,7 @@ var joinjelly;
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
                 // create game footer
-                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE, joinjelly.Items.LUCKY];
+                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE];
                 this.gameFooter = new gameplay.view.GameFooter(items);
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 this.footer.addChild(this.gameFooter);
@@ -535,7 +535,7 @@ var joinjelly;
                 // hide show board button
                 this.showBoardButton.fadeOut();
                 // set footer items
-                this.gameFooter.setItems([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE, joinjelly.Items.LUCKY]);
+                this.gameFooter.setItems([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE]);
                 this.gameFooter.unlockAll();
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 // remove other ui items
