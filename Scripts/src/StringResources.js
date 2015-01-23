@@ -18,11 +18,15 @@ var StringResources = {
         shop: "shop",
     },
     tutorial: {
-        msg2: "Help me to evolve\nJoin another jelly to me",
-        msg3: "Great! now I'm bigger, \nevolve me once more",
+        msgheplme: "Help me to evolve\nJoin another jelly to me",
+        msgOnceMore: "Great! now I'm bigger, \nevolve me once more",
         msgDirt: "Ow, a dirt appears \n Join two jelly near to destroy it.",
         msgPlay: "Perfect!\nNow let's play this game.",
-        msg7: "but be careful, \ndo not let the board fill, \nthis is the end for us.",
+        msgItemClean: "You can always use items.\n this cleans the board",
+        msgItemFast: "this one join some jellies",
+        msgItemTime: "this one make time slower",
+        msgItemRevive: "if you loose, use this to revive",
+        msgBoardFill: "but be careful, \ndo not let the board fill, \nthis is the end for us.",
     },
     jellys: {
         1: { name: "Little Jelly", description: "description" },

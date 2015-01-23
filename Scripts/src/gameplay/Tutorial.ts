@@ -33,10 +33,10 @@
             this.content.addChild(this.tutorialMessage);
 
 
-            this.gameFooter.setItemAmmount("revive",    1);
-            this.gameFooter.setItemAmmount("fast",      1);
-            this.gameFooter.setItemAmmount("clean",     1);
-            this.gameFooter.setItemAmmount("time",      1);
+            this.gameFooter.setItemAmmount(Items.REVIVE,1);
+            this.gameFooter.setItemAmmount(Items.FAST,  1);
+            this.gameFooter.setItemAmmount(Items.CLEAN, 1);
+            this.gameFooter.setItemAmmount(Items.TIME,  1);
 
             this.gameFooter.lockAll();
         }
@@ -71,7 +71,7 @@
 
                 () => {
                     this.board.getTileById(18).setNumber(1);
-                    this.showTutorialMessage(StringResources.tutorial.msg2);
+                    this.showTutorialMessage(StringResources.tutorial.msgheplme);
                     this.board.getTileById(18).disable();
                     this.waitMessage();
                 },
@@ -86,7 +86,7 @@
                     this.tutorialWait(700);
                 },
                 () => {
-                    this.showTutorialMessage(StringResources.tutorial.msg3);
+                    this.showTutorialMessage(StringResources.tutorial.msgOnceMore);
                     this.waitMessage();
                 },
                 () => {
@@ -169,40 +169,40 @@
   
                 },
                 () => {
-                    this.showTutorialItem("clean");
-                    this.showTutorialMessage("You can always use items.\n this cleans the board");
+                    this.showTutorialItem(Items.CLEAN);
+                    this.showTutorialMessage(StringResources.tutorial.msgItemClean);
                     this.waitItem();
                 },
                 () => {
                     this.hideTutorialFinger();
-                    this.gameFooter.setItemAmmount("clean",0)
+                    this.gameFooter.setItemAmmount(Items.CLEAN,0)
                     this.tutorialWait(1000);
                 },
                 () => {
-                    this.showTutorialItem("time");
-                    this.showTutorialMessage("this one make time slower");
+                    this.showTutorialItem(Items.TIME);
+                    this.showTutorialMessage(StringResources.tutorial.msgItemTime);
 
                     this.waitItem();
                 },
                 () => {
                     this.hideTutorialFinger();
-                    this.gameFooter.setItemAmmount("time", 0)
+                    this.gameFooter.setItemAmmount(Items.TIME, 0)
                     this.tutorialWait(1000);
                 },
                 () => {
-                    this.showTutorialItem("fast");
-                    this.showTutorialMessage("this one join some jellies");
+                    this.showTutorialItem(Items.FAST);
+                    this.showTutorialMessage(StringResources.tutorial.msgItemFast);
 
                     this.waitItem();
                 },
                 () => {
                     this.hideTutorialFinger();
-                    this.gameFooter.setItemAmmount("fast", 0)
+                    this.gameFooter.setItemAmmount(Items.FAST, 0)
                     this.tutorialWait(1000);
                 },
                 () => {
-                    this.showTutorialItem("revive");
-                    this.showTutorialMessage("if you loose, use this to revive");
+                    this.showTutorialItem(Items.REVIVE);
+                    this.showTutorialMessage(StringResources.tutorial.msgItemRevive);
                     this.waitMessage();
                 },
                 () => {
@@ -215,7 +215,7 @@
                     this.waitMessage();
                 },
                 () => {
-                    this.showTutorialMessage(StringResources.tutorial.msg7);
+                    this.showTutorialMessage(StringResources.tutorial.msgBoardFill);
                     this.waitMessage();
                 },
                 () => {

@@ -30,10 +30,10 @@ var joinjelly;
                 this.content.addChild(this.tutorialJellyFinger);
                 this.footer.addChild(this.tutorialItemFinger);
                 this.content.addChild(this.tutorialMessage);
-                this.gameFooter.setItemAmmount("revive", 1);
-                this.gameFooter.setItemAmmount("fast", 1);
-                this.gameFooter.setItemAmmount("clean", 1);
-                this.gameFooter.setItemAmmount("time", 1);
+                this.gameFooter.setItemAmmount(joinjelly.Items.REVIVE, 1);
+                this.gameFooter.setItemAmmount(joinjelly.Items.FAST, 1);
+                this.gameFooter.setItemAmmount(joinjelly.Items.CLEAN, 1);
+                this.gameFooter.setItemAmmount(joinjelly.Items.TIME, 1);
                 this.gameFooter.lockAll();
             };
             Tutorial.prototype.start = function () {
@@ -58,7 +58,7 @@ var joinjelly;
                     },
                     function () {
                         _this.board.getTileById(18).setNumber(1);
-                        _this.showTutorialMessage(StringResources.tutorial.msg2);
+                        _this.showTutorialMessage(StringResources.tutorial.msgheplme);
                         _this.board.getTileById(18).disable();
                         _this.waitMessage();
                     },
@@ -73,7 +73,7 @@ var joinjelly;
                         _this.tutorialWait(700);
                     },
                     function () {
-                        _this.showTutorialMessage(StringResources.tutorial.msg3);
+                        _this.showTutorialMessage(StringResources.tutorial.msgOnceMore);
                         _this.waitMessage();
                     },
                     function () {
@@ -146,38 +146,38 @@ var joinjelly;
                         _this.tutorialWait(1000);
                     },
                     function () {
-                        _this.showTutorialItem("clean");
-                        _this.showTutorialMessage("You can always use items.\n this cleans the board");
+                        _this.showTutorialItem(joinjelly.Items.CLEAN);
+                        _this.showTutorialMessage(StringResources.tutorial.msgItemClean);
                         _this.waitItem();
                     },
                     function () {
                         _this.hideTutorialFinger();
-                        _this.gameFooter.setItemAmmount("clean", 0);
+                        _this.gameFooter.setItemAmmount(joinjelly.Items.CLEAN, 0);
                         _this.tutorialWait(1000);
                     },
                     function () {
-                        _this.showTutorialItem("time");
-                        _this.showTutorialMessage("this one make time slower");
+                        _this.showTutorialItem(joinjelly.Items.TIME);
+                        _this.showTutorialMessage(StringResources.tutorial.msgItemTime);
                         _this.waitItem();
                     },
                     function () {
                         _this.hideTutorialFinger();
-                        _this.gameFooter.setItemAmmount("time", 0);
+                        _this.gameFooter.setItemAmmount(joinjelly.Items.TIME, 0);
                         _this.tutorialWait(1000);
                     },
                     function () {
-                        _this.showTutorialItem("fast");
-                        _this.showTutorialMessage("this one join some jellies");
+                        _this.showTutorialItem(joinjelly.Items.FAST);
+                        _this.showTutorialMessage(StringResources.tutorial.msgItemFast);
                         _this.waitItem();
                     },
                     function () {
                         _this.hideTutorialFinger();
-                        _this.gameFooter.setItemAmmount("fast", 0);
+                        _this.gameFooter.setItemAmmount(joinjelly.Items.FAST, 0);
                         _this.tutorialWait(1000);
                     },
                     function () {
-                        _this.showTutorialItem("revive");
-                        _this.showTutorialMessage("if you loose, use this to revive");
+                        _this.showTutorialItem(joinjelly.Items.REVIVE);
+                        _this.showTutorialMessage(StringResources.tutorial.msgItemRevive);
                         _this.waitMessage();
                     },
                     function () {
@@ -190,7 +190,7 @@ var joinjelly;
                         _this.waitMessage();
                     },
                     function () {
-                        _this.showTutorialMessage(StringResources.tutorial.msg7);
+                        _this.showTutorialMessage(StringResources.tutorial.msgBoardFill);
                         _this.waitMessage();
                     },
                     function () {
