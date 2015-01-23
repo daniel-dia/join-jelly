@@ -17,12 +17,17 @@ var joinjelly;
             }
             // #region tutorial ====================================================================================================
             Tutorial.prototype.createGUI = function () {
-                this.tutorialFinger = new gameplay.view.TutorialMove();
+                var _this = this;
+                this.tutorialJellyFinger = new gameplay.view.TutorialMove();
                 this.tutorialItemFinger = new gameplay.view.TutorialMove();
                 this.tutorialMessage = new gameplay.view.TutoralMessage();
+                this.tutorialMessage.addEventListener("closed", function () {
+                    if (_this.messageNotify)
+                        _this.messageNotify();
+                });
                 this.tutorialItemFinger.rotation = -45;
                 _super.prototype.createGUI.call(this);
-                this.content.addChild(this.tutorialFinger);
+                this.content.addChild(this.tutorialJellyFinger);
                 this.footer.addChild(this.tutorialItemFinger);
                 this.content.addChild(this.tutorialMessage);
                 this.gameFooter.setItemAmmount("revive", 1);
@@ -55,11 +60,12 @@ var joinjelly;
                         _this.board.getTileById(18).setNumber(1);
                         _this.showTutorialMessage(StringResources.tutorial.msg2);
                         _this.board.getTileById(18).disable();
+                        _this.waitMessage();
                     },
                     function () {
                         _this.board.getTileById(18).enable();
                         _this.showTutorialMove(18, 16);
-                        _this.tutorialwaitMatch();
+                        _this.waitMatch();
                     },
                     function () {
                         _this.board.getTileById(16).disable();
@@ -68,12 +74,13 @@ var joinjelly;
                     },
                     function () {
                         _this.showTutorialMessage(StringResources.tutorial.msg3);
+                        _this.waitMessage();
                     },
                     function () {
                         _this.board.getTileById(24).setNumber(2);
                         _this.board.getTileById(16).disable();
                         _this.showTutorialMove(24, 16);
-                        _this.tutorialwaitMatch();
+                        _this.waitMatch();
                     },
                     function () {
                         _this.board.getTileById(16).disable();
@@ -94,10 +101,14 @@ var joinjelly;
                         _this.board.getTileById(20).setNumber(1);
                         _this.board.getTileById(18).disable();
                         _this.showTutorialMessage(StringResources.tutorial.msgDirt);
+                        _this.waitMessage();
                     },
                     function () {
                         _this.showTutorialMove(20, 18);
-                        _this.tutorialwaitMatch();
+                        _this.waitMatch();
+                    },
+                    function () {
+                        _this.tutorialWait(1000);
                     },
                     function () {
                         _this.hideTutorialFinger();
@@ -136,41 +147,51 @@ var joinjelly;
                     },
                     function () {
                         _this.showTutorialItem("clean");
-                        _this.showTutorialMessage("You can always use items.\n this cleans the board", false);
-                        _this.tutorialWaitItem();
+                        _this.showTutorialMessage("You can always use items.\n this cleans the board");
+                        _this.waitItem();
                     },
                     function () {
+                        _this.hideTutorialFinger();
+                        _this.gameFooter.setItemAmmount("clean", 0);
                         _this.tutorialWait(1000);
                     },
                     function () {
                         _this.showTutorialItem("time");
-                        _this.showTutorialMessage("this one make time slower", false);
-                        _this.tutorialWaitItem();
+                        _this.showTutorialMessage("this one make time slower");
+                        _this.waitItem();
                     },
                     function () {
+                        _this.hideTutorialFinger();
+                        _this.gameFooter.setItemAmmount("time", 0);
                         _this.tutorialWait(1000);
                     },
                     function () {
                         _this.showTutorialItem("fast");
-                        _this.showTutorialMessage("this one join some jellies", false);
-                        _this.tutorialWaitItem();
+                        _this.showTutorialMessage("this one join some jellies");
+                        _this.waitItem();
                     },
                     function () {
+                        _this.hideTutorialFinger();
+                        _this.gameFooter.setItemAmmount("fast", 0);
                         _this.tutorialWait(1000);
                     },
                     function () {
                         _this.showTutorialItem("revive");
                         _this.showTutorialMessage("if you loose, use this to revive");
+                        _this.waitMessage();
                     },
                     function () {
-                        _this.tutorialWait(1000);
+                        _this.hideTutorialFinger();
+                        _this.tutorialWait(500);
                     },
                     function () {
                         _this.hideTutorialFinger();
                         _this.showTutorialMessage(StringResources.tutorial.msgPlay);
+                        _this.waitMessage();
                     },
                     function () {
                         _this.showTutorialMessage(StringResources.tutorial.msg7);
+                        _this.waitMessage();
                     },
                     function () {
                         joinjelly.JoinJelly.startLevel();
@@ -186,35 +207,34 @@ var joinjelly;
                     _this.executeTutorialStep();
                 }, delay);
             };
-            Tutorial.prototype.tutorialwaitMatch = function () {
+            Tutorial.prototype.waitMatch = function () {
                 var _this = this;
                 this.matchNotify = function () {
                     _this.matchNotify = null;
                     _this.executeTutorialStep();
                 };
             };
-            Tutorial.prototype.tutorialWaitItem = function () {
+            Tutorial.prototype.waitItem = function () {
                 var _this = this;
                 this.itemNotify = function () {
                     _this.itemNotify = null;
                     _this.executeTutorialStep();
                 };
             };
-            Tutorial.prototype.showTutorialMessage = function (text, step) {
+            Tutorial.prototype.waitMessage = function () {
                 var _this = this;
-                if (step === void 0) { step = true; }
+                this.messageNotify = function () {
+                    _this.messageNotify = null;
+                    _this.executeTutorialStep();
+                };
+            };
+            Tutorial.prototype.showTutorialMessage = function (text) {
                 this.tutorialMessage.show(text);
-                this.tutorialMessage.removeAllEventListeners("closed");
-                if (step)
-                    this.tutorialMessage.addEventListener("closed", function () {
-                        _this.executeTutorialStep();
-                        _this.tutorialMessage.removeAllEventListeners("closed");
-                    });
             };
             Tutorial.prototype.showTutorialMove = function (source, target) {
                 var sourceTile = this.board.getTileById(source);
                 var targetTile = this.board.getTileById(target);
-                this.tutorialFinger.showMove(sourceTile.x, sourceTile.y + this.board.y - this.board.regY, targetTile.x, targetTile.y + this.board.y - this.board.regY);
+                this.tutorialJellyFinger.showMove(sourceTile.x, sourceTile.y + this.board.y - this.board.regY, targetTile.x, targetTile.y + this.board.y - this.board.regY);
             };
             Tutorial.prototype.showTutorialItem = function (itemId) {
                 var source = this.gameFooter.getItemButton(itemId).localToLocal(0, 0, this.footer);
@@ -224,7 +244,7 @@ var joinjelly;
                 this.gameFooter.setItemAmmount(itemId, 1);
             };
             Tutorial.prototype.hideTutorialFinger = function () {
-                this.tutorialFinger.hide();
+                this.tutorialJellyFinger.hide();
                 this.tutorialItemFinger.hide();
             };
             Tutorial.prototype.giveItemChance = function (items) {

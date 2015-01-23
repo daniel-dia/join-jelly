@@ -6,8 +6,9 @@
         private currentTutorialStep = 0;
 
         //tutorial move
-        private tutorialFinger: view.TutorialMove;
+        private tutorialJellyFinger: view.TutorialMove;
         private tutorialItemFinger: view.TutorialMove;
+        private messageNotify: () => void;
 
         //turorial message
         private tutorialMessage: view.TutoralMessage;
@@ -17,17 +18,17 @@
 
         protected createGUI() {
 
-            this.tutorialFinger = new view.TutorialMove();
+
+            this.tutorialJellyFinger = new view.TutorialMove();
             this.tutorialItemFinger = new view.TutorialMove();
             this.tutorialMessage = new view.TutoralMessage();
+            this.tutorialMessage.addEventListener("closed", () => { if(this.messageNotify)this.messageNotify();});
+
             this.tutorialItemFinger.rotation = -45;
 
-
-
             super.createGUI();
-
-
-            this.content.addChild(this.tutorialFinger);
+            
+            this.content.addChild(this.tutorialJellyFinger);
             this.footer.addChild(this.tutorialItemFinger);
             this.content.addChild(this.tutorialMessage);
 
@@ -72,11 +73,12 @@
                     this.board.getTileById(18).setNumber(1);
                     this.showTutorialMessage(StringResources.tutorial.msg2);
                     this.board.getTileById(18).disable();
+                    this.waitMessage();
                 },
                 () => {
                     this.board.getTileById(18).enable();
                     this.showTutorialMove(18, 16)
-                    this.tutorialwaitMatch();
+                    this.waitMatch();
                 },
                 () => {
                     this.board.getTileById(16).disable();
@@ -85,12 +87,13 @@
                 },
                 () => {
                     this.showTutorialMessage(StringResources.tutorial.msg3);
+                    this.waitMessage();
                 },
                 () => {
                     this.board.getTileById(24).setNumber(2);
                     this.board.getTileById(16).disable();
                     this.showTutorialMove(24, 16)
-                    this.tutorialwaitMatch();
+                    this.waitMatch();
                 },
                 () => {
                     this.board.getTileById(16).disable();
@@ -98,8 +101,6 @@
                     this.tutorialWait(700);
                 },
                 () => {
-
-                    
                     this.tutorialWait(500);
                 },
                 () => {
@@ -113,14 +114,19 @@
                     this.board.getTileById(20).setNumber(1);
                     this.board.getTileById(18).disable();
                     this.showTutorialMessage(StringResources.tutorial.msgDirt);
+                    this.waitMessage();
                 },
 
                 () => {
 
                     this.showTutorialMove(20, 18)
-                    this.tutorialwaitMatch();
+                    this.waitMatch();
                 },
 
+                () => {
+                    this.tutorialWait(1000);
+
+                },
                 () => {
 
                     this.hideTutorialFinger();
@@ -159,58 +165,65 @@
 
 
                     this.board.getTileById(18).disable();
-                                        this.tutorialWait(1000);
+                    this.tutorialWait(1000);
   
                 },
                 () => {
                     this.showTutorialItem("clean");
-                    this.showTutorialMessage("You can always use items.\n this cleans the board",false);
-                    this.tutorialWaitItem();
+                    this.showTutorialMessage("You can always use items.\n this cleans the board");
+                    this.waitItem();
                 },
                 () => {
+                    this.hideTutorialFinger();
+                    this.gameFooter.setItemAmmount("clean",0)
                     this.tutorialWait(1000);
                 },
                 () => {
                     this.showTutorialItem("time");
-                    this.showTutorialMessage("this one make time slower", false);
+                    this.showTutorialMessage("this one make time slower");
 
-                    this.tutorialWaitItem();
+                    this.waitItem();
                 },
                 () => {
-                    
+                    this.hideTutorialFinger();
+                    this.gameFooter.setItemAmmount("time", 0)
                     this.tutorialWait(1000);
                 },
                 () => {
                     this.showTutorialItem("fast");
-                    this.showTutorialMessage("this one join some jellies", false);
+                    this.showTutorialMessage("this one join some jellies");
 
-                    this.tutorialWaitItem();
+                    this.waitItem();
                 },
                 () => {
+                    this.hideTutorialFinger();
+                    this.gameFooter.setItemAmmount("fast", 0)
                     this.tutorialWait(1000);
                 },
                 () => {
                     this.showTutorialItem("revive");
                     this.showTutorialMessage("if you loose, use this to revive");
+                    this.waitMessage();
                 },
                 () => {
-                    this.tutorialWait(1000);
+                    this.hideTutorialFinger();
+                    this.tutorialWait(500);
                 },
                 () => {
                     this.hideTutorialFinger();
                     this.showTutorialMessage(StringResources.tutorial.msgPlay);
+                    this.waitMessage();
                 },
                 () => {
                     this.showTutorialMessage(StringResources.tutorial.msg7);
+                    this.waitMessage();
                 },
                 () => {
+
                     JoinJelly.startLevel();
                 }]
 
-
             // execute the step
-
-
             if (steps[this.currentTutorialStep])
                 steps[this.currentTutorialStep]();
         }
@@ -221,34 +234,35 @@
             }, delay);
         }
 
-        private tutorialwaitMatch() {
+        private waitMatch() {
             this.matchNotify = () => {
                 this.matchNotify = null;
                 this.executeTutorialStep();
             }
         }
 
-        private tutorialWaitItem() {
+        private waitItem() {
             this.itemNotify = () => {
                 this.itemNotify = null;
                 this.executeTutorialStep();
             }
-
         }
-        private showTutorialMessage(text: string,step:boolean=true) {
-            this.tutorialMessage.show(text);
-            this.tutorialMessage.removeAllEventListeners("closed");
-            if(step)
-            this.tutorialMessage.addEventListener("closed", () => {
+
+        private waitMessage() { 
+            this.messageNotify = () => {
+                this.messageNotify= null;
                 this.executeTutorialStep();
-                this.tutorialMessage.removeAllEventListeners("closed");
-            });
+            } 
+        }
+
+        private showTutorialMessage(text: string) {
+            this.tutorialMessage.show(text);
         }
 
         private showTutorialMove(source: number, target: number) {
             var sourceTile = this.board.getTileById(source);
             var targetTile = this.board.getTileById(target);
-            this.tutorialFinger.showMove(
+            this.tutorialJellyFinger.showMove(
                 sourceTile.x, sourceTile.y + this.board.y - this.board.regY,
                 targetTile.x, targetTile.y + this.board.y - this.board.regY);
         }
@@ -262,12 +276,12 @@
         }
 
         private hideTutorialFinger() {
-            this.tutorialFinger.hide();
+            this.tutorialJellyFinger.hide();
             this.tutorialItemFinger.hide();
         }
 
-
         protected giveItemChance(items: Array<string>): string { return null }
+
         protected useItem(item: string) {
 
             var sucess: boolean = false;
@@ -297,6 +311,7 @@
         }
 
         // #endregion 
+        
         // update footer
         protected updateFooter() {}
         // override savegame
