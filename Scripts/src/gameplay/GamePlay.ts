@@ -26,9 +26,10 @@
         private itemProbability: number = 0.005;
         private timeByLevel: number = 10000
         private timeoutInterval: number;
+
         private initialInterval: number = 900;
         private finalInterval: number = 150;
-        private easeInterval: number = 0.97;
+        private easeInterval: number = 0.98;
         
         // effect 
         private freezeEffect: createjs.DisplayObject;
@@ -118,9 +119,9 @@
             this.header.addChild(this.gameHeader);
 
             // create game footer
-            var items = ["time", "clean", "fast", "revive"];
+            var items = [Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE, Items.LUCKY];
             this.gameFooter = new view.GameFooter(items);
-            this.gameFooter.lockItem("revive");
+            this.gameFooter.lockItem(Items.REVIVE);
             this.footer.addChild(this.gameFooter);
             this.updateFooter();
 
@@ -528,7 +529,7 @@
         protected giveItemChance(items: Array<string>): string {
 
             var item = null;
-            var lucky = 10; //TODO read it from items
+            var lucky = JoinJelly.itemData.getItemAmmount(Items.LUCKY) ? 2 : 1;
 
             // calculate random change to win a item
             var goodChance: boolean = (Math.random() < this.itemProbability*lucky);
@@ -604,16 +605,16 @@
                 var sucess: boolean = false;
 
                 switch (item) {
-                    case "time":
+                    case Items.TIME:
                         sucess = this.useTime();
                         break;
-                    case "fast":
+                    case Items.FAST:
                         sucess = this.useFast();
                         break;
-                    case "clean":
+                    case Items.CLEAN:
                         sucess = this.useClean();
                         break;
-                    case "revive":
+                    case Items.REVIVE:
                         sucess = this.useRevive();
                         break;
                 }
@@ -710,9 +711,9 @@
             this.showBoardButton.fadeOut();
 
             // set footer items
-            this.gameFooter.setItems(["time", "clean", "fast", "revive"]);
+            this.gameFooter.setItems([Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE, Items.LUCKY]);
             this.gameFooter.unlockAll();
-            this.gameFooter.lockItem("revive");
+            this.gameFooter.lockItem(Items.REVIVE);
 
             // remove other ui items
             this.gameHeader.mouseEnabled = true;

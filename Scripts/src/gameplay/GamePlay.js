@@ -20,7 +20,7 @@ var joinjelly;
                 this.timeByLevel = 10000;
                 this.initialInterval = 900;
                 this.finalInterval = 150;
-                this.easeInterval = 0.97;
+                this.easeInterval = 0.98;
                 // #endregion
                 this.log = "";
                 this.userData = userData;
@@ -83,9 +83,9 @@ var joinjelly;
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
                 // create game footer
-                var items = ["time", "clean", "fast", "revive"];
+                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE, joinjelly.Items.LUCKY];
                 this.gameFooter = new gameplay.view.GameFooter(items);
-                this.gameFooter.lockItem("revive");
+                this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 this.footer.addChild(this.gameFooter);
                 this.updateFooter();
                 this.gameFooter.addEventListener("useitem", function (e) {
@@ -390,7 +390,7 @@ var joinjelly;
             //give item to user
             GamePlayScreen.prototype.giveItemChance = function (items) {
                 var item = null;
-                var lucky = 10; //TODO read it from items
+                var lucky = joinjelly.JoinJelly.itemData.getItemAmmount(joinjelly.Items.LUCKY) ? 2 : 1;
                 // calculate random change to win a item
                 var goodChance = (Math.random() < this.itemProbability * lucky);
                 // if true
@@ -448,16 +448,16 @@ var joinjelly;
                 if (joinjelly.JoinJelly.itemData.getItemAmmount(item) > 0) {
                     var sucess = false;
                     switch (item) {
-                        case "time":
+                        case joinjelly.Items.TIME:
                             sucess = this.useTime();
                             break;
-                        case "fast":
+                        case joinjelly.Items.FAST:
                             sucess = this.useFast();
                             break;
-                        case "clean":
+                        case joinjelly.Items.CLEAN:
                             sucess = this.useClean();
                             break;
-                        case "revive":
+                        case joinjelly.Items.REVIVE:
                             sucess = this.useRevive();
                             break;
                     }
@@ -535,9 +535,9 @@ var joinjelly;
                 // hide show board button
                 this.showBoardButton.fadeOut();
                 // set footer items
-                this.gameFooter.setItems(["time", "clean", "fast", "revive"]);
+                this.gameFooter.setItems([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE, joinjelly.Items.LUCKY]);
                 this.gameFooter.unlockAll();
-                this.gameFooter.lockItem("revive");
+                this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 // remove other ui items
                 this.gameHeader.mouseEnabled = true;
                 createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);

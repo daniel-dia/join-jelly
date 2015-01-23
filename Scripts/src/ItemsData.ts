@@ -1,9 +1,18 @@
 ﻿module joinjelly {
+
+    export class Items {
+        public static TIME = "time";
+        public static CLEAN = "clean";
+        public static FAST = "fast";
+        public static REVIVE = "revive";
+        public static LUCKY = "lucky";
+    }
+
     export class ItemsData {
 
         private items: Array<number>;
-        
-        public static items = ["time", "clean", "fast", "revive","lucky"];
+
+        public static items = [Items.TIME, Items.CLEAN, Items.FAST,Items.REVIVE,Items.LUCKY];
 
         constructor() {
             this.items = <Array<number>>(new Object());

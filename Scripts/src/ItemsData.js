@@ -1,5 +1,16 @@
 var joinjelly;
 (function (joinjelly) {
+    var Items = (function () {
+        function Items() {
+        }
+        Items.TIME = "time";
+        Items.CLEAN = "clean";
+        Items.FAST = "fast";
+        Items.REVIVE = "revive";
+        Items.LUCKY = "lucky";
+        return Items;
+    })();
+    joinjelly.Items = Items;
     var ItemsData = (function () {
         function ItemsData() {
             this.items = (new Object());
@@ -24,7 +35,7 @@ var joinjelly;
             this.items[item] = ammount;
             UserData.saveItems(this.items);
         };
-        ItemsData.items = ["time", "clean", "fast", "revive", "lucky"];
+        ItemsData.items = [Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE, Items.LUCKY];
         return ItemsData;
     })();
     joinjelly.ItemsData = ItemsData;

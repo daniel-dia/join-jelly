@@ -1,7 +1,6 @@
 ﻿module joinjelly {
     export class Jellypedia extends ScrollablePage {
-
-  
+          
         constructor(userData: UserData, jellyInfos) {
             super(StringResources.menus.jellypedia);
            
@@ -22,6 +21,5 @@
             }
             this.maxScroll = 6300;
         }
-  
     }
 }
