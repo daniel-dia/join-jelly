@@ -20,7 +20,7 @@
                 pi.x = 150;
                 index++;
             }
-            this.maxScroll = 5700;
+            this.maxScroll = 6300;
         }
   
     }
