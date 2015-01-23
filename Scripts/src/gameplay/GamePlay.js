@@ -380,7 +380,7 @@ var joinjelly;
                 if (this.matchNotify)
                     this.matchNotify();
                 // verify winGame
-                if (newValue >= 8192)
+                if (newValue >= joinjelly.JoinJelly.maxJelly)
                     this.winGame();
                 // log event
                 joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);

@@ -66,6 +66,8 @@ module joinjelly {
             { id: "j2048", src: "j2048.png" },
             { id: "j4096", src: "j4096.png" },
             { id: "j8192", src: "j8192.png" },
+
+            { id: "j16384", src: "j16384.png" },
             { id: "Background", src: "Background.jpg" },
             { id: "backhome", src: "BackMain.jpg" },
             { id: "bonus_bar", src: "bonus_bar.png" },
@@ -85,7 +87,8 @@ module joinjelly {
             { id: "e1024", src: "e1024.png" },
             { id: "e2048", src: "e2048.png" },
             { id: "e4096", src: "e4096.png" },
-            { id: "e8192", src: "e8192.png" },
+            { id: "e8192", src: "e8192.png"
+            { id: "e16384", src: "e16384.png" },
             { id: "footer", src: "footer.png" },
             { id: "header", src: "header.png" },
             { id: "j-1", src: "j-1.png" },

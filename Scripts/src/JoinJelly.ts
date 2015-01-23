@@ -1,6 +1,8 @@
 ﻿module joinjelly {
     export class JoinJelly {
 
+
+        public static maxJelly: number = 16384;
         public static userData: UserData;
         public static gameScreen: gameui.GameScreen;
         public static analytics: Analytics;

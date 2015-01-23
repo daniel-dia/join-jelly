@@ -512,7 +512,7 @@
 
 
             // verify winGame
-            if (newValue >= 8192)
+            if (newValue >= JoinJelly.maxJelly)
                 this.winGame();
 
             // log event

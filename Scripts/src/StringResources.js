@@ -39,6 +39,7 @@ var StringResources = {
         2048: { name: "Phanton3 Jelly", description: "description" },
         4096: { name: "Phanton4 Jelly", description: "description" },
         8192: { name: "Phanton5 Jelly", description: "description" },
+        16384: { name: "Phanton6 Jelly", description: "description" },
     },
     items: {
         clean: "Clean",
