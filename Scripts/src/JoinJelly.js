@@ -7,6 +7,16 @@ var joinjelly;
             var _this = this;
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
+            //define language
+            var lang = window.navigator.userLanguage.substr(0, 2).toLowerCase();
+            switch (lang) {
+                case "pt":
+                    StringResources = StringResources_pt;
+                    break;
+                case "es":
+                    StringResources = StringResources_es;
+                    break;
+            }
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, 60, true);
             this.gameScreen.stage.enableDOMEvents(false);
             this.userData = new UserData();
