@@ -8,7 +8,7 @@ var joinjelly;
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
             //define language
-            var lang = window.navigator.userLanguage.substr(0, 2).toLowerCase();
+            var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt":
                     StringResources = StringResources_pt;

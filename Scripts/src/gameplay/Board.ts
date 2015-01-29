@@ -28,15 +28,15 @@
             this.addChild(this.tilesContainer);
 
             //define cache for click
-            this.tilesContainer.hitArea = new createjs.Shape(new createjs.Graphics().f("red").r(0, 0, boardWidth * tileSize, boardHeight * tileSize));
-          
+            this.tilesContainer.hitArea = new createjs.Shape(new createjs.Graphics().f("red").r(0, 0, boardWidth * tileSize, (boardHeight + 0.5) * tileSize));
+
             // create all tiles
             this.addTiles(boardWidth, boardHeight, tileSize, img);
             this.addMouseEvents(tileSize);
 
             //set pivot
             this.regX = (boardWidth * tileSize / 2);
-            this.regY = (boardHeight * tileSize / 2);
+            this.regY = (boardHeight * tileSize / 2 );
 
         }
 
@@ -169,7 +169,8 @@
             return { x: x, y: y };
         }
 
-        private getTileByCoords(x: number, y: number): Tile {
+        // get a tile basend on x and y index
+        private getTileByIndex(x: number, y: number): Tile {
             var id = this.boardWidth * y + x;
             return this.getTileById(id);
         }
@@ -180,7 +181,7 @@
             var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
             return {
                 x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
-                y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5 + hexaOffset
+                y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5 + hexaOffset - tileSize / 5
             }
         }
         
@@ -274,7 +275,7 @@
                     neighborCoords[p].x < this.boardWidth &&
                     neighborCoords[p].y < this.boardHeight)
                     // add to array
-                    neighbor.push(this.getTileByCoords(neighborCoords[p].x, neighborCoords[p].y));
+                    neighbor.push(this.getTileByIndex(neighborCoords[p].x, neighborCoords[p].y));
 
             return neighbor;
         }

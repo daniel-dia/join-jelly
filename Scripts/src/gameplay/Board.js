@@ -24,7 +24,7 @@ var joinjelly;
                 this.tilesContainer = new createjs.Container();
                 this.addChild(this.tilesContainer);
                 //define cache for click
-                this.tilesContainer.hitArea = new createjs.Shape(new createjs.Graphics().f("red").r(0, 0, boardWidth * tileSize, boardHeight * tileSize));
+                this.tilesContainer.hitArea = new createjs.Shape(new createjs.Graphics().f("red").r(0, 0, boardWidth * tileSize, (boardHeight + 0.5) * tileSize));
                 // create all tiles
                 this.addTiles(boardWidth, boardHeight, tileSize, img);
                 this.addMouseEvents(tileSize);
@@ -132,7 +132,8 @@ var joinjelly;
                 var y = Math.floor((rawy - hexaOffset) / tileSize);
                 return { x: x, y: y };
             };
-            Board.prototype.getTileByCoords = function (x, y) {
+            // get a tile basend on x and y index
+            Board.prototype.getTileByIndex = function (x, y) {
                 var id = this.boardWidth * y + x;
                 return this.getTileById(id);
             };
@@ -141,7 +142,7 @@ var joinjelly;
                 var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
                 return {
                     x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
-                    y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5 + hexaOffset
+                    y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5 + hexaOffset - tileSize / 5
                 };
             };
             // get a tile object by its id
@@ -208,7 +209,7 @@ var joinjelly;
                     // remove beyound borders
                     if (neighborCoords[p].x >= 0 && neighborCoords[p].y >= 0 && neighborCoords[p].x < this.boardWidth && neighborCoords[p].y < this.boardHeight)
                         // add to array
-                        neighbor.push(this.getTileByCoords(neighborCoords[p].x, neighborCoords[p].y));
+                        neighbor.push(this.getTileByIndex(neighborCoords[p].x, neighborCoords[p].y));
                 return neighbor;
             };
             // calculate a percent 
