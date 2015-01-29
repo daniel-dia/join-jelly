@@ -10,7 +10,7 @@
 
         private createJoin() {
             var j = new joinjelly.view.JellyContainer();
-            var i = gameui.AssetsManager.getBitmap("t0");
+            var i = gameui.ImagesManager.getBitmap("t0");
             j.addChild(i);
             j.y = 114;
             j.x = 325;
@@ -32,7 +32,7 @@
                 j.executeAnimationIn()
                 ///}, l * 200 + 600);
 
-                var i = <createjs.Bitmap>gameui.AssetsManager.getBitmap("t" + l);
+                var i = <createjs.Bitmap>gameui.ImagesManager.getBitmap("t" + l);
                 j.imageContainer.addChild(i);
                 this.addChild(j);
 

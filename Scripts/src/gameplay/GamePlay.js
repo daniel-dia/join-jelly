@@ -36,22 +36,22 @@ var joinjelly;
             }
             // create game effects
             GamePlayScreen.prototype.createEffects = function () {
-                this.freezeEffect = gameui.AssetsManager.getBitmap("freezeEffect");
+                this.freezeEffect = gameui.ImagesManager.getBitmap("freezeEffect");
                 this.content.addChild(this.freezeEffect);
                 this.freezeEffect.visible = false;
                 this.freezeEffect.scaleX = this.freezeEffect.scaleY = 2;
                 this.freezeEffect.mouseEnabled = false;
-                this.fastEffect = gameui.AssetsManager.getBitmap("fastEffect");
+                this.fastEffect = gameui.ImagesManager.getBitmap("fastEffect");
                 this.content.addChild(this.fastEffect);
                 this.fastEffect.visible = false;
                 this.fastEffect.scaleX = this.fastEffect.scaleY = 2;
                 this.fastEffect.mouseEnabled = false;
-                this.reviveEffect = gameui.AssetsManager.getBitmap("reviveEffect");
+                this.reviveEffect = gameui.ImagesManager.getBitmap("reviveEffect");
                 this.content.addChild(this.reviveEffect);
                 this.reviveEffect.visible = false;
                 this.reviveEffect.scaleX = this.reviveEffect.scaleY = 2;
                 this.reviveEffect.mouseEnabled = false;
-                this.cleanEffect = gameui.AssetsManager.getBitmap("cleanEffect");
+                this.cleanEffect = gameui.ImagesManager.getBitmap("cleanEffect");
                 this.content.addChild(this.cleanEffect);
                 this.cleanEffect.visible = false;
                 this.cleanEffect.scaleX = this.cleanEffect.scaleY = 2;
@@ -59,7 +59,7 @@ var joinjelly;
             };
             // create game background
             GamePlayScreen.prototype.createBackground = function () {
-                var bg = gameui.AssetsManager.getBitmap("Background");
+                var bg = gameui.ImagesManager.getBitmap("Background");
                 this.background.addChild(bg);
             };
             // create a new board
@@ -102,7 +102,7 @@ var joinjelly;
                 var tbt = new gameui.ImageButton("BtBoard", function () {
                     _this.finishMenu.show();
                     tbt.fadeOut();
-                    gameui.AssetsManager.playSound("Interface Sound-06");
+                    gameui.AudioManager.playSound("Interface Sound-06");
                 });
                 tbt.set({ x: 150, y: -150, visible: false });
                 this.footer.addChild(tbt);
@@ -180,7 +180,7 @@ var joinjelly;
             // level up
             GamePlayScreen.prototype.levelUpInterfaceEffect = function (level) {
                 this.gameLevelIndicator.showLevel(level);
-                gameui.AssetsManager.playSound("levelUp");
+                gameui.AudioManager.playSound("levelUp");
                 this.board.levelUpEffect();
             };
             // #endregion
@@ -196,7 +196,7 @@ var joinjelly;
                 // update interfaces
                 this.updateInterfaceInfos();
                 // play music
-                gameui.AssetsManager.playMusic("music1");
+                gameui.AudioManager.playMusic("music1");
                 // initialize gameloop
                 this.gamestate = 1 /* playing */;
                 this.step(500);
@@ -277,7 +277,7 @@ var joinjelly;
                 // log event
                 joinjelly.JoinJelly.analytics.logEndGame(this.matches, this.score, this.level, highJelly);
                 // play end soud
-                gameui.AssetsManager.playSound("end");
+                gameui.AudioManager.playSound("end");
                 // play end game effect
                 this.board.endGameEffect();
             };
@@ -405,9 +405,9 @@ var joinjelly;
             GamePlayScreen.prototype.animateItemFromTile = function (tile, item) {
                 var _this = this;
                 // play sound
-                gameui.AssetsManager.playSound("Interface Sound-11");
+                gameui.AudioManager.playSound("Interface Sound-11");
                 // create item Object
-                var itemDO = gameui.AssetsManager.getBitmap("item" + item);
+                var itemDO = gameui.ImagesManager.getBitmap("item" + item);
                 itemDO.mouseEnabled = false;
                 itemDO.regX = itemDO.getBounds().width / 2;
                 itemDO.regY = itemDO.getBounds().height / 2;
@@ -432,7 +432,7 @@ var joinjelly;
             GamePlayScreen.prototype.animateScoreFromTile = function (tile, score) {
                 var _this = this;
                 // create text Object
-                var textDO = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
+                var textDO = gameui.ImagesManager.getBitmapText(score.toString(), "debussy");
                 textDO.regX = textDO.getBounds().width / 2;
                 textDO.mouseEnabled = false;
                 this.content.addChild(textDO);
@@ -488,7 +488,7 @@ var joinjelly;
                 createjs.Tween.get(this.freezeEffect).to({ alpha: 1 }, 1000).to({ alpha: 0 }, 4000).call(function () {
                     _this.freezeEffect.visible = false;
                 });
-                gameui.AssetsManager.playSound("sounditemtime");
+                gameui.AudioManager.playSound("sounditemtime");
                 return true;
             };
             //clan all simple jellys
@@ -511,7 +511,7 @@ var joinjelly;
                 createjs.Tween.get(this.cleanEffect).to({ x: -600, y: 2000 }).to({ x: 300, y: -500 }, 600).call(function () {
                     _this.cleanEffect.visible = false;
                 });
-                gameui.AssetsManager.playSound("sounditemclean");
+                gameui.AudioManager.playSound("sounditemclean");
                 return true;
             };
             // revive after game end
@@ -548,7 +548,7 @@ var joinjelly;
                 createjs.Tween.get(this.reviveEffect).to({ y: 1200 }).to({ y: 600, alpha: 1 }, 600).to({ y: 0, alpha: 0 }, 600).call(function () {
                     _this.reviveEffect.visible = false;
                 });
-                gameui.AssetsManager.playSound("sounditemrevive");
+                gameui.AudioManager.playSound("sounditemrevive");
                 return true;
             };
             // match 5 pair of jelly if avaliabe
@@ -584,7 +584,7 @@ var joinjelly;
                 createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(function () {
                     _this.fastEffect.visible = false;
                 });
-                gameui.AssetsManager.playSound("sounditemfast");
+                gameui.AudioManager.playSound("sounditemfast");
                 return true;
             };
             // match two jellys with animation

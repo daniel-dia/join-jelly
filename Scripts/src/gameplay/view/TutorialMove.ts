@@ -7,8 +7,8 @@
         constructor() {
             super();
 
-            this.fingerUp = gameui.AssetsManager.getBitmap("tutorialFinger");
-            this.fingerDown =  gameui.AssetsManager.getBitmap("tutorialFingerDown");
+            this.fingerUp = gameui.ImagesManager.getBitmap("tutorialFinger");
+            this.fingerDown =  gameui.ImagesManager.getBitmap("tutorialFingerDown");
 
             this.addChild(this.fingerUp);
             this.addChild(this.fingerDown);

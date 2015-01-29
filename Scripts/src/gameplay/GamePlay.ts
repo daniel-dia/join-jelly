@@ -62,25 +62,25 @@
         // create game effects
         private createEffects() {
 
-            this.freezeEffect = gameui.AssetsManager.getBitmap("freezeEffect");
+            this.freezeEffect = gameui.ImagesManager.getBitmap("freezeEffect");
             this.content.addChild(this.freezeEffect);
             this.freezeEffect.visible = false;
             this.freezeEffect.scaleX = this.freezeEffect.scaleY = 2;
             this.freezeEffect.mouseEnabled = false;
 
-            this.fastEffect = gameui.AssetsManager.getBitmap("fastEffect");
+            this.fastEffect = gameui.ImagesManager.getBitmap("fastEffect");
             this.content.addChild(this.fastEffect);
             this.fastEffect.visible = false;
             this.fastEffect.scaleX = this.fastEffect.scaleY = 2;
             this.fastEffect.mouseEnabled = false;
 
-            this.reviveEffect = gameui.AssetsManager.getBitmap("reviveEffect");
+            this.reviveEffect = gameui.ImagesManager.getBitmap("reviveEffect");
             this.content.addChild(this.reviveEffect);
             this.reviveEffect.visible = false;
             this.reviveEffect.scaleX = this.reviveEffect.scaleY = 2;
             this.reviveEffect.mouseEnabled = false;
 
-            this.cleanEffect = gameui.AssetsManager.getBitmap("cleanEffect");
+            this.cleanEffect = gameui.ImagesManager.getBitmap("cleanEffect");
             this.content.addChild(this.cleanEffect);
             this.cleanEffect.visible = false;
             this.cleanEffect.scaleX = this.cleanEffect.scaleY = 2;
@@ -90,7 +90,7 @@
 
         // create game background
         private createBackground() {
-            var bg = gameui.AssetsManager.getBitmap("Background");
+            var bg = gameui.ImagesManager.getBitmap("Background");
             this.background.addChild(bg);
         }
 
@@ -143,7 +143,7 @@
                 this.finishMenu.show();
                 tbt.fadeOut();
 
-                gameui.AssetsManager.playSound("Interface Sound-06");
+                gameui.AudioManager.playSound("Interface Sound-06");
             });
             tbt.set({ x: 150, y: -150, visible: false });
             this.footer.addChild(tbt);
@@ -239,7 +239,7 @@
         // level up
         protected levelUpInterfaceEffect(level: number) {
             this.gameLevelIndicator.showLevel(level);
-            gameui.AssetsManager.playSound("levelUp");
+            gameui.AudioManager.playSound("levelUp");
             this.board.levelUpEffect();
         }
 
@@ -263,7 +263,7 @@
             this.updateInterfaceInfos();
 
             // play music
-            gameui.AssetsManager.playMusic("music1");
+            gameui.AudioManager.playMusic("music1");
 
             // initialize gameloop
             this.gamestate = GameState.playing;
@@ -373,7 +373,7 @@
             JoinJelly.analytics.logEndGame(this.matches, this.score, this.level, highJelly)
 
             // play end soud
-            gameui.AssetsManager.playSound("end");
+            gameui.AudioManager.playSound("end");
 
             // play end game effect
             this.board.endGameEffect();
@@ -548,10 +548,10 @@
         // animate a item moving from tile to the footer
         private animateItemFromTile(tile: Tile, item: string) {
             // play sound
-            gameui.AssetsManager.playSound("Interface Sound-11");
+            gameui.AudioManager.playSound("Interface Sound-11");
 
             // create item Object
-            var itemDO = gameui.AssetsManager.getBitmap("item" + item);
+            var itemDO = gameui.ImagesManager.getBitmap("item" + item);
             itemDO.mouseEnabled = false;
             itemDO.regX = itemDO.getBounds().width / 2;
             itemDO.regY = itemDO.getBounds().height / 2;
@@ -581,7 +581,7 @@
         private animateScoreFromTile(tile: Tile, score: number) {
 
             // create text Object
-            var textDO = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
+            var textDO = gameui.ImagesManager.getBitmapText(score.toString(), "debussy");
             textDO.regX = textDO.getBounds().width / 2;
             textDO.mouseEnabled = false;
             this.content.addChild(textDO);
@@ -651,7 +651,7 @@
                 this.freezeEffect.visible = false
             });
 
-            gameui.AssetsManager.playSound("sounditemtime");
+            gameui.AudioManager.playSound("sounditemtime");
 
             return true;
         }
@@ -677,7 +677,7 @@
                 this.cleanEffect.visible = false
             });
 
-            gameui.AssetsManager.playSound("sounditemclean");
+            gameui.AudioManager.playSound("sounditemclean");
 
             return true;
         }
@@ -727,7 +727,7 @@
                 this.reviveEffect.visible = false
             });
 
-            gameui.AssetsManager.playSound("sounditemrevive");
+            gameui.AudioManager.playSound("sounditemrevive");
 
             return true;
         }
@@ -772,7 +772,7 @@
                 this.fastEffect.visible = false
             });
 
-            gameui.AssetsManager.playSound("sounditemfast");
+            gameui.AudioManager.playSound("sounditemfast");
 
             return true;
         }

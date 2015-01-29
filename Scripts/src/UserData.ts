@@ -2,8 +2,8 @@
     
     constructor() {
 
-        gameui.AssetsManager.setSoundVeolume(this.getSoundVol());
-        gameui.AssetsManager.setMusicVolume(this.getMusicVol());
+        gameui.AudioManager.setSoundVeolume(this.getSoundVol());
+        gameui.AudioManager.setMusicVolume(this.getMusicVol());
 
     }
     

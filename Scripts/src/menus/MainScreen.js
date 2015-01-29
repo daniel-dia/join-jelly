@@ -18,7 +18,7 @@ var joinjelly;
             this.createHeader();
             this.createFooter();
             this.createTitle();
-            gameui.AssetsManager.playMusic("musicIntro");
+            gameui.AudioManager.playMusic("musicIntro");
         }
         MainScreen.prototype.createContent = function () {
             // adds jelly
@@ -42,14 +42,14 @@ var joinjelly;
             this.content.addChild(t);
         };
         MainScreen.prototype.createBackground = function () {
-            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
+            this.background.addChild(gameui.ImagesManager.getBitmap("backhome"));
         };
         MainScreen.prototype.createHeader = function () {
         };
         MainScreen.prototype.createFooter = function () {
             var _this = this;
             if (this.userData) {
-                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore + " " + this.userData.getHighScore(), "debussy");
+                this.scoreText = gameui.ImagesManager.getBitmapText(StringResources.menus.highScore + " " + this.userData.getHighScore(), "debussy");
                 this.scoreText.x = 50;
                 this.scoreText.y = -100;
                 this.scoreText.scaleX = this.scoreText.scaleY = 0.8;

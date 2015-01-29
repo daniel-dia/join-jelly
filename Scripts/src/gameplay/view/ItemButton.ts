@@ -15,12 +15,12 @@
             this.addEventListener("click", () => { this.dispatchEvent({ type: "useitem", item: item }); });
 
             //create Item
-            var bg = gameui.AssetsManager.getBitmap("itemBG");
-            var bgd = gameui.AssetsManager.getBitmap("itemBGDisabled");
-            var img = gameui.AssetsManager.getBitmap("item" + item);
-            var text = gameui.AssetsManager.getBitmapText("0", "debussy");
-            var name = gameui.AssetsManager.getBitmapText(StringResources.items[item], "debussy");
-            var add = gameui.AssetsManager.getBitmap("BtPlusMini");
+            var bg = gameui.ImagesManager.getBitmap("itemBG");
+            var bgd = gameui.ImagesManager.getBitmap("itemBGDisabled");
+            var img = gameui.ImagesManager.getBitmap("item" + item);
+            var text = gameui.ImagesManager.getBitmapText("0", "debussy");
+            var name = gameui.ImagesManager.getBitmapText(StringResources.items[item], "debussy");
+            var add = gameui.ImagesManager.getBitmap("BtPlusMini");
             this.disabled = bgd;
 
             this.addChild(bg);

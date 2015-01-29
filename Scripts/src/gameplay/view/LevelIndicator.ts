@@ -2,7 +2,7 @@
     export class LevelIndicator extends createjs.Container {
 
         public showLevel(levelId: number) {
-            var text = gameui.AssetsManager.getBitmapText("level", "debussy")
+            var text = gameui.ImagesManager.getBitmapText("level", "debussy")
             this.addChild(text);
             //text.textAlign = "center";
             text.text = "LEVEL " + levelId;

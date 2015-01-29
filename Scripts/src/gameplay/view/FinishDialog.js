@@ -44,22 +44,22 @@ var joinjelly;
                 FinishMenu.prototype.addPoints = function () {
                     var container = new createjs.Container();
                     //creates points Bg
-                    var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
+                    var bg = gameui.ImagesManager.getBitmap("GameOverBgPoints");
                     bg.set({ x: defaultWidth / 2, y: 565, regX: 1056 / 2 });
                     container.addChild(bg);
                     //create points object
-                    var tx = gameui.AssetsManager.getBitmapText("Score", "debussy");
+                    var tx = gameui.ImagesManager.getBitmapText("Score", "debussy");
                     tx.set({ x: 288, y: 442 });
                     tx.scaleX = tx.scaleY = 0.7;
                     //container.addChild(tx);
                     //create "points" text
-                    var tx = gameui.AssetsManager.getBitmapText("", "debussy");
+                    var tx = gameui.ImagesManager.getBitmapText("", "debussy");
                     tx.set({ x: defaultWidth / 2, y: 587 });
                     container.addChild(tx);
                     tx.scaleX = tx.scaleY = 2;
                     this.scoreText = tx;
                     //create HighScore text
-                    var tx = gameui.AssetsManager.getBitmapText("", "debussy");
+                    var tx = gameui.ImagesManager.getBitmapText("", "debussy");
                     tx.set({ x: 1240, y: 775 });
                     container.addChild(tx);
                     tx.scaleX = tx.scaleY = 0.7;
@@ -73,11 +73,11 @@ var joinjelly;
                     var container = new createjs.Container();
                     this.addChild(container);
                     //add background
-                    var bg = gameui.AssetsManager.getBitmap("GameOverBgJelly");
+                    var bg = gameui.ImagesManager.getBitmap("GameOverBgJelly");
                     bg.set({ x: defaultWidth / 2, y: 951, regX: 797 / 2 });
                     container.addChild(bg);
                     //add "LastJelly" Text
-                    var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.highJelly, "debussy");
+                    var tx = gameui.ImagesManager.getBitmapText(StringResources.menus.highJelly, "debussy");
                     tx.set({ x: 420, y: 820 });
                     //container.addChild(tx);
                     tx.scaleX = tx.scaleY = 0.7;
@@ -89,7 +89,7 @@ var joinjelly;
                     jelly.set({ x: defaultWidth / 2, y: 1350 });
                     this.jelly = jelly;
                     //add "LastJelly" name Text
-                    var tx = gameui.AssetsManager.getBitmapText("1", "debussy");
+                    var tx = gameui.ImagesManager.getBitmapText("1", "debussy");
                     tx.set({ x: defaultWidth / 2, y: 1358 });
                     tx.scaleX = tx.scaleY = 0.7;
                     this.jellyText = tx;

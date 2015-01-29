@@ -19,7 +19,7 @@ var joinjelly;
                 }
                 GameTitle.prototype.createJoin = function () {
                     var j = new joinjelly.view.JellyContainer();
-                    var i = gameui.AssetsManager.getBitmap("t0");
+                    var i = gameui.ImagesManager.getBitmap("t0");
                     j.addChild(i);
                     j.y = 114;
                     j.x = 325;
@@ -37,7 +37,7 @@ var joinjelly;
                         //setTimeout(() => {
                         j.executeAnimationIn();
                         ///}, l * 200 + 600);
-                        var i = gameui.AssetsManager.getBitmap("t" + l);
+                        var i = gameui.ImagesManager.getBitmap("t" + l);
                         j.imageContainer.addChild(i);
                         this.addChild(j);
                         i.regX = i.getBounds().width / 2;

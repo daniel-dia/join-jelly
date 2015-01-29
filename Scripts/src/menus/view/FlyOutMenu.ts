@@ -26,7 +26,7 @@
 
         // creates menu background
         private AddBG(heigth:number) {
-            var bg = gameui.AssetsManager.getBitmap("FlyBG");
+            var bg = gameui.ImagesManager.getBitmap("FlyBG");
             bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
             bg.scaleY = heigth / 1022;
             this.addChild(bg);
@@ -39,7 +39,7 @@
         private addTitle(title:string) {
             //create "points" text
             
-            this.title = gameui.AssetsManager.getBitmapText("", "debussy")
+            this.title = gameui.ImagesManager.getBitmapText("", "debussy")
             this.title .set({ x: defaultWidth / 2, y: 600 });
             this.addChild(this.title );
 
@@ -73,14 +73,14 @@
 
         public show() {
             this.animateIn();
-            gameui.AssetsManager.playSound("Interface Sound-14");
+            gameui.AudioManager.playSound("Interface Sound-14");
         }
 
         public hide()
         {
             if (!this.visible) return;
             this.animateOut();
-            gameui.AssetsManager.playSound("Interface Sound-15");
+            gameui.AudioManager.playSound("Interface Sound-15");
         }
 
     }

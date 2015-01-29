@@ -62,7 +62,7 @@ var joinjelly;
                         tile.drag();
                         //bring to front
                         _this.tilesContainer.setChildIndex(tile, _this.tilesContainer.getNumChildren() - 1);
-                        gameui.AssetsManager.playSound('soundh_1');
+                        gameui.AudioManager.playSound('soundh_1');
                     }
                 });
                 //Press Move
@@ -113,7 +113,7 @@ var joinjelly;
                     t.setNumber(value);
                 //plays sound if is new jelly
                 if (value == 1)
-                    gameui.AssetsManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
+                    gameui.AudioManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
             };
             // get a tile id by its x and y pos
             Board.prototype.getTileIdByPos = function (rawx, rawy, tileSize) {
@@ -265,7 +265,7 @@ var joinjelly;
                 this.releaseDrag(origin, true, target);
                 target.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
                 createjs.Tween.get(target).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
-                gameui.AssetsManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
+                gameui.AudioManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
             };
             // clar all board
             Board.prototype.cleanBoard = function () {

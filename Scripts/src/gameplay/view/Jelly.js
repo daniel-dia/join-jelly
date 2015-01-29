@@ -16,18 +16,18 @@ var joinjelly;
                 function Jelly() {
                     _super.call(this);
                     this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("black").rect(-115, -230, 230, 230));
-                    this.joinFx = gameui.AssetsManager.getBitmap("fxJoin");
+                    this.joinFx = gameui.ImagesManager.getBitmap("fxJoin");
                     this.joinFx.visible = false;
                     this.joinFx.regX = 100;
                     this.joinFx.regY = 100;
                     this.joinFx.y = -115;
                 }
                 Jelly.prototype.createJelly = function (value) {
-                    var img = gameui.AssetsManager.getBitmap("j" + value);
+                    var img = gameui.ImagesManager.getBitmap("j" + value);
                     //centralize
                     img.regX = img.getBounds().width / 2;
                     img.regY = img.getBounds().height;
-                    var shadow = gameui.AssetsManager.getBitmap("shadow");
+                    var shadow = gameui.ImagesManager.getBitmap("shadow");
                     shadow.regY = 45;
                     shadow.regX = 108;
                     shadow.scaleX = shadow.scaleY = img.getBounds().width / 216;
@@ -37,7 +37,7 @@ var joinjelly;
                 Jelly.prototype.createEyes = function (value) {
                     //add Eyes
                     var eye = new createjs.Container();
-                    var eyeImg = gameui.AssetsManager.getBitmap("e" + value);
+                    var eyeImg = gameui.ImagesManager.getBitmap("e" + value);
                     eyeImg.regY = 20;
                     createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
                     eye.addChild(eyeImg);

@@ -14,8 +14,8 @@ var joinjelly;
                 __extends(TutorialMove, _super);
                 function TutorialMove() {
                     _super.call(this);
-                    this.fingerUp = gameui.AssetsManager.getBitmap("tutorialFinger");
-                    this.fingerDown = gameui.AssetsManager.getBitmap("tutorialFingerDown");
+                    this.fingerUp = gameui.ImagesManager.getBitmap("tutorialFinger");
+                    this.fingerDown = gameui.ImagesManager.getBitmap("tutorialFingerDown");
                     this.addChild(this.fingerUp);
                     this.addChild(this.fingerDown);
                     this.fingerDown.y = this.fingerUp.image.height - this.fingerDown.image.height;

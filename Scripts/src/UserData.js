@@ -1,7 +1,7 @@
 var UserData = (function () {
     function UserData() {
-        gameui.AssetsManager.setSoundVeolume(this.getSoundVol());
-        gameui.AssetsManager.setMusicVolume(this.getMusicVol());
+        gameui.AudioManager.setSoundVeolume(this.getSoundVol());
+        gameui.AudioManager.setMusicVolume(this.getMusicVol());
     }
     // #region score
     UserData.prototype.setScore = function (score) {

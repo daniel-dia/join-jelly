@@ -63,7 +63,7 @@ var joinjelly;
                     jelly.y = positions[position][1] * -200 + 550;
                     jelly.scaleX = jelly.scaleY = 1 - positions[position][1] / 4;
                     //play JellySound
-                    gameui.AssetsManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
+                    gameui.AudioManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
                 return JellyLobby;
             })(createjs.Container);

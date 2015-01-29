@@ -8,7 +8,7 @@
             this.previousScreen = previousScreen;
 
             // add loading info
-            var loading = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
+            var loading = gameui.ImagesManager.getBitmapText(StringResources.menus.loading, "debussy");
             loading.y = 500;
             loading.x = defaultWidth / 2;
             loading.regX = loading.getBounds().width / 2;
@@ -56,7 +56,7 @@
                     this.purchaseProduct(event["product"], (sucess: boolean) => { 
                         if (sucess) {
                             si.setPurchased();
-                            gameui.AssetsManager.playSound("Interface Sound-11");
+                            gameui.AudioManager.playSound("Interface Sound-11");
                         }
                         this.updateFooter(); 
                         this.unlockUI();

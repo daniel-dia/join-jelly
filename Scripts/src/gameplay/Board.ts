@@ -81,7 +81,7 @@
                     //bring to front
                     this.tilesContainer.setChildIndex(tile, this.tilesContainer.getNumChildren() - 1);
 
-                    gameui.AssetsManager.playSound('soundh_1');
+                    gameui.AudioManager.playSound('soundh_1');
                 }
             });
 
@@ -142,7 +142,7 @@
 
             //plays sound if is new jelly
             if (value == 1)
-                gameui.AssetsManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
+                gameui.AudioManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
 
         }
 
@@ -342,7 +342,7 @@
             target.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
             createjs.Tween.get(target).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
 
-            gameui.AssetsManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
+            gameui.AudioManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
         }
 
         // clar all board

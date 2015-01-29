@@ -6,7 +6,7 @@
         constructor() {
             super();
 
-            this.addChild(gameui.AssetsManager.getBitmap("ballon"));
+            this.addChild(gameui.ImagesManager.getBitmap("ballon"));
 
             this.visible = false;
             
@@ -16,7 +16,7 @@
             this.y = 941 + this.regY;
 
 
-            var t = gameui.AssetsManager.getBitmapText("", "debussy")
+            var t = gameui.ImagesManager.getBitmapText("", "debussy")
             this.addChild(t);
             t.scaleX = t.scaleY = 0.7;
             t.x = 50;
@@ -32,7 +32,7 @@
                 this.fadeOut();
                 this.dispatchEvent("closed");
 
-                gameui.AssetsManager.playSound("Interface Sound-15");
+                gameui.AudioManager.playSound("Interface Sound-15");
             })
         }
 
@@ -41,7 +41,7 @@
             this.bitmapText.text = text;
             this.fadeIn();
 
-            gameui.AssetsManager.playSound("Interface Sound-14");
+            gameui.AudioManager.playSound("Interface Sound-14");
         }
 
    }

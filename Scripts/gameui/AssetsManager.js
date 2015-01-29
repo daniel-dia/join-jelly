@@ -117,6 +117,7 @@ var gameui;
             if (delay === void 0) { delay = 0; }
             if (volume === void 0) { volume = 1; }
             return createjs.Sound.play(name, interrupt, delay, offset, loop, volume * this.getSoundVeolume());
+            WpSound.playSoundFx(name);
         };
         return AssetsManager;
     })();

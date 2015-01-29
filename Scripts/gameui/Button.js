@@ -59,7 +59,7 @@ var gameui;
             if (!this.soundId)
                 this.soundId = Button.DefaultSoundId;
             if (this.soundId)
-                gameui.AssetsManager.playSound(this.soundId);
+                gameui.AudioManager.playSound(this.soundId);
         };
         Button.prototype.setSound = function (soundId) {
             this.soundId = soundId;
@@ -76,7 +76,7 @@ var gameui;
                 this.addEventListener("click", event);
             //adds image into it
             if (image != null) {
-                this.background = gameui.AssetsManager.getBitmap(image);
+                this.background = gameui.ImagesManager.getBitmap(image);
                 this.addChildAt(this.background, 0);
                 //Sets the image into the pivot center.
                 if (this.background.getBounds()) {
@@ -127,7 +127,7 @@ var gameui;
             _super.call(this, background, event, soundId);
             //add text into it.
             text = text.toUpperCase();
-            this.bitmapText = gameui.AssetsManager.getBitmapText(text, bitmapFontId);
+            this.bitmapText = gameui.ImagesManager.getBitmapText(text, bitmapFontId);
             this.addChild(this.bitmapText);
             this.bitmapText.regX = this.bitmapText.getBounds().width / 2;
             this.bitmapText.regY = this.bitmapText.lineHeight / 2;
@@ -148,7 +148,7 @@ var gameui;
                 text = " " + text;
             _super.call(this, text, font, color, background, event, soundId);
             //loads icon Image
-            this.icon = gameui.AssetsManager.getBitmap(icon);
+            this.icon = gameui.ImagesManager.getBitmap(icon);
             this.addChild(this.icon);
             this.text.textAlign = "left";
             if (this.icon.getBounds())

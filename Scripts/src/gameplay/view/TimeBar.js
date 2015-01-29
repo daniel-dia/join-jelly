@@ -19,9 +19,9 @@ var joinjelly;
                 }
                 TimeBar.prototype.initializeObjects = function () {
                     var percentBar = new createjs.Container();
-                    var bar = gameui.AssetsManager.getBitmap("time_bar");
-                    var bright = gameui.AssetsManager.getBitmap("time_bar_bright");
-                    var red = gameui.AssetsManager.getBitmap("time_bar_red");
+                    var bar = gameui.ImagesManager.getBitmap("time_bar");
+                    var bright = gameui.ImagesManager.getBitmap("time_bar_bright");
+                    var red = gameui.ImagesManager.getBitmap("time_bar_red");
                     bright.alpha = 0;
                     this.redFx = red;
                     this.brightFx = bright;

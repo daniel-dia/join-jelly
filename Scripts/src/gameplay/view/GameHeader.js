@@ -19,7 +19,7 @@ var joinjelly;
                 GameHeader.prototype.addObjects = function () {
                     var _this = this;
                     //add background
-                    var bg = gameui.AssetsManager.getBitmap("header");
+                    var bg = gameui.ImagesManager.getBitmap("header");
                     this.addChild(bg);
                     bg.x = 0;
                     bg.mouseEnabled = false;
@@ -31,24 +31,24 @@ var joinjelly;
                     pauseButton.y = 219;
                     this.addChild(pauseButton);
                     //add levelBar
-                    var levelBarBorder = gameui.AssetsManager.getBitmap("bonus_border");
+                    var levelBarBorder = gameui.ImagesManager.getBitmap("bonus_border");
                     this.addChild(levelBarBorder);
                     levelBarBorder.x = 223;
                     levelBarBorder.y = 122;
-                    var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
+                    var levelBar = gameui.ImagesManager.getBitmap("bonus_bar");
                     this.addChild(levelBar);
                     levelBar.x = 282;
                     levelBar.y = 151;
                     this.levelBar = levelBar;
                     //add scores text
-                    var score = gameui.AssetsManager.getBitmapText(StringResources.menus.score, "debussy");
+                    var score = gameui.ImagesManager.getBitmapText(StringResources.menus.score, "debussy");
                     //score.textBaseline = "middle";
                     score.x = 323;
                     score.y = 124 - 80;
                     this.scoreText = score;
                     this.addChild(score);
                     //add scores text
-                    var level = gameui.AssetsManager.getBitmapText(StringResources.menus.level, "debussy");
+                    var level = gameui.ImagesManager.getBitmapText(StringResources.menus.level, "debussy");
                     //level.textBaseline = "middle";
                     level.x = 1099;
                     level.y = 242 - 200;

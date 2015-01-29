@@ -408,14 +408,13 @@
     <Content Include="assets\Sounds\s1.mp3" />
     <Content Include="assets\Sounds\s2.mp3" />
     <Content Include="assets\Sounds\s3.mp3" />
-    <Content Include="Scripts\SpriteContainer.js" />
-    <Content Include="Scripts\SpriteStage.js" />
-    <Content Include="Scripts\Stage.js" />
-    <Content Include="Scripts\Touch.js" />
+    <TypeScriptCompile Include="Scripts\gameui\WpAudioManager.ts" />
+    <TypeScriptCompile Include="Scripts\gameui\AudioManager.ts" />
+    <TypeScriptCompile Include="Scripts\WPGameAudio.ts" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\gameui\AssetsManager.ts" />
+    <TypeScriptCompile Include="Scripts\gameui\ImagesManager.ts" />
     <TypeScriptCompile Include="Scripts\gameui\Button.ts" />
     <TypeScriptCompile Include="Scripts\gameui\GameScreen.ts" />
     <TypeScriptCompile Include="Scripts\gameui\Grid.ts" />

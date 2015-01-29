@@ -15,12 +15,12 @@
 
         private addSoundOptions() {
            
-            var f = gameui.AssetsManager.getBitmap("FlyGroup");
+            var f = gameui.ImagesManager.getBitmap("FlyGroup");
             f.y = - 130;
             f.regX = f.getBounds().width / 2;
             this.addChild(f);
 
-            var t = gameui.AssetsManager.getBitmapText(StringResources.menus.sound, "debussy")
+            var t = gameui.ImagesManager.getBitmapText(StringResources.menus.sound, "debussy")
             t.y = -190;
             t.regX = t.getBounds().width / 2;
             this.addChild(t)
@@ -64,7 +64,7 @@
             }
 
             JoinJelly.userData.setMusicVol(value);
-            gameui.AssetsManager.setMusicVolume(value ? 1 : 0);
+            gameui.AudioManager.setMusicVolume(value ? 1 : 0);
         }
 
         private setSound(value: number) {
@@ -76,7 +76,7 @@
             }
 
             JoinJelly.userData.setSoundVol(value);
-            gameui.AssetsManager.setSoundVeolume(value ? 1 : 0);
+            gameui.AudioManager.setSoundVeolume(value ? 1 : 0);
         }
 
     }

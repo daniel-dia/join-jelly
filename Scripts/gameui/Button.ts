@@ -61,7 +61,7 @@ module gameui {
                 this.soundId = Button.DefaultSoundId;
 
             if (this.soundId)  
-                 AssetsManager.playSound(this.soundId);
+                 AudioManager.playSound(this.soundId);
             
         }
 
@@ -83,7 +83,7 @@ module gameui {
             //adds image into it
             if (image != null) {
 
-                this.background = <createjs.Bitmap>AssetsManager.getBitmap(image);
+                this.background = <createjs.Bitmap>ImagesManager.getBitmap(image);
                 this.addChildAt(this.background, 0);
 
                 //Sets the image into the pivot center.
@@ -146,7 +146,7 @@ module gameui {
             //add text into it.
             text = text.toUpperCase();
 
-            this.bitmapText = AssetsManager.getBitmapText(text, bitmapFontId);
+            this.bitmapText = ImagesManager.getBitmapText(text, bitmapFontId);
             this.addChild(this.bitmapText);
              
             this.bitmapText.regX = this.bitmapText.getBounds().width / 2;
@@ -169,7 +169,7 @@ module gameui {
             super(text, font, color ,background, event,soundId);
 
             //loads icon Image
-            this.icon = AssetsManager.getBitmap(icon);
+            this.icon = ImagesManager.getBitmap(icon);
             this.addChild(this.icon);
             this.text.textAlign = "left";
 

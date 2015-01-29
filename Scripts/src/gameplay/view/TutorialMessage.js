@@ -15,13 +15,13 @@ var joinjelly;
                 function TutoralMessage() {
                     var _this = this;
                     _super.call(this);
-                    this.addChild(gameui.AssetsManager.getBitmap("ballon"));
+                    this.addChild(gameui.ImagesManager.getBitmap("ballon"));
                     this.visible = false;
                     this.regX = 316;
                     this.regY = 366;
                     this.x = 164 + this.regX;
                     this.y = 941 + this.regY;
-                    var t = gameui.AssetsManager.getBitmapText("", "debussy");
+                    var t = gameui.ImagesManager.getBitmapText("", "debussy");
                     this.addChild(t);
                     t.scaleX = t.scaleY = 0.7;
                     t.x = 50;
@@ -34,14 +34,14 @@ var joinjelly;
                     this.addEventListener("click", function () {
                         _this.fadeOut();
                         _this.dispatchEvent("closed");
-                        gameui.AssetsManager.playSound("Interface Sound-15");
+                        gameui.AudioManager.playSound("Interface Sound-15");
                     });
                 }
                 // show a text on screen
                 TutoralMessage.prototype.show = function (text) {
                     this.bitmapText.text = text;
                     this.fadeIn();
-                    gameui.AssetsManager.playSound("Interface Sound-14");
+                    gameui.AudioManager.playSound("Interface Sound-14");
                 };
                 return TutoralMessage;
             })(gameui.Button);

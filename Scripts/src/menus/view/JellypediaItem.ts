@@ -5,13 +5,13 @@
             super();
 
             // Add Background
-            var bg = gameui.AssetsManager.getBitmap("pediaItem")
+            var bg = gameui.ImagesManager.getBitmap("pediaItem")
             this.addChild(bg);
 
             // Add Texts
             var tContainer = new createjs.Container();
-            var titleObj = gameui.AssetsManager.getBitmapText(title, "debussy");
-            var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
+            var titleObj = gameui.ImagesManager.getBitmapText(title, "debussy");
+            var descriptionObj = gameui.ImagesManager.getBitmapText(description, "debussy");
             titleObj.y = 30;
             descriptionObj.y = 130;
             titleObj.scaleX = titleObj.scaleY = 1.2;

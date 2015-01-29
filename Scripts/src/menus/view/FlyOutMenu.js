@@ -28,7 +28,7 @@ var joinjelly;
                 };
                 // creates menu background
                 FlyOutMenu.prototype.AddBG = function (heigth) {
-                    var bg = gameui.AssetsManager.getBitmap("FlyBG");
+                    var bg = gameui.ImagesManager.getBitmap("FlyBG");
                     bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
                     bg.scaleY = heigth / 1022;
                     this.addChild(bg);
@@ -37,7 +37,7 @@ var joinjelly;
                 // creates menu title
                 FlyOutMenu.prototype.addTitle = function (title) {
                     //create "points" text
-                    this.title = gameui.AssetsManager.getBitmapText("", "debussy");
+                    this.title = gameui.ImagesManager.getBitmapText("", "debussy");
                     this.title.set({ x: defaultWidth / 2, y: 600 });
                     this.addChild(this.title);
                     this.setTitle(title);
@@ -66,13 +66,13 @@ var joinjelly;
                 };
                 FlyOutMenu.prototype.show = function () {
                     this.animateIn();
-                    gameui.AssetsManager.playSound("Interface Sound-14");
+                    gameui.AudioManager.playSound("Interface Sound-14");
                 };
                 FlyOutMenu.prototype.hide = function () {
                     if (!this.visible)
                         return;
                     this.animateOut();
-                    gameui.AssetsManager.playSound("Interface Sound-15");
+                    gameui.AudioManager.playSound("Interface Sound-15");
                 };
                 return FlyOutMenu;
             })(createjs.Container);
