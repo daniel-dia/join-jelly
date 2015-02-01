@@ -67,7 +67,7 @@ var joinjelly;
                         this.musicBtOff.fadeIn();
                     }
                     joinjelly.JoinJelly.userData.setMusicVol(value);
-                    gameui.AudioManager.setMusicVolume(value ? 1 : 0);
+                    gameui.AudiosManager.setMusicVolume(value ? 1 : 0);
                 };
                 SoundOptions.prototype.setSound = function (value) {
                     if (value) {
@@ -79,7 +79,7 @@ var joinjelly;
                         this.soundBtOff.fadeIn();
                     }
                     joinjelly.JoinJelly.userData.setSoundVol(value);
-                    gameui.AudioManager.setSoundVeolume(value ? 1 : 0);
+                    gameui.AudiosManager.setSoundVeolume(value ? 1 : 0);
                 };
                 return SoundOptions;
             })(createjs.Container);

@@ -143,7 +143,7 @@
                 this.finishMenu.show();
                 tbt.fadeOut();
 
-                gameui.AudioManager.playSound("Interface Sound-06");
+                gameui.AudiosManager.playSound("Interface Sound-06");
             });
             tbt.set({ x: 150, y: -150, visible: false });
             this.footer.addChild(tbt);
@@ -240,7 +240,7 @@
         // level up
         protected levelUpInterfaceEffect(level: number) {
             this.gameLevelIndicator.showLevel(level);
-            gameui.AudioManager.playSound("levelUp");
+            gameui.AudiosManager.playSound("levelUp");
             this.board.levelUpEffect();
         }
 
@@ -264,7 +264,7 @@
             this.updateInterfaceInfos();
 
             // play music
-            gameui.AudioManager.playMusic("music1");
+            gameui.AudiosManager.playMusic("music1");
 
             // initialize gameloop
             this.gamestate = GameState.playing;
@@ -374,7 +374,7 @@
             JoinJelly.analytics.logEndGame(this.matches, this.score, this.level, highJelly)
 
             // play end soud
-            gameui.AudioManager.playSound("end");
+            gameui.AudiosManager.playSound("end");
 
             // play end game effect
             this.board.endGameEffect();
@@ -549,7 +549,7 @@
         // animate a item moving from tile to the footer
         private animateItemFromTile(tile: Tile, item: string) {
             // play sound
-            gameui.AudioManager.playSound("Interface Sound-11");
+            gameui.AudiosManager.playSound("Interface Sound-11");
 
             // create item Object
             var itemDO = gameui.ImagesManager.getBitmap("item" + item);
@@ -653,7 +653,7 @@
                 this.freezeEffect.visible = false
             });
 
-            gameui.AudioManager.playSound("sounditemtime");
+            gameui.AudiosManager.playSound("sounditemtime");
 
             return true;
         }
@@ -679,7 +679,7 @@
                 this.cleanEffect.visible = false
             });
 
-            gameui.AudioManager.playSound("sounditemclean");
+            gameui.AudiosManager.playSound("sounditemclean");
 
             return true;
         }
@@ -730,7 +730,7 @@
                     this.reviveEffect.visible = false
                 });
 
-                gameui.AudioManager.playSound("sounditemrevive");
+                gameui.AudiosManager.playSound("sounditemrevive");
             }
 
             return true;
@@ -777,7 +777,7 @@
                     this.fastEffect.visible = false
                 });
 
-                gameui.AudioManager.playSound("sounditemfast");
+                gameui.AudiosManager.playSound("sounditemfast");
             }
             return true;
         }

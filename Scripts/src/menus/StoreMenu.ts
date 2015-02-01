@@ -56,7 +56,7 @@
                     this.purchaseProduct(event["product"], (sucess: boolean) => { 
                         if (sucess) {
                             si.setPurchased();
-                            gameui.AudioManager.playSound("Interface Sound-11");
+                            gameui.AudiosManager.playSound("Interface Sound-11");
                         }
                         this.updateFooter(); 
                         this.unlockUI();

@@ -115,4 +115,4 @@
     }
 }
 
-gameui.AudioManager  = <any>gameui.WPAudioManager;
+gameui.AudiosManager  = <any>gameui.WPAudioManager;

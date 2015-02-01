@@ -59,7 +59,7 @@ var gameui;
             if (!this.soundId)
                 this.soundId = Button.DefaultSoundId;
             if (this.soundId)
-                gameui.AudioManager.playSound(this.soundId);
+                gameui.AudiosManager.playSound(this.soundId);
         };
         Button.prototype.setSound = function (soundId) {
             this.soundId = soundId;

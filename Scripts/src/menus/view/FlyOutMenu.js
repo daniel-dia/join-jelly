@@ -66,13 +66,13 @@ var joinjelly;
                 };
                 FlyOutMenu.prototype.show = function () {
                     this.animateIn();
-                    gameui.AudioManager.playSound("Interface Sound-14");
+                    gameui.AudiosManager.playSound("Interface Sound-14");
                 };
                 FlyOutMenu.prototype.hide = function () {
                     if (!this.visible)
                         return;
                     this.animateOut();
-                    gameui.AudioManager.playSound("Interface Sound-15");
+                    gameui.AudiosManager.playSound("Interface Sound-15");
                 };
                 return FlyOutMenu;
             })(createjs.Container);

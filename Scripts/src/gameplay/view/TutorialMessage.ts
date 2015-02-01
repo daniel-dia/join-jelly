@@ -32,7 +32,7 @@
                 this.fadeOut();
                 this.dispatchEvent("closed");
 
-                gameui.AudioManager.playSound("Interface Sound-15");
+                gameui.AudiosManager.playSound("Interface Sound-15");
             })
         }
 
@@ -41,7 +41,7 @@
             this.bitmapText.text = text;
             this.fadeIn();
 
-            gameui.AudioManager.playSound("Interface Sound-14");
+            gameui.AudiosManager.playSound("Interface Sound-14");
         }
 
    }

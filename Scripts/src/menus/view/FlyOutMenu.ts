@@ -73,14 +73,14 @@
 
         public show() {
             this.animateIn();
-            gameui.AudioManager.playSound("Interface Sound-14");
+            gameui.AudiosManager.playSound("Interface Sound-14");
         }
 
         public hide()
         {
             if (!this.visible) return;
             this.animateOut();
-            gameui.AudioManager.playSound("Interface Sound-15");
+            gameui.AudiosManager.playSound("Interface Sound-15");
         }
 
     }

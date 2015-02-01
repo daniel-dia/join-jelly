@@ -107,5 +107,5 @@ var gameui;
     })();
     gameui.WPAudioManager = WPAudioManager;
 })(gameui || (gameui = {}));
-gameui.AudioManager = gameui.WPAudioManager;
+gameui.AudiosManager = gameui.WPAudioManager;
 //# sourceMappingURL=WpAudioManager.js.map

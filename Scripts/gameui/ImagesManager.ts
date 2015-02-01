@@ -24,7 +24,7 @@
             
             //creates a preload queue
             this.loader = new createjs.LoadQueue(false);
-            
+
             //install sound plug-in for sounds format
             this.loader.installPlugin(createjs.Sound);
 
@@ -42,6 +42,7 @@
             return this.loader;
         }
         
+        // load a font spritesheet
         public static loadFontSpriteSheet(id:string,spritesheetData: any) {
             this.bitmapFontSpriteSheetDataArray[id] = spritesheetData;
         }
@@ -50,10 +51,13 @@
         public static cleanAssets() {
             if (this.imagesArray);
             for (var i in this.imagesArray) {
+                var img = <any>this.imagesArray[i]
+                if (img.dispose)img.dispose();
                 delete this.imagesArray[i]
             }
         }
 
+        // return loaded image array
         public static getImagesArray(): Array<HTMLImageElement> {
             return this.imagesArray;
         }
@@ -81,6 +85,7 @@
 
         }
 
+        //get a bitmap Text
         public static getBitmapText(text:string, bitmapFontId:string):createjs.BitmapText { 
             var bt = new createjs.BitmapText(text, new createjs.SpriteSheet(this.bitmapFontSpriteSheetDataArray[bitmapFontId]));
             bt.lineHeight = 100;
@@ -96,7 +101,6 @@
             return null;
         }
         
-  
         //return a sprite according to the image
         public static getSprite (name: string, play:boolean=true): createjs.Sprite {
             var data = this.spriteSheets[name];

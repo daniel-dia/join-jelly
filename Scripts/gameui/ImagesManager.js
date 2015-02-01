@@ -29,6 +29,7 @@ var gameui;
             this.loader.loadManifest(this.assetsManifest, true, path);
             return this.loader;
         };
+        // load a font spritesheet
         ImagesManager.loadFontSpriteSheet = function (id, spritesheetData) {
             this.bitmapFontSpriteSheetDataArray[id] = spritesheetData;
         };
@@ -37,9 +38,13 @@ var gameui;
             if (this.imagesArray)
                 ;
             for (var i in this.imagesArray) {
+                var img = this.imagesArray[i];
+                if (img.dispose)
+                    img.dispose();
                 delete this.imagesArray[i];
             }
         };
+        // return loaded image array
         ImagesManager.getImagesArray = function () {
             return this.imagesArray;
         };
@@ -61,6 +66,7 @@ var gameui;
             imgobj.mouseEnabled = ImagesManager.defaultMouseEnabled;
             return imgobj;
         };
+        //get a bitmap Text
         ImagesManager.getBitmapText = function (text, bitmapFontId) {
             var bt = new createjs.BitmapText(text, new createjs.SpriteSheet(this.bitmapFontSpriteSheetDataArray[bitmapFontId]));
             bt.lineHeight = 100;

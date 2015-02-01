@@ -18,7 +18,7 @@ var joinjelly;
             this.createHeader();
             this.createFooter();
             this.createTitle();
-            gameui.AudioManager.playMusic("musicIntro");
+            gameui.AudiosManager.playMusic("musicIntro");
         }
         MainScreen.prototype.createContent = function () {
             // adds jelly

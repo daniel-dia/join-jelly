@@ -64,7 +64,7 @@
             }
 
             JoinJelly.userData.setMusicVol(value);
-            gameui.AudioManager.setMusicVolume(value ? 1 : 0);
+            gameui.AudiosManager.setMusicVolume(value ? 1 : 0);
         }
 
         private setSound(value: number) {
@@ -76,7 +76,7 @@
             }
 
             JoinJelly.userData.setSoundVol(value);
-            gameui.AudioManager.setSoundVeolume(value ? 1 : 0);
+            gameui.AudiosManager.setSoundVeolume(value ? 1 : 0);
         }
 
     }

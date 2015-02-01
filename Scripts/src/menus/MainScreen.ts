@@ -20,7 +20,7 @@
             this.createFooter();
             this.createTitle();
 
-            gameui.AudioManager.playMusic("musicIntro");
+            gameui.AudiosManager.playMusic("musicIntro");
             
         }
 

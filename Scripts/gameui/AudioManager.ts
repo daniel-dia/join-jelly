@@ -1,15 +1,15 @@
 ﻿module gameui {
 
     // Class
-    export class AudioManager{
+    export class AudiosManager{
 
-      
-        // #region sound
+       private static loader: createjs.LoadQueue;
+   
         private static currentMusicName: string;
         private static currentMusic: createjs.SoundInstance
         private static musicVolue: number;
         private static soundVolume: number;
-
+        
         public static setMusicVolume(volume: number) {
             if (this.currentMusic) this.currentMusic.volume = volume;
             this.musicVolue = volume; 

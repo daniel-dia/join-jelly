@@ -61,7 +61,7 @@ module gameui {
                 this.soundId = Button.DefaultSoundId;
 
             if (this.soundId)  
-                 AudioManager.playSound(this.soundId);
+                 AudiosManager.playSound(this.soundId);
             
         }
 
