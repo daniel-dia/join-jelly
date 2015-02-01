@@ -18,9 +18,9 @@ module gameui{
         private canvasHeight: number;
 
         //Screen arrangement
-        private headerPosition: number;
-        private footerPosition: number;
-        private viewerOffset: number;
+        public headerPosition: number;
+        public footerPosition: number;
+        public viewerOffset: number;
 
         public currentWidth:number;
         public currentHeight:number;

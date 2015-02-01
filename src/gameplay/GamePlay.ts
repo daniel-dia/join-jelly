@@ -82,7 +82,7 @@
 
         private normalizeEffect(fxObj) {
             fxObj.visible = false;
-            fxObj.y = JoinJelly.gameScreen.headerPosition
+            fxObj.y = JoinJelly.gameScreen.headerPosition;
             fxObj.scaleX = 2;
             fxObj.scaleY = 2 * JoinJelly.gameScreen.currentHeight / defaultHeight;
             fxObj.mouseEnabled = false;
