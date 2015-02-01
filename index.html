@@ -8,17 +8,23 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
     <style>
-   
+
+        img {
+            display: none;
+        }
         html, body {
             overflow: hidden;
             margin: 0;
+
             -ms-user-select: none;
             -moz-user-select: none;
             -webkit-user-select: none;
             user-select: none;
+
             -ms-scroll-translation: vertical-to-horizontal;
             -webkit-scroll-translation: vertical-to-horizontal;
             scroll-translation: vertical-to-horizontal;
+
             -ms-content-zooming: none;
             -webkit-content-zooming: none;
             content-zooming: none;
@@ -27,7 +33,8 @@
             background-size: cover;
             background-repeat: repeat-y;
             background-position-x: center;
-            text-align: center;
+             
+            text-align:center;
         }
 
         canvas {
@@ -36,10 +43,10 @@
         }
 
     </style> 
-    <script src="Scripts/jquery-2.1.1.min.js"></script>
-    <script src="Scripts/md5.js"></script>
+    <!--<script src="Scripts/jquery-2.1.1.min.js"></script>
+    <script src="Scripts/md5.js"></script>-->
     <script src="Scripts/createjs-2014.12.12.min.js"></script>
-    <script src="Scripts/BitmapScalePath.js"></script> 
+    <script src="Scripts/BitmapScalePath.js"></script>
     <script src="Scripts/fontConverter.js"></script>
     
     <script src="Scripts/gameui/AudioManager.js"></script>
@@ -72,6 +79,7 @@
     <script src="Scripts/src/menus/MainMenu.js"></script>
     <script src="Scripts/src/menus/Credit.js"></script>
     <script src="Scripts/src/menus/view/SoundOptions.js"></script>
+
     <script src="Scripts/src/view/Jellyble.js"></script>
     <script src="Scripts/src/view/LoadingBall.js"></script>
 

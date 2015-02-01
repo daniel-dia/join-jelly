@@ -187,6 +187,7 @@
     <Content Include="assets\images_0.5x\tutorialFinger.png" />
     <Content Include="index.html" />
     <Content Include="Scripts\BitmapScalePath.js" />
+    <Content Include="Scripts\createjs-2013.12.12.min.js" />
     <Content Include="Scripts\createjs-2014.12.12.min.js" />
     <Content Include="Scripts\fontConverter.js" />
     <Content Include="Scripts\ImageHitAreaPatch.js" />

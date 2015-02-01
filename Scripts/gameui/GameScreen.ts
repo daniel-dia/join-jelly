@@ -41,26 +41,20 @@ module gameui{
             //Initializes canvas Context            
             this.myCanvas = <HTMLCanvasElement> document.getElementById(canvasElement);
             this.stage = new createjs.Stage(canvasElement);
-            
+
             createjs.Touch.enable(this.stage);
+
             var x = 0;
-            createjs.Ticker.addEventListener("tick", () => {
-               //var o = (performance.now() - x);
-               //x = performance.now();
-               this.stage.update();
-               //console.log("f " + createjs.Ticker.getMeasuredFPS() + " d " + (performance.now() - x) + " l " + o);
-               //x = performance.now();
-            });
+            createjs.Ticker.addEventListener("tick", () => {this.stage.update(); });
             createjs.Ticker.setFPS(fps);
-
-            this.stage.enableMouseOver(0);
-
+             
             this.screenContainer = new createjs.Container();
             this.stage.addChild(this.screenContainer);
 
             //Framerate meter
             if (showFps) {
                var fpsMeter = new createjs.Text("FPS", " 18px Arial ", "#000");
+                fpsMeter.mouseEnabled = false;
                 fpsMeter.x = 0;
                 fpsMeter.y = 0;
                 this.stage.addChild(fpsMeter);

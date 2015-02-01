@@ -8,7 +8,7 @@
         private static imagesArray: Array<HTMLImageElement>;
         private static bitmapFontSpriteSheetDataArray: Array<any>;
         private static assetsManifest: Array<any>;
-        private static defaultMouseEnabled: boolean;
+        private static defaultMouseEnabled: boolean = false;
 
         //load assets
         public static loadAssets(assetsManifest: Array<any>,path:string="", spriteSheets?: Array<any>,imagesArray?:Array<HTMLImageElement>): createjs.LoadQueue {
@@ -32,7 +32,6 @@
             this.loader.addEventListener("fileload", (evt: any): boolean => {
                 if (evt.item.type == "image") 
                     this.imagesArray[evt.item.id] = <HTMLImageElement>evt.result;
-
                 return true;
             });
             
@@ -74,7 +73,7 @@
             var image = this.getLoadedImage(name);
             if (image) {
                 var imgobj = new createjs.Bitmap(image);
-                imgobj.mouseEnabled = false; 
+                imgobj.mouseEnabled = ImagesManager.defaultMouseEnabled; 
                 return imgobj;
             }
 

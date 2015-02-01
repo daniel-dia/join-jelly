@@ -58,7 +58,7 @@ var gameui;
             var image = this.getLoadedImage(name);
             if (image) {
                 var imgobj = new createjs.Bitmap(image);
-                imgobj.mouseEnabled = false;
+                imgobj.mouseEnabled = ImagesManager.defaultMouseEnabled;
                 return imgobj;
             }
             //or else try grab by filename
@@ -92,6 +92,7 @@ var gameui;
                 sprite.play();
             return sprite;
         };
+        ImagesManager.defaultMouseEnabled = false;
         return ImagesManager;
     })();
     gameui.ImagesManager = ImagesManager;
