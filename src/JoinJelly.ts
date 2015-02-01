@@ -82,3 +82,8 @@
         }
     }
 }
+
+
+window.onload = function () {
+    joinjelly.JoinJelly.init();
+}

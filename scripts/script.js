@@ -4716,6 +4716,9 @@ var joinjelly;
     })();
     joinjelly.JoinJelly = JoinJelly;
 })(joinjelly || (joinjelly = {}));
+window.onload = function () {
+    joinjelly.JoinJelly.init();
+};
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
 //# sourceMappingURL=script.js.map
