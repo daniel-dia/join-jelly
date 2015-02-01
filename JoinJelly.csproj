@@ -406,7 +406,6 @@
     <Content Include="assets\sounds\sound_s3.mp3" />
     <Content Include="assets\style.css" />
     <Content Include="index.html" />
-    <Content Include="plataform.js" />
     <Content Include="scripts\BitmapScalePath.js" />
     <Content Include="scripts\createjs-2014.12.12.min.js" />
     <Content Include="scripts\fontConverter.js" />
