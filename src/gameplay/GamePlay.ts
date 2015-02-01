@@ -64,28 +64,28 @@
 
             this.freezeEffect = gameui.ImagesManager.getBitmap("freezeEffect");
             this.content.addChild(this.freezeEffect);
-            this.freezeEffect.visible = false;
-            this.freezeEffect.scaleX = this.freezeEffect.scaleY = 2;
-            this.freezeEffect.mouseEnabled = false;
+            this.normalizeEffect(this.freezeEffect);
 
             this.fastEffect = gameui.ImagesManager.getBitmap("fastEffect");
             this.content.addChild(this.fastEffect);
-            this.fastEffect.visible = false;
-            this.fastEffect.scaleX = this.fastEffect.scaleY = 2;
-            this.fastEffect.mouseEnabled = false;
+            this.normalizeEffect(this.fastEffect);
 
             this.reviveEffect = gameui.ImagesManager.getBitmap("reviveEffect");
             this.content.addChild(this.reviveEffect);
-            this.reviveEffect.visible = false;
-            this.reviveEffect.scaleX = this.reviveEffect.scaleY = 2;
-            this.reviveEffect.mouseEnabled = false;
+            this.normalizeEffect(this.reviveEffect);
 
             this.cleanEffect = gameui.ImagesManager.getBitmap("cleanEffect");
             this.content.addChild(this.cleanEffect);
-            this.cleanEffect.visible = false;
-            this.cleanEffect.scaleX = this.cleanEffect.scaleY = 2;
-            this.cleanEffect.mouseEnabled = false;
+            this.normalizeEffect(this.cleanEffect);
 
+        }
+
+        private normalizeEffect(fxObj) {
+            fxObj.visible = false;
+            fxObj.y = JoinJelly.gameScreen.headerPosition
+            fxObj.scaleX = 2;
+            fxObj.scaleY = 2 * JoinJelly.gameScreen.currentHeight / defaultHeight;
+            fxObj.mouseEnabled = false;
         }
 
         // create game background

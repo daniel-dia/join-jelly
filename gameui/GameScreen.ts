@@ -22,8 +22,8 @@ module gameui{
         private footerPosition: number;
         private viewerOffset: number;
 
-        private currentWidth:number;
-        private currentHeight:number;
+        public currentWidth:number;
+        public currentHeight:number;
 
         //Screen state
         public currentScreen: ScreenState;
@@ -156,7 +156,7 @@ module gameui{
             this.currentScreen = newScreen;
 
             //updates current screen
-            if (this.currentScreen) this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth,this.currentHeight);
+            this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth,this.currentHeight);
         }
 
         //resize GameScreen to a diferent scale
