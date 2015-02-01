@@ -1,7 +1,8 @@
 ﻿declare var debussy
 declare var debussyFont
 declare function createSpriteSheetFromFont(font: any, path: string);
-
+declare var WP;
+declare var WEB;
 module joinjelly {
 
     export class Loading extends gameui.ScreenState {
@@ -24,8 +25,8 @@ module joinjelly {
             else this.imagePath = "/assets/images_" + assetscale + "x/";
 
             var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest, this.imagePath);
-            //imageQueue.loadManifest(this.audioManifest,true,"/assets/sounds/");
-            createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
+            if (WEB) imageQueue.loadManifest(this.audioManifest,true,"/assets/sounds/");
+            if (!WP) createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
 
             //loader text
             var text = new createjs.Text("", "90px Arial", "#FFF");
