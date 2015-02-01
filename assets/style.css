@@ -1,0 +1,33 @@
+﻿
+        img {
+            display: none;
+        }
+        html, body {
+            overflow: hidden;
+            margin: 0;
+
+            -ms-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+
+            -ms-scroll-translation: vertical-to-horizontal;
+            -webkit-scroll-translation: vertical-to-horizontal;
+            scroll-translation: vertical-to-horizontal;
+
+            -ms-content-zooming: none;
+            -webkit-content-zooming: none;
+            content-zooming: none;
+            background-color: black;
+            background-image: url(htmlBG.jpg);
+            background-size: cover;
+            background-repeat: repeat-y;
+            background-position-x: center;
+             
+            text-align:center;
+        }
+
+        canvas {
+            margin:0;
+            background-color: black;
+        }

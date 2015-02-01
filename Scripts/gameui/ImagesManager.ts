@@ -37,7 +37,7 @@
             
             //loads entire manifest
             this.loader.loadManifest(this.assetsManifest,true,path);
-
+            
             return this.loader;
         }
         
