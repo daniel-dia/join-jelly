@@ -43,7 +43,7 @@
             for (var p in productList) {
                 var pi = new view.StoreItem(productList[p]);
                 this.scrollableContent.addChild(pi);
-                pi.y = p * 430 + 430;
+                pi.y = p * 380 + 380;
                 pi.x = 70;
 
                 // executa a compra do app.
