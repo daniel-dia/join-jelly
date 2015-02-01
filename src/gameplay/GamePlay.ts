@@ -362,8 +362,9 @@
                 this.gameFooter.mouseEnabled = true;
 
                 // set footer items form revive
-                this.gameFooter.setItems(["revive"]);
-                this.gameFooter.unlockItem("revive");
+                this.gameFooter.setItems([Items.REVIVE]);
+                this.gameFooter.unlockItem(Items.REVIVE);
+                this.gameFooter.highlight(Items.REVIVE);
                 this.updateFooter();
                 createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
 

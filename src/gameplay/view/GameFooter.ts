@@ -87,6 +87,16 @@
 
         }
 
+        public highlight(item: string) {
+            this.unHighlightAll();
+            this.getItemButton(item).highLight();
+        }
+
+        public unHighlightAll() {
+            for (var i in this.itemsButtons)
+                this.itemsButtons[i].unHighlight();
+        }
+
         // lock a item
         public lockItem(itemId:string) {
             var b = this.getItemButton(itemId);

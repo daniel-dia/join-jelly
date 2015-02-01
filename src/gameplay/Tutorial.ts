@@ -170,6 +170,7 @@
                 },
                 () => {
                     this.showTutorialItem(Items.CLEAN);
+                    this.gameFooter.highlight(Items.CLEAN);
                     this.showTutorialMessage(StringResources.tutorial.msgItemClean);
                     this.waitItem();
                 },
@@ -180,6 +181,7 @@
                 },
                 () => {
                     this.showTutorialItem(Items.TIME);
+                    this.gameFooter.highlight(Items.TIME);
                     this.showTutorialMessage(StringResources.tutorial.msgItemTime);
 
                     this.waitItem();
@@ -191,6 +193,7 @@
                 },
                 () => {
                     this.showTutorialItem(Items.FAST);
+                    this.gameFooter.highlight(Items.FAST);
                     this.showTutorialMessage(StringResources.tutorial.msgItemFast);
 
                     this.waitItem();
@@ -200,8 +203,8 @@
                     this.gameFooter.setItemAmmount(Items.FAST, 0)
                     this.tutorialWait(1000);
                 },
-                () => {
-                    this.showTutorialItem(Items.REVIVE);
+                () => { 
+                    this.gameFooter.highlight(Items.REVIVE);
                     this.showTutorialMessage(StringResources.tutorial.msgItemRevive);
                     this.waitMessage();
                 },

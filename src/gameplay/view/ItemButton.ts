@@ -56,6 +56,8 @@
             this.text = text;
             this.createHitArea();
             this.addBt = add;
+
+            this.addEventListener("click", () => { this.unHighlight() });
         }
 
         public setAmmount(ammount: number) {
@@ -83,6 +85,20 @@
             this.mouseEnabled = true;
             this.locked = false;
             this.updateColor();
+        }
+
+        public highLight() {
+            createjs.Tween.get(this, { loop: true })
+                .to({ rotation: -10, scaleX: 1, scaleY: 1}, 100, createjs.Ease.quadInOut)
+                .to({ rotation: +10 ,scaleX:1.3,scaleY:1.3}, 200, createjs.Ease.quadInOut)
+                .to({ rotation: -10 ,scaleX:1.3,scaleY:1.3}, 200, createjs.Ease.quadInOut)
+                .to({ rotation: +10 ,scaleX:1.3,scaleY:1.3}, 200, createjs.Ease.quadInOut)
+                .to({ rotation: 0, scaleX: 1, scaleY: 1}, 100, createjs.Ease.quadInOut).wait(400);
+        }
+
+        public unHighlight() {
+            createjs.Tween.removeTweens(this);
+            this.set({ rotation: 0, scaleX: 1, scaleY: 1 });
         }
 
         private updateColor() {
