@@ -1909,7 +1909,7 @@ var joinjelly;
                 for (var p in productList) {
                     var pi = new menus.view.StoreItem(productList[p]);
                     this.scrollableContent.addChild(pi);
-                    pi.y = p * 430 + 430;
+                    pi.y = p * 380 + 380;
                     pi.x = 70;
                     // executa a compra do app.
                     pi.addEventListener("buy", function (event) {
@@ -2601,6 +2601,9 @@ var joinjelly;
                     this.text = text;
                     this.createHitArea();
                     this.addBt = add;
+                    this.addEventListener("click", function () {
+                        _this.unHighlight();
+                    });
                 }
                 ItemButton.prototype.setAmmount = function (ammount) {
                     this.ammount = ammount;
@@ -2624,6 +2627,13 @@ var joinjelly;
                     this.mouseEnabled = true;
                     this.locked = false;
                     this.updateColor();
+                };
+                ItemButton.prototype.highLight = function () {
+                    createjs.Tween.get(this, { loop: true }).to({ rotation: -10, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: -10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: 0, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).wait(400);
+                };
+                ItemButton.prototype.unHighlight = function () {
+                    createjs.Tween.removeTweens(this);
+                    this.set({ rotation: 0, scaleX: 1, scaleY: 1 });
                 };
                 ItemButton.prototype.updateColor = function () {
                     if (this.locked || this.ammount <= 0)
@@ -2710,6 +2720,14 @@ var joinjelly;
                         this.itemsButtons[item].setAmmount(ammount);
                     if (item == "lucky")
                         this.lucky.visible = (ammount > 0);
+                };
+                GameFooter.prototype.highlight = function (item) {
+                    this.unHighlightAll();
+                    this.getItemButton(item).highLight();
+                };
+                GameFooter.prototype.unHighlightAll = function () {
+                    for (var i in this.itemsButtons)
+                        this.itemsButtons[i].unHighlight();
                 };
                 // lock a item
                 GameFooter.prototype.lockItem = function (itemId) {
@@ -3750,8 +3768,9 @@ var joinjelly;
                     _this.finishMenu.show();
                     _this.gameFooter.mouseEnabled = true;
                     // set footer items form revive
-                    _this.gameFooter.setItems(["revive"]);
-                    _this.gameFooter.unlockItem("revive");
+                    _this.gameFooter.setItems([joinjelly.Items.REVIVE]);
+                    _this.gameFooter.unlockItem(joinjelly.Items.REVIVE);
+                    _this.gameFooter.highlight(joinjelly.Items.REVIVE);
                     _this.updateFooter();
                     createjs.Tween.get(_this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
                 }, 1200);
@@ -4358,6 +4377,7 @@ var joinjelly;
                     },
                     function () {
                         _this.showTutorialItem(joinjelly.Items.CLEAN);
+                        _this.gameFooter.highlight(joinjelly.Items.CLEAN);
                         _this.showTutorialMessage(StringResources.tutorial.msgItemClean);
                         _this.waitItem();
                     },
@@ -4368,6 +4388,7 @@ var joinjelly;
                     },
                     function () {
                         _this.showTutorialItem(joinjelly.Items.TIME);
+                        _this.gameFooter.highlight(joinjelly.Items.TIME);
                         _this.showTutorialMessage(StringResources.tutorial.msgItemTime);
                         _this.waitItem();
                     },
@@ -4378,6 +4399,7 @@ var joinjelly;
                     },
                     function () {
                         _this.showTutorialItem(joinjelly.Items.FAST);
+                        _this.gameFooter.highlight(joinjelly.Items.FAST);
                         _this.showTutorialMessage(StringResources.tutorial.msgItemFast);
                         _this.waitItem();
                     },
@@ -4387,7 +4409,7 @@ var joinjelly;
                         _this.tutorialWait(1000);
                     },
                     function () {
-                        _this.showTutorialItem(joinjelly.Items.REVIVE);
+                        _this.gameFooter.highlight(joinjelly.Items.REVIVE);
                         _this.showTutorialMessage(StringResources.tutorial.msgItemRevive);
                         _this.waitMessage();
                     },
@@ -4694,13 +4716,6 @@ var joinjelly;
     })();
     joinjelly.JoinJelly = JoinJelly;
 })(joinjelly || (joinjelly = {}));
-/// <reference path="scripts/gameui/uiitem.ts" />
+/// <reference path="gameui/uiitem.ts" />
 //module gameui {
-var WpSound = (function () {
-    function WpSound() {
-    }
-    WpSound.limit = 3;
-    WpSound.effects = [];
-    return WpSound;
-})();
 //# sourceMappingURL=script.js.map
