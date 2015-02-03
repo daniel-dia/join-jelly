@@ -4,6 +4,7 @@ module gameui {
     export class ScreenState {
 
         public content: createjs.Container;
+        public overlay: createjs.Container;
         public header :createjs.Container;
         public footer: createjs.Container;
         public background: createjs.Container;
@@ -18,6 +19,7 @@ module gameui {
         constructor() {
             this.view = new createjs.Container();
             this.content = new createjs.Container();
+            this.overlay = new createjs.Container();
             this.header = new createjs.Container();
             this.footer = new createjs.Container();
             this.background = new createjs.Container();
@@ -26,6 +28,7 @@ module gameui {
             this.view.addChild(this.content);
             this.view.addChild(this.footer );
             this.view.addChild(this.header);
+            this.view.addChild(this.overlay);
         }
 
         public activate(parameters?:any) {
