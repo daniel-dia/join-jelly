@@ -131,11 +131,11 @@
 
             // creates pause menu
             this.pauseMenu = new view.PauseMenu();
-            this.content.addChild(this.pauseMenu);
+            this.overlay.addChild(this.pauseMenu);
 
             // creates a end menu
             this.finishMenu = new view.FinishMenu();
-            this.content.addChild(this.finishMenu);
+            this.overlay.addChild(this.finishMenu);
             this.finishMenu.y = -200;
 
             // creates a toggle button
@@ -317,6 +317,7 @@
             this.gamestate = GameState.paused;
             this.board.lock();
             this.gameHeader.mouseEnabled = false;
+            this.content.mouseEnabled = false;
         }
 
         // unpause game
@@ -326,6 +327,7 @@
             this.gamestate = GameState.playing;
             this.board.unlock();
             this.gameHeader.mouseEnabled = true;
+            this.content.mouseEnabled = true;
         }
 
         // finishes the game
@@ -339,6 +341,7 @@
             var highJelly = this.board.getHighestTileValue();
 
             // disable mouse interaction
+            this.pauseMenu.hide();
             this.board.lock();
             this.board.setAlarm(false);
 
