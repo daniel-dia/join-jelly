@@ -49,7 +49,6 @@
     <Content Include="assets\images\BtTutorial.png" />
     <Content Include="assets\images\check.png" />
     <Content Include="assets\images\ChubbyFont.js" />
-    <Content Include="assets\images\ChubbyFont.png" />
     <Content Include="assets\images\cleanEffect.png" />
     <Content Include="assets\images\d256.png" />
     <Content Include="assets\images\e-1.png" />
@@ -73,6 +72,7 @@
     <Content Include="assets\images\FlyBG.png" />
     <Content Include="assets\images\FlyGroup.png" />
     <Content Include="assets\images\font.png" />
+    <Content Include="assets\images\font2.png" />
     <Content Include="assets\images\footer.png" />
     <Content Include="assets\images\freezeEffect.png" />
     <Content Include="assets\images\fxJoin.png" />
@@ -181,6 +181,7 @@
     <Content Include="assets\images_0.25x\FlyBG.png" />
     <Content Include="assets\images_0.25x\FlyGroup.png" />
     <Content Include="assets\images_0.25x\font.png" />
+    <Content Include="assets\images_0.25x\font2.png" />
     <Content Include="assets\images_0.25x\footer.png" />
     <Content Include="assets\images_0.25x\freezeEffect.png" />
     <Content Include="assets\images_0.25x\fxJoin.png" />
@@ -308,6 +309,7 @@
     <Content Include="assets\images_0.5x\FlyBG.png" />
     <Content Include="assets\images_0.5x\FlyGroup.png" />
     <Content Include="assets\images_0.5x\font.png" />
+    <Content Include="assets\images_0.5x\font2.png" />
     <Content Include="assets\images_0.5x\footer.png" />
     <Content Include="assets\images_0.5x\freezeEffect.png" />
     <Content Include="assets\images_0.5x\fxJoin.png" />
