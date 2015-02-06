@@ -44,7 +44,7 @@
             tContainer.addChild(icon);
 
             // Add Texts
-          
+
             var titleObj = gameui.ImagesManager.getBitmapText(product.Name, "debussy");
             var descriptionObj = gameui.ImagesManager.getBitmapText(product.Description, "debussy");
             titleObj.y = 40;
@@ -68,6 +68,8 @@
 
             this.addChild(tContainer);
             tContainer.cache(100, 27, 1250, 300);
+
+            setTimeout(() => { tContainer.uncache() }, 2000);
 
             // add Check
             var unchecked = gameui.ImagesManager.getBitmap("unchecked");

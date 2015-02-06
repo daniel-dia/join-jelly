@@ -36,7 +36,25 @@ createjs.DisplayObject.prototype.cache = function (x, y, width, height, scale) {
     this._cacheOffsetX = x;
     this._cacheOffsetY = y;
     this._cacheScale = scale;
-    this.updateCache();
+    this.updateCache(); 
+};
+
+ 
+
+createjs.DisplayObject.prototype.uncache = function () {
+    var x = this.cacheCanvas;
+    
+    this._cacheDataURL = this.cacheCanvas = null;
+    this.cacheID = this._cacheOffsetX = this._cacheOffsetY = this._filterOffsetX = this._filterOffsetY = 0;
+    this._cacheScale = 1;
+
+    if (x && x.dispose) {
+        x.dispose();
+        x.dispose();
+        setTimeout(function () { x.dispose(); }, 1000)
+    }
+
+
 };
 
 createjs.Sprite.prototype.draw = function (ctx, ignoreCache) {

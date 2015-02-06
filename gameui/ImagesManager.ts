@@ -6,7 +6,7 @@
         private static loader: createjs.LoadQueue;
         private static spriteSheets: Array<any>;
         private static imagesArray: Array<HTMLImageElement>;
-        private static bitmapFontSpriteSheetDataArray: Array<any>;
+        private static bitmapFontSpriteSheetDataArray: Array<createjs.SpriteSheet>;
         private static assetsManifest: Array<any>;
         private static defaultMouseEnabled: boolean = false;
 
@@ -43,7 +43,7 @@
         
         // load a font spritesheet
         public static loadFontSpriteSheet(id:string,spritesheetData: any) {
-            this.bitmapFontSpriteSheetDataArray[id] = spritesheetData;
+            this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
         }
 
         // cleans all sprites in the bitmap array;
@@ -83,13 +83,12 @@
             return imgobj;
 
         }
-
-        //get a bitmap Text
+         //get a bitmap Text
         public static getBitmapText(text:string, bitmapFontId:string):createjs.BitmapText { 
-            var bt = new createjs.BitmapText(text, new createjs.SpriteSheet(this.bitmapFontSpriteSheetDataArray[bitmapFontId]));
-            bt.lineHeight = 100;
-            bt.mouseEnabled = ImagesManager.defaultMouseEnabled;
-            return bt;
+            var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
+            bitmapText.lineHeight = 100;
+            bitmapText.mouseEnabled = ImagesManager.defaultMouseEnabled;
+            return bitmapText;
             
         }
 

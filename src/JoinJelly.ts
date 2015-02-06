@@ -1,4 +1,6 @@
-﻿module joinjelly {
+﻿declare var Cocoon;
+
+module joinjelly {
     export class JoinJelly {
 
 
@@ -7,6 +9,7 @@
         public static gameScreen: gameui.GameScreen;
         public static analytics: Analytics;
         public static itemData: ItemsData;
+
 
         public static init() {
 
@@ -19,6 +22,8 @@
                 case "pt": StringResources = StringResources_pt; break;
                 case "es": StringResources = StringResources_es; break;
             } 
+
+       
 
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight,60,true);
             

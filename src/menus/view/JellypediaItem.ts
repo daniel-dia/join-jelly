@@ -20,7 +20,7 @@
             tContainer.addChild(titleObj);
             tContainer.addChild(descriptionObj);
             this.addChild(tContainer);
-            tContainer.cache(450, 0, 1000, 356);
+            //tContainer.cache(450, 0, 1000, 356);
 
             // Add Jelly
             var j = new gameplay.view.Jelly();
