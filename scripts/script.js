@@ -98,9 +98,13 @@ var gameui;
             this.soundVolume = volume;
         };
         AudiosManager.getMusicVolume = function () {
+            if (this.musicVolue == undefined)
+                return 1;
             return this.musicVolue;
         };
         AudiosManager.getSoundVolume = function () {
+            if (this.soundVolume == undefined)
+                return 1;
             return this.soundVolume;
         };
         AudiosManager.playMusic = function (name, volume) {
@@ -158,7 +162,7 @@ var gameui;
         };
         // load a font spritesheet
         ImagesManager.loadFontSpriteSheet = function (id, spritesheetData) {
-            this.bitmapFontSpriteSheetDataArray[id] = spritesheetData;
+            this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
         };
         // cleans all sprites in the bitmap array;
         ImagesManager.cleanAssets = function () {
@@ -195,10 +199,10 @@ var gameui;
         };
         //get a bitmap Text
         ImagesManager.getBitmapText = function (text, bitmapFontId) {
-            var bt = new createjs.BitmapText(text, new createjs.SpriteSheet(this.bitmapFontSpriteSheetDataArray[bitmapFontId]));
-            bt.lineHeight = 100;
-            bt.mouseEnabled = ImagesManager.defaultMouseEnabled;
-            return bt;
+            var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
+            bitmapText.lineHeight = 100;
+            bitmapText.mouseEnabled = ImagesManager.defaultMouseEnabled;
+            return bitmapText;
         };
         //Get a preloaded Image from assets
         ImagesManager.getLoadedImage = function (name) {
@@ -496,6 +500,7 @@ var gameui;
         function ScreenState() {
             this.view = new createjs.Container();
             this.content = new createjs.Container();
+            this.overlay = new createjs.Container();
             this.header = new createjs.Container();
             this.footer = new createjs.Container();
             this.background = new createjs.Container();
@@ -503,6 +508,7 @@ var gameui;
             this.view.addChild(this.content);
             this.view.addChild(this.footer);
             this.view.addChild(this.header);
+            this.view.addChild(this.overlay);
         }
         ScreenState.prototype.activate = function (parameters) {
             this.content.visible = true;
@@ -1224,8 +1230,8 @@ var joinjelly;
                 { id: "backhome", src: "BackMain.jpg" },
                 { id: "bonus_bar", src: "bonus_bar.png" },
                 { id: "bonus_border", src: "bonus_border.png" },
-                { id: "ChubbyFont", src: "ChubbyFont.png" },
                 { id: "font", src: "font.png" },
+                { id: "font2", src: "font2.png" },
                 { id: "e1", src: "e1.png" },
                 { id: "e128", src: "e128.png" },
                 { id: "e16", src: "e16.png" },
@@ -1315,6 +1321,7 @@ var joinjelly;
                 { id: "check", src: "check.png" },
                 { id: "unchecked", src: "unchecked.png" },
                 { id: "MessageBox", src: "MessageBox.png" },
+                { id: "popupdark", src: "popupdark.png" },
             ];
             this.audioManifest = [
                 { id: "sound_h1", src: "sound_h1.mp3" },
@@ -1356,10 +1363,9 @@ var joinjelly;
             else
                 this.imagePath = "/assets/images_" + assetscale + "x/";
             var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest, this.imagePath);
-            if (WEB)
-                imageQueue.loadManifest(this.audioManifest, true, "/assets/sounds/");
-            if (!WP)
-                createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
+            //if (WEB) imageQueue.loadManifest(this.audioManifest,true,"/assets/sounds/");
+            //if (!WP) 
+            createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
             //loader text
             var text = new createjs.Text("", "90px Arial", "#FFF");
             text.x = defaultWidth / 2;
@@ -1387,6 +1393,8 @@ var joinjelly;
             //load font
             debussy = createSpriteSheetFromFont(debussyFont, this.imagePath);
             gameui.ImagesManager.loadFontSpriteSheet("debussy", debussy);
+            debussyFontMini = createSpriteSheetFromFont(debussyFontMini, this.imagePath);
+            gameui.ImagesManager.loadFontSpriteSheet("debussymini", debussyFontMini);
         };
         return Loading;
     })(gameui.ScreenState);
@@ -1644,6 +1652,12 @@ var joinjelly;
                 };
                 // creates menu background
                 FlyOutMenu.prototype.AddBG = function (heigth) {
+                    var dk = gameui.ImagesManager.getBitmap("popupdark");
+                    this.addChild(dk);
+                    dk.scaleX = dk.scaleY = 16;
+                    dk.x = -defaultWidth / 2;
+                    dk.y = -defaultHeight / 2;
+                    dk.mouseEnabled = false;
                     var bg = gameui.ImagesManager.getBitmap("FlyBG");
                     bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
                     bg.scaleY = heigth / 1022;
@@ -1721,7 +1735,7 @@ var joinjelly;
                     tContainer.addChild(titleObj);
                     tContainer.addChild(descriptionObj);
                     this.addChild(tContainer);
-                    tContainer.cache(450, 0, 1000, 356);
+                    //tContainer.cache(450, 0, 1000, 356);
                     // Add Jelly
                     var j = new joinjelly.gameplay.view.Jelly();
                     j.setNumber(value);
@@ -1805,6 +1819,9 @@ var joinjelly;
                     tContainer.addChild(priceDO);
                     this.addChild(tContainer);
                     tContainer.cache(100, 27, 1250, 300);
+                    setTimeout(function () {
+                        tContainer.uncache();
+                    }, 2000);
                     // add Check
                     var unchecked = gameui.ImagesManager.getBitmap("unchecked");
                     unchecked.regX = unchecked.getBounds().width / 2;
@@ -2571,7 +2588,7 @@ var joinjelly;
                     var bgd = gameui.ImagesManager.getBitmap("itemBGDisabled");
                     var img = gameui.ImagesManager.getBitmap("item" + item);
                     var text = gameui.ImagesManager.getBitmapText("0", "debussy");
-                    var name = gameui.ImagesManager.getBitmapText(StringResources.items[item], "debussy");
+                    var name = gameui.ImagesManager.getBitmapText(StringResources.items[item], "debussymini");
                     var add = gameui.ImagesManager.getBitmap("BtPlusMini");
                     this.disabled = bgd;
                     this.addChild(bg);
@@ -2592,7 +2609,7 @@ var joinjelly;
                     text.y = -110;
                     text.x = -80;
                     text.name = 'value';
-                    name.scaleX = name.scaleY = 0.6;
+                    name.scaleX = name.scaleY = 0.8;
                     name.y = 30;
                     name.x = 0;
                     name.regX = name.getBounds().width / 2;
@@ -3592,10 +3609,10 @@ var joinjelly;
                 });
                 // creates pause menu
                 this.pauseMenu = new gameplay.view.PauseMenu();
-                this.content.addChild(this.pauseMenu);
+                this.overlay.addChild(this.pauseMenu);
                 // creates a end menu
                 this.finishMenu = new gameplay.view.FinishMenu();
-                this.content.addChild(this.finishMenu);
+                this.overlay.addChild(this.finishMenu);
                 this.finishMenu.y = -200;
                 // creates a toggle button
                 var tbt = new gameui.ImageButton("BtBoard", function () {
@@ -3730,10 +3747,13 @@ var joinjelly;
             };
             // pause game
             GamePlayScreen.prototype.pauseGame = function () {
+                if (this.gamestate == 3 /* ended */)
+                    return;
                 this.pauseMenu.show();
                 this.gamestate = 2 /* paused */;
                 this.board.lock();
                 this.gameHeader.mouseEnabled = false;
+                this.content.mouseEnabled = false;
             };
             // unpause game
             GamePlayScreen.prototype.continueGame = function () {
@@ -3741,16 +3761,19 @@ var joinjelly;
                 this.gamestate = 1 /* playing */;
                 this.board.unlock();
                 this.gameHeader.mouseEnabled = true;
+                this.content.mouseEnabled = true;
             };
             // finishes the game
             GamePlayScreen.prototype.endGame = function (message) {
                 var _this = this;
+                this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
                 this.userData.deleteSaveGame();
                 this.gamestate = 4 /* standBy */;
                 var score = this.score;
                 var highScore = joinjelly.JoinJelly.userData.getHighScore();
                 var highJelly = this.board.getHighestTileValue();
                 // disable mouse interaction
+                this.pauseMenu.hide();
                 this.board.lock();
                 this.board.setAlarm(false);
                 // releases all jellys
@@ -4721,4 +4744,47 @@ window.onload = function () {
 };
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
+//module joinjelly.menus {
+//    export class ScoreWall extends ScrollablePage {
+var joinjelly;
+(function (joinjelly) {
+    var ScoreWall = (function () {
+        function ScoreWall() {
+        }
+        ScoreWall.init = function () {
+            this.deviceId = localStorage.getItem("deviceId");
+            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
+            this.table = this.client.getTable("ScoreWall");
+        };
+        // get all scores wall
+        ScoreWall.getScoreNames = function (callback) {
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
+                callback(queryResults);
+            });
+        };
+        // saves scores to the cloud
+        ScoreWall.setScore = function (name, score) {
+            var _this = this;
+            // if device id is already saved
+            if (this.deviceId)
+                //update the current id
+                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+            else
+                // insert a new id and get the device ID from server
+                this.table.insert({ name: name, score: score }).then(function (result) {
+                    if (result[0] && result[0].id) {
+                        //get id from server
+                        _this.deviceId = result[0].id;
+                        //save local storage
+                        localStorage.setItem("deviceId", _this.deviceId);
+                    }
+                });
+        };
+        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
+        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
+        ScoreWall.gameId = "joinjelly";
+        return ScoreWall;
+    })();
+    joinjelly.ScoreWall = ScoreWall;
+})(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map

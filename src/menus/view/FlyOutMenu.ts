@@ -26,6 +26,13 @@
 
         // creates menu background
         private AddBG(heigth:number) {
+            var dk = gameui.ImagesManager.getBitmap("popupdark");
+            this.addChild(dk);
+            dk.scaleX = dk.scaleY = 16
+            dk.x = -defaultWidth/2;
+            dk.y = -defaultHeight / 2;
+            dk.mouseEnabled = false;
+
             var bg = gameui.ImagesManager.getBitmap("FlyBG");
             bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
             bg.scaleY = heigth / 1022;

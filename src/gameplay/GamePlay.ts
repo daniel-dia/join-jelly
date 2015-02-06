@@ -312,7 +312,7 @@
 
         // pause game
         private pauseGame() {
-
+            if (this.gamestate == GameState.ended) return;
             this.pauseMenu.show();
             this.gamestate = GameState.paused;
             this.board.lock();
@@ -332,6 +332,8 @@
 
         // finishes the game
         private endGame(message?: string) {
+
+            this.view.setChildIndex(this.footer,this.view.getNumChildren()-1);
 
             this.userData.deleteSaveGame();
             this.gamestate = GameState.standBy;

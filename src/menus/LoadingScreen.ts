@@ -1,5 +1,7 @@
 ﻿declare var debussy
 declare var debussyFont
+declare var debussyFontMini;
+
 declare function createSpriteSheetFromFont(font: any, path: string);
 declare var WP;
 declare var WEB;
@@ -25,8 +27,9 @@ module joinjelly {
             else this.imagePath = "/assets/images_" + assetscale + "x/";
 
             var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest, this.imagePath);
-            if (WEB) imageQueue.loadManifest(this.audioManifest,true,"/assets/sounds/");
-            if (!WP) createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
+            //if (WEB) imageQueue.loadManifest(this.audioManifest,true,"/assets/sounds/");
+            //if (!WP) 
+                createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
 
             //loader text
             var text = new createjs.Text("", "90px Arial", "#FFF");
@@ -59,6 +62,10 @@ module joinjelly {
             //load font
             debussy = createSpriteSheetFromFont(debussyFont, this.imagePath);
             gameui.ImagesManager.loadFontSpriteSheet("debussy", debussy);
+
+            debussyFontMini = createSpriteSheetFromFont(debussyFontMini, this.imagePath);
+            gameui.ImagesManager.loadFontSpriteSheet("debussymini", debussyFontMini);
+ 
         }
 
         private imageManifest = [
@@ -72,8 +79,8 @@ module joinjelly {
             { id: "backhome", src: "BackMain.jpg" },
             { id: "bonus_bar", src: "bonus_bar.png" },
             { id: "bonus_border", src: "bonus_border.png" },
-            { id: "ChubbyFont", src: "ChubbyFont.png" },
             { id: "font", src: "font.png" },
+            { id: "font2", src: "font2.png" },
             { id: "e1", src: "e1.png" },
             { id: "e128", src: "e128.png" },
             { id: "e16", src: "e16.png" },
@@ -173,6 +180,7 @@ module joinjelly {
             { id: "check", src: "check.png" },
             { id: "unchecked", src: "unchecked.png" },
             { id: "MessageBox", src: "MessageBox.png" },
+            { id: "popupdark", src: "popupdark.png" },
         ]
 
         private audioManifest = [
