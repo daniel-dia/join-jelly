@@ -19,7 +19,7 @@
             var bgd = gameui.ImagesManager.getBitmap("itemBGDisabled");
             var img = gameui.ImagesManager.getBitmap("item" + item);
             var text = gameui.ImagesManager.getBitmapText("0", "debussy");
-            var name = gameui.ImagesManager.getBitmapText(StringResources.items[item], "debussymini");
+            var name = gameui.ImagesManager.getBitmapText(StringResources.items[item], "debussy");
             var add = gameui.ImagesManager.getBitmap("BtPlusMini");
             this.disabled = bgd;
 
@@ -44,7 +44,7 @@
             text.x = -80;
             text.name = 'value';
 
-            name.scaleX = name.scaleY = 0.8;
+            name.scaleX = name.scaleY = 0.6;
             name.y = 30;
             name.x = 0;
             name.regX = name.getBounds().width / 2;
