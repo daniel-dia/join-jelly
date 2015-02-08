@@ -6,6 +6,7 @@
         public static FAST = "fast";
         public static REVIVE = "revive";
         public static LUCKY = "lucky";
+        public static EVOLVE = "evolve";
     }
 
     export class ItemsData {

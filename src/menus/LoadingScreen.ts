@@ -157,6 +157,7 @@ module joinjelly {
             
             { id: "footer", src: "footer.png" },
             { id: "itemclean", src: "itemClean.png" },
+            { id: "itemevolve", src: "itemEvolve.png" },
             { id: "itemfast", src: "itemFast.png" },
             { id: "itemrevive", src: "itemRevive.png" },
             { id: "itemtime", src: "itemTime.png" },

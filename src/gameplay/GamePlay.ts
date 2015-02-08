@@ -119,7 +119,7 @@
             this.header.addChild(this.gameHeader);
 
             // create game footer
-            var items = [Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE];
+            var items = [Items.TIME, Items.CLEAN, Items.FAST, Items.EVOLVE];
             this.gameFooter = new view.GameFooter(items);
             this.gameFooter.lockItem(Items.REVIVE);
             this.footer.addChild(this.gameFooter);
@@ -625,6 +625,9 @@
                     case Items.REVIVE:
                         sucess = this.useRevive();
                         break;
+                    case Items.EVOLVE:
+                        sucess = this.useEvolve();
+                        break;
                 }
 
                 if (sucess) {
@@ -719,7 +722,7 @@
             this.showBoardButton.fadeOut();
 
             // set footer items
-            this.gameFooter.setItems([Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE]);
+            this.gameFooter.setItems([Items.TIME, Items.CLEAN, Items.FAST, Items.EVOLVE]);
             this.gameFooter.unlockAll();
             this.gameFooter.lockItem(Items.REVIVE);
 
@@ -738,6 +741,51 @@
 
                 gameui.AudiosManager.playSound("sounditemrevive");
             }
+
+            return true;
+        }
+
+        protected useEvolve() {
+            // evolve some random tile, except maximun tile
+            if (this.gamestate == GameState.ended) return;
+            var tiles = this.board.getAllTiles();
+
+            var maxTile: number = 0;
+
+            //get max tile
+            for(var t in tiles)
+                if (tiles[t].getNumber() > maxTile )
+                    maxTile = tiles[t].getNumber();
+
+            //select elegible tiles to evolve
+            var selectedTiles: Array<Tile> = new Array();
+            for (var t in tiles)
+                if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 2 ))
+                    selectedTiles.push(tiles[t]);
+
+            if(selectedTiles.length==0)
+                for (var t in tiles)
+                    if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 1))
+                        selectedTiles.push(tiles[t]);
+
+            if (selectedTiles.length == 0)
+                for (var t in tiles)
+                    if (tiles[t].getNumber() > 1)
+                        selectedTiles.push(tiles[t]);
+
+
+            if (selectedTiles.length == 0)
+                for (var t in tiles)
+                    if (tiles[t].getNumber() > 0)
+                        selectedTiles.push(tiles[t]);
+
+            if (selectedTiles.length == 0)
+                return false;
+
+            // select random elegible tile
+            var selected = Math.floor(Math.random() * selectedTiles.length);
+            var tileValue = selectedTiles[selected].getNumber();
+            selectedTiles[selected].setNumber(tileValue * 2);
 
             return true;
         }

@@ -29,6 +29,7 @@
                 case "time5x": iconId = "itemtime"; break;
                 case "fast5x": iconId = "itemfast"; break;
                 case "revive5x": iconId = "itemrevive"; break;
+                case "evolve5x": iconId = "itemevolve"; break;
                 case "clean5x": iconId = "itemclean"; break;
                 case "pack5x": case "pack10x": iconId = "itemPack"; break;
                 case "lucky": iconId = "lucky"; break;

@@ -100,7 +100,7 @@
         // lock a item
         public lockItem(itemId:string) {
             var b = this.getItemButton(itemId);
-            b.lock();
+            if(b)b.lock();
         }
 
         public unlockItem(itemId: string) {

@@ -26,7 +26,7 @@
             })
 
             // add Footer
-            this.gameFooter = new gameplay.view.GameFooter(["time", "clean", "fast", "revive"]);
+            this.gameFooter = new gameplay.view.GameFooter([Items.TIME, Items.CLEAN,Items.FAST,Items.EVOLVE,Items.REVIVE ]);
             this.footer.addChild(this.gameFooter);
             this.gameFooter.mouseEnabled = false;
             this.updateFooter();
@@ -94,19 +94,22 @@
             switch (productId) {
                 case "time5x": JoinJelly.itemData.increaseItemAmmount("time", 5); break;
                 case "fast5x": JoinJelly.itemData.increaseItemAmmount("fast", 5); break;
+                case "evolve5x": JoinJelly.itemData.increaseItemAmmount("evolve", 5); break;
                 case "clean5x": JoinJelly.itemData.increaseItemAmmount("clean", 5); break;
                 case "revive5x": JoinJelly.itemData.increaseItemAmmount("revive", 5); break;
                 case "pack5x": 
                     JoinJelly.itemData.increaseItemAmmount("time", 5); 
                     JoinJelly.itemData.increaseItemAmmount("clean", 5); 
-                    JoinJelly.itemData.increaseItemAmmount("fast", 5); 
-                    JoinJelly.itemData.increaseItemAmmount("revive", 5); 
+                    JoinJelly.itemData.increaseItemAmmount("fast", 5);
+                    JoinJelly.itemData.increaseItemAmmount("revive", 5);
+                    JoinJelly.itemData.increaseItemAmmount("evolve", 5); 
                     break;
                 case "pack10x":
                     JoinJelly.itemData.increaseItemAmmount("clean", 10);
                     JoinJelly.itemData.increaseItemAmmount("fast", 10);
                     JoinJelly.itemData.increaseItemAmmount("time", 10);
                     JoinJelly.itemData.increaseItemAmmount("revive", 10);
+                    JoinJelly.itemData.increaseItemAmmount("evolve", 10);
                     break;
                 case "lucky": JoinJelly.itemData.increaseItemAmmount("lucky", 1);  break;
             }

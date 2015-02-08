@@ -54,6 +54,7 @@
         fast: "Fast",
         time: "Time",
         revive: "Revive",
+        evolve: "Evolve",
     },
     store: {
         title: "Store",
@@ -143,6 +144,7 @@ var StringResources_pt = {
         fast: "Rápido",
         time: "Tempo",
         revive: "Reviver",
+        evolve: "Desenvolve",
     },
     store: {
         title: "Loja",

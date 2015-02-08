@@ -737,6 +737,7 @@ var joinjelly;
         Items.FAST = "fast";
         Items.REVIVE = "revive";
         Items.LUCKY = "lucky";
+        Items.EVOLVE = "evolve";
         return Items;
     })();
     joinjelly.Items = Items;
@@ -821,6 +822,7 @@ var StringResources = {
         fast: "Fast",
         time: "Time",
         revive: "Revive",
+        evolve: "Evolve",
     },
     store: {
         title: "Store",
@@ -903,6 +905,7 @@ var StringResources_pt = {
         fast: "Rápido",
         time: "Tempo",
         revive: "Reviver",
+        evolve: "Desenvolve",
     },
     store: {
         title: "Loja",
@@ -1115,6 +1118,7 @@ var InAppPurchases = (function () {
                     { ProductId: "fast5x", Name: "5x Fast", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$1,99", },
                     { ProductId: "revive5x", Name: "5x Revive", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$1,99", },
                     { ProductId: "clean5x", Name: "5x Clean", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$1,99", },
+                    { ProductId: "evolve5x", Name: "5x Evolve", Description: "Evolve one random\njelly", FormattedPrice: "R$1,99", },
                     { ProductId: "pack5x", Name: "Item Pack 3x", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$4,99", },
                     { ProductId: "pack10x", Name: "Item Pack 9x", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$6,99", },
                     { ProductId: "lucky", Name: "Lucky Clover", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$3,99", },
@@ -1302,6 +1306,7 @@ var joinjelly;
                 { id: "FlyGroup", src: "FlyGroup.png" },
                 { id: "footer", src: "footer.png" },
                 { id: "itemclean", src: "itemClean.png" },
+                { id: "itemevolve", src: "itemEvolve.png" },
                 { id: "itemfast", src: "itemFast.png" },
                 { id: "itemrevive", src: "itemRevive.png" },
                 { id: "itemtime", src: "itemTime.png" },
@@ -1782,6 +1787,9 @@ var joinjelly;
                         case "revive5x":
                             iconId = "itemrevive";
                             break;
+                        case "evolve5x":
+                            iconId = "itemevolve";
+                            break;
                         case "clean5x":
                             iconId = "itemclean";
                             break;
@@ -1912,7 +1920,7 @@ var joinjelly;
                     _this.fillProducts(productList);
                 });
                 // add Footer
-                this.gameFooter = new joinjelly.gameplay.view.GameFooter(["time", "clean", "fast", "revive"]);
+                this.gameFooter = new joinjelly.gameplay.view.GameFooter([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.EVOLVE, joinjelly.Items.REVIVE]);
                 this.footer.addChild(this.gameFooter);
                 this.gameFooter.mouseEnabled = false;
                 this.updateFooter();
@@ -1976,6 +1984,9 @@ var joinjelly;
                     case "fast5x":
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 5);
                         break;
+                    case "evolve5x":
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("evolve", 5);
+                        break;
                     case "clean5x":
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 5);
                         break;
@@ -1987,12 +1998,14 @@ var joinjelly;
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 5);
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 5);
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("evolve", 5);
                         break;
                     case "pack10x":
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 10);
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 10);
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 10);
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 10);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount("evolve", 10);
                         break;
                     case "lucky":
                         joinjelly.JoinJelly.itemData.increaseItemAmmount("lucky", 1);
@@ -2750,7 +2763,8 @@ var joinjelly;
                 // lock a item
                 GameFooter.prototype.lockItem = function (itemId) {
                     var b = this.getItemButton(itemId);
-                    b.lock();
+                    if (b)
+                        b.lock();
                 };
                 GameFooter.prototype.unlockItem = function (itemId) {
                     var b = this.getItemButton(itemId);
@@ -3599,7 +3613,7 @@ var joinjelly;
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
                 // create game footer
-                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE];
+                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.EVOLVE];
                 this.gameFooter = new gameplay.view.GameFooter(items);
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 this.footer.addChild(this.gameFooter);
@@ -3985,6 +3999,9 @@ var joinjelly;
                         case joinjelly.Items.REVIVE:
                             sucess = this.useRevive();
                             break;
+                        case joinjelly.Items.EVOLVE:
+                            sucess = this.useEvolve();
+                            break;
                     }
                     if (sucess) {
                         // decrease item quantity
@@ -4061,7 +4078,7 @@ var joinjelly;
                 // hide show board button
                 this.showBoardButton.fadeOut();
                 // set footer items
-                this.gameFooter.setItems([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE]);
+                this.gameFooter.setItems([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.EVOLVE]);
                 this.gameFooter.unlockAll();
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 // remove other ui items
@@ -4077,6 +4094,40 @@ var joinjelly;
                     });
                     gameui.AudiosManager.playSound("sounditemrevive");
                 }
+                return true;
+            };
+            GamePlayScreen.prototype.useEvolve = function () {
+                // evolve some random tile, except maximun tile
+                if (this.gamestate == 3 /* ended */)
+                    return;
+                var tiles = this.board.getAllTiles();
+                var maxTile = 0;
+                for (var t in tiles)
+                    if (tiles[t].getNumber() > maxTile)
+                        maxTile = tiles[t].getNumber();
+                //select elegible tiles to evolve
+                var selectedTiles = new Array();
+                for (var t in tiles)
+                    if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 2))
+                        selectedTiles.push(tiles[t]);
+                if (selectedTiles.length == 0)
+                    for (var t in tiles)
+                        if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 1))
+                            selectedTiles.push(tiles[t]);
+                if (selectedTiles.length == 0)
+                    for (var t in tiles)
+                        if (tiles[t].getNumber() > 1)
+                            selectedTiles.push(tiles[t]);
+                if (selectedTiles.length == 0)
+                    for (var t in tiles)
+                        if (tiles[t].getNumber() > 0)
+                            selectedTiles.push(tiles[t]);
+                if (selectedTiles.length == 0)
+                    return false;
+                // select random elegible tile
+                var selected = Math.floor(Math.random() * selectedTiles.length);
+                var tileValue = selectedTiles[selected].getNumber();
+                selectedTiles[selected].setNumber(tileValue * 2);
                 return true;
             };
             // match 5 pair of jelly if avaliabe
