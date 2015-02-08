@@ -2489,7 +2489,7 @@ var joinjelly;
                 // #region behaviour ==============================================
                 //set tile number
                 Jelly.prototype.setNumber = function (value) {
-                    if (velue > joinjelly.JoinJelly.maxJelly)
+                    if (value > joinjelly.JoinJelly.maxJelly)
                         value = joinjelly.JoinJelly.maxJelly;
                     if (this.currentValue == value)
                         return;
@@ -2844,7 +2844,7 @@ var joinjelly;
                     tx.set({ x: 1240, y: 775 });
                     container.addChild(tx);
                     tx.scaleX = tx.scaleY = 0.7;
-                    this.higghScoreText = tx;
+                    this.highScoreText = tx;
                     container.y += 260;
                     this.addChild(container);
                     return container;
@@ -2881,6 +2881,8 @@ var joinjelly;
                 //set values
                 FinishMenu.prototype.setValues = function (score, best, jelly, title) {
                     var _this = this;
+                    if (best > joinjelly.JoinJelly.maxJelly)
+                        best = joinjelly.JoinJelly.maxJelly;
                     if (title)
                         this.setTitle(title);
                     var t = { value: 0 };
@@ -2891,12 +2893,12 @@ var joinjelly;
                         if (t.value >= 1)
                             clearInterval(interval);
                     }, 30);
-                    this.higghScoreText.text = StringResources.menus.highScore + ": " + best.toString();
+                    this.highScoreText.text = StringResources.menus.highScore + ": " + best.toString();
                     this.jelly.setNumber(jelly);
-                    this.jellyText.text = StringResources.jellys[jelly].name;
+                    this.jellyText.text = StringResources.jellys[best].name;
                     if (this.jellyText.getBounds())
                         this.jellyText.regX = this.jellyText.getBounds().width / 2;
-                    this.higghScoreText.regX = this.higghScoreText.getBounds().width;
+                    this.highScoreText.regX = this.highScoreText.getBounds().width;
                 };
                 return FinishMenu;
             })(joinjelly.menus.view.FlyOutMenu);
@@ -3412,6 +3414,8 @@ var joinjelly;
             };
             // set tile number
             Tile.prototype.setNumber = function (value) {
+                if (value > joinjelly.JoinJelly.maxJelly)
+                    value = joinjelly.JoinJelly.maxJelly;
                 this.value = value;
                 if (value > 0)
                     this.enable();

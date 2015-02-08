@@ -5,7 +5,7 @@
         private jellyText: createjs.BitmapText;
         private jelly: view.Jelly;
         private scoreText: createjs.BitmapText;
-        private higghScoreText: createjs.BitmapText;
+        private highScoreText: createjs.BitmapText;
         
 
         constructor() {
@@ -68,7 +68,7 @@
             tx.set({ x: 1240, y: 775 });
             container.addChild(tx);
             tx.scaleX = tx.scaleY = 0.7;
-            this.higghScoreText = tx;
+            this.highScoreText = tx;
 
             container.y += 260;
             this.addChild(container);
@@ -117,7 +117,7 @@
 
         //set values
         public setValues(score: number, best: number, jelly?: number, title?:string) {
-
+            if (best > JoinJelly.maxJelly) best = JoinJelly.maxJelly;
             if (title)
                 this.setTitle(title);
 
@@ -132,13 +132,13 @@
             }, 30);
         
         
-            this.higghScoreText.text = StringResources.menus.highScore +": " + best.toString();
+            this.highScoreText.text = StringResources.menus.highScore +": " + best.toString();
             this.jelly.setNumber(jelly);
 
-            this.jellyText.text = StringResources.jellys[jelly].name;
+            this.jellyText.text = StringResources.jellys[best].name;
             if (this.jellyText.getBounds())
                 this.jellyText.regX = this.jellyText.getBounds().width / 2;
-            this.higghScoreText.regX = this.higghScoreText.getBounds().width;
+            this.highScoreText.regX = this.highScoreText.getBounds().width;
 
         }
     }

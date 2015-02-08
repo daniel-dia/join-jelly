@@ -65,6 +65,7 @@
 
         // set tile number
         public setNumber(value: number) {
+            if (value > JoinJelly.maxJelly) value = JoinJelly.maxJelly;
             this.value = value;
 
             if (value > 0) this.enable();
