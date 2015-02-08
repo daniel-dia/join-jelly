@@ -1229,7 +1229,6 @@ var joinjelly;
                 { id: "j2048", src: "j2048.png" },
                 { id: "j4096", src: "j4096.png" },
                 { id: "j8192", src: "j8192.png" },
-                { id: "j16384", src: "j16384.png" },
                 { id: "Background", src: "Background.jpg" },
                 { id: "backhome", src: "BackMain.jpg" },
                 { id: "bonus_bar", src: "bonus_bar.png" },
@@ -1250,7 +1249,6 @@ var joinjelly;
                 { id: "e2048", src: "e2048.png" },
                 { id: "e4096", src: "e4096.png" },
                 { id: "e8192", src: "e8192.png" },
-                { id: "e16384", src: "e16384.png" },
                 { id: "footer", src: "footer.png" },
                 { id: "header", src: "header.png" },
                 { id: "j-1", src: "j-1.png" },
@@ -1614,9 +1612,10 @@ var joinjelly;
                         [2 / 6, 2],
                         [4 / 6, 2],
                         [5 / 6, 2.3],
-                        [1 / 4, 2.6],
-                        [3 / 4, 2.6],
-                        [2 / 4, 3],
+                        [1 / 4, 3],
+                        [3 / 4, 2.9],
+                        [2 / 4, 3.8],
+                        [2 / 4, 3.4],
                     ];
                     var jelly = new joinjelly.gameplay.Tile(0, 0, 500);
                     // adds jelly
@@ -1625,7 +1624,9 @@ var joinjelly;
                     var m = (position % 2) ? -1 : 1;
                     jelly.x = (positions[position][0] * defaultWidth - defaultWidth / 2) * 1.2;
                     jelly.y = positions[position][1] * -200 + 550;
-                    jelly.scaleX = jelly.scaleY = 1 - positions[position][1] / 4;
+                    jelly.scaleX = jelly.scaleY = 1 - positions[position][1] / 5;
+                    if (position == 13)
+                        jelly.scaleX = jelly.scaleY = 1.1;
                     //play JellySound
                     gameui.AudiosManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
@@ -4683,7 +4684,7 @@ var joinjelly;
         JoinJelly.showAbout = function () {
             this.gameScreen.switchScreen(new joinjelly.About());
         };
-        JoinJelly.maxJelly = 16384;
+        JoinJelly.maxJelly = 8192;
         return JoinJelly;
     })();
     joinjelly.JoinJelly = JoinJelly;
@@ -4693,6 +4694,49 @@ window.onload = function () {
 };
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
+//module joinjelly.menus {
+//    export class ScoreWall extends ScrollablePage {
+var joinjelly;
+(function (joinjelly) {
+    var ScoreWall = (function () {
+        function ScoreWall() {
+        }
+        ScoreWall.init = function () {
+            this.deviceId = localStorage.getItem("deviceId");
+            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
+            this.table = this.client.getTable("ScoreWall");
+        };
+        // get all scores wall
+        ScoreWall.getScoreNames = function (callback) {
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
+                callback(queryResults);
+            });
+        };
+        // saves scores to the cloud
+        ScoreWall.setScore = function (name, score) {
+            var _this = this;
+            // if device id is already saved
+            if (this.deviceId)
+                //update the current id
+                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+            else
+                // insert a new id and get the device ID from server
+                this.table.insert({ name: name, score: score }).then(function (result) {
+                    if (result[0] && result[0].id) {
+                        //get id from server
+                        _this.deviceId = result[0].id;
+                        //save local storage
+                        localStorage.setItem("deviceId", _this.deviceId);
+                    }
+                });
+        };
+        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
+        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
+        ScoreWall.gameId = "joinjelly";
+        return ScoreWall;
+    })();
+    joinjelly.ScoreWall = ScoreWall;
+})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
@@ -4801,48 +4845,5 @@ var joinjelly;
             view.ItemsFooter = ItemsFooter;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-//module joinjelly.menus {
-//    export class ScoreWall extends ScrollablePage {
-var joinjelly;
-(function (joinjelly) {
-    var ScoreWall = (function () {
-        function ScoreWall() {
-        }
-        ScoreWall.init = function () {
-            this.deviceId = localStorage.getItem("deviceId");
-            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
-            this.table = this.client.getTable("ScoreWall");
-        };
-        // get all scores wall
-        ScoreWall.getScoreNames = function (callback) {
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
-                callback(queryResults);
-            });
-        };
-        // saves scores to the cloud
-        ScoreWall.setScore = function (name, score) {
-            var _this = this;
-            // if device id is already saved
-            if (this.deviceId)
-                //update the current id
-                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
-            else
-                // insert a new id and get the device ID from server
-                this.table.insert({ name: name, score: score }).then(function (result) {
-                    if (result[0] && result[0].id) {
-                        //get id from server
-                        _this.deviceId = result[0].id;
-                        //save local storage
-                        localStorage.setItem("deviceId", _this.deviceId);
-                    }
-                });
-        };
-        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
-        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
-        ScoreWall.gameId = "joinjelly";
-        return ScoreWall;
-    })();
-    joinjelly.ScoreWall = ScoreWall;
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map

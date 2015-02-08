@@ -52,9 +52,12 @@
                 [5 / 6, 2.3],//11
 
                 
-                [1 / 4, 2.6],//12
-                [3 / 4, 2.6],//13
-                [2 / 4, 3],//14
+                [1 / 4, 3],//12
+                [3 / 4, 2.9],//13
+                [2 / 4, 3.8],//14
+
+                [2 / 4, 3.4],//14
+        
             ]
             var jelly = new gameplay.Tile(0, 0, 500);
 
@@ -67,7 +70,8 @@
             jelly.x = (positions[position][0] * defaultWidth - defaultWidth/2)*1.2;
             jelly.y = positions[position][1] * -200 + 550;
             
-            jelly.scaleX = jelly.scaleY = 1 - positions[position][1] / 4 ;
+            jelly.scaleX = jelly.scaleY = 1 - positions[position][1] / 5 ;
+            if (position == 13) jelly.scaleX = jelly.scaleY = 1.1
 
             //play JellySound
             gameui.AudiosManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
