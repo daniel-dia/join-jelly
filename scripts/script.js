@@ -1114,14 +1114,14 @@ var InAppPurchases = (function () {
         setTimeout(function () {
             if (callback)
                 callback([
-                    { ProductId: "time5x", Name: "5x Time", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$1,99", },
-                    { ProductId: "fast5x", Name: "5x Fast", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$1,99", },
-                    { ProductId: "revive5x", Name: "5x Revive", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$1,99", },
+                    { ProductId: "time5x", Name: "5x Snow", Description: "Freeze Screen \nfor 5 seconds", FormattedPrice: "R$1,99", },
+                    { ProductId: "fast5x", Name: "5x Magnet", Description: "Join jellies on \nscreen", FormattedPrice: "R$1,99", },
+                    { ProductId: "revive5x", Name: "5x Revive", Description: "Give you another \nchance to continue", FormattedPrice: "R$1,99", },
                     { ProductId: "clean5x", Name: "5x Clean", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$1,99", },
                     { ProductId: "evolve5x", Name: "5x Evolve", Description: "Evolve one random\njelly", FormattedPrice: "R$1,99", },
-                    { ProductId: "pack5x", Name: "Item Pack 3x", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$4,99", },
-                    { ProductId: "pack10x", Name: "Item Pack 9x", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$6,99", },
-                    { ProductId: "lucky", Name: "Lucky Clover", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$3,99", },
+                    { ProductId: "pack5x", Name: "Item Pack 3x", Description: "5 of each item", FormattedPrice: "R$4,99", },
+                    { ProductId: "pack10x", Name: "Item Pack 9x", Description: "10 of each item", FormattedPrice: "R$6,99", },
+                    { ProductId: "lucky", Name: "Lucky Clover", Description: "Doubles chance for \nfinding a item", FormattedPrice: "R$3,99", },
                 ]);
         }, 1000);
     };
@@ -1585,6 +1585,8 @@ var joinjelly;
                     // set a default value to the last jelly
                     if (!lastJelly)
                         lastJelly = 1;
+                    if (lastJelly > joinjelly.JoinJelly.maxJelly)
+                        lastJelly = joinjelly.JoinJelly.maxJelly;
                     // calculate all jellys already unlocked
                     var jellys = new Array();
                     for (var j = 1; j <= lastJelly; j *= 2)
@@ -1827,9 +1829,7 @@ var joinjelly;
                     tContainer.addChild(priceDO);
                     this.addChild(tContainer);
                     tContainer.cache(100, 27, 1250, 300);
-                    setTimeout(function () {
-                        tContainer.uncache();
-                    }, 2000);
+                    //setTimeout(() => { tContainer.uncache() }, 2000);
                     // add Check
                     var unchecked = gameui.ImagesManager.getBitmap("unchecked");
                     unchecked.regX = unchecked.getBounds().width / 2;
@@ -4616,9 +4616,6 @@ var joinjelly;
             switch (lang) {
                 case "pt":
                     StringResources = StringResources_pt;
-                    break;
-                case "es":
-                    StringResources = StringResources_es;
                     break;
             }
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, 60, true);

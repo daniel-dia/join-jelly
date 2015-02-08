@@ -70,7 +70,7 @@
             this.addChild(tContainer);
             tContainer.cache(100, 27, 1250, 300);
 
-            setTimeout(() => { tContainer.uncache() }, 2000);
+            //setTimeout(() => { tContainer.uncache() }, 2000);
 
             // add Check
             var unchecked = gameui.ImagesManager.getBitmap("unchecked");

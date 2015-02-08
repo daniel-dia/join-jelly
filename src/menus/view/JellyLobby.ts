@@ -15,7 +15,7 @@
             
             // set a default value to the last jelly
             if (!lastJelly) lastJelly = 1;
-            
+            if (lastJelly > JoinJelly.maxJelly) lastJelly = JoinJelly.maxJelly
 
             // calculate all jellys already unlocked
             var jellys: Array<number> = new Array();
