@@ -388,8 +388,10 @@
 
         // winTheGame
         private winGame() {
-            this.endGame(StringResources.menus.gameOver);
-            // TODO something great
+            this.endGame(StringResources.menus.gameOver)
+            this.gameFooter.visible = false;
+
+            // TODO something greater and memorable
         }
 
         // update current level

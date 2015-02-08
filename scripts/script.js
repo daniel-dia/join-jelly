@@ -3722,7 +3722,8 @@ var joinjelly;
             // winTheGame
             GamePlayScreen.prototype.winGame = function () {
                 this.endGame(StringResources.menus.gameOver);
-                // TODO something great
+                this.gameFooter.visible = false;
+                // TODO something greater and memorable
             };
             // update current level
             GamePlayScreen.prototype.updateCurrentLevel = function () {
