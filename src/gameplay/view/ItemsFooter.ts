@@ -14,7 +14,9 @@
 
         // add all button items
         public setItems(items: Array<string>) {
-
+            var itemSize = this.itemSize;
+            if (items.length >= 5)
+                itemSize = 200;
             // clean all buttons
             this.cleanButtons();
 
@@ -28,7 +30,7 @@
             for (var i in items) {
                 //set button position
                 this.itemsButtons[items[i]].y = -150;
-                this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * this.itemSize) / 2 + i * this.itemSize;
+                this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
             }
         }
 
