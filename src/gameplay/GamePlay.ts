@@ -15,7 +15,7 @@
         //interface
         protected board: Board;
         protected gameHeader: view.GameHeader;
-        protected gameFooter: view.GameFooter;
+        protected gameFooter: view.ItemsFooter;
         private gameLevelIndicator: view.LevelIndicator;
         private finishMenu: view.FinishMenu;
         private pauseMenu: view.PauseMenu;
@@ -120,7 +120,7 @@
 
             // create game footer
             var items = [Items.TIME, Items.CLEAN, Items.FAST, Items.EVOLVE];
-            this.gameFooter = new view.GameFooter(items);
+            this.gameFooter = new view.ItemsFooter(items);
             this.gameFooter.lockItem(Items.REVIVE);
             this.footer.addChild(this.gameFooter);
             this.updateFooter();

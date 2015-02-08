@@ -1,5 +1,5 @@
 ﻿module joinjelly.gameplay.view {
-    export class GameFooter extends createjs.Container {
+    export class ItemsFooter extends createjs.Container {
 
         private itemsButtons: Array<ItemButton>
         private lucky: createjs.DisplayObject;

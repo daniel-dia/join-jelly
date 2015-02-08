@@ -13,7 +13,7 @@
 
         private items: Array<number>;
 
-        public static items = [Items.TIME, Items.CLEAN, Items.FAST,Items.REVIVE,Items.LUCKY];
+        public static items = [Items.TIME, Items.CLEAN, Items.FAST,Items.REVIVE,Items.EVOLVE,Items.LUCKY];
 
         constructor() {
             this.items = <Array<number>>(new Object());

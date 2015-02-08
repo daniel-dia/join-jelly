@@ -446,7 +446,7 @@
     <TypeScriptCompile Include="src\Analytics.ts" />
     <TypeScriptCompile Include="src\Definitions.ts" />
     <TypeScriptCompile Include="src\JoinJelly.ts" />
-    <TypeScriptCompile Include="src\gameplay\view\GameFooter.ts" />
+    <TypeScriptCompile Include="src\gameplay\view\ItemsFooter.ts" />
     <TypeScriptCompile Include="src\gameplay\view\ItemButton.ts" />
     <TypeScriptCompile Include="src\ItemsData.ts" />
     <TypeScriptCompile Include="src\menus\ScrollabePage.ts" />

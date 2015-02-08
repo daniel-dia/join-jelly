@@ -765,7 +765,7 @@ var joinjelly;
             this.items[item] = ammount;
             UserData.saveItems(this.items);
         };
-        ItemsData.items = [Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE, Items.LUCKY];
+        ItemsData.items = [Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE, Items.EVOLVE, Items.LUCKY];
         return ItemsData;
     })();
     joinjelly.ItemsData = ItemsData;
