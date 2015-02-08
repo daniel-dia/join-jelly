@@ -2489,6 +2489,8 @@ var joinjelly;
                 // #region behaviour ==============================================
                 //set tile number
                 Jelly.prototype.setNumber = function (value) {
+                    if (velue > joinjelly.JoinJelly.maxJelly)
+                        value = joinjelly.JoinJelly.maxJelly;
                     if (this.currentValue == value)
                         return;
                     this.currentValue = value;
@@ -3790,18 +3792,16 @@ var joinjelly;
                 this.updateCurrentLevel();
                 //calculate new value
                 var newValue = target.getNumber() + origin.getNumber();
-                //sum the tiles values
-                target.setNumber(newValue);
-                //reset the previous tile
-                origin.setNumber(0);
                 //animate the mach
                 this.board.match(origin, target);
                 // increase score
                 var sum = newValue * 10 + Math.floor(Math.random() * newValue * 10);
                 this.score += sum;
                 this.animateScoreFromTile(target, sum); // animate a score number
+                //reset the previous tile
+                origin.setNumber(0);
                 // chance to win a item
-                var item = this.giveItemChance(["time", "clean", "fast", "revive"]);
+                var item = this.giveItemChance([joinjelly.Items.CLEAN, joinjelly.Items.EVOLVE, joinjelly.Items.REVIVE, joinjelly.Items.TIME, joinjelly.Items.FAST]);
                 if (item)
                     this.animateItemFromTile(target, item);
                 // update score
@@ -3814,6 +3814,8 @@ var joinjelly;
                 // verify winGame
                 if (newValue >= joinjelly.JoinJelly.maxJelly)
                     this.winGame();
+                else
+                    target.setNumber(newValue);
                 // log event
                 joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
                 this.saveGame();

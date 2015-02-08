@@ -490,11 +490,6 @@
             //calculate new value
             var newValue = target.getNumber() + origin.getNumber();
 
-            //sum the tiles values
-            target.setNumber(newValue);
-
-            //reset the previous tile
-            origin.setNumber(0);
 
             //animate the mach
             this.board.match(origin, target);
@@ -503,11 +498,14 @@
             var sum = newValue * 10 + Math.floor(Math.random() * newValue*10);
             this.score += sum;
             this.animateScoreFromTile(target, sum); // animate a score number
+            
+            //reset the previous tile
+            origin.setNumber(0);
 
             // chance to win a item
-            var item = this.giveItemChance(["time", "clean", "fast", "revive"]);
+            var item = this.giveItemChance([Items.CLEAN, Items.EVOLVE, Items.REVIVE, Items.TIME, Items.FAST]);
             if (item) this.animateItemFromTile(target, item);
-
+     
             // update score
             this.userData.setScore(this.score);
             this.userData.setLastJelly(newValue);
@@ -515,18 +513,18 @@
             this.updateInterfaceInfos();
 
             // notify match
-            if (this.matchNotify)
-                this.matchNotify()
+            if (this.matchNotify) this.matchNotify()
 
 
             // verify winGame
             if (newValue >= JoinJelly.maxJelly)
                 this.winGame();
-
+            else
+                target.setNumber(newValue);
+                
             // log event
             joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
-
-
+            
             this.saveGame();
 
             return true;
