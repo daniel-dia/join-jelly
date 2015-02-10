@@ -8,8 +8,7 @@ module gameui{
 
     export class GameScreen {
         
-        public stage: createjs.Stage;
-        private myCanvas: HTMLCanvasElement;
+        public stage: createjs.Stage; 
 
         private defaultWidth: number;
         private defaultHeight: number;
@@ -173,8 +172,8 @@ module gameui{
                 }
             }
 
-            this.myCanvas.width = deviceWidth;
-            this.myCanvas.height = deviceHeight;
+            this.stage.canvas.width = deviceWidth;
+            this.stage.canvas.height = deviceHeight;
 
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
         }
