@@ -33,14 +33,13 @@ module gameui{
 
         //-----------------------------------------------------------------------
 
-        constructor(canvasElement: string, gameWidth: number, gameHeight?: number, fps:number=60, showFps?: boolean) {
+        constructor(canvasId: string, gameWidth: number, gameHeight?: number, fps:number=60, showFps?: boolean) {
 
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
 
             //Initializes canvas Context            
-            this.myCanvas = <HTMLCanvasElement> document.getElementById(canvasElement);
-            this.stage = new createjs.Stage(canvasElement);
+            this.stage = new createjs.Stage(canvasId);
 
             createjs.Touch.enable(this.stage);
 
