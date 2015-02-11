@@ -2706,17 +2706,29 @@ var joinjelly;
                     ok.set({ x: 771, y: 1599 });
                     this.addChild(ok);
                     //add share button;
-                    var board = new gameui.ImageButton("BtHome", (function () {
+                    var home = new gameui.ImageButton("BtHome", (function () {
                         _this.dispatchEvent("home");
                     }));
-                    board.set({ x: 353, y: 1570 });
-                    this.addChild(board);
+                    home.set({ x: 353, y: 1570 });
+                    this.addChild(home);
                     //add showBoard button
-                    var share = new gameui.ImageButton("BtRestart", (function () {
+                    var restart = new gameui.ImageButton("BtRestart", (function () {
                         _this.dispatchEvent("restart");
                     }));
-                    share.set({ x: 1190, y: 1570 });
-                    this.addChild(share);
+                    restart.set({ x: 1190, y: 1570 });
+                    this.addChild(restart);
+                    //add showBoard button
+                    var test = new gameui.ImageButton("BtRestart", (function () {
+                        _this.dispatchEvent("test");
+                    }));
+                    test.set({ x: 1190, y: 1770 });
+                    this.addChild(test);
+                    //add showBoard button
+                    var test = new gameui.ImageButton("BtRestart", (function () {
+                        _this.dispatchEvent("testFast");
+                    }));
+                    test.set({ x: 1190, y: 1970 });
+                    this.addChild(test);
                 };
                 return PauseMenu;
             })(joinjelly.menus.view.FlyOutMenu);
@@ -3449,10 +3461,10 @@ var joinjelly;
                 // parameters
                 this.boardSize = 5;
                 this.itemProbability = 0.005;
-                this.timeByLevel = 10000;
+                this.timeByLevel = 20000;
                 this.initialInterval = 900;
-                this.finalInterval = 150;
-                this.easeInterval = 0.98;
+                this.finalInterval = 200;
+                this.easeInterval = 0.97;
                 // #endregion
                 this.log = "";
                 this.userData = userData;
@@ -3514,7 +3526,7 @@ var joinjelly;
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
                 // create game footer
-                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.EVOLVE];
+                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST];
                 this.gameFooter = new gameplay.view.ItemsFooter(items);
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 this.footer.addChild(this.gameFooter);
@@ -3548,13 +3560,19 @@ var joinjelly;
                 });
                 this.finishMenu.addEventListener("share", function () {
                     //
-                    _this.selfPeformanceTest();
+                    _this.selfPeformanceTest(true);
                 });
                 this.gameHeader.addEventListener("pause", function () {
                     _this.pauseGame();
                 });
                 this.pauseMenu.addEventListener("play", function () {
                     _this.continueGame();
+                });
+                this.pauseMenu.addEventListener("test", function () {
+                    _this.selfPeformanceTest(false);
+                });
+                this.pauseMenu.addEventListener("testFast", function () {
+                    _this.selfPeformanceTest(true);
                 });
                 this.pauseMenu.addEventListener("home", function () {
                     _this.pauseMenu.hide();
@@ -3678,8 +3696,14 @@ var joinjelly;
                 this.gameHeader.mouseEnabled = true;
                 this.content.mouseEnabled = true;
             };
+            // winTheGame
+            GamePlayScreen.prototype.winGame = function () {
+                this.endGame(StringResources.menus.gameOver, true);
+                this.gameFooter.visible = false;
+                // TODO something greater and memorable
+            };
             // finishes the game
-            GamePlayScreen.prototype.endGame = function (message) {
+            GamePlayScreen.prototype.endGame = function (message, win) {
                 var _this = this;
                 this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
                 this.userData.deleteSaveGame();
@@ -3702,7 +3726,10 @@ var joinjelly;
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
                 // shows finished game menu
                 setTimeout(function () {
-                    _this.gamestate = 3 /* ended */;
+                    if (win)
+                        _this.gamestate = 5 /* win */;
+                    else
+                        _this.gamestate = 3 /* ended */;
                     _this.finishMenu.show();
                     _this.gameFooter.mouseEnabled = true;
                     // set footer items form revive
@@ -3720,18 +3747,17 @@ var joinjelly;
                 // play end game effect
                 this.board.endGameEffect();
             };
-            // winTheGame
-            GamePlayScreen.prototype.winGame = function () {
-                this.endGame(StringResources.menus.gameOver);
-                this.gameFooter.visible = false;
-                // TODO something greater and memorable
-            };
             // update current level
             GamePlayScreen.prototype.updateCurrentLevel = function () {
                 var newLevel = this.getLevelByMoves(this.matches);
-                if (newLevel > this.level)
+                if (newLevel > this.level) {
+                    this.levelUpBonus();
                     this.levelUpInterfaceEffect(newLevel);
+                }
                 this.level = newLevel;
+            };
+            GamePlayScreen.prototype.levelUpBonus = function () {
+                this.useEvolve();
             };
             // calculate current level by moves. once level calculation is a iterative processe, this method uses a iterative calculation
             GamePlayScreen.prototype.getLevelByMoves = function (moves) {
@@ -3794,8 +3820,6 @@ var joinjelly;
                 if (!this.canMatch(origin, target))
                     return false;
                 this.matches++;
-                // update currentLevel
-                this.updateCurrentLevel();
                 //calculate new value
                 var newValue = target.getNumber() + origin.getNumber();
                 //animate the mach
@@ -3807,7 +3831,7 @@ var joinjelly;
                 //reset the previous tile
                 origin.setNumber(0);
                 // chance to win a item
-                var item = this.giveItemChance([joinjelly.Items.CLEAN, joinjelly.Items.EVOLVE, joinjelly.Items.REVIVE, joinjelly.Items.TIME, joinjelly.Items.FAST]);
+                var item = this.giveItemChance([joinjelly.Items.CLEAN, joinjelly.Items.REVIVE, joinjelly.Items.TIME, joinjelly.Items.FAST]);
                 if (item)
                     this.animateItemFromTile(target, item);
                 // update score
@@ -3818,12 +3842,14 @@ var joinjelly;
                 if (this.matchNotify)
                     this.matchNotify();
                 // verify winGame
-                if (newValue >= joinjelly.JoinJelly.maxJelly)
+                if (newValue > joinjelly.JoinJelly.maxJelly)
                     this.winGame();
                 else
                     target.setNumber(newValue);
                 // log event
                 joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
+                // update currentLevel
+                this.updateCurrentLevel();
                 this.saveGame();
                 return true;
             };
@@ -3924,7 +3950,7 @@ var joinjelly;
                 var _this = this;
                 if (this.gamestate == 3 /* ended */)
                     return;
-                this.step(5000);
+                this.step(4000);
                 //cast effects
                 this.freezeEffect.alpha = 0;
                 this.freezeEffect.visible = true;
@@ -3980,7 +4006,7 @@ var joinjelly;
                 // hide show board button
                 this.showBoardButton.fadeOut();
                 // set footer items
-                this.gameFooter.setItems([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.EVOLVE]);
+                this.gameFooter.setItems([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST]);
                 this.gameFooter.unlockAll();
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 // remove other ui items
@@ -3999,6 +4025,7 @@ var joinjelly;
                 return true;
             };
             GamePlayScreen.prototype.useEvolve = function () {
+                var _this = this;
                 // evolve some random tile, except maximun tile
                 if (this.gamestate == 3 /* ended */)
                     return;
@@ -4010,19 +4037,19 @@ var joinjelly;
                 //select elegible tiles to evolve
                 var selectedTiles = new Array();
                 for (var t in tiles)
-                    if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 2))
+                    if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 2) && tiles[t].isUnlocked())
                         selectedTiles.push(tiles[t]);
                 if (selectedTiles.length == 0)
                     for (var t in tiles)
-                        if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 1))
+                        if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 1) && tiles[t].isUnlocked())
                             selectedTiles.push(tiles[t]);
                 if (selectedTiles.length == 0)
                     for (var t in tiles)
-                        if (tiles[t].getNumber() > 1)
+                        if (tiles[t].getNumber() > 1 && tiles[t].isUnlocked())
                             selectedTiles.push(tiles[t]);
                 if (selectedTiles.length == 0)
                     for (var t in tiles)
-                        if (tiles[t].getNumber() > 0)
+                        if (tiles[t].getNumber() > 0 && tiles[t].isUnlocked())
                             selectedTiles.push(tiles[t]);
                 if (selectedTiles.length == 0)
                     return false;
@@ -4030,11 +4057,18 @@ var joinjelly;
                 var selected = Math.floor(Math.random() * selectedTiles.length);
                 var tileValue = selectedTiles[selected].getNumber();
                 selectedTiles[selected].setNumber(tileValue * 2);
+                //cast effects
+                this.fastEffect.alpha = 1;
+                this.fastEffect.visible = true;
+                createjs.Tween.removeTweens(this.fastEffect);
+                createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(function () {
+                    _this.fastEffect.visible = false;
+                });
+                gameui.AudiosManager.playSound("sounditemfast");
                 return true;
             };
             // match 5 pair of jelly if avaliabe
             GamePlayScreen.prototype.useFast = function (test) {
-                var _this = this;
                 if (test === void 0) { test = false; }
                 if (this.gamestate == 3 /* ended */)
                     return;
@@ -4059,21 +4093,13 @@ var joinjelly;
                 }
                 for (var m in matches)
                     this.matchJelly(matches[m][0], matches[m][1]);
-                if (!test) {
-                    //cast effects
-                    this.fastEffect.alpha = 1;
-                    this.fastEffect.visible = true;
-                    createjs.Tween.removeTweens(this.fastEffect);
-                    createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(function () {
-                        _this.fastEffect.visible = false;
-                    });
-                    gameui.AudiosManager.playSound("sounditemfast");
-                }
                 return true;
             };
             // match two jellys with animation
             GamePlayScreen.prototype.matchJelly = function (origin, target) {
                 var _this = this;
+                target.lock();
+                origin.lock();
                 this.board.fadeTileToPos(origin, target.x, target.y, 400, 200 * Math.random(), 1);
                 setTimeout(function () {
                     target.unlock();
@@ -4111,14 +4137,15 @@ var joinjelly;
                 this.updateInterfaceInfos();
                 this.pauseGame();
             };
-            GamePlayScreen.prototype.selfPeformanceTest = function () {
+            GamePlayScreen.prototype.selfPeformanceTest = function (fast) {
                 var _this = this;
-                this.initialInterval = 250;
+                if (fast)
+                    this.initialInterval = 200;
                 setInterval(function () {
-                    var value = _this.countChild(_this.view.getStage()).toString() + "\t" + Math.floor(createjs.Ticker.getMeasuredFPS());
-                    _this.log += value + "\n";
-                    window.localStorage.setItem("log", _this.log);
-                    console.log(value);
+                    //var value = this.countChild(this.view.getStage()).toString() + "\t" + Math.floor(createjs.Ticker.getMeasuredFPS());
+                    //this.log += value + "\n";
+                    document.title = (_this.initialInterval + " " + _this.finalInterval + " " + _this.easeInterval + " " + _this.getTimeInterval(_this.level, _this.initialInterval, _this.finalInterval, _this.easeInterval));
+                    //
                     if (_this.gamestate == 2 /* paused */)
                         return;
                     _this.useRevive();
@@ -4126,6 +4153,9 @@ var joinjelly;
                 }, 250);
             };
             GamePlayScreen.prototype.countChild = function (container) {
+                return 0;
+                if (!container)
+                    return 0;
                 var childrens = 0;
                 for (var c in container.children) {
                     if (container.children[c].visible) {
@@ -4146,6 +4176,7 @@ var joinjelly;
             GameState[GameState["paused"] = 2] = "paused";
             GameState[GameState["ended"] = 3] = "ended";
             GameState[GameState["standBy"] = 4] = "standBy";
+            GameState[GameState["win"] = 5] = "win";
         })(GameState || (GameState = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
@@ -4626,17 +4657,28 @@ var joinjelly;
                     StringResources = StringResources_pt;
                     break;
             }
-            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, 60, true);
+            var fps = 60;
+            if (window.location.search == "?test")
+                fps = 30;
+            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps, true);
             this.userData = new UserData();
             var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
+            // verify test
             // verifies if there is a savedGame
             loadingScreen.loaded = function () {
-                var loadedGame = _this.userData.loadGame();
-                if (loadedGame)
-                    joinjelly.JoinJelly.startLevel(loadedGame);
-                else
-                    JoinJelly.showMainMenu();
+                if (window.location.search == "?test") {
+                    var gs = new joinjelly.gameplay.ExplodeBricks(_this.userData);
+                    _this.gameScreen.switchScreen(gs);
+                    gs.selfPeformanceTest(false);
+                }
+                else {
+                    var loadedGame = _this.userData.loadGame();
+                    if (loadedGame)
+                        joinjelly.JoinJelly.startLevel(loadedGame);
+                    else
+                        JoinJelly.showMainMenu();
+                }
             };
         };
         JoinJelly.showAboutScreen = function () {
@@ -4694,49 +4736,6 @@ window.onload = function () {
 };
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
-//module joinjelly.menus {
-//    export class ScoreWall extends ScrollablePage {
-var joinjelly;
-(function (joinjelly) {
-    var ScoreWall = (function () {
-        function ScoreWall() {
-        }
-        ScoreWall.init = function () {
-            this.deviceId = localStorage.getItem("deviceId");
-            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
-            this.table = this.client.getTable("ScoreWall");
-        };
-        // get all scores wall
-        ScoreWall.getScoreNames = function (callback) {
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
-                callback(queryResults);
-            });
-        };
-        // saves scores to the cloud
-        ScoreWall.setScore = function (name, score) {
-            var _this = this;
-            // if device id is already saved
-            if (this.deviceId)
-                //update the current id
-                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
-            else
-                // insert a new id and get the device ID from server
-                this.table.insert({ name: name, score: score }).then(function (result) {
-                    if (result[0] && result[0].id) {
-                        //get id from server
-                        _this.deviceId = result[0].id;
-                        //save local storage
-                        localStorage.setItem("deviceId", _this.deviceId);
-                    }
-                });
-        };
-        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
-        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
-        ScoreWall.gameId = "joinjelly";
-        return ScoreWall;
-    })();
-    joinjelly.ScoreWall = ScoreWall;
-})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
@@ -4845,5 +4844,48 @@ var joinjelly;
             view.ItemsFooter = ItemsFooter;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+//module joinjelly.menus {
+//    export class ScoreWall extends ScrollablePage {
+var joinjelly;
+(function (joinjelly) {
+    var ScoreWall = (function () {
+        function ScoreWall() {
+        }
+        ScoreWall.init = function () {
+            this.deviceId = localStorage.getItem("deviceId");
+            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
+            this.table = this.client.getTable("ScoreWall");
+        };
+        // get all scores wall
+        ScoreWall.getScoreNames = function (callback) {
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
+                callback(queryResults);
+            });
+        };
+        // saves scores to the cloud
+        ScoreWall.setScore = function (name, score) {
+            var _this = this;
+            // if device id is already saved
+            if (this.deviceId)
+                //update the current id
+                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+            else
+                // insert a new id and get the device ID from server
+                this.table.insert({ name: name, score: score }).then(function (result) {
+                    if (result[0] && result[0].id) {
+                        //get id from server
+                        _this.deviceId = result[0].id;
+                        //save local storage
+                        localStorage.setItem("deviceId", _this.deviceId);
+                    }
+                });
+        };
+        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
+        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
+        ScoreWall.gameId = "joinjelly";
+        return ScoreWall;
+    })();
+    joinjelly.ScoreWall = ScoreWall;
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map

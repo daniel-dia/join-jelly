@@ -22,21 +22,30 @@ module joinjelly {
                 case "pt": StringResources = StringResources_pt; break;
               } 
 
-       
+            var fps = 60;
+            if (window.location.search == "?test") fps = 30;
 
-            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight,60,true);
+            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight,fps,true);
             
             this.userData = new UserData();
             var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
-            
+            // verify test
+
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
-                var loadedGame = this.userData.loadGame();
-                if (loadedGame)
-                    joinjelly.JoinJelly.startLevel(loadedGame);
-                else
-                JoinJelly.showMainMenu();
+                if (window.location.search == "?test") {
+                    var gs = new gameplay.ExplodeBricks(this.userData);
+                    this.gameScreen.switchScreen(gs);
+                    gs.selfPeformanceTest(false); 
+                } else {
+
+                    var loadedGame = this.userData.loadGame();
+                    if (loadedGame)
+                        joinjelly.JoinJelly.startLevel(loadedGame);
+                    else
+                        JoinJelly.showMainMenu();
+                }
             }
         }
 

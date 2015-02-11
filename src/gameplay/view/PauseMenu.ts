@@ -23,18 +23,34 @@
             this.addChild(ok);
 
             //add share button;
-            var board = new gameui.ImageButton("BtHome", (() => {
+            var home = new gameui.ImageButton("BtHome", (() => {
                 this.dispatchEvent("home")
             }));
-            board.set({ x: 353, y: 1570 });
-            this.addChild(board);
+            home.set({ x: 353, y: 1570 });
+            this.addChild(home);
 
             //add showBoard button
-            var share = new gameui.ImageButton("BtRestart", (() => {
+            var restart = new gameui.ImageButton("BtRestart", (() => {
                 this.dispatchEvent("restart")
             }));
-            share.set({ x: 1190, y: 1570 });
-            this.addChild(share);
+            restart.set({ x: 1190, y: 1570 });
+            this.addChild(restart);
+
+            //add showBoard button
+            var test = new gameui.ImageButton("BtRestart", (() => {
+                this.dispatchEvent("test")
+            }));
+            test.set({ x: 1190, y: 1770 });
+            this.addChild(test);
+
+            //add showBoard button
+            var test = new gameui.ImageButton("BtRestart", (() => {
+                this.dispatchEvent("testFast")
+            }));
+            test.set({ x: 1190, y: 1970 });
+            this.addChild(test);
+
+          
         }
 
     }

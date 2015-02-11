@@ -24,12 +24,13 @@
         // parameters
         private boardSize: number = 5;
         private itemProbability: number = 0.005;
-        private timeByLevel: number = 10000
+
+        private timeByLevel: number = 20000;
         private timeoutInterval: number;
 
         private initialInterval: number = 900;
-        private finalInterval: number = 150;
-        private easeInterval: number = 0.98;
+        private finalInterval: number = 200;
+        private easeInterval: number = 0.97;
         
         // effect 
         private freezeEffect: createjs.DisplayObject;
@@ -119,8 +120,8 @@
             this.header.addChild(this.gameHeader);
 
             // create game footer
-            var items = [Items.TIME, Items.CLEAN, Items.FAST, Items.EVOLVE];
-            this.gameFooter = new view.ItemsFooter(items);
+            var items = [Items.TIME, Items.CLEAN, Items.FAST];
+            this.gameFooter = new view.ItemsFooter(items)
             this.gameFooter.lockItem(Items.REVIVE);
             this.footer.addChild(this.gameFooter);
             this.updateFooter();
@@ -161,7 +162,7 @@
 
             this.finishMenu.addEventListener("share", () => {
                 //
-                this.selfPeformanceTest()
+                this.selfPeformanceTest(true)
             });
 
             this.gameHeader.addEventListener("pause", () => {
@@ -172,6 +173,14 @@
                 this.continueGame();
             });
 
+            this.pauseMenu.addEventListener("test", () => {
+                this.selfPeformanceTest(false);
+            });
+
+            this.pauseMenu.addEventListener("testFast", () => {
+                this.selfPeformanceTest(true);
+            });
+            
             this.pauseMenu.addEventListener("home", () => {
                 this.pauseMenu.hide();
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
@@ -288,8 +297,6 @@
                 // set timeout to another iteraction if game is not over
                 if (this.gamestate != GameState.ended)
                     this.step(this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
-
-
             }, timeout);
 
         }
@@ -322,7 +329,6 @@
 
         // unpause game
         private continueGame() {
-
             this.pauseMenu.hide();
             this.gamestate = GameState.playing;
             this.board.unlock();
@@ -330,8 +336,16 @@
             this.content.mouseEnabled = true;
         }
 
+        // winTheGame
+        private winGame() {
+            this.endGame(StringResources.menus.gameOver, true)
+            this.gameFooter.visible = false;
+
+            // TODO something greater and memorable
+        }
+
         // finishes the game
-        private endGame(message?: string) {
+        private endGame(message?: string,win?:boolean) {
 
             this.view.setChildIndex(this.footer,this.view.getNumChildren()-1);
 
@@ -361,6 +375,9 @@
 
             // shows finished game menu
             setTimeout(() => {
+                if(win)
+                    this.gamestate = GameState.win;
+                else
                 this.gamestate = GameState.ended;
 
                 this.finishMenu.show();
@@ -386,21 +403,20 @@
             this.board.endGameEffect();
         }
 
-        // winTheGame
-        private winGame() {
-            this.endGame(StringResources.menus.gameOver)
-            this.gameFooter.visible = false;
-
-            // TODO something greater and memorable
-        }
+      
 
         // update current level
         private updateCurrentLevel() {
             var newLevel = this.getLevelByMoves(this.matches);
-            if (newLevel > this.level)
+            if (newLevel > this.level) {
+                this.levelUpBonus();
                 this.levelUpInterfaceEffect(newLevel);
-
+            }
             this.level = newLevel;
+        }
+
+        protected levelUpBonus() {
+            this.useEvolve();
         }
 
         // calculate current level by moves. once level calculation is a iterative processe, this method uses a iterative calculation
@@ -486,11 +502,11 @@
 
             this.matches++;
 
-            // update currentLevel
-            this.updateCurrentLevel()
+      
 
             //calculate new value
             var newValue = target.getNumber() + origin.getNumber();
+
 
 
             //animate the mach
@@ -505,7 +521,7 @@
             origin.setNumber(0);
 
             // chance to win a item
-            var item = this.giveItemChance([Items.CLEAN, Items.EVOLVE, Items.REVIVE, Items.TIME, Items.FAST]);
+            var item = this.giveItemChance([Items.CLEAN, Items.REVIVE, Items.TIME, Items.FAST]);
             if (item) this.animateItemFromTile(target, item);
      
             // update score
@@ -519,7 +535,7 @@
 
 
             // verify winGame
-            if (newValue >= JoinJelly.maxJelly)
+            if (newValue > JoinJelly.maxJelly)
                 this.winGame();
             else
                 target.setNumber(newValue);
@@ -527,6 +543,9 @@
             // log event
             joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
             
+            // update currentLevel
+            this.updateCurrentLevel()
+
             this.saveGame();
 
             return true;
@@ -652,7 +671,7 @@
         protected useTime() :boolean{
             if (this.gamestate == GameState.ended) return;
 
-            this.step(5000);
+            this.step(4000);
 
             //cast effects
             this.freezeEffect.alpha = 0;
@@ -722,7 +741,7 @@
             this.showBoardButton.fadeOut();
 
             // set footer items
-            this.gameFooter.setItems([Items.TIME, Items.CLEAN, Items.FAST, Items.EVOLVE]);
+            this.gameFooter.setItems([Items.TIME, Items.CLEAN, Items.FAST ]);
             this.gameFooter.unlockAll();
             this.gameFooter.lockItem(Items.REVIVE);
 
@@ -754,29 +773,29 @@
 
             //get max tile
             for(var t in tiles)
-                if (tiles[t].getNumber() > maxTile )
+                if (tiles[t].getNumber() > maxTile  )
                     maxTile = tiles[t].getNumber();
 
             //select elegible tiles to evolve
             var selectedTiles: Array<Tile> = new Array();
             for (var t in tiles)
-                if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 2 ))
+                if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 2 ) && tiles[t].isUnlocked())
                     selectedTiles.push(tiles[t]);
 
             if(selectedTiles.length==0)
                 for (var t in tiles)
-                    if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 1))
+                    if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 1) && tiles[t].isUnlocked())
                         selectedTiles.push(tiles[t]);
 
             if (selectedTiles.length == 0)
                 for (var t in tiles)
-                    if (tiles[t].getNumber() > 1)
+                    if (tiles[t].getNumber() > 1 && tiles[t].isUnlocked())
                         selectedTiles.push(tiles[t]);
 
 
             if (selectedTiles.length == 0)
                 for (var t in tiles)
-                    if (tiles[t].getNumber() > 0)
+                    if (tiles[t].getNumber() > 0 && tiles[t].isUnlocked())
                         selectedTiles.push(tiles[t]);
 
             if (selectedTiles.length == 0)
@@ -786,6 +805,16 @@
             var selected = Math.floor(Math.random() * selectedTiles.length);
             var tileValue = selectedTiles[selected].getNumber();
             selectedTiles[selected].setNumber(tileValue * 2);
+
+
+            //cast effects
+            this.fastEffect.alpha = 1;
+            this.fastEffect.visible = true;
+            createjs.Tween.removeTweens(this.fastEffect);
+            createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(() => {
+                this.fastEffect.visible = false
+            });
+            gameui.AudiosManager.playSound("sounditemfast");
 
             return true;
         }
@@ -822,22 +851,14 @@
             for (var m in matches)
                 this.matchJelly(matches[m][0], matches[m][1]);
 
-            if (!test) {
-                //cast effects
-                this.fastEffect.alpha = 1;
-                this.fastEffect.visible = true;
-                createjs.Tween.removeTweens(this.fastEffect);
-                createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(() => {
-                    this.fastEffect.visible = false
-                });
-
-                gameui.AudiosManager.playSound("sounditemfast");
-            }
+      
             return true;
         }
 
         // match two jellys with animation
         private matchJelly(origin: Tile, target: Tile) {
+            target.lock();
+            origin.lock();
             this.board.fadeTileToPos(origin, target.x, target.y, 400, 200 * Math.random(), 1);
             setTimeout(() => {
                 target.unlock();
@@ -887,18 +908,19 @@
         // #endregion
 
         private log: string = "";
-        private selfPeformanceTest() {
+        public selfPeformanceTest(fast?:boolean) {
 
-            this.initialInterval = 250;
+            if(fast) this.initialInterval = 200;
 
             setInterval(() => {
 
-                var value = this.countChild(this.view.getStage()).toString() + "\t" + Math.floor(createjs.Ticker.getMeasuredFPS());
-                this.log += value + "\n";
-                window.localStorage.setItem("log", this.log);
-                console.log(value)
+                //var value = this.countChild(this.view.getStage()).toString() + "\t" + Math.floor(createjs.Ticker.getMeasuredFPS());
+                //this.log += value + "\n";
+                document.title = (this.initialInterval + " " + this.finalInterval + " " + this.easeInterval    + " "  + this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
+                //
 
                 if (this.gamestate == GameState.paused) return;
+            
                 this.useRevive();
 
                 this.useFast(true);
@@ -907,7 +929,8 @@
         }
 
         private countChild(container:createjs.Container) :number{
-
+            return 0;
+            if (!container) return 0;
             var childrens: number = 0;
 
             for (var c in container.children) {
@@ -916,8 +939,6 @@
                     if (container.children[c] instanceof createjs.Container)
                         childrens += this.countChild(<createjs.Container>container.children[c]);
                 }
-                
-                
             }
             return childrens;
         }
@@ -928,6 +949,7 @@
         playing,
         paused,
         ended,
-        standBy
+        standBy,
+        win
     }
 }
