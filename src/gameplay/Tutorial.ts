@@ -32,6 +32,7 @@
             this.footer.addChild(this.tutorialItemFinger);
             this.content.addChild(this.tutorialMessage);
 
+            this.gameFooter.setItems([Items.REVIVE,Items.FAST,Items.CLEAN,Items.TIME]);
 
             this.gameFooter.setItemAmmount(Items.REVIVE,1);
             this.gameFooter.setItemAmmount(Items.FAST,  1);
