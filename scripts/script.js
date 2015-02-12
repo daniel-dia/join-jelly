@@ -1233,6 +1233,7 @@ var joinjelly;
                 { id: "backhome", src: "BackMain.jpg" },
                 { id: "bonus_bar", src: "bonus_bar.png" },
                 { id: "bonus_border", src: "bonus_border.png" },
+                { id: "bonus_icon", src: "bonus_icon.png" },
                 { id: "font", src: "font.png" },
                 { id: "font2", src: "font2.png" },
                 { id: "e1", src: "e1.png" },
@@ -1250,7 +1251,6 @@ var joinjelly;
                 { id: "e4096", src: "e4096.png" },
                 { id: "e8192", src: "e8192.png" },
                 { id: "footer", src: "footer.png" },
-                { id: "header", src: "header.png" },
                 { id: "j-1", src: "j-1.png" },
                 { id: "e-1", src: "e-1.png" },
                 { id: "j1", src: "j1.png" },
@@ -1263,9 +1263,6 @@ var joinjelly;
                 { id: "j512", src: "j512.png" },
                 { id: "j64", src: "j64.png" },
                 { id: "j8", src: "j8.png" },
-                { id: "time_bar", src: "time_bar.png" },
-                { id: "time_bar_red", src: "time_bar_red.png" },
-                { id: "time_bar_bright", src: "time_bar_bright.png" },
                 { id: "time_border", src: "time_border.png" },
                 { id: "shadow", src: "shadow.png" },
                 { id: "particle", src: "Particle.png" },
@@ -2363,48 +2360,45 @@ var joinjelly;
                 }
                 GameHeader.prototype.addObjects = function () {
                     var _this = this;
-                    //add background
-                    var bg = gameui.ImagesManager.getBitmap("header");
-                    this.addChild(bg);
-                    bg.x = 0;
-                    bg.mouseEnabled = false;
                     //add pause button
                     var pauseButton = new gameui.ImageButton("BtPause", function () {
                         _this.dispatchEvent("pause");
                     });
-                    pauseButton.x = 106;
-                    pauseButton.y = 219;
+                    pauseButton.x = 157;
+                    pauseButton.y = 215;
                     this.addChild(pauseButton);
                     //add levelBar
                     var levelBarBorder = gameui.ImagesManager.getBitmap("bonus_border");
                     this.addChild(levelBarBorder);
-                    levelBarBorder.x = 223;
+                    levelBarBorder.x = 309;
                     levelBarBorder.y = 122;
                     var levelBar = gameui.ImagesManager.getBitmap("bonus_bar");
-                    this.addChild(levelBar);
-                    levelBar.x = 282;
-                    levelBar.y = 151;
+                    levelBar.x = 372;
+                    levelBar.y = 207;
+                    levelBar.mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 939, 57));
+                    levelBar.mask.x = 372;
+                    levelBar.mask.y = 207;
                     this.levelBar = levelBar;
+                    this.addChild(levelBar);
+                    var levelIcon = gameui.ImagesManager.getBitmap("bonus_icon");
+                    levelIcon.x = 1288;
+                    levelIcon.y = 90;
+                    this.levelIcon = levelIcon;
+                    this.addChild(levelIcon);
                     //add scores text
                     var score = gameui.ImagesManager.getBitmapText(StringResources.menus.score, "debussy");
-                    //score.textBaseline = "middle";
-                    score.x = 323;
-                    score.y = 124 - 80;
+                    score.x = 323 + 50;
+                    score.y = 124 - 80 + 85;
+                    score.scaleX = score.scaleY = 0.85;
                     this.scoreText = score;
                     this.addChild(score);
                     //add scores text
                     var level = gameui.ImagesManager.getBitmapText(StringResources.menus.level, "debussy");
-                    //level.textBaseline = "middle";
                     level.x = 1099;
                     level.y = 242 - 200;
                     level.scaleX = level.scaleY = 2;
                     this.levelText = level;
                     this.addChild(level);
-                    //add timebar
-                    this.timebar = new view.TimeBar();
-                    this.addChild(this.timebar);
-                    this.timebar.x = 281;
-                    this.timebar.y = 233;
                 };
                 // updates level ad score status
                 GameHeader.prototype.updateStatus = function (score, level, percent, emptyPercent, alarm) {
@@ -2412,26 +2406,27 @@ var joinjelly;
                     this.scoreText.text = StringResources.menus.score.toUpperCase() + " " + score.toString();
                     this.levelText.text = level.toString();
                     var value = 1;
-                    //updates timebar
-                    this.timebar.setPercent(emptyPercent, alarm);
                     //updates percent
                     if (percent != undefined)
                         if (score != this.lastScore) {
                             value = percent / 100;
-                            createjs.Tween.removeTweens(this.levelBar);
-                            createjs.Tween.get(this.levelBar).to({ scaleX: value }, 1000, createjs.Ease.elasticOut);
+                            createjs.Tween.removeTweens(this.levelBar.mask);
+                            createjs.Tween.get(this.levelBar.mask).to({ scaleX: value }, 1000, createjs.Ease.elasticOut);
                         }
                     // if level changes. do some animations
                     if (this.lastLevel != level) {
                         //moves the bar
-                        createjs.Tween.removeTweens(this.levelBar);
-                        createjs.Tween.get(this.levelBar).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () {
-                            _this.levelBar.scaleX = 0;
+                        createjs.Tween.removeTweens(this.levelBar.mask);
+                        createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () {
+                            _this.levelBar.mask.scaleX = 0;
                         });
                         //increase number
                         createjs.Tween.removeTweens(this.levelText);
-                        this.levelText.scaleY = this.levelText.scaleX = 4;
+                        createjs.Tween.removeTweens(this.levelIcon);
+                        this.levelText.set({ scaleY: 0, scaleX: 4 });
+                        this.levelIcon.set({ scaleY: 0, scaleX: 2 });
                         createjs.Tween.get(this.levelText).to({ scaleX: 2, scaleY: 2 }, 1000, createjs.Ease.elasticOut);
+                        createjs.Tween.get(this.levelIcon).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
                     }
                     this.lastLevel = level;
                     this.lastScore = score;
@@ -2526,9 +2521,6 @@ var joinjelly;
                         _this.removeChild(_this.joinFx);
                         _this.joinFx.visible = false;
                     });
-                    setTimeout(function () {
-                        var x = 1;
-                    }, 1000);
                 };
                 Jelly.prototype.playLevelUp = function () {
                     var _this = this;
@@ -2539,9 +2531,6 @@ var joinjelly;
                         _this.joinFx.visible = false;
                         _this.removeChild(_this.joinFx);
                     });
-                    setTimeout(function () {
-                        var x = 1;
-                    }, 1000);
                 };
                 return Jelly;
             })(joinjelly.view.JellyContainer);
@@ -3330,7 +3319,7 @@ var joinjelly;
                         // play a jelly light effect
                         tile.jelly.playLevelUp();
                         // unlocks it
-                        tile.unlock();
+                        ///tile.unlock();
                         // increment effect timeOut id
                         currentTile++;
                     }, 20 * t);
@@ -3526,7 +3515,7 @@ var joinjelly;
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
                 // create game footer
-                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST];
+                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.EVOLVE];
                 this.gameFooter = new gameplay.view.ItemsFooter(items);
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 this.footer.addChild(this.gameFooter);
@@ -3751,8 +3740,10 @@ var joinjelly;
             GamePlayScreen.prototype.updateCurrentLevel = function () {
                 var newLevel = this.getLevelByMoves(this.matches);
                 if (newLevel > this.level) {
-                    this.levelUpBonus();
+                    this.level = newLevel;
                     this.levelUpInterfaceEffect(newLevel);
+                    this.updateInterfaceInfos();
+                    this.levelUpBonus();
                 }
                 this.level = newLevel;
             };
@@ -4055,13 +4046,32 @@ var joinjelly;
                     return false;
                 // select random elegible tile
                 var selected = Math.floor(Math.random() * selectedTiles.length);
-                var tileValue = selectedTiles[selected].getNumber();
-                selectedTiles[selected].setNumber(tileValue * 2);
-                //cast effects
-                this.fastEffect.alpha = 1;
+                var tile = selectedTiles[selected];
+                tile.lock();
+                tile.setNumber(tile.getNumber() * 2);
+                //cast Effect On Tile
+                setTimeout(function () {
+                    tile.jelly.playJoinFX();
+                }, 10);
+                setTimeout(function () {
+                    tile.jelly.playJoinFX();
+                }, 250);
+                setTimeout(function () {
+                    tile.jelly.playJoinFX();
+                }, 500);
+                setTimeout(function () {
+                    tile.jelly.playJoinFX();
+                }, 750);
+                setTimeout(function () {
+                    tile.jelly.playJoinFX();
+                    tile.unlock();
+                }, 1000);
+                //cast effects 
                 this.fastEffect.visible = true;
+                this.fastEffect.set({ alpha: 1, scaleX: 2, scaleY: 2, x: 0, y: 0, regX: 768 / 2, regY: 512 });
+                var pt = tile.localToLocal(0, 0, this.fastEffect.parent);
                 createjs.Tween.removeTweens(this.fastEffect);
-                createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(function () {
+                createjs.Tween.get(this.fastEffect).to({ alpha: 0.5, scaleX: 0, scaleY: 0, x: pt.x, y: pt.y }, 500, createjs.Ease.quadIn).call(function () {
                     _this.fastEffect.visible = false;
                 });
                 gameui.AudiosManager.playSound("sounditemfast");
@@ -4220,8 +4230,8 @@ var joinjelly;
                 return match;
             };
             // level up
-            ExplodeBricks.prototype.levelUpInterfaceEffect = function (level) {
-                _super.prototype.levelUpInterfaceEffect.call(this, level);
+            ExplodeBricks.prototype.levelUpBonus = function () {
+                _super.prototype.levelUpBonus.call(this);
                 this.cleanDirty();
             };
             // clean dirty

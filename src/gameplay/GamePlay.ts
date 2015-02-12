@@ -120,16 +120,14 @@
             this.header.addChild(this.gameHeader);
 
             // create game footer
-            var items = [Items.TIME, Items.CLEAN, Items.FAST];
+            var items = [Items.TIME, Items.CLEAN, Items.FAST, Items.EVOLVE];
             this.gameFooter = new view.ItemsFooter(items)
             this.gameFooter.lockItem(Items.REVIVE);
             this.footer.addChild(this.gameFooter);
             this.updateFooter();
 
             this.gameFooter.addEventListener("useitem", (e: createjs.Event) => { this.useItem(e.item) });
-
-
-
+    
             // creates pause menu
             this.pauseMenu = new view.PauseMenu();
             this.overlay.addChild(this.pauseMenu);
@@ -409,8 +407,10 @@
         private updateCurrentLevel() {
             var newLevel = this.getLevelByMoves(this.matches);
             if (newLevel > this.level) {
-                this.levelUpBonus();
+                this.level = newLevel;
                 this.levelUpInterfaceEffect(newLevel);
+                this.updateInterfaceInfos();  
+                this.levelUpBonus();
             }
             this.level = newLevel;
         }
@@ -802,16 +802,26 @@
                 return false;
 
             // select random elegible tile
+            
+            
             var selected = Math.floor(Math.random() * selectedTiles.length);
-            var tileValue = selectedTiles[selected].getNumber();
-            selectedTiles[selected].setNumber(tileValue * 2);
+            var tile = selectedTiles[selected];
+            tile.lock();
+            tile.setNumber(tile.getNumber() * 2);
 
+            //cast Effect On Tile
+            setTimeout(() => { tile.jelly.playJoinFX(); }, 10);
+            setTimeout(() => { tile.jelly.playJoinFX(); }, 250);
+            setTimeout(() => { tile.jelly.playJoinFX(); }, 500);
+            setTimeout(() => { tile.jelly.playJoinFX(); }, 750);
+            setTimeout(() => {tile.jelly.playJoinFX(); tile.unlock() }, 1000);
 
-            //cast effects
-            this.fastEffect.alpha = 1;
+            //cast effects 
             this.fastEffect.visible = true;
+            this.fastEffect.set({ alpha: 1, scaleX: 2, scaleY: 2, x:0, y: 0 ,regX:768/2,regY:512});
+            var pt = tile.localToLocal(0, 0, this.fastEffect.parent);
             createjs.Tween.removeTweens(this.fastEffect);
-            createjs.Tween.get(this.fastEffect).to({ alpha: 0 }, 500).call(() => {
+            createjs.Tween.get(this.fastEffect).to({ alpha: 0.5 ,scaleX:0,scaleY:0,x:pt.x,y:pt.y}, 500,createjs.Ease.quadIn).call(() => {
                 this.fastEffect.visible = false
             });
             gameui.AudiosManager.playSound("sounditemfast");

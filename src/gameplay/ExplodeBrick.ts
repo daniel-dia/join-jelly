@@ -38,8 +38,8 @@
         }
 
         // level up
-        protected levelUpInterfaceEffect(level) {
-            super.levelUpInterfaceEffect(level);
+        protected levelUpBonus() {
+            super.levelUpBonus();
             this.cleanDirty();
         }
 

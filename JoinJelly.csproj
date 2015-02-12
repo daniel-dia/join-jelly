@@ -17,6 +17,7 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="scripts\EaselJS Editor.js" />
     <Content Include="test.html" />
     <Content Include="assets\Deburil.js" />
     <Content Include="assets\DeburilMini.js" />

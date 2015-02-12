@@ -100,13 +100,8 @@
                  this.removeChild(this.joinFx);
                  this.joinFx.visible = false;
              });
-            
-
-            setTimeout(() => {
-                var x = 1;
-            }, 1000);
         }
-
+ 
         public playLevelUp() {
             this.joinFx.visible = true;
             this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 0.6, visible: true });
@@ -115,10 +110,6 @@
                 this.joinFx.visible = false; 
                 this.removeChild(this.joinFx);
             });
-
-            setTimeout(() => {
-                var x = 1;
-            }, 1000);
         }
 
         /// #endregion

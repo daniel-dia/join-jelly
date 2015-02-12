@@ -391,7 +391,7 @@
                     tile.jelly.playLevelUp();
 
                     // unlocks it
-                    tile.unlock();
+                    ///tile.unlock();
 
                     // increment effect timeOut id
                     currentTile++
