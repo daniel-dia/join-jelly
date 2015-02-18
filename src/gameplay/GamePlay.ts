@@ -34,7 +34,7 @@
         
         // effect 
         private freezeEffect: createjs.DisplayObject;
-        private fastEffect: createjs.DisplayObject;
+        private evolveEffect: createjs.DisplayObject;
         private reviveEffect: createjs.DisplayObject;
         private cleanEffect: createjs.DisplayObject;
 
@@ -67,9 +67,10 @@
             this.content.addChild(this.freezeEffect);
             this.normalizeEffect(this.freezeEffect);
 
-            this.fastEffect = gameui.ImagesManager.getBitmap("fastEffect");
-            this.content.addChild(this.fastEffect);
-            this.normalizeEffect(this.fastEffect);
+            this.evolveEffect = gameui.ImagesManager.getBitmap("fastEffect");
+            this.content.addChild(this.evolveEffect);
+            this.evolveEffect.set({regX:384,regY:512});
+            this.normalizeEffect(this.evolveEffect);
 
             this.reviveEffect = gameui.ImagesManager.getBitmap("reviveEffect");
             this.content.addChild(this.reviveEffect);
@@ -316,7 +317,7 @@
         }
 
         // pause game
-        private pauseGame() {
+        public pauseGame() {
             if (this.gamestate == GameState.ended) return;
             this.pauseMenu.show();
             this.gamestate = GameState.paused;
@@ -817,12 +818,12 @@
             setTimeout(() => {tile.jelly.playJoinFX(); tile.unlock() }, 1000);
 
             //cast effects 
-            this.fastEffect.visible = true;
-            this.fastEffect.set({ alpha: 1, scaleX: 2, scaleY: 2, x:0, y: 0 ,regX:768/2,regY:512});
-            var pt = tile.localToLocal(0, 0, this.fastEffect.parent);
-            createjs.Tween.removeTweens(this.fastEffect);
-            createjs.Tween.get(this.fastEffect).to({ alpha: 0.5 ,scaleX:0,scaleY:0,x:pt.x,y:pt.y}, 500,createjs.Ease.quadIn).call(() => {
-                this.fastEffect.visible = false
+            this.evolveEffect.visible = true;
+            this.evolveEffect.set({ alpha: 1, scaleX: 2, scaleY: 2, x:defaultWidth/2, y: defaultHeight/2 });
+            var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
+            createjs.Tween.removeTweens(this.evolveEffect);
+            createjs.Tween.get(this.evolveEffect).to({ alpha: 0.5 ,scaleX:0,scaleY:0,x:pt.x,y:pt.y}, 500,createjs.Ease.quadIn).call(() => {
+                this.evolveEffect.visible = false
             });
             gameui.AudiosManager.playSound("sounditemfast");
 

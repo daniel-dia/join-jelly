@@ -233,14 +233,13 @@ var gameui;
 (function (gameui) {
     var GameScreen = (function () {
         //-----------------------------------------------------------------------
-        function GameScreen(canvasElement, gameWidth, gameHeight, fps, showFps) {
+        function GameScreen(canvasId, gameWidth, gameHeight, fps, showFps) {
             var _this = this;
             if (fps === void 0) { fps = 60; }
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
             //Initializes canvas Context            
-            this.myCanvas = document.getElementById(canvasElement);
-            this.stage = new createjs.Stage(canvasElement);
+            this.stage = new createjs.Stage(canvasId);
             createjs.Touch.enable(this.stage);
             var x = 0;
             createjs.Ticker.addEventListener("tick", function () {
@@ -345,8 +344,8 @@ var gameui;
                     deviceWidth = this.defaultWidth * s;
                 }
             }
-            this.myCanvas.width = deviceWidth;
-            this.myCanvas.height = deviceHeight;
+            this.stage.canvas.width = deviceWidth;
+            this.stage.canvas.height = deviceHeight;
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
         };
         //updates screen viewer scale
@@ -3472,9 +3471,10 @@ var joinjelly;
                 this.freezeEffect = gameui.ImagesManager.getBitmap("freezeEffect");
                 this.content.addChild(this.freezeEffect);
                 this.normalizeEffect(this.freezeEffect);
-                this.fastEffect = gameui.ImagesManager.getBitmap("fastEffect");
-                this.content.addChild(this.fastEffect);
-                this.normalizeEffect(this.fastEffect);
+                this.evolveEffect = gameui.ImagesManager.getBitmap("fastEffect");
+                this.content.addChild(this.evolveEffect);
+                this.evolveEffect.set({ regX: 384, regY: 512 });
+                this.normalizeEffect(this.evolveEffect);
                 this.reviveEffect = gameui.ImagesManager.getBitmap("reviveEffect");
                 this.content.addChild(this.reviveEffect);
                 this.normalizeEffect(this.reviveEffect);
@@ -4067,12 +4067,12 @@ var joinjelly;
                     tile.unlock();
                 }, 1000);
                 //cast effects 
-                this.fastEffect.visible = true;
-                this.fastEffect.set({ alpha: 1, scaleX: 2, scaleY: 2, x: 0, y: 0, regX: 768 / 2, regY: 512 });
-                var pt = tile.localToLocal(0, 0, this.fastEffect.parent);
-                createjs.Tween.removeTweens(this.fastEffect);
-                createjs.Tween.get(this.fastEffect).to({ alpha: 0.5, scaleX: 0, scaleY: 0, x: pt.x, y: pt.y }, 500, createjs.Ease.quadIn).call(function () {
-                    _this.fastEffect.visible = false;
+                this.evolveEffect.visible = true;
+                this.evolveEffect.set({ alpha: 1, scaleX: 2, scaleY: 2, x: defaultWidth / 2, y: defaultHeight / 2 });
+                var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
+                createjs.Tween.removeTweens(this.evolveEffect);
+                createjs.Tween.get(this.evolveEffect).to({ alpha: 0.5, scaleX: 0, scaleY: 0, x: pt.x, y: pt.y }, 500, createjs.Ease.quadIn).call(function () {
+                    _this.evolveEffect.visible = false;
                 });
                 gameui.AudiosManager.playSound("sounditemfast");
                 return true;
@@ -4277,6 +4277,7 @@ var joinjelly;
                 this.content.addChild(this.tutorialJellyFinger);
                 this.footer.addChild(this.tutorialItemFinger);
                 this.content.addChild(this.tutorialMessage);
+                this.gameFooter.setItems([joinjelly.Items.REVIVE, joinjelly.Items.FAST, joinjelly.Items.CLEAN, joinjelly.Items.TIME]);
                 this.gameFooter.setItemAmmount(joinjelly.Items.REVIVE, 1);
                 this.gameFooter.setItemAmmount(joinjelly.Items.FAST, 1);
                 this.gameFooter.setItemAmmount(joinjelly.Items.CLEAN, 1);

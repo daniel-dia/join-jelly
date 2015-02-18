@@ -17,8 +17,6 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="scripts\EaselJS Editor.js" />
-    <Content Include="test.html" />
     <Content Include="assets\Deburil.js" />
     <Content Include="assets\DeburilMini.js" />
     <Content Include="assets\htmlBG.jpg" />
@@ -79,6 +77,7 @@
     <Content Include="assets\images\BigBG.png" />
     <Content Include="assets\images\bonus_bar.png" />
     <Content Include="assets\images\bonus_border.png" />
+    <Content Include="assets\images\bonus_icon.png" />
     <Content Include="assets\images\BtBoard.png" />
     <Content Include="assets\images\BtHelp.png" />
     <Content Include="assets\images\BtHome.png" />
@@ -187,6 +186,7 @@
     <Content Include="assets\images_0.25x\BigBG.png" />
     <Content Include="assets\images_0.25x\bonus_bar.png" />
     <Content Include="assets\images_0.25x\bonus_border.png" />
+    <Content Include="assets\images_0.25x\bonus_icon.png" />
     <Content Include="assets\images_0.25x\BtBoard.png" />
     <Content Include="assets\images_0.25x\btHelp.png" />
     <Content Include="assets\images_0.25x\BtHome.png" />
@@ -319,6 +319,7 @@
     <Content Include="assets\images_0.5x\BigBG.png" />
     <Content Include="assets\images_0.5x\bonus_bar.png" />
     <Content Include="assets\images_0.5x\bonus_border.png" />
+    <Content Include="assets\images_0.5x\bonus_icon.png" />
     <Content Include="assets\images_0.5x\BtBoard.png" />
     <Content Include="assets\images_0.5x\btHelp.png" />
     <Content Include="assets\images_0.5x\BtHome.png" />
@@ -471,6 +472,9 @@
     <Content Include="assets\sounds\sound_s2.mp3" />
     <Content Include="assets\sounds\sound_s3.mp3" />
     <Content Include="assets\style.css" />
+    <Content Include="scripts\EaselJS Editor.js" />
+    <Content Include="scripts\Plataform.js" />
+    <Content Include="test.html" />
     <Content Include="index.html" />
     <Content Include="scripts\BitmapScalePath.js" />
     <Content Include="scripts\createjs-2013.12.12.min.js" />
