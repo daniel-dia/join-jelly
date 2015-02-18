@@ -49,8 +49,18 @@
                     this.addTile(x, y, tileSize);
         }
 
+
         // add a single tile on board
         private addTile(x: number, y: number, tileSize: number) {
+
+            var bg = gameui.ImagesManager.getBitmap("hex");
+            this.tilesContainer.addChild(bg);
+            bg.regX = 304 / 2;
+            bg.regY = -40
+            bg.alpha = 0.15;
+            bg.set(this.getTilePositionByCoords(x, y, tileSize));
+
+
             var tileDO = new Tile(x, y, tileSize);
 
             // add a jelly on tile
@@ -180,8 +190,8 @@
 
             var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
             return {
-                x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
-                y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5 + hexaOffset - tileSize / 5
+                x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 10,
+                y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 10 + hexaOffset - tileSize / 5
             }
         }
         

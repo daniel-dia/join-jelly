@@ -76,6 +76,7 @@ module joinjelly {
 
             //{ id: "j16384", src: "j16384.png" },
             { id: "Background", src: "Background.jpg" },
+            { id: "hex", src: "hex.png" },
             { id: "backhome", src: "BackMain.jpg" },
             { id: "bonus_bar", src: "bonus_bar.png" },
             { id: "bonus_border", src: "bonus_border.png" },

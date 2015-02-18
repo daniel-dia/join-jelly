@@ -1229,6 +1229,7 @@ var joinjelly;
                 { id: "j4096", src: "j4096.png" },
                 { id: "j8192", src: "j8192.png" },
                 { id: "Background", src: "Background.jpg" },
+                { id: "hex", src: "hex.png" },
                 { id: "backhome", src: "BackMain.jpg" },
                 { id: "bonus_bar", src: "bonus_bar.png" },
                 { id: "bonus_border", src: "bonus_border.png" },
@@ -3053,6 +3054,12 @@ var joinjelly;
             };
             // add a single tile on board
             Board.prototype.addTile = function (x, y, tileSize) {
+                var bg = gameui.ImagesManager.getBitmap("hex");
+                this.tilesContainer.addChild(bg);
+                bg.regX = 304 / 2;
+                bg.regY = -40;
+                bg.alpha = 0.15;
+                bg.set(this.getTilePositionByCoords(x, y, tileSize));
                 var tileDO = new gameplay.Tile(x, y, tileSize);
                 // add a jelly on tile
                 this.tiles.push(tileDO);
@@ -3154,8 +3161,8 @@ var joinjelly;
             Board.prototype.getTilePositionByCoords = function (x, y, tileSize) {
                 var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
                 return {
-                    x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5,
-                    y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 5 + hexaOffset - tileSize / 5
+                    x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 10,
+                    y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 10 + hexaOffset - tileSize / 5
                 };
             };
             // get a tile object by its id
