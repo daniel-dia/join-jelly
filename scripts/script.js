@@ -3520,7 +3520,7 @@ var joinjelly;
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
                 // create game footer
-                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.EVOLVE];
+                var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST];
                 this.gameFooter = new gameplay.view.ItemsFooter(items);
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 this.footer.addChild(this.gameFooter);

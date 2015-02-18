@@ -120,7 +120,7 @@
             this.header.addChild(this.gameHeader);
 
             // create game footer
-            var items = [Items.TIME, Items.CLEAN, Items.FAST, Items.EVOLVE];
+            var items = [Items.TIME, Items.CLEAN, Items.FAST];
             this.gameFooter = new view.ItemsFooter(items)
             this.gameFooter.lockItem(Items.REVIVE);
             this.footer.addChild(this.gameFooter);
