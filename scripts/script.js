@@ -3450,11 +3450,9 @@ var joinjelly;
                 this.boardSize = 5;
                 this.itemProbability = 0.005;
                 this.timeByLevel = 20000;
-                this.initialInterval = 900;
+                this.initialInterval = 800;
                 this.finalInterval = 200;
-                this.easeInterval = 0.97;
-                // #endregion
-                this.log = "";
+                this.easeInterval = 0.98;
                 this.userData = userData;
                 this.score = 0;
                 this.createBackground();
@@ -3747,6 +3745,7 @@ var joinjelly;
                 }
                 this.level = newLevel;
             };
+            // give bonus when level up
             GamePlayScreen.prototype.levelUpBonus = function () {
                 this.useEvolve();
             };
@@ -3805,6 +3804,22 @@ var joinjelly;
             GamePlayScreen.prototype.canMatch = function (origin, target) {
                 return (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked());
             };
+            // verify if can move
+            GamePlayScreen.prototype.canMove = function () {
+                var tiles = this.board.getAllTiles();
+                var tilesCount = this.board.getEmptyTiles().length;
+                var numberCount = {};
+                for (var t in tiles) {
+                    var n = tiles[t].getNumber();
+                    if (n > 0 && !numberCount[n])
+                        numberCount[n] = 0;
+                    numberCount[n]++;
+                }
+                for (var c in numberCount)
+                    if (numberCount[c] > 1)
+                        return true;
+                return false;
+            };
             // verifies if a tile can pair another, and make it happens
             GamePlayScreen.prototype.match = function (origin, target) {
                 //check if match is correct
@@ -3842,6 +3857,11 @@ var joinjelly;
                 // update currentLevel
                 this.updateCurrentLevel();
                 this.saveGame();
+                // verifies if it can move, make it a little more faster
+                if (!this.canMove())
+                    this.step(0);
+                if (this.board.getEmptyTiles().length > 12)
+                    this.step(0);
                 return true;
             };
             //give item to user
@@ -4147,34 +4167,18 @@ var joinjelly;
                 this.updateInterfaceInfos();
                 this.pauseGame();
             };
+            // #endregion
             GamePlayScreen.prototype.selfPeformanceTest = function (fast) {
                 var _this = this;
                 if (fast)
                     this.initialInterval = 200;
                 setInterval(function () {
-                    //var value = this.countChild(this.view.getStage()).toString() + "\t" + Math.floor(createjs.Ticker.getMeasuredFPS());
-                    //this.log += value + "\n";
                     document.title = (_this.initialInterval + " " + _this.finalInterval + " " + _this.easeInterval + " " + _this.getTimeInterval(_this.level, _this.initialInterval, _this.finalInterval, _this.easeInterval));
-                    //
                     if (_this.gamestate == 2 /* paused */)
                         return;
                     _this.useRevive();
                     _this.useFast(true);
                 }, 250);
-            };
-            GamePlayScreen.prototype.countChild = function (container) {
-                return 0;
-                if (!container)
-                    return 0;
-                var childrens = 0;
-                for (var c in container.children) {
-                    if (container.children[c].visible) {
-                        childrens++;
-                        if (container.children[c] instanceof createjs.Container)
-                            childrens += this.countChild(container.children[c]);
-                    }
-                }
-                return childrens;
             };
             return GamePlayScreen;
         })(gameui.ScreenState);

@@ -1,8 +1,7 @@
 ﻿module joinjelly.gameplay {
 
     export class GamePlayScreen extends gameui.ScreenState {
-
-
+        
         // gameplay Control
         protected matchNotify: () => void;
         protected itemNotify: () => void;
@@ -28,9 +27,9 @@
         private timeByLevel: number = 20000;
         private timeoutInterval: number;
 
-        private initialInterval: number = 900;
+        private initialInterval: number = 800;
         private finalInterval: number = 200;
-        private easeInterval: number = 0.97;
+        private easeInterval: number = 0.98;
         
         // effect 
         private freezeEffect: createjs.DisplayObject;
@@ -402,8 +401,6 @@
             this.board.endGameEffect();
         }
 
-      
-
         // update current level
         private updateCurrentLevel() {
             var newLevel = this.getLevelByMoves(this.matches);
@@ -416,6 +413,7 @@
             this.level = newLevel;
         }
 
+        // give bonus when level up
         protected levelUpBonus() {
             this.useEvolve();
         }
@@ -496,6 +494,25 @@
             return (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked());
         }
 
+        // verify if can move
+        protected canMove(): boolean {
+            var tiles = this.board.getAllTiles();
+            var tilesCount = this.board.getEmptyTiles().length;
+            var numberCount = {}
+            
+            for (var t in tiles) {
+                var n = tiles[t].getNumber();
+                if (n>0 && !numberCount[n]) numberCount[n] = 0;
+                numberCount[n]++;
+            }
+
+            for(var c in numberCount)
+                if (numberCount[c] > 1) return true;
+
+            return false;
+
+        }
+
         // verifies if a tile can pair another, and make it happens
         protected match(origin: Tile, target: Tile): boolean {
             //check if match is correct
@@ -503,12 +520,8 @@
 
             this.matches++;
 
-      
-
             //calculate new value
             var newValue = target.getNumber() + origin.getNumber();
-
-
 
             //animate the mach
             this.board.match(origin, target);
@@ -549,6 +562,9 @@
 
             this.saveGame();
 
+            // verifies if it can move, make it a little more faster
+            if (!this.canMove()) this.step(0);
+            if (this.board.getEmptyTiles().length > 12) this.step(0);
             return true;
         }
 
@@ -893,8 +909,8 @@
             var sg: SaveGame = {
                 level: this.level,
                 matches: this.matches,
-                score:this.score,
-                tiles:this.board.getAllTilesValues(),
+                score: this.score,
+                tiles: this.board.getAllTilesValues(),
             }
 
             this.userData.saveGame(sg);
@@ -902,7 +918,7 @@
 
         public loadGame() {
             var saveGame = this.userData.loadGame();
-            if (!saveGame || saveGame==null) return;
+            if (!saveGame || saveGame == null) return;
 
             this.board.setTiles(saveGame.tiles);
             this.score = saveGame.score;
@@ -918,41 +934,19 @@
 
         // #endregion
 
-        private log: string = "";
-        public selfPeformanceTest(fast?:boolean) {
+        public selfPeformanceTest(fast?: boolean) {
 
-            if(fast) this.initialInterval = 200;
+            if (fast) this.initialInterval = 200;
 
             setInterval(() => {
-
-                //var value = this.countChild(this.view.getStage()).toString() + "\t" + Math.floor(createjs.Ticker.getMeasuredFPS());
-                //this.log += value + "\n";
-                document.title = (this.initialInterval + " " + this.finalInterval + " " + this.easeInterval    + " "  + this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
-                //
-
+                document.title = (this.initialInterval + " " + this.finalInterval + " " + this.easeInterval + " " + this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
                 if (this.gamestate == GameState.paused) return;
-            
                 this.useRevive();
-
                 this.useFast(true);
-              
+
             }, 250);
         }
 
-        private countChild(container:createjs.Container) :number{
-            return 0;
-            if (!container) return 0;
-            var childrens: number = 0;
-
-            for (var c in container.children) {
-                if (container.children[c].visible) {
-                    childrens++;
-                    if (container.children[c] instanceof createjs.Container)
-                        childrens += this.countChild(<createjs.Container>container.children[c]);
-                }
-            }
-            return childrens;
-        }
     }
 
     enum GameState {
