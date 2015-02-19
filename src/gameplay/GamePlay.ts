@@ -24,7 +24,7 @@
         private boardSize: number = 5;
         private itemProbability: number = 0.005;
 
-        private timeByLevel: number = 2000;
+        private timeByLevel: number = 20000;
         private timeoutInterval: number;
 
         private initialInterval: number = 800;
