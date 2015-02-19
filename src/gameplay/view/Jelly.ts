@@ -2,7 +2,8 @@
 
     export class Jelly extends joinjelly.view.JellyContainer {
 
-        private joinFx: createjs.DisplayObject;
+        private ajoinFx: createjs.DisplayObject;
+        private effect: joinjelly.view.Effect;
         private currentValue: number;
         private eyeImg:createjs.DisplayObject;
         // #region initialization =========================================
@@ -10,11 +11,13 @@
         constructor() {
             super();
             this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("black").rect(-115, -230, 230, 230));
-            this.joinFx = gameui.ImagesManager.getBitmap("fxJoin");
-            this.joinFx.visible = false;
-            this.joinFx.regX = 100;
-            this.joinFx.regY = 100;
-            this.joinFx.y = -115;
+           
+            this.effect = new joinjelly.view.Effect();
+            this.addChild(this.effect);
+            this.effect.scaleX = this.effect.scaleY = 0.7;
+            this.effect.x = 0
+            this.effect.y = -100; 
+         //   this.setChildIndex(this.effect, 0);
         }
 
         private createJelly(value: number) {
@@ -93,23 +96,20 @@
         // #region Animation ==============================================
 
         public playJoinFX() {
-            this.joinFx.visible = true;
-            this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 1, visible: true });
-            this.addChild(this.joinFx);
-            createjs.Tween.get(this.joinFx).to({ scaleX: 1.5, scaleY: 1.5, alpha: 0 }, 200).call(() => {
-                 this.removeChild(this.joinFx);
-                 this.joinFx.visible = false;
-             });
+            this.effect.alpha = 0.5;
+            this.effect.castSimple();
         }
  
         public playLevelUp() {
-            this.joinFx.visible = true;
-            this.joinFx.set({ scaleX: 0, scaleY: 0, alpha: 0.6, visible: true });
-            this.addChild(this.joinFx);
-            createjs.Tween.get(this.joinFx).to({ scaleX: 1.5, scaleY: 1.5, alpha: 0 }, 200).call(() => { 
-                this.joinFx.visible = false; 
-                this.removeChild(this.joinFx);
-            });
+            this.effect.alpha = 0.25;
+            this.effect.castSimple();
+           
+        }
+
+        public playEvolve() {
+            this.effect.alpha = 1;
+            this.effect.castBoth();
+
         }
 
         /// #endregion

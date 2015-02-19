@@ -7,8 +7,11 @@
         private lastScore: number;
         private lastLevel: number;
 
-        private levelIcon: createjs.DisplayObject;
+        public levelIcon: createjs.DisplayObject;
         private levelBar: createjs.DisplayObject;
+
+        private effect: joinjelly.view.Effect;
+
         constructor() {
             super();
             this.addObjects();
@@ -39,14 +42,23 @@
             levelBar.mask.y = 207;
             this.levelBar = levelBar;
             this.addChild(levelBar);
-        
+
+
 
             var levelIcon = gameui.ImagesManager.getBitmap("bonus_icon");
-            levelIcon.x = 1288;
-            levelIcon.y = 90;
+            levelIcon.x = 1288 + 213 / 2
+            levelIcon.y = 90 + 243 / 2
+            levelIcon.regX = 213 / 2;
+            levelIcon.regY = 243 / 2;
+            levelIcon.mouseEnabled = true;
             this.levelIcon = levelIcon;
             this.addChild(levelIcon);
-          
+            levelIcon.addEventListener("click", () => { this.levelUpEffect() });
+            
+            this.effect = new joinjelly.view.Effect();
+            this.addChild(this.effect);
+            this.effect.x = 1288 + 213 / 2
+            this.effect.y = 90 + 243 / 2
 
             //add scores text
             var score = gameui.ImagesManager.getBitmapText(StringResources.menus.score, "debussy")
@@ -76,7 +88,7 @@
 
             var value = 1;
 
-
+            
               //updates percent
             if (percent!=undefined)
                 if (score != this.lastScore) {
@@ -86,25 +98,31 @@
                 }
 
             // if level changes. do some animations
-            if (this.lastLevel != level) {
-
-                //moves the bar
-                createjs.Tween.removeTweens(this.levelBar.mask);
-                createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(() => { this.levelBar.mask.scaleX = 0 })
-
-                //increase number
-                createjs.Tween.removeTweens(this.levelText);
-                createjs.Tween.removeTweens(this.levelIcon);
-                this.levelText.set({ scaleY: 0, scaleX: 4 });
-                this.levelIcon.set({ scaleY: 0, scaleX: 2 });
-                createjs.Tween.get(this.levelText).to({ scaleX: 2, scaleY: 2 }, 1000, createjs.Ease.elasticOut);
-                createjs.Tween.get(this.levelIcon).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
-
-            }
-                       
+            if (this.lastLevel != level)
+                this.levelUpEffect();
+                                   
             this.lastLevel = level;
             this.lastScore = score;
         }
 
+
+        public levelUpEffect() {
+
+            this.effect.castBoth();
+
+            //moves the bar
+            createjs.Tween.removeTweens(this.levelBar.mask);
+            createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(() => { this.levelBar.mask.scaleX = 0 })
+            
+            //increase number
+            createjs.Tween.removeTweens(this.levelText);
+            this.levelText.set({ scaleY: 0, scaleX: 4 });
+            createjs.Tween.get(this.levelText).to({ scaleX: 2, scaleY: 2 }, 1000, createjs.Ease.elasticOut);
+
+            //increase Icon
+            createjs.Tween.removeTweens(this.levelIcon);
+            this.levelIcon.set({ scaleY: 2, scaleX: 0.1 });
+            createjs.Tween.get(this.levelIcon).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
+        }
     }
 } 

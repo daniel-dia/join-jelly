@@ -142,7 +142,9 @@ module joinjelly {
             { id: "GameOverBgPoints", src: "GameOverBgPoints.png" },
 
             { id: "fxJoin", src: "fxJoin.png" },
-
+            { id: "fxEvolve", src: "fxEvolve.png" },
+            { id: "fxPart", src: "fxPart.png" },
+           
             { id: "t0", src: "t0.png" },
             { id: "t1", src: "t1.png" },
             { id: "t2", src: "t2.png" },

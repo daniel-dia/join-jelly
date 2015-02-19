@@ -393,6 +393,7 @@
     <Content Include="scripts\script.js" />
     <TypeScriptCompile Include="src\menus\ScoreWall.ts" />
     <TypeScriptCompile Include="src\ScoreWall.ts" />
+    <TypeScriptCompile Include="src\view\Effect.ts" />
     <TypeScriptCompile Include="_references.ts" />
     <Content Include="web.config" />
   </ItemGroup>

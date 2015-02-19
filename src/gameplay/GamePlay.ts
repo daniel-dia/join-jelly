@@ -24,7 +24,7 @@
         private boardSize: number = 5;
         private itemProbability: number = 0.005;
 
-        private timeByLevel: number = 20000;
+        private timeByLevel: number = 2000;
         private timeoutInterval: number;
 
         private initialInterval: number = 800;
@@ -66,9 +66,9 @@
             this.content.addChild(this.freezeEffect);
             this.normalizeEffect(this.freezeEffect);
 
-            this.evolveEffect = gameui.ImagesManager.getBitmap("fastEffect");
+            this.evolveEffect = gameui.ImagesManager.getBitmap("fxEvolve");
             this.content.addChild(this.evolveEffect);
-            this.evolveEffect.set({regX:384,regY:512});
+            this.evolveEffect.regX=150;
             this.normalizeEffect(this.evolveEffect);
 
             this.reviveEffect = gameui.ImagesManager.getBitmap("reviveEffect");
@@ -159,8 +159,7 @@
             });
 
             this.finishMenu.addEventListener("share", () => {
-                //
-                this.selfPeformanceTest(true)
+                
             });
 
             this.gameHeader.addEventListener("pause", () => {
@@ -827,18 +826,27 @@
             tile.setNumber(tile.getNumber() * 2);
 
             //cast Effect On Tile
-            setTimeout(() => { tile.jelly.playJoinFX(); }, 10);
-            setTimeout(() => { tile.jelly.playJoinFX(); }, 250);
-            setTimeout(() => { tile.jelly.playJoinFX(); }, 500);
-            setTimeout(() => { tile.jelly.playJoinFX(); }, 750);
-            setTimeout(() => {tile.jelly.playJoinFX(); tile.unlock() }, 1000);
+            setTimeout(() => { tile.jelly.playEvolve(); }, 10);
+            setTimeout(() => { tile.jelly.playEvolve(); }, 250);
+            setTimeout(() => { tile.jelly.playEvolve(); tile.unlock() }, 500);
 
             //cast effects 
-            this.evolveEffect.visible = true;
-            this.evolveEffect.set({ alpha: 1, scaleX: 2, scaleY: 2, x:defaultWidth/2, y: defaultHeight/2 });
+            
             var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
+            var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
+ 
+            this.evolveEffect.visible = true;
+            this.evolveEffect.set({ alpha: 1, scaleX: 0.5, x: po.x, y: po.y });
+            
+            var angleDeg = Math.atan2(pt.y - po.y-50, pt.x - po.x) * 180 / Math.PI - 90;
+            var scale = Math.sqrt(Math.pow(pt.y - 50 - po.y, 2) + Math.pow(pt.x - po.x, 2)) / 300;
+            this.evolveEffect.rotation = angleDeg;
+            this.evolveEffect.scaleY = 0;
+            
             createjs.Tween.removeTweens(this.evolveEffect);
-            createjs.Tween.get(this.evolveEffect).to({ alpha: 0.5 ,scaleX:0,scaleY:0,x:pt.x,y:pt.y}, 500,createjs.Ease.quadIn).call(() => {
+            createjs.Tween.get(this.evolveEffect).to({ scaleY: scale }, 200) 
+            
+            createjs.Tween.get(this.evolveEffect).to({ alpha: 0 }, 700,createjs.Ease.quadIn).call(() => {
                 this.evolveEffect.visible = false
             });
             gameui.AudiosManager.playSound("sounditemfast");
