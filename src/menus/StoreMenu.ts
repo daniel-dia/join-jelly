@@ -26,7 +26,7 @@
             })
 
             // add Footer
-            this.gameFooter = new gameplay.view.ItemsFooter([Items.TIME, Items.CLEAN,Items.FAST,Items.EVOLVE,Items.REVIVE ]);
+            this.gameFooter = new gameplay.view.ItemsFooter([Items.TIME, Items.CLEAN,Items.FAST, Items.REVIVE ]);
             this.footer.addChild(this.gameFooter);
             this.gameFooter.mouseEnabled = false;
             this.updateFooter();

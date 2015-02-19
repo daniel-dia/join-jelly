@@ -1919,7 +1919,7 @@ var joinjelly;
                     _this.fillProducts(productList);
                 });
                 // add Footer
-                this.gameFooter = new joinjelly.gameplay.view.ItemsFooter([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.EVOLVE, joinjelly.Items.REVIVE]);
+                this.gameFooter = new joinjelly.gameplay.view.ItemsFooter([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE]);
                 this.footer.addChild(this.gameFooter);
                 this.gameFooter.mouseEnabled = false;
                 this.updateFooter();
