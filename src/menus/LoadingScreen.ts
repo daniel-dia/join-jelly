@@ -97,7 +97,15 @@ module joinjelly {
             { id: "e2048", src: "e2048.png" },
             { id: "e4096", src: "e4096.png" },
             { id: "e8192", src: "e8192.png" },
-            //{ id: "e16384", src: "e16384.png" },
+
+            { id: "eoil", src: "e oil.png" },
+            { id: "joil", src: "j oil.png" },
+
+            { id: "jsquare", src: "j square.png" },
+            { id: "esquare", src: "e square.png" },
+            { id: "j8192b", src: "j8192b.png" },
+            { id: "e8192b", src: "e8192b.png" },
+          
             { id: "footer", src: "footer.png" }, 
             { id: "j-1", src: "j-1.png" },
             { id: "e-1", src: "e-1.png" },

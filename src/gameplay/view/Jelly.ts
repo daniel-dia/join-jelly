@@ -6,6 +6,27 @@
         private effect: joinjelly.view.Effect;
         private currentValue: number;
         private eyeImg:createjs.DisplayObject;
+
+        private static jellies = [
+            "1",
+            "2",
+            "4",
+            "8",
+            "16",
+            "32",
+            "64",
+            "128",
+            "256",
+            "512",
+            "1024",
+            "oil",
+            "2048",
+            "square",
+            "4096",
+            "8192b",
+            "8192",
+        ]
+
         // #region initialization =========================================
 
         constructor() {
@@ -20,8 +41,13 @@
          //   this.setChildIndex(this.effect, 0);
         }
 
+        private getAssetIdByValue(value:number):string {
+            if (value < 0) return value.toString();
+            return Jelly.jellies[Math.log(value) / Math.log(2)];
+        }
+
         private createJelly(value: number) {
-            var img = <createjs.Bitmap>gameui.ImagesManager.getBitmap("j" + value);
+            var img = <createjs.Bitmap>gameui.ImagesManager.getBitmap("j" + this.getAssetIdByValue(value));
 
             //centralize
 
@@ -41,7 +67,7 @@
 
             //add Eyes
             var eye = new createjs.Container();
-            var eyeImg = <createjs.Bitmap>gameui.ImagesManager.getBitmap("e" + value);
+            var eyeImg = <createjs.Bitmap>gameui.ImagesManager.getBitmap("e" + this.getAssetIdByValue(value));
             eyeImg.regY = 20;
             createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
             eye.addChild(eyeImg);

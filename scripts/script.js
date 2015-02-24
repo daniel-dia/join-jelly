@@ -815,6 +815,10 @@ var StringResources = {
         4096: { name: "Phanton4 Jelly", description: "description" },
         8192: { name: "Phanton5 Jelly", description: "description" },
         16384: { name: "Phanton6 Jelly", description: "description" },
+        32768: { name: "Phanton6 Jelly", description: "description" },
+        65536: { name: "Phanton6 Jelly", description: "description" },
+        131072: { name: "Phanton6 Jelly", description: "description" },
+        262144: { name: "Phanton6 Jelly", description: "description" },
     },
     items: {
         clean: "Clean",
@@ -898,6 +902,10 @@ var StringResources_pt = {
         4096: { name: "Geleia Caroço", description: "Mau humorada e \nencaroçada" },
         8192: { name: "Geleia sonica", description: "Uma geleia \nmuito rápida" },
         16384: { name: "Super Sayagele", description: "A geleia mais forte \ndo universo" },
+        32768: { name: "Phanton6 Jelly", description: "description" },
+        65536: { name: "Phanton6 Jelly", description: "description" },
+        131072: { name: "Phanton6 Jelly", description: "description" },
+        262144: { name: "Phanton6 Jelly", description: "description" },
     },
     items: {
         clean: "Limpa",
@@ -985,6 +993,10 @@ var StringResources_es = {
         4096: { name: "Phanton4 Jelly", description: "description" },
         8192: { name: "Phanton5 Jelly", description: "description" },
         16384: { name: "Phanton6 Jelly", description: "description" },
+        32768: { name: "Phanton6 Jelly", description: "description" },
+        65536: { name: "Phanton6 Jelly", description: "description" },
+        131072: { name: "Phanton6 Jelly", description: "description" },
+        262144: { name: "Phanton6 Jelly", description: "description" },
     },
     items: {
         clean: "Clean",
@@ -1249,6 +1261,12 @@ var joinjelly;
                 { id: "e2048", src: "e2048.png" },
                 { id: "e4096", src: "e4096.png" },
                 { id: "e8192", src: "e8192.png" },
+                { id: "eoil", src: "e oil.png" },
+                { id: "joil", src: "j oil.png" },
+                { id: "jsquare", src: "j square.png" },
+                { id: "esquare", src: "e square.png" },
+                { id: "j8192b", src: "j8192b.png" },
+                { id: "e8192b", src: "e8192b.png" },
                 { id: "footer", src: "footer.png" },
                 { id: "j-1", src: "j-1.png" },
                 { id: "e-1", src: "e-1.png" },
@@ -1613,6 +1631,10 @@ var joinjelly;
                         [1 / 4, 3],
                         [3 / 4, 2.9],
                         [2 / 4, 3.8],
+                        [2 / 4, 3.4],
+                        [2 / 4, 3.4],
+                        [2 / 4, 3.4],
+                        [2 / 4, 3.4],
                         [2 / 4, 3.4],
                     ];
                     var jelly = new joinjelly.gameplay.Tile(0, 0, 500);
@@ -2466,8 +2488,13 @@ var joinjelly;
                     this.effect.y = -100;
                     //   this.setChildIndex(this.effect, 0);
                 }
+                Jelly.prototype.getAssetIdByValue = function (value) {
+                    if (value < 0)
+                        return value.toString();
+                    return Jelly.jellies[Math.log(value) / Math.log(2)];
+                };
                 Jelly.prototype.createJelly = function (value) {
-                    var img = gameui.ImagesManager.getBitmap("j" + value);
+                    var img = gameui.ImagesManager.getBitmap("j" + this.getAssetIdByValue(value));
                     //centralize
                     img.regX = img.getBounds().width / 2;
                     img.regY = img.getBounds().height;
@@ -2481,7 +2508,7 @@ var joinjelly;
                 Jelly.prototype.createEyes = function (value) {
                     //add Eyes
                     var eye = new createjs.Container();
-                    var eyeImg = gameui.ImagesManager.getBitmap("e" + value);
+                    var eyeImg = gameui.ImagesManager.getBitmap("e" + this.getAssetIdByValue(value));
                     eyeImg.regY = 20;
                     createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
                     eye.addChild(eyeImg);
@@ -2535,6 +2562,25 @@ var joinjelly;
                     this.effect.alpha = 1;
                     this.effect.castBoth();
                 };
+                Jelly.jellies = [
+                    "1",
+                    "2",
+                    "4",
+                    "8",
+                    "16",
+                    "32",
+                    "64",
+                    "128",
+                    "256",
+                    "512",
+                    "1024",
+                    "oil",
+                    "2048",
+                    "square",
+                    "4096",
+                    "8192b",
+                    "8192",
+                ];
                 return Jelly;
             })(joinjelly.view.JellyContainer);
             view.Jelly = Jelly;
@@ -4749,7 +4795,7 @@ var joinjelly;
         JoinJelly.showAbout = function () {
             this.gameScreen.switchScreen(new joinjelly.About());
         };
-        JoinJelly.maxJelly = 8192;
+        JoinJelly.maxJelly = 8192 * 8;
         return JoinJelly;
     })();
     joinjelly.JoinJelly = JoinJelly;

@@ -48,6 +48,10 @@
         4096: { name: "Phanton4 Jelly", description: "description" },
         8192: { name: "Phanton5 Jelly", description: "description" },
         16384: { name: "Phanton6 Jelly", description: "description" },
+        32768: { name: "Phanton6 Jelly", description: "description" },
+        65536: { name: "Phanton6 Jelly", description: "description" },
+        131072: { name: "Phanton6 Jelly", description: "description" },
+        262144: { name: "Phanton6 Jelly", description: "description" },
     },
     items: {
         clean: "Clean",
@@ -138,6 +142,10 @@ var StringResources_pt = {
         4096: { name: "Geleia Caroço", description: "Mau humorada e \nencaroçada" },
         8192: { name: "Geleia sonica", description: "Uma geleia \nmuito rápida" },
         16384: { name: "Super Sayagele", description: "A geleia mais forte \ndo universo" },
+        32768: { name: "Phanton6 Jelly", description: "description" },
+        65536: { name: "Phanton6 Jelly", description: "description" },
+        131072: { name: "Phanton6 Jelly", description: "description" },
+        262144: { name: "Phanton6 Jelly", description: "description" },
     },
     items: {
         clean: "Limpa",
@@ -232,6 +240,10 @@ var StringResources_es = {
         4096: { name: "Phanton4 Jelly", description: "description" },
         8192: { name: "Phanton5 Jelly", description: "description" },
         16384: { name: "Phanton6 Jelly", description: "description" },
+        32768: { name: "Phanton6 Jelly", description: "description" },
+        65536: { name: "Phanton6 Jelly", description: "description" },
+        131072: { name: "Phanton6 Jelly", description: "description" },
+        262144: { name: "Phanton6 Jelly", description: "description" },
     },
     items: {
         clean: "Clean",
