@@ -66,9 +66,7 @@ class Analytics {
 
     //======================================================================================================================
     private sendEvent(eventId: string, subEventId, value: number, level?: string, x?: number, y?: number) {
-        return;
-          if (typeof $ == "undefined") return;
-
+      
         var game_key = '8c544aeba45e500f2af6e9b1beee996a'
         var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0'
         //var data_api_key = 'd519f8572c1893fb49873fa2345d444c03afa172'
@@ -92,26 +90,52 @@ class Analytics {
 
         var url = 'http://api-eu.gameanalytics.com/1/' + game_key + '/' + category;
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: json_message,
+        //$.ajax({
+        //    type: 'POST',
+        //    url: url,
+        //    data: json_message,
 
-            headers: {
-                "Authorization": header_auth_hex,
-            },
+        //    headers: {
+        //        "Authorization": header_auth_hex,
+        //    },
 
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Content-Type', 'text/plain');
-            },
-            //success: function (data, textStatus, XMLHttpRequest) {
-            //    console.log("GOOD! textStatus: " + textStatus);
+        //    beforeSend: function (xhr) {
+        //        xhr.setRequestHeader('Content-Type', 'text/plain');
+        //    },
+        //    //success: function (data, textStatus, XMLHttpRequest) {
+        //    //    console.log("GOOD! textStatus: " + textStatus);
 
-            //},
-            //error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //    console.log("ERROR ajax call. error: " + errorThrown + ", url: " + url);
+        //    //},
+        //    //error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //    //    console.log("ERROR ajax call. error: " + errorThrown + ", url: " + url);
 
-            //} 
-        });
+        //    //} 
+        //});
+    
+
+        this.postAjax(url, message, header_auth_hex);
+    }
+
+    private postAjax(url: string, data: any, header_auth_hex: string) {
+
+        var xhr: XMLHttpRequest;
+
+        xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true)
+
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Content-Length', JSON.stringify(data).length.toString());
+        xhr.setRequestHeader("Authorization", header_auth_hex);
+        xhr.addEventListener('load', function (e) {
+            alert(xhr.responseText); //or e.responseText
+            //work with our object
+        }, false);
+
+     
+        xhr.send(JSON.stringify(data));
+
+
+
+
     }
 } 

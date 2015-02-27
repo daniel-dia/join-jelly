@@ -139,7 +139,6 @@ var gameui;
         ImagesManager.loadAssets = function (assetsManifest, path, spriteSheets, imagesArray) {
             var _this = this;
             if (path === void 0) { path = ""; }
-            console.log(JSON.stringify(assetsManifest));
             //cleans previous loaded assets.
             this.cleanAssets();
             // initialize objects
@@ -150,24 +149,12 @@ var gameui;
             //creates a preload queue
             this.loader = new createjs.LoadQueue(false);
             //install sound plug-in for sounds format
-            //this.loader.installPlugin(createjs.Sound);
+            this.loader.installPlugin(createjs.Sound);
             //create eventListeners
             this.loader.addEventListener("fileload", function (evt) {
-                console.log("< " + evt.item.type + " " + evt.item.id);
+                console.log(evt.item.type + " " + evt.item.id);
                 if (evt.item.type == "image")
                     _this.imagesArray[evt.item.id] = evt.result;
-                return true;
-            });
-            this.loader.addEventListener("filestart", function (evt) {
-                console.log("> " + evt.item.type + " " + evt.item.id);
-                return true;
-            });
-            this.loader.addEventListener("fileerror", function (evt) {
-                console.log("x " + evt.item.type + " " + evt.item.id);
-                return true;
-            });
-            this.loader.addEventListener("error", function (evt) {
-                console.log("x " + evt.item.type + " " + evt.item.id);
                 return true;
             });
             //loads entire manifest
@@ -1097,9 +1084,6 @@ var Analytics = (function () {
     // }
     //======================================================================================================================
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, level, x, y) {
-        return;
-        if (typeof $ == "undefined")
-            return;
         var game_key = '8c544aeba45e500f2af6e9b1beee996a';
         var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0';
         //var data_api_key = 'd519f8572c1893fb49873fa2345d444c03afa172'
@@ -1118,17 +1102,37 @@ var Analytics = (function () {
         var md5_msg = CryptoJS.MD5(json_message + secret_key);
         var header_auth_hex = CryptoJS.enc.Hex.stringify(md5_msg);
         var url = 'http://api-eu.gameanalytics.com/1/' + game_key + '/' + category;
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: json_message,
-            headers: {
-                "Authorization": header_auth_hex,
-            },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Content-Type', 'text/plain');
-            },
-        });
+        //$.ajax({
+        //    type: 'POST',
+        //    url: url,
+        //    data: json_message,
+        //    headers: {
+        //        "Authorization": header_auth_hex,
+        //    },
+        //    beforeSend: function (xhr) {
+        //        xhr.setRequestHeader('Content-Type', 'text/plain');
+        //    },
+        //    //success: function (data, textStatus, XMLHttpRequest) {
+        //    //    console.log("GOOD! textStatus: " + textStatus);
+        //    //},
+        //    //error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //    //    console.log("ERROR ajax call. error: " + errorThrown + ", url: " + url);
+        //    //} 
+        //});
+        this.postAjax(url, message, header_auth_hex);
+    };
+    Analytics.prototype.postAjax = function (url, data, header_auth_hex) {
+        var xhr;
+        xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Content-Length', JSON.stringify(data).length.toString());
+        xhr.setRequestHeader("Authorization", header_auth_hex);
+        xhr.addEventListener('load', function (e) {
+            alert(xhr.responseText); //or e.responseText
+            //work with our object
+        }, false);
+        xhr.send(JSON.stringify(data));
     };
     return Analytics;
 })();
