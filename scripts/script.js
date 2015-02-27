@@ -152,6 +152,7 @@ var gameui;
             this.loader.installPlugin(createjs.Sound);
             //create eventListeners
             this.loader.addEventListener("fileload", function (evt) {
+                console.log(evt.item.type + " " + evt.item.id);
                 if (evt.item.type == "image")
                     _this.imagesArray[evt.item.id] = evt.result;
                 return true;
@@ -1370,6 +1371,10 @@ var joinjelly;
             ];
             this.initializeImages();
         }
+        Loading.prototype.addPathToManifest = function (manifest, path) {
+            for (var i in manifest)
+                manifest[i].src = path + manifest[i].src;
+        };
         Loading.prototype.initializeImages = function () {
             var _this = this;
             assetscale = 1;
@@ -1378,13 +1383,15 @@ var joinjelly;
             if (window.innerWidth <= 384)
                 assetscale = 0.25;
             if (assetscale == 1)
-                this.imagePath = "/assets/images/";
+                this.imagePath = "assets/images/";
             else
-                this.imagePath = "/assets/images_" + assetscale + "x/";
-            var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest, this.imagePath);
-            //if (WEB) imageQueue.loadManifest(this.audioManifest,true,"/assets/sounds/");
+                this.imagePath = "assets/images_" + assetscale + "x/";
+            this.addPathToManifest(this.imageManifest, this.imagePath);
+            this.addPathToManifest(this.audioManifest, "assets/sounds/");
+            var array = this.imageManifest.concat(this.audioManifest);
+            var imageQueue = gameui.ImagesManager.loadAssets(array);
             //if (!WP) 
-            createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
+            //createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
             //loader text
             var text = new createjs.Text("", "90px Arial", "#FFF");
             text.x = defaultWidth / 2;
@@ -1517,7 +1524,7 @@ var joinjelly;
             itensContainer.y = 400;
             var index = 0;
             for (var j = 1; j <= joinjelly.JoinJelly.maxJelly; j *= 2) {
-                if (true)
+                if (j <= Math.max(1, userData.getLastJelly()))
                     var pi = new joinjelly.menus.view.JellyPediaItem(j, jellyInfos[j].name, jellyInfos[j].description);
                 else
                     var pi = new joinjelly.menus.view.JellyPediaItem(0, "?", "");
@@ -1526,7 +1533,7 @@ var joinjelly;
                 pi.x = 150;
                 index++;
             }
-            this.maxScroll = 6300;
+            this.maxScroll = 7300;
         }
         return Jellypedia;
     })(joinjelly.ScrollablePage);

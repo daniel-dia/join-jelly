@@ -16,21 +16,31 @@ module joinjelly {
             this.initializeImages()
         }
 
+        private addPathToManifest(manifest: Array<any>, path: String) {
+            for (var i in manifest) 
+                manifest[i].src = path + manifest[i].src;
+        }
+
         public initializeImages() {
 
             assetscale = 1;
             if (window.innerWidth <= 1024) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;
              
+            if (assetscale == 1) 
+                this.imagePath = "assets/images/";
+            else 
+                this.imagePath = "assets/images_" + assetscale + "x/";
 
-            if (assetscale == 1) this.imagePath = "/assets/images/";
-            else this.imagePath = "/assets/images_" + assetscale + "x/";
+            this.addPathToManifest(this.imageManifest, this.imagePath);
+            this.addPathToManifest(this.audioManifest, "assets/sounds/");
+            var array = this.imageManifest.concat(this.audioManifest);
 
-            var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest, this.imagePath);
-            //if (WEB) imageQueue.loadManifest(this.audioManifest,true,"/assets/sounds/");
+            var imageQueue = gameui.ImagesManager.loadAssets(array);
+              
             //if (!WP) 
-                createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
-
+            //createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
+            
             //loader text
             var text = new createjs.Text("", "90px Arial", "#FFF");
             text.x = defaultWidth / 2;
