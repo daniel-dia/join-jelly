@@ -56,8 +56,6 @@
             tContainer.addChild(titleObj);
             tContainer.addChild(descriptionObj);
 
-
-
             // add price
             var priceDO = gameui.ImagesManager.getBitmapText(product.FormattedPrice, "debussy");
             priceDO.y = 251;
@@ -65,13 +63,10 @@
             priceDO.regX = priceDO.getBounds().width / 2;
             priceDO.scaleX = priceDO.scaleY = 0.8;
             tContainer.addChild(priceDO);
-
-
+            
             this.addChild(tContainer);
             tContainer.cache(100, 27, 1250, 300);
-
-            //setTimeout(() => { tContainer.uncache() }, 2000);
-
+             
             // add Check
             var unchecked = gameui.ImagesManager.getBitmap("unchecked");
             unchecked.regX = unchecked.getBounds().width / 2;
@@ -104,8 +99,6 @@
             button.x = 1199;
             this.purchaseButton = button;
             this.addChild(button);
-
-            
         }
 
         public setPurchasing() {

@@ -1240,6 +1240,7 @@ var joinjelly;
                 { id: "j2048", src: "j2048.png" },
                 { id: "j4096", src: "j4096.png" },
                 { id: "j8192", src: "j8192.png" },
+                { id: "loadingBall", src: "loadingBall.png" },
                 { id: "Background", src: "Background.jpg" },
                 { id: "hex", src: "hex.png" },
                 { id: "backhome", src: "BackMain.jpg" },
@@ -1857,7 +1858,6 @@ var joinjelly;
                     tContainer.addChild(priceDO);
                     this.addChild(tContainer);
                     tContainer.cache(100, 27, 1250, 300);
-                    //setTimeout(() => { tContainer.uncache() }, 2000);
                     // add Check
                     var unchecked = gameui.ImagesManager.getBitmap("unchecked");
                     unchecked.regX = unchecked.getBounds().width / 2;
@@ -2349,7 +2349,7 @@ var joinjelly;
             __extends(LoadingBall, _super);
             function LoadingBall() {
                 _super.call(this);
-                var b = new createjs.Bitmap("assets/images/loadingBall.png");
+                var b = gameui.ImagesManager.getBitmap("loadingBall");
                 this.addChild(b);
                 b.regX = 94 / 2;
                 b.regY = 94;

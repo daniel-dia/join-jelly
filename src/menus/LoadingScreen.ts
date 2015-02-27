@@ -85,6 +85,7 @@ module joinjelly {
             { id: "j8192", src: "j8192.png" },
 
             //{ id: "j16384", src: "j16384.png" },
+            { id: "loadingBall", src: "loadingBall.png" },
             { id: "Background", src: "Background.jpg" },
             { id: "hex", src: "hex.png" },
             { id: "backhome", src: "BackMain.jpg" },
