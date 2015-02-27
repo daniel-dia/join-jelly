@@ -139,6 +139,7 @@ var gameui;
         ImagesManager.loadAssets = function (assetsManifest, path, spriteSheets, imagesArray) {
             var _this = this;
             if (path === void 0) { path = ""; }
+            console.log(JSON.stringify(assetsManifest));
             //cleans previous loaded assets.
             this.cleanAssets();
             // initialize objects
@@ -149,12 +150,24 @@ var gameui;
             //creates a preload queue
             this.loader = new createjs.LoadQueue(false);
             //install sound plug-in for sounds format
-            this.loader.installPlugin(createjs.Sound);
+            //this.loader.installPlugin(createjs.Sound);
             //create eventListeners
             this.loader.addEventListener("fileload", function (evt) {
-                console.log(evt.item.type + " " + evt.item.id);
+                console.log("< " + evt.item.type + " " + evt.item.id);
                 if (evt.item.type == "image")
                     _this.imagesArray[evt.item.id] = evt.result;
+                return true;
+            });
+            this.loader.addEventListener("filestart", function (evt) {
+                console.log("> " + evt.item.type + " " + evt.item.id);
+                return true;
+            });
+            this.loader.addEventListener("fileerror", function (evt) {
+                console.log("x " + evt.item.type + " " + evt.item.id);
+                return true;
+            });
+            this.loader.addEventListener("error", function (evt) {
+                console.log("x " + evt.item.type + " " + evt.item.id);
                 return true;
             });
             //loads entire manifest
@@ -1345,30 +1358,30 @@ var joinjelly;
                 { id: "popupdark", src: "popupdark.png" },
             ];
             this.audioManifest = [
-                { id: "sound_h1", src: "sound_h1.mp3" },
-                { id: "sound_r1", src: "sound_r1.mp3" },
-                { id: "sound_s1", src: "sound_s1.mp3" },
-                { id: "sound_s2", src: "sound_s2.mp3" },
-                { id: "sound_s3", src: "sound_s3.mp3" },
-                { id: "sound_j1", src: "sound_j1.mp3" },
-                { id: "sound_j2", src: "sound_j2.mp3" },
-                { id: "sound_j3", src: "sound_j3.mp3" },
-                { id: "sound_j4", src: "sound_j4.mp3" },
-                { id: "levelUp", src: "levelUp.mp3" },
-                { id: "sounditemfast", src: "sounditemfast.mp3" },
-                { id: "sounditemclean", src: "sounditemclean.mp3" },
-                { id: "sounditemrevive", src: "sounditemrevive.mp3" },
-                { id: "sounditemtime", src: "sounditemtime.mp3" },
-                { id: "Interface Sound-06", src: "Interface Sound-06.mp3" },
-                { id: "Interface Sound-07", src: "Interface Sound-07.mp3" },
-                { id: "Interface Sound-08", src: "Interface Sound-08.mp3" },
-                { id: "Interface Sound-09", src: "Interface Sound-09.mp3" },
-                { id: "Interface Sound-11", src: "Interface Sound-11.mp3" },
-                { id: "Interface Sound-14", src: "Interface Sound-14.mp3" },
-                { id: "Interface Sound-15", src: "Interface Sound-15.mp3" },
-                { id: "end", src: "end.mp3" },
-                { id: "musicIntro", src: "musicIntro.mp3" },
-                { id: "music1", src: "music1.mp3" },
+                { id: "sound_h1", src: "sound_h1.ogg" },
+                { id: "sound_r1", src: "sound_r1.ogg" },
+                { id: "sound_s1", src: "sound_s1.ogg" },
+                { id: "sound_s2", src: "sound_s2.ogg" },
+                { id: "sound_s3", src: "sound_s3.ogg" },
+                { id: "sound_j1", src: "sound_j1.ogg" },
+                { id: "sound_j2", src: "sound_j2.ogg" },
+                { id: "sound_j3", src: "sound_j3.ogg" },
+                { id: "sound_j4", src: "sound_j4.ogg" },
+                { id: "levelUp", src: "levelUp.ogg" },
+                { id: "sounditemfast", src: "sounditemfast.ogg" },
+                { id: "sounditemclean", src: "sounditemclean.ogg" },
+                { id: "sounditemrevive", src: "sounditemrevive.ogg" },
+                { id: "sounditemtime", src: "sounditemtime.ogg" },
+                { id: "Interface Sound-06", src: "Interface Sound-06.ogg" },
+                { id: "Interface Sound-07", src: "Interface Sound-07.ogg" },
+                { id: "Interface Sound-08", src: "Interface Sound-08.ogg" },
+                { id: "Interface Sound-09", src: "Interface Sound-09.ogg" },
+                { id: "Interface Sound-11", src: "Interface Sound-11.ogg" },
+                { id: "Interface Sound-14", src: "Interface Sound-14.ogg" },
+                { id: "Interface Sound-15", src: "Interface Sound-15.ogg" },
+                { id: "end", src: "end.ogg" },
+                { id: "musicIntro", src: "musicIntro.ogg" },
+                { id: "music1", src: "music1.ogg" },
             ];
             this.initializeImages();
         }
@@ -1387,12 +1400,14 @@ var joinjelly;
                 this.imagePath = "assets/images/";
             else
                 this.imagePath = "assets/images_" + assetscale + "x/";
-            this.addPathToManifest(this.imageManifest, this.imagePath);
-            this.addPathToManifest(this.audioManifest, "assets/sounds/");
-            var array = this.imageManifest.concat(this.audioManifest);
-            var imageQueue = gameui.ImagesManager.loadAssets(array);
+            //this.addPathToManifest(this.imageManifest, this.imagePath);
+            this.addPathToManifest(this.audioManifest, "/assets/sounds/");
+            //var array = this.imageManifest.concat(this.audioManifest);
+            var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest, this.imagePath);
+            //imageQueue.loadManifest(this.audioManifest);
             //if (!WP) 
-            //createjs.Sound.registerManifest(this.audioManifest, "/assets/sounds/");
+            createjs.Sound.alternateExtensions = ["mp3"];
+            createjs.Sound.registerManifest(this.audioManifest, "");
             //loader text
             var text = new createjs.Text("", "90px Arial", "#FFF");
             text.x = defaultWidth / 2;
