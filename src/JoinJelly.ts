@@ -20,7 +20,7 @@ module joinjelly {
             var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt": StringResources = StringResources_pt; break;
-              } 
+            } 
 
             var fps = 60;
             if (window.location.search == "?test") fps = 30;
