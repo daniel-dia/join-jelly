@@ -1540,25 +1540,23 @@ var joinjelly;
                 //adds a single jelly to the container
                 JellyLobby.prototype.dropJelly = function (value, position) {
                     var positions = [
-                        [2 / 4, 0],
-                        [3 / 4, 0.2],
-                        [1 / 4, 0.2],
+                        [3 / 6, 0],
+                        [2 / 6, 0.2],
+                        [4 / 6, 0.2],
+                        [1 / 6, 0.4],
+                        [5 / 6, 0.4],
                         [2 / 5, 1],
                         [3 / 5, 1],
-                        [1 / 5, 1.2],
-                        [4 / 5, 1.2],
-                        [1 / 6, 2.3],
-                        [2 / 6, 2],
-                        [4 / 6, 2],
-                        [5 / 6, 2.3],
-                        [1 / 4, 3],
-                        [3 / 4, 2.9],
-                        [2 / 4, 3.8],
-                        [2 / 4, 3.4],
-                        [2 / 4, 3.4],
-                        [2 / 4, 3.4],
-                        [2 / 4, 3.4],
-                        [2 / 4, 3.4],
+                        [1 / 5, 1.7],
+                        [4 / 5, 1.7],
+                        [1 / 6, 3],
+                        [2 / 6, 2.4],
+                        [4 / 6, 2.4],
+                        [5 / 6, 3],
+                        [2 / 7, 3.3],
+                        [3 / 7, 2.9],
+                        [4 / 7, 3.1],
+                        [5 / 7, 3.3],
                     ];
                     var jelly = new joinjelly.gameplay.Tile(0, 0, 500);
                     // adds jelly
@@ -1567,9 +1565,7 @@ var joinjelly;
                     var m = (position % 2) ? -1 : 1;
                     jelly.x = (positions[position][0] * defaultWidth - defaultWidth / 2) * 1.2;
                     jelly.y = positions[position][1] * -200 + 550;
-                    jelly.scaleX = jelly.scaleY = 1 - positions[position][1] / 5;
-                    if (position == 13)
-                        jelly.scaleX = jelly.scaleY = 1.1;
+                    jelly.scaleX = jelly.scaleY = 0.9 - positions[position][1] / 7;
                     //play JellySound
                     gameui.AudiosManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
