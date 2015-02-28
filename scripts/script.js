@@ -1055,34 +1055,8 @@ var Analytics = (function () {
         return this.sessionId;
     };
     Analytics.prototype.getBuild = function () {
-        return "alpha1";
+        return "alpha2";
     };
-    Analytics.prototype.logGameStart = function () {
-        this.sendEvent("Game", "start", 1);
-    };
-    Analytics.prototype.logEndGame = function (moves, score, level, jelly) {
-        this.sendEvent("LevelEnd", "level", level, moves.toString());
-        this.sendEvent("LevelEnd", "jelly", jelly, moves.toString());
-        this.sendEvent("LevelEnd", "score", score, moves.toString());
-        this.sendEvent("LevelEnd", "move", moves);
-    };
-    Analytics.prototype.logMove = function (moves, score, level, freeSpaces) {
-        this.sendEvent("level", "freeSpaces", freeSpaces, moves.toString());
-        this.sendEvent("level", "score", score, moves.toString());
-        this.sendEvent("level", "level", level, moves.toString());
-        this.sendEvent("level", "move", moves);
-    };
-    // public logUsedItem(itemId: string, levelId: string) {
-    //     this.sendEvent("item", itemId, 1, levelId);
-    // }
-    // public loglevelTime(levelId: string, time: number, final: string) {
-    //     this.sendEvent("time", final, time / 1000, levelId);
-    // }
-    //
-    // public logBonus(bonusid: string, items: number) {
-    //     this.sendEvent("bonus", bonusid.toString(), items, bonusid);
-    // }
-    //======================================================================================================================
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, level, x, y) {
         var game_key = '8c544aeba45e500f2af6e9b1beee996a';
         var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0';
@@ -1094,7 +1068,7 @@ var Analytics = (function () {
             "build": this.getBuild(),
             "event_id": eventId + ":" + subEventId,
             "value": value,
-            "area": level,
+            "area": this.normalizeNumber(level),
             "x": x,
             "y": y,
         };
@@ -1102,37 +1076,41 @@ var Analytics = (function () {
         var md5_msg = CryptoJS.MD5(json_message + secret_key);
         var header_auth_hex = CryptoJS.enc.Hex.stringify(md5_msg);
         var url = 'http://api-eu.gameanalytics.com/1/' + game_key + '/' + category;
-        //$.ajax({
-        //    type: 'POST',
-        //    url: url,
-        //    data: json_message,
-        //    headers: {
-        //        "Authorization": header_auth_hex,
-        //    },
-        //    beforeSend: function (xhr) {
-        //        xhr.setRequestHeader('Content-Type', 'text/plain');
-        //    },
-        //    //success: function (data, textStatus, XMLHttpRequest) {
-        //    //    console.log("GOOD! textStatus: " + textStatus);
-        //    //},
-        //    //error: function (XMLHttpRequest, textStatus, errorThrown) {
-        //    //    console.log("ERROR ajax call. error: " + errorThrown + ", url: " + url);
-        //    //} 
-        //});
         this.postAjax(url, message, header_auth_hex);
     };
     Analytics.prototype.postAjax = function (url, data, header_auth_hex) {
-        var xhr;
-        xhr = new XMLHttpRequest();
+        var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Content-Type', 'text/plain');
         xhr.setRequestHeader('Content-Length', JSON.stringify(data).length.toString());
         xhr.setRequestHeader("Authorization", header_auth_hex);
-        xhr.addEventListener('load', function (e) {
-            alert(xhr.responseText); //or e.responseText
-            //work with our object
-        }, false);
+        //xhr.addEventListener('load', function (e) {}, false);
         xhr.send(JSON.stringify(data));
+    };
+    Analytics.prototype.normalizeNumber = function (value) {
+        if (value === void 0) { value = 0; }
+        var s = "000000000" + value.toString();
+        return s.substr(s.length - 3);
+    };
+    Analytics.prototype.log2 = function (value) {
+        return Math.log(value) / Math.log(2);
+    };
+    //# region log methods ================================================================================================
+    Analytics.prototype.logGameStart = function () {
+        this.sendEvent("GameStart", "start", 1);
+    };
+    Analytics.prototype.logUsedItem = function (itemId, level) {
+        this.sendEvent("UseItem", itemId, 1, level);
+    };
+    Analytics.prototype.logEndGame = function (level, lastJelly, moves, time) {
+        this.sendEvent("GameEnd", "Time", time, level);
+        this.sendEvent("GameEnd", "Level", level, level);
+        this.sendEvent("GameEnd", "Moves", moves, level);
+        this.sendEvent("GameEnd", "LastJelly", this.log2(lastJelly), level);
+    };
+    Analytics.prototype.logNewJelly = function (jellyId, level, time) {
+        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), time, level);
+        this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), level, level);
     };
     return Analytics;
 })();
@@ -3707,6 +3685,8 @@ var joinjelly;
                 //this.selfPeformanceTest()
                 this.level = 1;
                 this.matches = 0;
+                this.time = Date.now();
+                this.highJelly = 0;
                 // board initialization
                 this.board.cleanBoard();
                 this.board.unlock();
@@ -3808,7 +3788,7 @@ var joinjelly;
                 }, 1200);
                 this.finishMenu.setValues(score, highScore, highJelly, message);
                 // log event
-                joinjelly.JoinJelly.analytics.logEndGame(this.matches, this.score, this.level, highJelly);
+                joinjelly.JoinJelly.analytics.logEndGame(this.level, highJelly, this.matches, Date.now() - this.time);
                 // play end soud
                 gameui.AudiosManager.playSound("end");
                 // play end game effect
@@ -3924,6 +3904,10 @@ var joinjelly;
                 this.userData.setScore(this.score);
                 this.userData.setLastJelly(newValue);
                 this.updateInterfaceInfos();
+                // log HighJelly Event
+                if (this.highJelly < newValue)
+                    joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time);
+                this.highJelly = newValue;
                 // notify match
                 if (this.matchNotify)
                     this.matchNotify();
@@ -3932,8 +3916,6 @@ var joinjelly;
                     this.winGame();
                 else
                     target.setNumber(newValue);
-                // log event
-                joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
                 // update currentLevel
                 this.updateCurrentLevel();
                 this.saveGame();

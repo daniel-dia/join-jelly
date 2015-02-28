@@ -7,6 +7,8 @@
         protected itemNotify: () => void;
         protected gamestate: GameState;
         protected level: number;
+        protected time: number;
+        private highJelly: number;
         private score: number;
         private matches: number = 0;
         private userData: UserData;
@@ -261,6 +263,8 @@
 
             this.level = 1;
             this.matches = 0;
+            this.time = Date.now();
+            this.highJelly = 0;
 
             // board initialization
             this.board.cleanBoard();
@@ -391,7 +395,7 @@
             this.finishMenu.setValues(score, highScore, highJelly, message);
 
             // log event
-            JoinJelly.analytics.logEndGame(this.matches, this.score, this.level, highJelly)
+            JoinJelly.analytics.logEndGame(this.level, highJelly,this.matches, Date.now() -  this.time)
 
             // play end soud
             gameui.AudiosManager.playSound("end");
@@ -540,22 +544,23 @@
             // update score
             this.userData.setScore(this.score);
             this.userData.setLastJelly(newValue);
-
             this.updateInterfaceInfos();
+
+            // log HighJelly Event
+            if(this.highJelly < newValue)
+                joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time)
+
+            this.highJelly = newValue;
 
             // notify match
             if (this.matchNotify) this.matchNotify()
-
-
+            
             // verify winGame
             if (newValue > JoinJelly.maxJelly)
                 this.winGame();
             else
                 target.setNumber(newValue);
                 
-            // log event
-            joinjelly.JoinJelly.analytics.logMove(this.matches, this.score, this.level, this.board.getEmptyTiles().length);
-            
             // update currentLevel
             this.updateCurrentLevel()
 
