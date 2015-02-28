@@ -4724,7 +4724,7 @@ var joinjelly;
         JoinJelly.showAbout = function () {
             this.gameScreen.switchScreen(new joinjelly.About());
         };
-        JoinJelly.maxJelly = 8192 * 8;
+        JoinJelly.maxJelly = 65536;
         return JoinJelly;
     })();
     joinjelly.JoinJelly = JoinJelly;
