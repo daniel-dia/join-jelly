@@ -92,14 +92,22 @@ class Analytics {
     }
 
     public logEndGame(level: number, lastJelly: number, moves: number, time: number) {
-        this.sendEvent("GameEnd", "Time", time, level)
+        this.sendEvent("GameEnd", "Time", parseInt((time / 1000).toFixed()), level)
         this.sendEvent("GameEnd", "Level", level, level)
         this.sendEvent("GameEnd", "Moves", moves, level)
         this.sendEvent("GameEnd", "LastJelly", this.log2(lastJelly), level)
     }
 
+    public logWinGame(level: number, lastJelly: number, moves: number, time: number) {
+        this.sendEvent("GameWin", "Time", parseInt((time / 1000).toFixed()), level)
+        this.sendEvent("GameWin", "Level", level, level)
+        this.sendEvent("GameWin", "Moves", moves, level)
+        this.sendEvent("GameWin", "LastJelly", this.log2(lastJelly), level)
+    }
+
+
     public logNewJelly(jellyId: number, level: number, time: number) {
-        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), time, level);
+        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), parseInt((time / 1000).toFixed()) , level);
         this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), level, level);
     }
 

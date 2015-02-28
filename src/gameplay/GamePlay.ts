@@ -395,7 +395,10 @@
             this.finishMenu.setValues(score, highScore, highJelly, message);
 
             // log event
-            JoinJelly.analytics.logEndGame(this.level, highJelly,this.matches, Date.now() -  this.time)
+            if (win)
+                JoinJelly.analytics.logWinGame(this.level, highJelly, this.matches, Date.now() - this.time);
+            else
+                JoinJelly.analytics.logEndGame(this.level, highJelly, this.matches, Date.now() - this.time);
 
             // play end soud
             gameui.AudiosManager.playSound("end");

@@ -1103,13 +1103,19 @@ var Analytics = (function () {
         this.sendEvent("UseItem", itemId, 1, level);
     };
     Analytics.prototype.logEndGame = function (level, lastJelly, moves, time) {
-        this.sendEvent("GameEnd", "Time", time, level);
+        this.sendEvent("GameEnd", "Time", parseInt((time / 1000).toFixed()), level);
         this.sendEvent("GameEnd", "Level", level, level);
         this.sendEvent("GameEnd", "Moves", moves, level);
         this.sendEvent("GameEnd", "LastJelly", this.log2(lastJelly), level);
     };
+    Analytics.prototype.logWinGame = function (level, lastJelly, moves, time) {
+        this.sendEvent("GameWin", "Time", parseInt((time / 1000).toFixed()), level);
+        this.sendEvent("GameWin", "Level", level, level);
+        this.sendEvent("GameWin", "Moves", moves, level);
+        this.sendEvent("GameWin", "LastJelly", this.log2(lastJelly), level);
+    };
     Analytics.prototype.logNewJelly = function (jellyId, level, time) {
-        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), time, level);
+        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), parseInt((time / 1000).toFixed()), level);
         this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), level, level);
     };
     return Analytics;
@@ -3788,7 +3794,10 @@ var joinjelly;
                 }, 1200);
                 this.finishMenu.setValues(score, highScore, highJelly, message);
                 // log event
-                joinjelly.JoinJelly.analytics.logEndGame(this.level, highJelly, this.matches, Date.now() - this.time);
+                if (win)
+                    joinjelly.JoinJelly.analytics.logWinGame(this.level, highJelly, this.matches, Date.now() - this.time);
+                else
+                    joinjelly.JoinJelly.analytics.logEndGame(this.level, highJelly, this.matches, Date.now() - this.time);
                 // play end soud
                 gameui.AudiosManager.playSound("end");
                 // play end game effect
