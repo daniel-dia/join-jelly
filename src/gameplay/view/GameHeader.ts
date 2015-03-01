@@ -9,6 +9,7 @@
 
         public levelIcon: createjs.DisplayObject;
         private levelBar: createjs.DisplayObject;
+        private levelTip: createjs.DisplayObject;
 
         private effect: joinjelly.view.Effect;
 
@@ -34,15 +35,24 @@
             levelBarBorder.x = 309  ;
             levelBarBorder.y = 122;
 
+    
+            
             var levelBar = gameui.ImagesManager.getBitmap("bonus_bar");
             levelBar.x = 372;
             levelBar.y = 207;
             levelBar.mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 939, 57));
-            levelBar.mask.x=372;
+            levelBar.mask.x = 372;
             levelBar.mask.y = 207;
             this.levelBar = levelBar;
-            this.addChild(levelBar);
-
+            this.addChild(levelBar); 
+            
+            var levelTip = gameui.ImagesManager.getBitmap("powerTip");
+            levelTip.x = 372;
+            levelTip.y = 207;
+            levelTip.regX = 67 / 2;
+            levelTip.regY = 77 / 2;
+            this.levelTip = levelTip;
+            this.addChild(levelTip);
 
 
             var levelIcon = gameui.ImagesManager.getBitmap("bonus_icon");
@@ -88,13 +98,18 @@
 
             var value = 1;
 
-            
+           
               //updates percent
             if (percent!=undefined)
                 if (score != this.lastScore) {
                     value = percent / 100;
                     createjs.Tween.removeTweens(this.levelBar.mask);
-                    createjs.Tween.get(this.levelBar.mask).to({ scaleX:value},1000,createjs.Ease.elasticOut)
+                    createjs.Tween.get(this.levelBar.mask).to({ scaleX: value }, 1000, createjs.Ease.elasticOut)
+
+                    createjs.Tween.removeTweens(this.levelTip);
+                    createjs.Tween.get(this.levelTip).to({ x: value * 940 + this.levelBar.x, y: this.levelBar.y +24 }, 1000, createjs.Ease.elasticOut)
+                    createjs.Tween.get(this.levelTip).to({ scaleX: 2, scaleY: 2 }).to({ scaleX:1, scaleY:1 }, 1000, createjs.Ease.elasticOut)
+
                 }
 
             // if level changes. do some animations

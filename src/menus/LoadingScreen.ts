@@ -90,6 +90,7 @@ module joinjelly {
             { id: "Background", src: "Background.jpg" },
             { id: "hex", src: "hex.png" },
             { id: "backhome", src: "BackMain.jpg" },
+            { id: "powerTip", src: "powerTip.png" },
             { id: "bonus_bar", src: "bonus_bar.png" },
             { id: "bonus_border", src: "bonus_border.png" },
             { id: "bonus_icon", src: "bonus_icon.png" },
