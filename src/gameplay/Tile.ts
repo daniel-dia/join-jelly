@@ -29,7 +29,7 @@
             this.jelly = new view.Jelly();
             this.jelly.x = tileSize / 2;
             this.jelly.y = tileSize;
-            this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (220);
+            this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (310);
             this.addChild(this.jelly);
 
             //creates hitArea for the tile

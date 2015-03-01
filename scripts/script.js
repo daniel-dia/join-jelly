@@ -1688,7 +1688,6 @@ var joinjelly;
                     j.setNumber(value);
                     j.x = 332 / 2;
                     j.y = 332;
-                    j.scaleX = j.scaleY = 1.4;
                     this.addChild(j);
                 }
                 return JellyPediaItem;
@@ -3356,7 +3355,7 @@ var joinjelly;
                 this.jelly = new gameplay.view.Jelly();
                 this.jelly.x = tileSize / 2;
                 this.jelly.y = tileSize;
-                this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (220);
+                this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (310);
                 this.addChild(this.jelly);
                 //creates hitArea for the tile
                 this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("000").drawRect(0, 0, tileSize, tileSize));

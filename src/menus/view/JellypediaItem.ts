@@ -27,7 +27,6 @@
             j.setNumber(value);
             j.x = 332 / 2;
             j.y = 332;
-            j.scaleX = j.scaleY = 1.4;
             this.addChild(j);
         }
     }
