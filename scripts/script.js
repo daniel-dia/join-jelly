@@ -2863,7 +2863,7 @@ var joinjelly;
                     }, 30);
                     this.highScoreText.text = StringResources.menus.highScore + ": " + best.toString();
                     this.jelly.setNumber(jelly);
-                    this.jellyText.text = StringResources.jellys[best].name;
+                    this.jellyText.text = StringResources.jellys[jelly].name;
                     if (this.jellyText.getBounds())
                         this.jellyText.regX = this.jellyText.getBounds().width / 2;
                     this.highScoreText.regX = this.highScoreText.getBounds().width;
@@ -4729,6 +4729,103 @@ window.onload = function () {
 };
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
+//module joinjelly.menus {
+//    export class ScoreWall extends ScrollablePage {
+var joinjelly;
+(function (joinjelly) {
+    var ScoreWall = (function () {
+        function ScoreWall() {
+        }
+        ScoreWall.init = function () {
+            this.deviceId = localStorage.getItem("deviceId");
+            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
+            this.table = this.client.getTable("ScoreWall");
+        };
+        // get all scores wall
+        ScoreWall.getScoreNames = function (callback) {
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
+                callback(queryResults);
+            });
+        };
+        // saves scores to the cloud
+        ScoreWall.setScore = function (name, score) {
+            var _this = this;
+            // if device id is already saved
+            if (this.deviceId)
+                //update the current id
+                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+            else
+                // insert a new id and get the device ID from server
+                this.table.insert({ name: name, score: score }).then(function (result) {
+                    if (result[0] && result[0].id) {
+                        //get id from server
+                        _this.deviceId = result[0].id;
+                        //save local storage
+                        localStorage.setItem("deviceId", _this.deviceId);
+                    }
+                });
+        };
+        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
+        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
+        ScoreWall.gameId = "joinjelly";
+        return ScoreWall;
+    })();
+    joinjelly.ScoreWall = ScoreWall;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var view;
+    (function (view) {
+        var Effect = (function (_super) {
+            __extends(Effect, _super);
+            function Effect() {
+                _super.apply(this, arguments);
+            }
+            Effect.prototype.castSimple = function () {
+                var _this = this;
+                var fxs = gameui.ImagesManager.getBitmap("fxJoin");
+                fxs.regX = fxs.image.width / 2;
+                fxs.regY = fxs.image.height / 2;
+                this.addChild(fxs);
+                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () {
+                    _this.removeChild(fxs);
+                });
+            };
+            Effect.prototype.castPart = function () {
+                var _this = this;
+                var fxp = gameui.ImagesManager.getBitmap("fxPart");
+                fxp.regX = fxp.image.width / 2;
+                fxp.regY = fxp.image.height / 2;
+                fxp.scaleX = fxp.scaleY = 0.2;
+                fxp.alpha = 2;
+                this.addChild(fxp);
+                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
+                    _this.removeChild(fxp);
+                });
+                this.castPartS();
+            };
+            Effect.prototype.castPartS = function () {
+                var _this = this;
+                var fxp = gameui.ImagesManager.getBitmap("fxPart");
+                fxp.regX = fxp.image.width / 2;
+                fxp.regY = fxp.image.height / 2;
+                fxp.scaleX = fxp.scaleY = 0.4;
+                fxp.rotation = 360 / 16;
+                fxp.alpha = 2;
+                this.addChild(fxp);
+                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
+                    _this.removeChild(fxp);
+                });
+            };
+            Effect.prototype.castBoth = function () {
+                this.castPart();
+                this.castSimple();
+            };
+            return Effect;
+        })(createjs.Container);
+        view.Effect = Effect;
+    })(view = joinjelly.view || (joinjelly.view = {}));
+})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
@@ -4837,102 +4934,5 @@ var joinjelly;
             view.ItemsFooter = ItemsFooter;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-//module joinjelly.menus {
-//    export class ScoreWall extends ScrollablePage {
-var joinjelly;
-(function (joinjelly) {
-    var ScoreWall = (function () {
-        function ScoreWall() {
-        }
-        ScoreWall.init = function () {
-            this.deviceId = localStorage.getItem("deviceId");
-            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
-            this.table = this.client.getTable("ScoreWall");
-        };
-        // get all scores wall
-        ScoreWall.getScoreNames = function (callback) {
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
-                callback(queryResults);
-            });
-        };
-        // saves scores to the cloud
-        ScoreWall.setScore = function (name, score) {
-            var _this = this;
-            // if device id is already saved
-            if (this.deviceId)
-                //update the current id
-                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
-            else
-                // insert a new id and get the device ID from server
-                this.table.insert({ name: name, score: score }).then(function (result) {
-                    if (result[0] && result[0].id) {
-                        //get id from server
-                        _this.deviceId = result[0].id;
-                        //save local storage
-                        localStorage.setItem("deviceId", _this.deviceId);
-                    }
-                });
-        };
-        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
-        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
-        ScoreWall.gameId = "joinjelly";
-        return ScoreWall;
-    })();
-    joinjelly.ScoreWall = ScoreWall;
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var view;
-    (function (view) {
-        var Effect = (function (_super) {
-            __extends(Effect, _super);
-            function Effect() {
-                _super.apply(this, arguments);
-            }
-            Effect.prototype.castSimple = function () {
-                var _this = this;
-                var fxs = gameui.ImagesManager.getBitmap("fxJoin");
-                fxs.regX = fxs.image.width / 2;
-                fxs.regY = fxs.image.height / 2;
-                this.addChild(fxs);
-                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () {
-                    _this.removeChild(fxs);
-                });
-            };
-            Effect.prototype.castPart = function () {
-                var _this = this;
-                var fxp = gameui.ImagesManager.getBitmap("fxPart");
-                fxp.regX = fxp.image.width / 2;
-                fxp.regY = fxp.image.height / 2;
-                fxp.scaleX = fxp.scaleY = 0.2;
-                fxp.alpha = 2;
-                this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
-                this.castPartS();
-            };
-            Effect.prototype.castPartS = function () {
-                var _this = this;
-                var fxp = gameui.ImagesManager.getBitmap("fxPart");
-                fxp.regX = fxp.image.width / 2;
-                fxp.regY = fxp.image.height / 2;
-                fxp.scaleX = fxp.scaleY = 0.4;
-                fxp.rotation = 360 / 16;
-                fxp.alpha = 2;
-                this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
-            };
-            Effect.prototype.castBoth = function () {
-                this.castPart();
-                this.castSimple();
-            };
-            return Effect;
-        })(createjs.Container);
-        view.Effect = Effect;
-    })(view = joinjelly.view || (joinjelly.view = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map

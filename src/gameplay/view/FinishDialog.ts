@@ -135,7 +135,7 @@
             this.highScoreText.text = StringResources.menus.highScore +": " + best.toString();
             this.jelly.setNumber(jelly);
 
-            this.jellyText.text = StringResources.jellys[best].name;
+            this.jellyText.text = StringResources.jellys[jelly].name;
             if (this.jellyText.getBounds())
                 this.jellyText.regX = this.jellyText.getBounds().width / 2;
             this.highScoreText.regX = this.highScoreText.getBounds().width;
