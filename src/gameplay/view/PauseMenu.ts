@@ -36,19 +36,19 @@
             restart.set({ x: 1190, y: 1570 });
             this.addChild(restart);
 
-            //add showBoard button
-            var test = new gameui.ImageButton("BtRestart", (() => {
-                this.dispatchEvent("test")
-            }));
-            test.set({ x: 1190, y: 1770 });
-            this.addChild(test);
+            ////add showBoard button
+            //var test = new gameui.ImageButton("BtRestart", (() => {
+            //    this.dispatchEvent("test")
+            //}));
+            //test.set({ x: 1190, y: 1770 });
+            //this.addChild(test);
 
-            //add showBoard button
-            var test = new gameui.ImageButton("BtRestart", (() => {
-                this.dispatchEvent("testFast")
-            }));
-            test.set({ x: 1190, y: 1970 });
-            this.addChild(test);
+            ////add showBoard button
+            //var test = new gameui.ImageButton("BtRestart", (() => {
+            //    this.dispatchEvent("testFast")
+            //}));
+            //test.set({ x: 1190, y: 1970 });
+            //this.addChild(test);
 
           
         }
