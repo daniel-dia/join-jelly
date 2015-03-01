@@ -4069,7 +4069,7 @@ var joinjelly;
                 this.evolveEffect.scaleY = 0;
                 createjs.Tween.removeTweens(this.evolveEffect);
                 createjs.Tween.get(this.evolveEffect).to({ scaleY: scale }, 200);
-                createjs.Tween.get(this.evolveEffect).to({ alpha: 0 }, 700, createjs.Ease.quadIn).call(function () {
+                createjs.Tween.get(this.evolveEffect).to({ alpha: 0 }, 1200, createjs.Ease.quadIn).call(function () {
                     _this.evolveEffect.visible = false;
                 });
                 gameui.AudiosManager.playSound("sounditemfast");
