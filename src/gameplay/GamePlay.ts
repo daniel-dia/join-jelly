@@ -837,7 +837,8 @@
             setTimeout(() => { tile.jelly.playEvolve(); }, 10);
             setTimeout(() => { tile.jelly.playLevelUp(); }, 330);
             setTimeout(() => { tile.jelly.playEvolve(); }, 660);
-            setTimeout(() => { tile.unlock(); tile.jelly.playLevelUp();}, 1000);
+            setTimeout(() => { tile.unlock(); tile.jelly.playLevelUp(); }, 1000);
+            setTimeout(() => { tile.jelly.playLevelUp(); }, 1100);
 
             //cast effects 
             

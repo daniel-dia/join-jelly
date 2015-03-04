@@ -2683,18 +2683,18 @@ var joinjelly;
                     }));
                     restart.set({ x: 1190, y: 1570 });
                     this.addChild(restart);
-                    //add showBoard button
-                    var test = new gameui.ImageButton("BtRestart", (function () {
-                        _this.dispatchEvent("test");
-                    }));
-                    test.set({ x: 1190, y: 1770 });
-                    this.addChild(test);
-                    //add showBoard button
-                    var test = new gameui.ImageButton("BtRestart", (function () {
-                        _this.dispatchEvent("testFast");
-                    }));
-                    test.set({ x: 1190, y: 1970 });
-                    this.addChild(test);
+                    ////add showBoard button
+                    //var test = new gameui.ImageButton("BtRestart", (() => {
+                    //    this.dispatchEvent("test")
+                    //}));
+                    //test.set({ x: 1190, y: 1770 });
+                    //this.addChild(test);
+                    ////add showBoard button
+                    //var test = new gameui.ImageButton("BtRestart", (() => {
+                    //    this.dispatchEvent("testFast")
+                    //}));
+                    //test.set({ x: 1190, y: 1970 });
+                    //this.addChild(test);
                 };
                 return PauseMenu;
             })(joinjelly.menus.view.FlyOutMenu);
@@ -4072,6 +4072,9 @@ var joinjelly;
                     tile.unlock();
                     tile.jelly.playLevelUp();
                 }, 1000);
+                setTimeout(function () {
+                    tile.jelly.playLevelUp();
+                }, 1100);
                 //cast effects 
                 var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
                 var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
