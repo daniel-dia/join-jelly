@@ -826,8 +826,6 @@
                 return false;
 
             // select random elegible tile
-            
-            
             var selected = Math.floor(Math.random() * selectedTiles.length);
             var tile = selectedTiles[selected];
             tile.lock();
