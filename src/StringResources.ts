@@ -12,7 +12,7 @@
         pause: "paused",
         sound: "Sound",
         menu: "menu",
-                
+        leaderboards:"Leaderboards",
         reset: "Reset All Data",
         resetWarning: "Are you sure. All you progress will be lost",
         about: "About",
@@ -104,7 +104,7 @@ var StringResources_pt = {
         pause: "pausa",
         sound: "Sons",
         menu: "Menu",
-
+        leaderboards: "Placar",
         reset: "Apagar tudo",
         resetWarning: "Você tem certeza? tudo que voce consquistou será perdido.",
         about: "Sobre",

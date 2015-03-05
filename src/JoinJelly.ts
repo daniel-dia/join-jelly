@@ -79,6 +79,12 @@ module joinjelly {
             this.gameScreen.switchScreen(new menus.StoreMenu(previousScreen), null, transition);
         }
 
+        public static showLeaderboards(previousScreen: gameui.ScreenState) {
+            var transition;
+            if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "right", time: 500 };
+            this.gameScreen.switchScreen(new menus.LeaderBoards(previousScreen), null, transition);
+        }
+
         public static showPedia() {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };

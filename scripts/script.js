@@ -788,6 +788,7 @@ var StringResources = {
         pause: "paused",
         sound: "Sound",
         menu: "menu",
+        leaderboards: "Leaderboards",
         reset: "Reset All Data",
         resetWarning: "Are you sure. All you progress will be lost",
         about: "About",
@@ -873,6 +874,7 @@ var StringResources_pt = {
         pause: "pausa",
         sound: "Sons",
         menu: "Menu",
+        leaderboards: "Placar",
         reset: "Apagar tudo",
         resetWarning: "Você tem certeza? tudo que voce consquistou será perdido.",
         about: "Sobre",
@@ -4750,6 +4752,12 @@ var joinjelly;
                 transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.menus.StoreMenu(previousScreen), null, transition);
         };
+        JoinJelly.showLeaderboards = function (previousScreen) {
+            var transition;
+            if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
+                transition = { type: "right", time: 500 };
+            this.gameScreen.switchScreen(new joinjelly.menus.LeaderBoards(previousScreen), null, transition);
+        };
         JoinJelly.showPedia = function () {
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
@@ -4898,6 +4906,25 @@ var joinjelly;
             view.ItemsFooter = ItemsFooter;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var LeaderBoards = (function (_super) {
+            __extends(LeaderBoards, _super);
+            function LeaderBoards() {
+                _super.call(this, StringResources.menus.leaderboards);
+                this.maxScroll = 1700;
+            }
+            LeaderBoards.prototype.fillLeaderBoards = function () {
+            };
+            LeaderBoards.prototype.loadLeaderBoards = function (callback) {
+            };
+            return LeaderBoards;
+        })(joinjelly.ScrollablePage);
+        menus.LeaderBoards = LeaderBoards;
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 //module joinjelly.menus {
 //    export class ScoreWall extends ScrollablePage {
