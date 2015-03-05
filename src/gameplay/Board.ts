@@ -58,7 +58,7 @@
             bg.regX = 304 / 2;
             bg.regY = -40
             bg.alpha = 0.15;
-            bg.set(this.getTilePositionByCoords(x, y, tileSize));
+            bg.set(this.getTilePositionByCoords(x, y, tileSize,false));
 
 
             var tileDO = new Tile(x, y, tileSize);
@@ -186,12 +186,12 @@
         }
 
         // get a new position for a tile based on its index
-        private getTilePositionByCoords(x: number, y: number, tileSize: number): point {
+        private getTilePositionByCoords(x: number, y: number, tileSize: number, random: boolean= true): point {
 
             var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
             return {
-                x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 10,
-                y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 10 + hexaOffset - tileSize / 5
+                x: (x + 1 / 2) * tileSize + random * (Math.random() - 0.5) * tileSize / 10,
+                y: (y + 1 / 2) * tileSize + random * (Math.random() - 0.5) * tileSize / 10 + hexaOffset - tileSize / 5
             }
         }
         

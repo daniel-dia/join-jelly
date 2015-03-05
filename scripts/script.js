@@ -3037,7 +3037,7 @@ var joinjelly;
                 bg.regX = 304 / 2;
                 bg.regY = -40;
                 bg.alpha = 0.15;
-                bg.set(this.getTilePositionByCoords(x, y, tileSize));
+                bg.set(this.getTilePositionByCoords(x, y, tileSize, false));
                 var tileDO = new gameplay.Tile(x, y, tileSize);
                 // add a jelly on tile
                 this.tiles.push(tileDO);
@@ -3136,11 +3136,12 @@ var joinjelly;
                 return this.getTileById(id);
             };
             // get a new position for a tile based on its index
-            Board.prototype.getTilePositionByCoords = function (x, y, tileSize) {
+            Board.prototype.getTilePositionByCoords = function (x, y, tileSize, random) {
+                if (random === void 0) { random = true; }
                 var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
                 return {
-                    x: (x + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 10,
-                    y: (y + 1 / 2) * tileSize + (Math.random() - 0.5) * tileSize / 10 + hexaOffset - tileSize / 5
+                    x: (x + 1 / 2) * tileSize + random * (Math.random() - 0.5) * tileSize / 10,
+                    y: (y + 1 / 2) * tileSize + random * (Math.random() - 0.5) * tileSize / 10 + hexaOffset - tileSize / 5
                 };
             };
             // get a tile object by its id
@@ -4774,127 +4775,6 @@ window.onload = function () {
 };
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
-//module joinjelly.menus {
-//    export class ScoreWall extends ScrollablePage {
-var joinjelly;
-(function (joinjelly) {
-    var ScoreWall = (function () {
-        function ScoreWall() {
-        }
-        ScoreWall.init = function () {
-            this.deviceId = localStorage.getItem("deviceId");
-            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
-            this.table = this.client.getTable("ScoreWall");
-        };
-        // get all scores wall
-        ScoreWall.getScoreNames = function (callback) {
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
-                callback(queryResults);
-            });
-        };
-        // saves scores to the cloud
-        ScoreWall.setScore = function (name, score) {
-            var _this = this;
-            // if device id is already saved
-            if (this.deviceId)
-                //update the current id
-                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
-            else
-                // insert a new id and get the device ID from server
-                this.table.insert({ name: name, score: score }).then(function (result) {
-                    if (result[0] && result[0].id) {
-                        //get id from server
-                        _this.deviceId = result[0].id;
-                        //save local storage
-                        localStorage.setItem("deviceId", _this.deviceId);
-                    }
-                });
-        };
-        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
-        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
-        ScoreWall.gameId = "joinjelly";
-        return ScoreWall;
-    })();
-    joinjelly.ScoreWall = ScoreWall;
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var view;
-    (function (view) {
-        var Effect = (function (_super) {
-            __extends(Effect, _super);
-            function Effect() {
-                _super.apply(this, arguments);
-            }
-            Effect.prototype.castSimple = function () {
-                var _this = this;
-                var fxs = gameui.ImagesManager.getBitmap("fxJoin");
-                fxs.regX = 100;
-                fxs.regY = 100;
-                this.addChild(fxs);
-                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () {
-                    _this.removeChild(fxs);
-                });
-            };
-            Effect.prototype.castSimpleInv = function () {
-                var _this = this;
-                var fxs = gameui.ImagesManager.getBitmap("fxJoin");
-                fxs.regX = 100;
-                fxs.regY = 100;
-                this.addChild(fxs);
-                fxs.scaleX = fxs.scaleX = fxs.alpha = 2;
-                createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(function () {
-                    _this.removeChild(fxs);
-                });
-            };
-            Effect.prototype.castPart = function () {
-                var _this = this;
-                var fxp = gameui.ImagesManager.getBitmap("fxPart");
-                fxp.regX = 140;
-                fxp.regY = 140;
-                fxp.scaleX = fxp.scaleY = 0.2;
-                fxp.alpha = 2;
-                this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
-                this.castParts();
-            };
-            Effect.prototype.castParts = function () {
-                var _this = this;
-                var fxp = gameui.ImagesManager.getBitmap("fxPart");
-                fxp.regX = 140;
-                fxp.regY = 140;
-                fxp.scaleX = fxp.scaleY = 0.4;
-                fxp.rotation = 360 / 16;
-                fxp.alpha = 2;
-                this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
-            };
-            Effect.prototype.castPartsInv = function () {
-                var _this = this;
-                var fxp = gameui.ImagesManager.getBitmap("fxPart");
-                fxp.regX = 140;
-                fxp.regY = 140;
-                fxp.scaleX = fxp.scaleY = 4;
-                fxp.rotation = 360 / 16;
-                fxp.alpha = 0;
-                this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2, rotation: 0 }, 1000, createjs.Ease.quadIn).call(function () {
-                    _this.removeChild(fxp);
-                });
-            };
-            Effect.prototype.castBoth = function () {
-                this.castPartsInv();
-                this.castSimpleInv();
-            };
-            return Effect;
-        })(createjs.Container);
-        view.Effect = Effect;
-    })(view = joinjelly.view || (joinjelly.view = {}));
-})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
@@ -5018,5 +4898,126 @@ var joinjelly;
             view.ItemsFooter = ItemsFooter;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+//module joinjelly.menus {
+//    export class ScoreWall extends ScrollablePage {
+var joinjelly;
+(function (joinjelly) {
+    var ScoreWall = (function () {
+        function ScoreWall() {
+        }
+        ScoreWall.init = function () {
+            this.deviceId = localStorage.getItem("deviceId");
+            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
+            this.table = this.client.getTable("ScoreWall");
+        };
+        // get all scores wall
+        ScoreWall.getScoreNames = function (callback) {
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
+                callback(queryResults);
+            });
+        };
+        // saves scores to the cloud
+        ScoreWall.setScore = function (name, score) {
+            var _this = this;
+            // if device id is already saved
+            if (this.deviceId)
+                //update the current id
+                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+            else
+                // insert a new id and get the device ID from server
+                this.table.insert({ name: name, score: score }).then(function (result) {
+                    if (result[0] && result[0].id) {
+                        //get id from server
+                        _this.deviceId = result[0].id;
+                        //save local storage
+                        localStorage.setItem("deviceId", _this.deviceId);
+                    }
+                });
+        };
+        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
+        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
+        ScoreWall.gameId = "joinjelly";
+        return ScoreWall;
+    })();
+    joinjelly.ScoreWall = ScoreWall;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var view;
+    (function (view) {
+        var Effect = (function (_super) {
+            __extends(Effect, _super);
+            function Effect() {
+                _super.apply(this, arguments);
+            }
+            Effect.prototype.castSimple = function () {
+                var _this = this;
+                var fxs = gameui.ImagesManager.getBitmap("fxJoin");
+                fxs.regX = 100;
+                fxs.regY = 100;
+                this.addChild(fxs);
+                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () {
+                    _this.removeChild(fxs);
+                });
+            };
+            Effect.prototype.castSimpleInv = function () {
+                var _this = this;
+                var fxs = gameui.ImagesManager.getBitmap("fxJoin");
+                fxs.regX = 100;
+                fxs.regY = 100;
+                this.addChild(fxs);
+                fxs.scaleX = fxs.scaleX = fxs.alpha = 2;
+                createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(function () {
+                    _this.removeChild(fxs);
+                });
+            };
+            Effect.prototype.castPart = function () {
+                var _this = this;
+                var fxp = gameui.ImagesManager.getBitmap("fxPart");
+                fxp.regX = 140;
+                fxp.regY = 140;
+                fxp.scaleX = fxp.scaleY = 0.2;
+                fxp.alpha = 2;
+                this.addChild(fxp);
+                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
+                    _this.removeChild(fxp);
+                });
+                this.castParts();
+            };
+            Effect.prototype.castParts = function () {
+                var _this = this;
+                var fxp = gameui.ImagesManager.getBitmap("fxPart");
+                fxp.regX = 140;
+                fxp.regY = 140;
+                fxp.scaleX = fxp.scaleY = 0.4;
+                fxp.rotation = 360 / 16;
+                fxp.alpha = 2;
+                this.addChild(fxp);
+                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
+                    _this.removeChild(fxp);
+                });
+            };
+            Effect.prototype.castPartsInv = function () {
+                var _this = this;
+                var fxp = gameui.ImagesManager.getBitmap("fxPart");
+                fxp.regX = 140;
+                fxp.regY = 140;
+                fxp.scaleX = fxp.scaleY = 4;
+                fxp.rotation = 360 / 16;
+                fxp.alpha = 0;
+                this.addChild(fxp);
+                createjs.Tween.get(fxp).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2, rotation: 0 }, 1000, createjs.Ease.quadIn).call(function () {
+                    _this.removeChild(fxp);
+                });
+            };
+            Effect.prototype.castBoth = function () {
+                this.castPartsInv();
+                this.castSimpleInv();
+            };
+            return Effect;
+        })(createjs.Container);
+        view.Effect = Effect;
+    })(view = joinjelly.view || (joinjelly.view = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map
