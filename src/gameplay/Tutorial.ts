@@ -213,7 +213,7 @@
                     this.waitMessage();
                 },
                 () => {
-                    UserData.getHistoryTutorialPlayed();
+                    UserData.historyTutorialPlayed();
                     JoinJelly.startLevel();
                 }]
 

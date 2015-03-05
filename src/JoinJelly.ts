@@ -15,6 +15,8 @@ module joinjelly {
 
             this.analytics = new Analytics();
             this.itemData = new ItemsData();
+            AzureLeaderBoards.init();
+
 
             //define language
             var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
@@ -82,7 +84,7 @@ module joinjelly {
         public static showLeaderboards(previousScreen: gameui.ScreenState) {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "right", time: 500 };
-            this.gameScreen.switchScreen(new menus.LeaderBoards(previousScreen), null, transition);
+            this.gameScreen.switchScreen(new menus.LeaderBoards(), null, transition);
         }
 
         public static showPedia() {

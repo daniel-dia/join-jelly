@@ -3725,6 +3725,8 @@ var joinjelly;
                     joinjelly.JoinJelly.analytics.logEndGame(this.level, highJelly, this.matches, Date.now() - this.time);
                 // play end soud
                 gameui.AudiosManager.playSound("end");
+                // set leaderBoards
+                joinjelly.AzureLeaderBoards.setScore(score, "DIA");
                 // play end game effect
                 this.board.endGameEffect();
             };
@@ -4454,7 +4456,7 @@ var joinjelly;
                         _this.waitMessage();
                     },
                     function () {
-                        UserData.getHistoryTutorialPlayed();
+                        UserData.historyTutorialPlayed();
                         joinjelly.JoinJelly.startLevel();
                     }
                 ];
@@ -4691,6 +4693,7 @@ var joinjelly;
             var _this = this;
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
+            joinjelly.AzureLeaderBoards.init();
             //define language
             var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
@@ -4756,7 +4759,7 @@ var joinjelly;
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
                 transition = { type: "right", time: 500 };
-            this.gameScreen.switchScreen(new joinjelly.menus.LeaderBoards(previousScreen), null, transition);
+            this.gameScreen.switchScreen(new joinjelly.menus.LeaderBoards(), null, transition);
         };
         JoinJelly.showPedia = function () {
             var transition;
@@ -4909,6 +4912,51 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
+    var AzureLeaderBoards = (function () {
+        function AzureLeaderBoards() {
+        }
+        AzureLeaderBoards.init = function () {
+            this.deviceId = localStorage.getItem("deviceId");
+            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
+            this.table = this.client.getTable("LeaderBoards");
+        };
+        // get all scores wall
+        AzureLeaderBoards.getScoreNames = function (callback, count) {
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
+                callback(queryResults);
+            });
+        };
+        // saves scores to the cloud
+        AzureLeaderBoards.setScore = function (score, name) {
+            var _this = this;
+            // if device id is already saved
+            if (this.deviceId) {
+                //update the current id
+                if (this.table)
+                    this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+            }
+            else {
+                // insert a new id and get the device ID from server
+                if (this.table)
+                    this.table.insert({ name: name, score: score }).then(function (result) {
+                        if (result.id) {
+                            //get id from server
+                            _this.deviceId = result.id;
+                            //save local storage
+                            localStorage.setItem("deviceId", _this.deviceId);
+                        }
+                    });
+            }
+        };
+        AzureLeaderBoards.host = "https://dialeaderboards.azure-mobile.net";
+        AzureLeaderBoards.key = "GyalJGfVBZeaGMTMGxKuytNMXjjoqC94";
+        AzureLeaderBoards.gameId = "joinjelly";
+        return AzureLeaderBoards;
+    })();
+    joinjelly.AzureLeaderBoards = AzureLeaderBoards;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
     var menus;
     (function (menus) {
         var LeaderBoards = (function (_super) {
@@ -4928,47 +4976,6 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 //module joinjelly.menus {
 //    export class ScoreWall extends ScrollablePage {
-var joinjelly;
-(function (joinjelly) {
-    var ScoreWall = (function () {
-        function ScoreWall() {
-        }
-        ScoreWall.init = function () {
-            this.deviceId = localStorage.getItem("deviceId");
-            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
-            this.table = this.client.getTable("ScoreWall");
-        };
-        // get all scores wall
-        ScoreWall.getScoreNames = function (callback) {
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
-                callback(queryResults);
-            });
-        };
-        // saves scores to the cloud
-        ScoreWall.setScore = function (name, score) {
-            var _this = this;
-            // if device id is already saved
-            if (this.deviceId)
-                //update the current id
-                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
-            else
-                // insert a new id and get the device ID from server
-                this.table.insert({ name: name, score: score }).then(function (result) {
-                    if (result[0] && result[0].id) {
-                        //get id from server
-                        _this.deviceId = result[0].id;
-                        //save local storage
-                        localStorage.setItem("deviceId", _this.deviceId);
-                    }
-                });
-        };
-        ScoreWall.key = "NpqzgtfXbOrCcxFjabUgkhBSpaJPbK51";
-        ScoreWall.host = "https://joinjelly.azure-mobile.net/";
-        ScoreWall.gameId = "joinjelly";
-        return ScoreWall;
-    })();
-    joinjelly.ScoreWall = ScoreWall;
-})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var view;
