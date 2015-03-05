@@ -33,7 +33,7 @@
 
             // play button
             var button = new gameui.ImageButton("BtPlay", () => {
-                if (JoinJelly.userData.getLastJelly()>1)
+                if (UserData.getHistoryTutorialPlayed())
                     JoinJelly.startLevel();
                 else
                     JoinJelly.startTutorial();

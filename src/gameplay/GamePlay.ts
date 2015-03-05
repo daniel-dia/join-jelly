@@ -21,6 +21,7 @@
         private finishMenu: view.FinishMenu;
         private pauseMenu: view.PauseMenu;
         private showBoardButton: gameui.Button;
+        protected gameMessage: view.TutoralMessage;
 
         // parameters
         private boardSize: number = 5;
@@ -138,6 +139,11 @@
             this.finishMenu = new view.FinishMenu();
             this.overlay.addChild(this.finishMenu);
             this.finishMenu.y = -200;
+
+            // create game message
+            this.gameMessage = new view.TutoralMessage();
+            this.content.addChild(this.gameMessage);
+ 
 
             // creates a toggle button
             var tbt = new gameui.ImageButton("BtBoard", () => {
@@ -387,7 +393,8 @@
                 // set footer items form revive
                 this.gameFooter.setItems([Items.REVIVE]);
                 this.gameFooter.unlockItem(Items.REVIVE);
-                this.gameFooter.highlight(Items.REVIVE);
+                this.gameFooter.highlight(Items.REVIVE); 
+
                 this.updateFooter();
                 createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
 
@@ -403,6 +410,7 @@
             // play end soud
             gameui.AudiosManager.playSound("end");
 
+        
             // play end game effect
             this.board.endGameEffect();
         }
@@ -741,6 +749,10 @@
 
             if (this.gamestate != GameState.ended) return false;
 
+            // set use it
+            UserData.getHistoryRevive();
+
+            //save game
             this.saveGame();
 
             // back state to playing
@@ -773,6 +785,7 @@
             this.gameHeader.mouseEnabled = true;
             createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
 
+            // if not test, than play effects.
             if (!test) {
                 //cast effects
                 this.reviveEffect.alpha = 0;
@@ -821,6 +834,9 @@
                 for (var t in tiles)
                     if (tiles[t].getNumber() > 0 && tiles[t].isUnlocked())
                         selectedTiles.push(tiles[t]);
+
+            //set history played
+            UserData.historyFirstEvolve();
 
             if (selectedTiles.length == 0)
                 return false;

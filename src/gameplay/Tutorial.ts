@@ -10,30 +10,20 @@
         private tutorialItemFinger: view.TutorialMove;
         private messageNotify: () => void;
 
-        //turorial message
-        private tutorialMessage: view.TutoralMessage;
-
-
         // #region tutorial ====================================================================================================
 
         protected createGUI() {
 
-
+            super.createGUI();
             this.tutorialJellyFinger = new view.TutorialMove();
             this.tutorialItemFinger = new view.TutorialMove();
-            this.tutorialMessage = new view.TutoralMessage();
-            this.tutorialMessage.addEventListener("closed", () => { if(this.messageNotify)this.messageNotify();});
+            this.gameMessage.addEventListener("closed", () => { if(this.messageNotify)this.messageNotify();});
 
             this.tutorialItemFinger.rotation = -45;
 
-            super.createGUI();
-            
             this.content.addChild(this.tutorialJellyFinger);
             this.footer.addChild(this.tutorialItemFinger);
-            this.content.addChild(this.tutorialMessage);
-
-            this.gameFooter.setItems([Items.REVIVE,Items.FAST,Items.CLEAN,Items.TIME]);
-
+         
             this.gameFooter.setItemAmmount(Items.REVIVE,1);
             this.gameFooter.setItemAmmount(Items.FAST,  1);
             this.gameFooter.setItemAmmount(Items.CLEAN, 1);
@@ -71,12 +61,14 @@
                 },
 
                 () => {
+                    this.board.getTileById(16).disable();
                     this.board.getTileById(18).setNumber(1);
                     this.showTutorialMessage(StringResources.tutorial.msgheplme);
                     this.board.getTileById(18).disable();
                     this.waitMessage();
                 },
                 () => {
+                    this.board.getTileById(16).disable();
                     this.board.getTileById(18).enable();
                     this.showTutorialMove(18, 16)
                     this.waitMatch();
@@ -84,24 +76,28 @@
                 () => {
                     this.board.getTileById(16).disable();
                     this.hideTutorialFinger();
+                  
                     this.tutorialWait(700);
                 },
                 () => {
+                    this.board.getTileById(16).disable();
                     this.showTutorialMessage(StringResources.tutorial.msgOnceMore);
                     this.waitMessage();
                 },
                 () => {
+                    this.board.getTileById(16).disable();
                     this.board.getTileById(24).setNumber(2);
                     this.board.getTileById(16).disable();
                     this.showTutorialMove(24, 16)
                     this.waitMatch();
                 },
                 () => {
-                    this.board.getTileById(16).disable();
                     this.hideTutorialFinger();
                     this.tutorialWait(700);
+                    this.board.getTileById(16).disable();
                 },
                 () => {
+                    this.board.getTileById(16).disable();
                     this.tutorialWait(500);
                 },
                 () => {
@@ -114,6 +110,7 @@
                     this.board.getTileById(18).setNumber(1);
                     this.board.getTileById(20).setNumber(1);
                     this.board.getTileById(18).disable();
+                    this.board.getTileById(16).disable();
                     this.showTutorialMessage(StringResources.tutorial.msgDirt);
                     this.waitMessage();
                 },
@@ -172,22 +169,24 @@
                 () => {
                     this.showTutorialItem(Items.CLEAN);
                     this.gameFooter.highlight(Items.CLEAN);
-                    this.showTutorialMessage(StringResources.tutorial.msgItemClean);
+                    this.gameFooter.showMessage(Items.CLEAN, StringResources.tutorial.msgItemClean);
                     this.waitItem();
                 },
                 () => {
+                    this.gameFooter.hideMessage();
                     this.hideTutorialFinger();
-                    this.gameFooter.setItemAmmount(Items.CLEAN,0)
+                    this.gameFooter.setItemAmmount(Items.CLEAN, 0) 
                     this.tutorialWait(1000);
                 },
                 () => {
                     this.showTutorialItem(Items.TIME);
                     this.gameFooter.highlight(Items.TIME);
-                    this.showTutorialMessage(StringResources.tutorial.msgItemTime);
+                    this.gameFooter.showMessage(Items.TIME, StringResources.tutorial.msgItemTime);
 
                     this.waitItem();
                 },
                 () => {
+                    this.gameFooter.hideMessage();
                     this.hideTutorialFinger();
                     this.gameFooter.setItemAmmount(Items.TIME, 0)
                     this.tutorialWait(1000);
@@ -195,23 +194,14 @@
                 () => {
                     this.showTutorialItem(Items.FAST);
                     this.gameFooter.highlight(Items.FAST);
-                    this.showTutorialMessage(StringResources.tutorial.msgItemFast);
-
+                    this.gameFooter.showMessage(Items.FAST,StringResources.tutorial.msgItemFast);
                     this.waitItem();
                 },
-                () => {
+                () =>{
+                    this.gameFooter.hideMessage();
                     this.hideTutorialFinger();
                     this.gameFooter.setItemAmmount(Items.FAST, 0)
                     this.tutorialWait(1000);
-                },
-                () => { 
-                    this.gameFooter.highlight(Items.REVIVE);
-                    this.showTutorialMessage(StringResources.tutorial.msgItemRevive);
-                    this.waitMessage();
-                },
-                () => {
-                    this.hideTutorialFinger();
-                    this.tutorialWait(500);
                 },
                 () => {
                     this.hideTutorialFinger();
@@ -223,7 +213,7 @@
                     this.waitMessage();
                 },
                 () => {
-
+                    UserData.getHistoryTutorialPlayed();
                     JoinJelly.startLevel();
                 }]
 
@@ -260,7 +250,7 @@
         }
 
         private showTutorialMessage(text: string) {
-            this.tutorialMessage.show(text);
+            this.gameMessage.show(text);
         }
 
         private showTutorialMove(source: number, target: number) {

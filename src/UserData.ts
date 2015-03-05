@@ -83,8 +83,7 @@
     // #region generic
     private static prefix = "FastPair_";
 
-    private static saveValue(key: string, value: any) {
-
+    private static saveValue(key: string, value?) {
         if (value == null)
             localStorage.removeItem(UserData.prefix + key);
         else {
@@ -101,6 +100,32 @@
     }
     // #endregion
 
+    //#region history
+    public static historyTutorialPlayed() {
+        this.saveValue("tutorial", true);
+    }
+
+    public static getHistoryTutorialPlayed(): boolean {
+        return this.loadValue("tutorial");
+    }
+
+    public static historyFirstEvolve() {
+        this.saveValue("firstEvolve",true)
+    }
+
+    public static getHistoryFirstEvolved() {
+        return this.loadValue("firstEvolve");
+    }
+
+    public static historyRevive() {
+        this.saveValue("revive", true)
+    }
+
+    public static getHistoryRevive() {
+        return this.loadValue("revive");
+    }
+
+    //#endregion
     public resetAll() {
         localStorage.clear();
     }

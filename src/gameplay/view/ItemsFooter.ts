@@ -4,12 +4,14 @@
         private itemsButtons: Array<ItemButton>
         private lucky: createjs.DisplayObject;
         private itemSize:number = 270;
+        private gameMessage: view.TutoralMessage;
 
         constructor(items?: Array<string>) {
             super();
             this.itemsButtons = [];
             this.addObjects();
             this.setItems(items);
+
         }
 
         // add all button items
@@ -56,7 +58,10 @@
             lucky.y = -210;
             lucky.x =  1285
             this.lucky = lucky;
-           // lucky.visible = false;
+            // lucky.visible = false;
+
+            this.gameMessage = new view.TutoralMessage();
+            this.addChild(this.gameMessage);
         }
 
         //add a single item button to the footer
@@ -89,22 +94,37 @@
 
         }
 
+        // show item message
+        public showMessage(itemId:string, message:string) { 
+            this.gameMessage.x = this.getItemButton(itemId).x;
+            this.gameMessage.y = this.getItemButton(itemId).y-120;
+            this.gameMessage.show(message);
+        }
+
+        // hide message
+        public hideMessage() {
+            this.gameMessage.fadeOut();
+        }
+
+        // bounces an item
         public highlight(item: string) {
             this.unHighlightAll();
             this.getItemButton(item).highLight();
         }
 
+        // stop bouncing an item
         public unHighlightAll() {
             for (var i in this.itemsButtons)
                 this.itemsButtons[i].unHighlight();
         }
 
-        // lock a item
+        // lock an item
         public lockItem(itemId:string) {
             var b = this.getItemButton(itemId);
             if(b)b.lock();
         }
 
+        //unlock an item
         public unlockItem(itemId: string) {
             var b = this.getItemButton(itemId);
             b.unlock();

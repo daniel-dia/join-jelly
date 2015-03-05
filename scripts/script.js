@@ -23,11 +23,7 @@ var gameui;
             var _this = this;
             if (scaleX === void 0) { scaleX = 0.5; }
             if (scaleY === void 0) { scaleY = 0.5; }
-            this.animating = true;
-            this.antX = this.x;
-            this.antY = this.y;
-            this.mouseEnabled = false;
-            createjs.Tween.removeTweens(this);
+            this.resetFade();
             createjs.Tween.get(this).to({
                 scaleX: scaleX,
                 scaleY: scaleY,
@@ -45,10 +41,19 @@ var gameui;
                 ;
             });
         };
+        UIItem.prototype.resetFade = function () {
+            this.animating = true;
+            this.antX = this.x;
+            this.antY = this.y;
+            this.mouseEnabled = false;
+            createjs.Tween.removeTweens(this);
+        };
         UIItem.prototype.fadeIn = function (scaleX, scaleY) {
             var _this = this;
             if (scaleX === void 0) { scaleX = 0.5; }
             if (scaleY === void 0) { scaleY = 0.5; }
+            if (this.visible = true)
+                this.antX = null;
             this.visible = true;
             this.animating = true;
             if (this.antX == null) {
@@ -1367,7 +1372,7 @@ var joinjelly;
             this.content.addChild(lobby);
             // play button
             var button = new gameui.ImageButton("BtPlay", function () {
-                if (joinjelly.JoinJelly.userData.getLastJelly() > 1)
+                if (UserData.getHistoryTutorialPlayed())
                     joinjelly.JoinJelly.startLevel();
                 else
                     joinjelly.JoinJelly.startTutorial();
@@ -1978,10 +1983,6 @@ var joinjelly;
             });
             tutorial.y = y += space;
             this.scrollableContent.addChild(tutorial);
-            //// add About Button
-            //var about = new gameui.BitmapTextButton(StringResources.menus.about, "debussy", "BtTextBg", () => { alert("beta"); })
-            //about.y = y += space;
-            //this.scrollableContent.addChild(about);
             // add Reset Button
             var reset = new gameui.BitmapTextButton(StringResources.menus.reset, "debussy", "BtTextBg", function () {
                 if (confirm(StringResources.menus.resetWarning)) {
@@ -3512,6 +3513,9 @@ var joinjelly;
                 this.finishMenu = new gameplay.view.FinishMenu();
                 this.overlay.addChild(this.finishMenu);
                 this.finishMenu.y = -200;
+                // create game message
+                this.gameMessage = new gameplay.view.TutoralMessage();
+                this.content.addChild(this.gameMessage);
                 // creates a toggle button
                 var tbt = new gameui.ImageButton("BtBoard", function () {
                     _this.finishMenu.show();
@@ -3990,6 +3994,9 @@ var joinjelly;
                 if (test === void 0) { test = false; }
                 if (this.gamestate != 3 /* ended */)
                     return false;
+                // set use it
+                UserData.getHistoryRevive();
+                //save game
                 this.saveGame();
                 // back state to playing
                 this.gamestate = 1 /* playing */;
@@ -4012,6 +4019,7 @@ var joinjelly;
                 // remove other ui items
                 this.gameHeader.mouseEnabled = true;
                 createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
+                // if not test, than play effects.
                 if (!test) {
                     //cast effects
                     this.reviveEffect.alpha = 0;
@@ -4051,6 +4059,8 @@ var joinjelly;
                     for (var t in tiles)
                         if (tiles[t].getNumber() > 0 && tiles[t].isUnlocked())
                             selectedTiles.push(tiles[t]);
+                //set history played
+                UserData.historyFirstEvolve();
                 if (selectedTiles.length == 0)
                     return false;
                 // select random elegible tile
@@ -4264,19 +4274,16 @@ var joinjelly;
             // #region tutorial ====================================================================================================
             Tutorial.prototype.createGUI = function () {
                 var _this = this;
+                _super.prototype.createGUI.call(this);
                 this.tutorialJellyFinger = new gameplay.view.TutorialMove();
                 this.tutorialItemFinger = new gameplay.view.TutorialMove();
-                this.tutorialMessage = new gameplay.view.TutoralMessage();
-                this.tutorialMessage.addEventListener("closed", function () {
+                this.gameMessage.addEventListener("closed", function () {
                     if (_this.messageNotify)
                         _this.messageNotify();
                 });
                 this.tutorialItemFinger.rotation = -45;
-                _super.prototype.createGUI.call(this);
                 this.content.addChild(this.tutorialJellyFinger);
                 this.footer.addChild(this.tutorialItemFinger);
-                this.content.addChild(this.tutorialMessage);
-                this.gameFooter.setItems([joinjelly.Items.REVIVE, joinjelly.Items.FAST, joinjelly.Items.CLEAN, joinjelly.Items.TIME]);
                 this.gameFooter.setItemAmmount(joinjelly.Items.REVIVE, 1);
                 this.gameFooter.setItemAmmount(joinjelly.Items.FAST, 1);
                 this.gameFooter.setItemAmmount(joinjelly.Items.CLEAN, 1);
@@ -4304,12 +4311,14 @@ var joinjelly;
                         _this.board.getTileById(16).disable();
                     },
                     function () {
+                        _this.board.getTileById(16).disable();
                         _this.board.getTileById(18).setNumber(1);
                         _this.showTutorialMessage(StringResources.tutorial.msgheplme);
                         _this.board.getTileById(18).disable();
                         _this.waitMessage();
                     },
                     function () {
+                        _this.board.getTileById(16).disable();
                         _this.board.getTileById(18).enable();
                         _this.showTutorialMove(18, 16);
                         _this.waitMatch();
@@ -4320,21 +4329,24 @@ var joinjelly;
                         _this.tutorialWait(700);
                     },
                     function () {
+                        _this.board.getTileById(16).disable();
                         _this.showTutorialMessage(StringResources.tutorial.msgOnceMore);
                         _this.waitMessage();
                     },
                     function () {
+                        _this.board.getTileById(16).disable();
                         _this.board.getTileById(24).setNumber(2);
                         _this.board.getTileById(16).disable();
                         _this.showTutorialMove(24, 16);
                         _this.waitMatch();
                     },
                     function () {
-                        _this.board.getTileById(16).disable();
                         _this.hideTutorialFinger();
                         _this.tutorialWait(700);
+                        _this.board.getTileById(16).disable();
                     },
                     function () {
+                        _this.board.getTileById(16).disable();
                         _this.tutorialWait(500);
                     },
                     function () {
@@ -4347,6 +4359,7 @@ var joinjelly;
                         _this.board.getTileById(18).setNumber(1);
                         _this.board.getTileById(20).setNumber(1);
                         _this.board.getTileById(18).disable();
+                        _this.board.getTileById(16).disable();
                         _this.showTutorialMessage(StringResources.tutorial.msgDirt);
                         _this.waitMessage();
                     },
@@ -4395,10 +4408,11 @@ var joinjelly;
                     function () {
                         _this.showTutorialItem(joinjelly.Items.CLEAN);
                         _this.gameFooter.highlight(joinjelly.Items.CLEAN);
-                        _this.showTutorialMessage(StringResources.tutorial.msgItemClean);
+                        _this.gameFooter.showMessage(joinjelly.Items.CLEAN, StringResources.tutorial.msgItemClean);
                         _this.waitItem();
                     },
                     function () {
+                        _this.gameFooter.hideMessage();
                         _this.hideTutorialFinger();
                         _this.gameFooter.setItemAmmount(joinjelly.Items.CLEAN, 0);
                         _this.tutorialWait(1000);
@@ -4406,10 +4420,11 @@ var joinjelly;
                     function () {
                         _this.showTutorialItem(joinjelly.Items.TIME);
                         _this.gameFooter.highlight(joinjelly.Items.TIME);
-                        _this.showTutorialMessage(StringResources.tutorial.msgItemTime);
+                        _this.gameFooter.showMessage(joinjelly.Items.TIME, StringResources.tutorial.msgItemTime);
                         _this.waitItem();
                     },
                     function () {
+                        _this.gameFooter.hideMessage();
                         _this.hideTutorialFinger();
                         _this.gameFooter.setItemAmmount(joinjelly.Items.TIME, 0);
                         _this.tutorialWait(1000);
@@ -4417,22 +4432,14 @@ var joinjelly;
                     function () {
                         _this.showTutorialItem(joinjelly.Items.FAST);
                         _this.gameFooter.highlight(joinjelly.Items.FAST);
-                        _this.showTutorialMessage(StringResources.tutorial.msgItemFast);
+                        _this.gameFooter.showMessage(joinjelly.Items.FAST, StringResources.tutorial.msgItemFast);
                         _this.waitItem();
                     },
                     function () {
+                        _this.gameFooter.hideMessage();
                         _this.hideTutorialFinger();
                         _this.gameFooter.setItemAmmount(joinjelly.Items.FAST, 0);
                         _this.tutorialWait(1000);
-                    },
-                    function () {
-                        _this.gameFooter.highlight(joinjelly.Items.REVIVE);
-                        _this.showTutorialMessage(StringResources.tutorial.msgItemRevive);
-                        _this.waitMessage();
-                    },
-                    function () {
-                        _this.hideTutorialFinger();
-                        _this.tutorialWait(500);
                     },
                     function () {
                         _this.hideTutorialFinger();
@@ -4444,6 +4451,7 @@ var joinjelly;
                         _this.waitMessage();
                     },
                     function () {
+                        UserData.getHistoryTutorialPlayed();
                         joinjelly.JoinJelly.startLevel();
                     }
                 ];
@@ -4479,7 +4487,7 @@ var joinjelly;
                 };
             };
             Tutorial.prototype.showTutorialMessage = function (text) {
-                this.tutorialMessage.show(text);
+                this.gameMessage.show(text);
             };
             Tutorial.prototype.showTutorialMove = function (source, target) {
                 var sourceTile = this.board.getTileById(source);
@@ -4643,6 +4651,26 @@ var UserData = (function () {
         return JSON.parse(value);
     };
     // #endregion
+    //#region history
+    UserData.historyTutorialPlayed = function () {
+        this.saveValue("tutorial", true);
+    };
+    UserData.getHistoryTutorialPlayed = function () {
+        return this.loadValue("tutorial");
+    };
+    UserData.historyFirstEvolve = function () {
+        this.saveValue("firstEvolve", true);
+    };
+    UserData.getHistoryFirstEvolved = function () {
+        return this.loadValue("firstEvolve");
+    };
+    UserData.historyRevive = function () {
+        this.saveValue("revive", true);
+    };
+    UserData.getHistoryRevive = function () {
+        return this.loadValue("revive");
+    };
+    //#endregion
     UserData.prototype.resetAll = function () {
         localStorage.clear();
     };
@@ -4746,115 +4774,6 @@ window.onload = function () {
 };
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var ItemsFooter = (function (_super) {
-                __extends(ItemsFooter, _super);
-                function ItemsFooter(items) {
-                    _super.call(this);
-                    this.itemSize = 270;
-                    this.itemsButtons = [];
-                    this.addObjects();
-                    this.setItems(items);
-                }
-                // add all button items
-                ItemsFooter.prototype.setItems = function (items) {
-                    var itemSize = this.itemSize;
-                    if (items.length >= 5)
-                        itemSize = 200;
-                    // clean all buttons
-                    this.cleanButtons();
-                    if (!items)
-                        return;
-                    for (var i in items)
-                        this.addItem(items[i], i);
-                    for (var i in items) {
-                        //set button position
-                        this.itemsButtons[items[i]].y = -150;
-                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
-                    }
-                };
-                // clean buttons
-                ItemsFooter.prototype.cleanButtons = function () {
-                    for (var i in this.itemsButtons)
-                        this.removeChild(this.itemsButtons[i]);
-                    this.itemsButtons = [];
-                };
-                // add objects to the footer
-                ItemsFooter.prototype.addObjects = function () {
-                    //add background
-                    var bg = gameui.ImagesManager.getBitmap("footer");
-                    this.addChild(bg);
-                    bg.y = -162;
-                    bg.x = (defaultWidth - 1161) / 2;
-                    // add Lucky clover
-                    // TODO verify with item
-                    var lucky = gameui.ImagesManager.getBitmap("lucky");
-                    this.addChild(lucky);
-                    lucky.y = -210;
-                    lucky.x = 1285;
-                    this.lucky = lucky;
-                    // lucky.visible = false;
-                };
-                //add a single item button to the footer
-                ItemsFooter.prototype.addItem = function (item, pos) {
-                    var _this = this;
-                    //create button
-                    var bt = new view.ItemButton(item);
-                    this.addChild(bt);
-                    this.itemsButtons[item] = bt;
-                    //add event listener
-                    bt.addEventListener("click", function () {
-                        _this.dispatchEvent({ type: "useitem", item: item });
-                    });
-                };
-                // get a item display object
-                ItemsFooter.prototype.getItemButton = function (item) {
-                    return this.itemsButtons[item];
-                };
-                // set item ammount
-                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
-                    if (this.itemsButtons[item])
-                        this.itemsButtons[item].setAmmount(ammount);
-                    if (item == "lucky")
-                        this.lucky.visible = (ammount > 0);
-                };
-                ItemsFooter.prototype.highlight = function (item) {
-                    this.unHighlightAll();
-                    this.getItemButton(item).highLight();
-                };
-                ItemsFooter.prototype.unHighlightAll = function () {
-                    for (var i in this.itemsButtons)
-                        this.itemsButtons[i].unHighlight();
-                };
-                // lock a item
-                ItemsFooter.prototype.lockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    if (b)
-                        b.lock();
-                };
-                ItemsFooter.prototype.unlockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    b.unlock();
-                };
-                ItemsFooter.prototype.lockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].lock();
-                };
-                ItemsFooter.prototype.unlockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].unlock();
-                };
-                return ItemsFooter;
-            })(createjs.Container);
-            view.ItemsFooter = ItemsFooter;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
 //module joinjelly.menus {
 //    export class ScoreWall extends ScrollablePage {
 var joinjelly;
@@ -4975,5 +4894,129 @@ var joinjelly;
         })(createjs.Container);
         view.Effect = Effect;
     })(view = joinjelly.view || (joinjelly.view = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var ItemsFooter = (function (_super) {
+                __extends(ItemsFooter, _super);
+                function ItemsFooter(items) {
+                    _super.call(this);
+                    this.itemSize = 270;
+                    this.itemsButtons = [];
+                    this.addObjects();
+                    this.setItems(items);
+                }
+                // add all button items
+                ItemsFooter.prototype.setItems = function (items) {
+                    var itemSize = this.itemSize;
+                    if (items.length >= 5)
+                        itemSize = 200;
+                    // clean all buttons
+                    this.cleanButtons();
+                    if (!items)
+                        return;
+                    for (var i in items)
+                        this.addItem(items[i], i);
+                    for (var i in items) {
+                        //set button position
+                        this.itemsButtons[items[i]].y = -150;
+                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
+                    }
+                };
+                // clean buttons
+                ItemsFooter.prototype.cleanButtons = function () {
+                    for (var i in this.itemsButtons)
+                        this.removeChild(this.itemsButtons[i]);
+                    this.itemsButtons = [];
+                };
+                // add objects to the footer
+                ItemsFooter.prototype.addObjects = function () {
+                    //add background
+                    var bg = gameui.ImagesManager.getBitmap("footer");
+                    this.addChild(bg);
+                    bg.y = -162;
+                    bg.x = (defaultWidth - 1161) / 2;
+                    // add Lucky clover
+                    // TODO verify with item
+                    var lucky = gameui.ImagesManager.getBitmap("lucky");
+                    this.addChild(lucky);
+                    lucky.y = -210;
+                    lucky.x = 1285;
+                    this.lucky = lucky;
+                    // lucky.visible = false;
+                    this.gameMessage = new view.TutoralMessage();
+                    this.addChild(this.gameMessage);
+                };
+                //add a single item button to the footer
+                ItemsFooter.prototype.addItem = function (item, pos) {
+                    var _this = this;
+                    //create button
+                    var bt = new view.ItemButton(item);
+                    this.addChild(bt);
+                    this.itemsButtons[item] = bt;
+                    //add event listener
+                    bt.addEventListener("click", function () {
+                        _this.dispatchEvent({ type: "useitem", item: item });
+                    });
+                };
+                // get a item display object
+                ItemsFooter.prototype.getItemButton = function (item) {
+                    return this.itemsButtons[item];
+                };
+                // set item ammount
+                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
+                    if (this.itemsButtons[item])
+                        this.itemsButtons[item].setAmmount(ammount);
+                    if (item == "lucky")
+                        this.lucky.visible = (ammount > 0);
+                };
+                // show item message
+                ItemsFooter.prototype.showMessage = function (itemId, message) {
+                    this.gameMessage.x = this.getItemButton(itemId).x;
+                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
+                    this.gameMessage.show(message);
+                };
+                // hide message
+                ItemsFooter.prototype.hideMessage = function () {
+                    this.gameMessage.fadeOut();
+                };
+                // bounces an item
+                ItemsFooter.prototype.highlight = function (item) {
+                    this.unHighlightAll();
+                    this.getItemButton(item).highLight();
+                };
+                // stop bouncing an item
+                ItemsFooter.prototype.unHighlightAll = function () {
+                    for (var i in this.itemsButtons)
+                        this.itemsButtons[i].unHighlight();
+                };
+                // lock an item
+                ItemsFooter.prototype.lockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    if (b)
+                        b.lock();
+                };
+                //unlock an item
+                ItemsFooter.prototype.unlockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    b.unlock();
+                };
+                ItemsFooter.prototype.lockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].lock();
+                };
+                ItemsFooter.prototype.unlockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].unlock();
+                };
+                return ItemsFooter;
+            })(createjs.Container);
+            view.ItemsFooter = ItemsFooter;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map
