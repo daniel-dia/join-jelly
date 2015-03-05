@@ -3037,7 +3037,7 @@ var joinjelly;
                 bg.regX = 304 / 2;
                 bg.regY = -40;
                 bg.alpha = 0.15;
-                bg.set(this.getTilePositionByCoords(x, y, tileSize, false));
+                bg.set(this.getTilePositionByCoords(x, y, tileSize, 0));
                 var tileDO = new gameplay.Tile(x, y, tileSize);
                 // add a jelly on tile
                 this.tiles.push(tileDO);
@@ -3137,7 +3137,7 @@ var joinjelly;
             };
             // get a new position for a tile based on its index
             Board.prototype.getTilePositionByCoords = function (x, y, tileSize, random) {
-                if (random === void 0) { random = true; }
+                if (random === void 0) { random = 1; }
                 var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
                 return {
                     x: (x + 1 / 2) * tileSize + random * (Math.random() - 0.5) * tileSize / 10,
