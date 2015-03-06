@@ -31,6 +31,14 @@
         return 0;
     }
 
+    public getUserName(): string {
+        var un = UserData.loadValue("username");
+        if (un) return un;
+
+        un = prompt("Please enter your name", "");
+        UserData.saveValue("username", un);
+    }
+
     //#endregion
 
     //#region options
@@ -126,6 +134,7 @@
     }
 
     //#endregion
+
     public resetAll() {
         localStorage.clear();
     }

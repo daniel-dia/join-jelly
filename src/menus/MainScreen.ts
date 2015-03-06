@@ -69,11 +69,15 @@
             var space = 250;
 
             //add About button
-            var settingsBt = new gameui.ImageButton("BtInfo", () => {
-                JoinJelly.showAbout();
-            });
-            settingsBt.y =  150;
+            var settingsBt = new gameui.ImageButton("BtInfo", () => { JoinJelly.showAbout(); });
+            settingsBt.y = 150;
             settingsBt.x = x - space;
+            this.header.addChild(settingsBt);
+
+            //add leaderboards button
+            var settingsBt = new gameui.ImageButton("BtShare", () => { JoinJelly.showLeaderboards(); });
+            settingsBt.y = 150;
+            settingsBt.x = x - space-space;
             this.header.addChild(settingsBt);
 
             //add Menu button

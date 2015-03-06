@@ -1410,6 +1410,13 @@ var joinjelly;
             settingsBt.y = 150;
             settingsBt.x = x - space;
             this.header.addChild(settingsBt);
+            //add leaderboards button
+            var settingsBt = new gameui.ImageButton("BtShare", function () {
+                joinjelly.JoinJelly.showLeaderboards();
+            });
+            settingsBt.y = 150;
+            settingsBt.x = x - space - space;
+            this.header.addChild(settingsBt);
             //add Menu button
             var settingsBt = new gameui.ImageButton("BtMenu", function () {
                 joinjelly.JoinJelly.showSettings();
@@ -3696,7 +3703,10 @@ var joinjelly;
                 // releases all jellys
                 this.board.releaseAll();
                 // save high score
-                joinjelly.JoinJelly.userData.setScore(score);
+                if (score > joinjelly.JoinJelly.userData.getHighScore()) {
+                    joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getUserName());
+                    joinjelly.JoinJelly.userData.setScore(score);
+                }
                 // remove other ui items
                 this.gameHeader.mouseEnabled = false;
                 this.gameFooter.mouseEnabled = false;
@@ -3725,8 +3735,6 @@ var joinjelly;
                     joinjelly.JoinJelly.analytics.logEndGame(this.level, highJelly, this.matches, Date.now() - this.time);
                 // play end soud
                 gameui.AudiosManager.playSound("end");
-                // set leaderBoards
-                joinjelly.AzureLeaderBoards.setScore(score, "DIA");
                 // play end game effect
                 this.board.endGameEffect();
             };
@@ -4608,6 +4616,13 @@ var UserData = (function () {
             return value;
         return 0;
     };
+    UserData.prototype.getUserName = function () {
+        var un = UserData.loadValue("username");
+        if (un)
+            return un;
+        un = prompt("Please enter your name", "");
+        UserData.saveValue("username", un);
+    };
     //#endregion
     //#region options
     UserData.prototype.getMusicVol = function () {
@@ -4755,7 +4770,7 @@ var joinjelly;
                 transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.menus.StoreMenu(previousScreen), null, transition);
         };
-        JoinJelly.showLeaderboards = function (previousScreen) {
+        JoinJelly.showLeaderboards = function () {
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
                 transition = { type: "right", time: 500 };
@@ -4926,11 +4941,19 @@ var joinjelly;
                 callback(queryResults);
             });
         };
+        AzureLeaderBoards.addRandomData = function () {
+            for (var t = 0; t < 40; t++) {
+                var scpre = Math.floor(Math.random() * 50000);
+                var name = "DIA " + Math.floor(Math.random() * 50);
+                this.setScore(scpre, name, true);
+            }
+        };
         // saves scores to the cloud
-        AzureLeaderBoards.setScore = function (score, name) {
+        AzureLeaderBoards.setScore = function (score, name, newId) {
             var _this = this;
+            if (newId === void 0) { newId = false; }
             // if device id is already saved
-            if (this.deviceId) {
+            if (this.deviceId && !newId) {
                 //update the current id
                 if (this.table)
                     this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
@@ -4938,7 +4961,7 @@ var joinjelly;
             else {
                 // insert a new id and get the device ID from server
                 if (this.table)
-                    this.table.insert({ name: name, score: score }).then(function (result) {
+                    this.table.insert({ name: name, score: score, gameid: this.gameId }).then(function (result) {
                         if (result.id) {
                             //get id from server
                             _this.deviceId = result.id;
@@ -4962,12 +4985,26 @@ var joinjelly;
         var LeaderBoards = (function (_super) {
             __extends(LeaderBoards, _super);
             function LeaderBoards() {
+                var _this = this;
                 _super.call(this, StringResources.menus.leaderboards);
                 this.maxScroll = 1700;
+                this.loadLeaderBoards(function (results) {
+                    _this.fillLeaderBoards(results);
+                });
             }
-            LeaderBoards.prototype.fillLeaderBoards = function () {
+            LeaderBoards.prototype.fillLeaderBoards = function (results) {
+                var space = 200;
+                var start = 400;
+                for (var r in results) {
+                    var i = new menus.view.LeaderBoardItem(results[r].score, results[r].name, parseInt(r) + 1);
+                    i.x = defaultWidth / 2;
+                    i.y = start + space * r;
+                    this.scrollableContent.addChild(i);
+                }
+                this.maxScroll = start + results.length * space;
             };
             LeaderBoards.prototype.loadLeaderBoards = function (callback) {
+                joinjelly.AzureLeaderBoards.getScoreNames(callback, 20);
             };
             return LeaderBoards;
         })(joinjelly.ScrollablePage);
@@ -4976,6 +5013,47 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 //module joinjelly.menus {
 //    export class ScoreWall extends ScrollablePage {
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var LeaderBoardItem = (function (_super) {
+                __extends(LeaderBoardItem, _super);
+                function LeaderBoardItem(score, name, position) {
+                    if (position === void 0) { position = 1; }
+                    _super.call(this);
+                    this.regX = 1056 / 2;
+                    // Add Background
+                    var bg = gameui.ImagesManager.getBitmap("FlyGroup");
+                    bg.scaleY = 0.65;
+                    this.addChild(bg);
+                    // Add Texts
+                    var tContainer = new createjs.Container();
+                    var titleObj = gameui.ImagesManager.getBitmapText(name, "debussy");
+                    var positionObj = gameui.ImagesManager.getBitmapText(position.toString(), "debussy");
+                    var scoreObj = gameui.ImagesManager.getBitmapText(score.toString(), "debussy");
+                    scoreObj.regX = scoreObj.getBounds().width;
+                    positionObj.y = 30;
+                    titleObj.y = 30;
+                    scoreObj.y = 30;
+                    positionObj.x = 30;
+                    titleObj.x = 150;
+                    scoreObj.x = 1000;
+                    //titleObj.scaleX = titleObj.scaleY = 1.2;
+                    //scoreObj.scaleX = scoreObj.scaleY = 0.9;
+                    tContainer.addChild(titleObj);
+                    tContainer.addChild(scoreObj);
+                    tContainer.addChild(positionObj);
+                    this.addChild(tContainer);
+                }
+                return LeaderBoardItem;
+            })(createjs.Container);
+            view.LeaderBoardItem = LeaderBoardItem;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var view;

@@ -28,10 +28,18 @@ module joinjelly {
             });
         }
 
+        public static addRandomData() {
+            for (var t = 0; t < 40; t++) {
+                var scpre = Math.floor(Math.random() * 50000);
+                var name = "DIA " + Math.floor(Math.random() * 50); 
+                this.setScore(scpre, name,true);
+            }
+        }
+
         // saves scores to the cloud
-        public static setScore(score:number, name:string) {
+        public static setScore(score:number, name:string, newId:boolean=false) {
             // if device id is already saved
-            if (this.deviceId) {
+            if (this.deviceId  && !newId) {
                 //update the current id
                 if (this.table)
                     this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
@@ -39,7 +47,7 @@ module joinjelly {
             else {
                 // insert a new id and get the device ID from server
                 if (this.table)
-                    this.table.insert({ name: name, score: score }).then((result) => {
+                    this.table.insert({ name: name, score: score, gameid: this.gameId}).then((result) => {
                         if (result.id) {
                             //get id from server
                             this.deviceId = result.id;

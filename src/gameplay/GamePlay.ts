@@ -372,7 +372,10 @@
             this.board.releaseAll();
 
             // save high score
-            JoinJelly.userData.setScore(score);
+            if (score > JoinJelly.userData.getHighScore()) {
+                AzureLeaderBoards.setScore(score, JoinJelly.userData.getUserName());
+                JoinJelly.userData.setScore(score);
+            }
 
             // remove other ui items
             this.gameHeader.mouseEnabled = false;
@@ -410,8 +413,7 @@
             // play end soud
             gameui.AudiosManager.playSound("end");
 
-            // set leaderBoards
-            AzureLeaderBoards.setScore(score, "DIA");
+            
 
             // play end game effect
             this.board.endGameEffect();

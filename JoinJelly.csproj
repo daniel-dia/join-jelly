@@ -394,6 +394,7 @@
     <TypeScriptCompile Include="src\menus\LeaderBoards.ts" />
     <TypeScriptCompile Include="src\menus\ScoreWall.ts" />
     <TypeScriptCompile Include="src\LeaderBoards.ts" />
+    <TypeScriptCompile Include="src\menus\view\LeaderBoardItem.ts" />
     <TypeScriptCompile Include="src\view\Effect.ts" />
     <TypeScriptCompile Include="_references.ts" />
     <Content Include="web.config" />
