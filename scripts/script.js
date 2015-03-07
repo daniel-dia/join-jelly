@@ -5021,8 +5021,13 @@ var joinjelly;
                 var _this = this;
                 _super.call(this, StringResources.menus.leaderboards);
                 this.maxScroll = 1700;
+                var loading = new joinjelly.view.LoadingBall();
+                this.scrollableContent.addChild(loading);
+                loading.x = defaultWidth / 2;
+                loading.y = 800;
                 this.loadLeaderBoards(function (results) {
                     _this.fillLeaderBoards(results);
+                    loading.visible = false;
                 });
             }
             LeaderBoards.prototype.fillLeaderBoards = function (results) {

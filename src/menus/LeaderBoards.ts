@@ -7,26 +7,34 @@
 
 
         constructor() {
-            
             super(StringResources.menus.leaderboards);
-            this.loadLeaderBoards((results:Array<any>) => {
+
+            var loading = new joinjelly.view.LoadingBall();
+            this.scrollableContent.addChild(loading);
+            loading.x = defaultWidth / 2;
+            loading.y = 800;
+
+            this.loadLeaderBoards((results: Array<any>) => {
                 this.fillLeaderBoards(results);
+                loading.visible = false;
             });
         }
-         public fillLeaderBoards(results: Array<any>) {
-             var space = 200;
-             var start = 400;
+
+
+        public fillLeaderBoards(results: Array<any>) {
+            var space = 200;
+            var start = 400;
             for (var r in results) {
-                var i = new view.LeaderBoardItem(results[r].score, results[r].name,parseInt(r)+1);
+                var i = new view.LeaderBoardItem(results[r].score, results[r].name, parseInt(r) + 1);
                 i.x = defaultWidth / 2
-                i.y = start + space*r;
+                i.y = start + space * r;
                 this.scrollableContent.addChild(i);
             }
 
-             this.maxScroll = start + results.length * space;
+            this.maxScroll = start + results.length * space;
         }
 
-        private loadLeaderBoards(callback:(leaderBoards:any)=>void) {
+        private loadLeaderBoards(callback: (leaderBoards: any) => void) {
             AzureLeaderBoards.getScoreNames(callback, 20);
         }
     }
