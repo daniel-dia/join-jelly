@@ -964,10 +964,10 @@ var Analytics = (function () {
     //create a random user ID
     Analytics.prototype.getUser = function () {
         if (!this.userId)
-            this.userId = localStorage.getItem("lirum_userId");
+            this.userId = localStorage.getItem("dia_userID");
         if (!this.userId) {
             this.userId = (Math.random() * 9999999999).toString();
-            localStorage.setItem("lirum_userId", this.userId);
+            localStorage.setItem("dia_userID", this.userId);
         }
         return this.userId;
     };
@@ -977,7 +977,7 @@ var Analytics = (function () {
         return this.sessionId;
     };
     Analytics.prototype.getBuild = function () {
-        return "alpha2";
+        return "alpha7";
     };
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, level, x, y) {
         var game_key = '8c544aeba45e500f2af6e9b1beee996a';
@@ -1025,16 +1025,13 @@ var Analytics = (function () {
         this.sendEvent("UseItem", itemId, 1, level);
     };
     Analytics.prototype.logEndGame = function (level, lastJelly, moves, time) {
-        this.sendEvent("GameEnd", "Time", parseInt((time / 1000).toFixed()), level);
-        this.sendEvent("GameEnd", "Level", level, level);
-        this.sendEvent("GameEnd", "Moves", moves, level);
-        this.sendEvent("GameEnd", "LastJelly", this.log2(lastJelly), level);
+        this.sendEvent("GameEnd", "Time:" + this.normalizeNumber(parseInt((time / 60000).toFixed())), 1, level);
+        this.sendEvent("GameEnd", "Level:" + this.normalizeNumber(level), 1, level);
+        this.sendEvent("GameEnd", "LastJelly:" + this.log2(lastJelly), 1, level);
     };
     Analytics.prototype.logWinGame = function (level, lastJelly, moves, time) {
-        this.sendEvent("GameWin", "Time", parseInt((time / 1000).toFixed()), level);
-        this.sendEvent("GameWin", "Level", level, level);
+        this.sendEvent("GameWin", "Time:" + this.normalizeNumber(parseInt((time / 60000).toFixed())), 1, level);
         this.sendEvent("GameWin", "Moves", moves, level);
-        this.sendEvent("GameWin", "LastJelly", this.log2(lastJelly), level);
     };
     Analytics.prototype.logNewJelly = function (jellyId, level, time) {
         this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), parseInt((time / 1000).toFixed()), level);
@@ -4640,7 +4637,7 @@ var UserData = (function () {
     UserData.prototype.getPlayerName = function () {
         var un = UserData.loadValue("username");
         if (!un)
-            un = "Anonymous";
+            un = "";
         return un;
     };
     UserData.prototype.promptPlayerName = function (callback) {

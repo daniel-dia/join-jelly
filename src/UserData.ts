@@ -38,7 +38,7 @@
     
     public getPlayerName(): string {
         var un = UserData.loadValue("username");
-        if (!un) un = "Anonymous";
+        if (!un) un = "";
         return un;
     }
 
@@ -60,8 +60,6 @@
             }
             );
     }
-
-
 
     //#endregion
 
