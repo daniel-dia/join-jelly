@@ -44,6 +44,25 @@
         return un;
     }
 
+    public promptPlayerName(callback?: () => void) {
+        Cocoon.Dialog.prompt({
+            title: StringResources.menus.playerName,
+            message: StringResources.menus.playerNameDesc,
+            text: this.getPlayerName(),
+            type: "text",
+        },
+            {
+                success: (text) => {
+                    this.setPlayerName(text);
+                    callback();
+                },
+                cancel: function () {
+                    callback();
+                }
+            }
+            );
+    }
+
 
 
     //#endregion

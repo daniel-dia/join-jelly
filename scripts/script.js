@@ -4643,6 +4643,23 @@ var UserData = (function () {
             un = "Anonymous";
         return un;
     };
+    UserData.prototype.promptPlayerName = function (callback) {
+        var _this = this;
+        Cocoon.Dialog.prompt({
+            title: StringResources.menus.playerName,
+            message: StringResources.menus.playerNameDesc,
+            text: this.getPlayerName(),
+            type: "text",
+        }, {
+            success: function (text) {
+                _this.setPlayerName(text);
+                callback();
+            },
+            cancel: function () {
+                callback();
+            }
+        });
+    };
     //#endregion
     //#region options
     UserData.prototype.getMusicVol = function () {
@@ -5106,28 +5123,13 @@ var joinjelly;
                     playerName.x = -450;
                     playerName.y = -60;
                     var playerNameEdit = new gameui.ImageButton("BtEdit", function () {
-                        _this.editPlayerName();
+                        joinjelly.JoinJelly.userData.promptPlayerName(function () {
+                            _this.playerName.text = joinjelly.JoinJelly.userData.getPlayerName();
+                            ;
+                        });
                     });
                     this.addChild(playerNameEdit);
                     playerNameEdit.x = 400;
-                };
-                PlayerNameOptions.prototype.editPlayerName = function () {
-                    var _this = this;
-                    if (Cocoon) {
-                        Cocoon.Dialog.prompt({
-                            title: StringResources.menus.playerName,
-                            message: StringResources.menus.playerNameDesc,
-                            text: "",
-                            type: "text",
-                        }, {
-                            success: function (text) {
-                                joinjelly.JoinJelly.userData.setPlayerName(text);
-                                _this.playerName.text = text;
-                            },
-                            cancel: function () {
-                            }
-                        });
-                    }
                 };
                 return PlayerNameOptions;
             })(createjs.Container);
