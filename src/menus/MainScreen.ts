@@ -74,12 +74,6 @@
             settingsBt.x = x - space;
             this.header.addChild(settingsBt);
 
-            //add leaderboards button
-            var settingsBt = new gameui.ImageButton("BtShare", () => { JoinJelly.showLeaderboards(); });
-            settingsBt.y = 150;
-            settingsBt.x = x - space-space;
-            this.header.addChild(settingsBt);
-
             //add Menu button
             var settingsBt = new gameui.ImageButton("BtMenu", () => {
                 JoinJelly.showSettings();
@@ -104,6 +98,13 @@
             storeBt.y = -150;
             storeBt.x = x -= space;
             this.footer.addChild(storeBt);
+
+            //add leaderboards button
+            var leaderboardsBt = new gameui.ImageButton("BtLeaderBoards", () => { JoinJelly.showLeaderboards(); });
+            leaderboardsBt.y = -150;
+            leaderboardsBt.x = x -= space;
+            this.footer.addChild(leaderboardsBt);
+
         }
     }
 
