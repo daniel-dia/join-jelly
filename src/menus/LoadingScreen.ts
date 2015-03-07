@@ -5,7 +5,7 @@ declare var debussyFontMini;
 declare function createSpriteSheetFromFont(font: any, path: string);
 declare var WP;
 declare var WEB;
-module joinjelly {
+module joinjelly.menus {
 
     export class Loading extends gameui.ScreenState {
         private imagePath: string;
@@ -27,45 +27,14 @@ module joinjelly {
             if (window.innerWidth <= 1024) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;
              
-            if (assetscale == 1) 
-                this.imagePath = "assets/images/";
-            else 
-                this.imagePath = "assets/images_" + assetscale + "x/";
-
-            //this.addPathToManifest(this.imageManifest, this.imagePath);
-            this.addPathToManifest(this.audioManifest, "/assets/sounds/");
-            //var array = this.imageManifest.concat(this.audioManifest);
-
-            var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest, this.imagePath);
-            //imageQueue.loadManifest(this.audioManifest);
-            //if (!WP) 
-            createjs.Sound.alternateExtensions = ["mp3"];
-            createjs.Sound.registerManifest(this.audioManifest, "");
+            if (assetscale == 1) this.imagePath = "assets/images/";
+            else                 this.imagePath = "assets/images_" + assetscale + "x/";
+             
             
-            //loader text
-            var text = new createjs.Text("", "90px Arial", "#FFF");
-            text.x = defaultWidth / 2;
-            text.y = defaultHeight / 2;
-            text.textAlign = "center"
-            this.content.addChild(text);
+            //createjs.Sound.registerManifest(this.audioManifest,);
 
-            //loading animation
-            var anim = new view.LoadingBall();
-            anim.x = defaultWidth / 2;
-            anim.y = defaultHeight / 2 + 400;
-            this.content.addChild(anim);
-
-            //add update% functtion
-            imageQueue.addEventListener("progress", (evt: Object): boolean => {
-                text.text = StringResources.menus.loading + "\n" + Math.floor(evt["progress"] * 100).toString() + "%";
-                return true;
-            });
-
-            //creates load complete action
-            imageQueue.addEventListener("complete", (evt: Object): boolean => {
-                if (this.loaded) this.loaded();
-                return true;
-            });
+            var imageQueue = gameui.ImagesManager.loadAssets(this.audioManifest, "/assets/sounds/");
+            imageQueue.loadManifest(this.imageManifest, true,this.imagePath);
 
             //set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";
@@ -76,7 +45,31 @@ module joinjelly {
 
             debussyFontMini = createSpriteSheetFromFont(debussyFontMini, this.imagePath);
             gameui.ImagesManager.loadFontSpriteSheet("debussymini", debussyFontMini);
- 
+
+
+
+            var l = new view.LoadingBar(this.imagePath);
+            this.content.addChild(l);
+            l.x = defaultWidth / 2;
+            l.y = defaultHeight / 2;
+
+            //add update% functtion
+            imageQueue.addEventListener("progress", (evt: any): boolean => {
+                l.update(evt.progress);
+                return true;
+            });           
+            
+            //add update% functtion
+            imageQueue.addEventListener("fileload", (evt: any): boolean => {
+                console.log(evt.item.src);
+                return true;
+            });
+
+            //creates load complete action
+            imageQueue.addEventListener("complete", (evt: Object): boolean => {
+                if (this.loaded) this.loaded();
+                return true;
+            });
         }
 
         private imageManifest = [

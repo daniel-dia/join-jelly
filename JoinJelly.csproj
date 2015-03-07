@@ -396,6 +396,7 @@
     <TypeScriptCompile Include="src\menus\ScoreWall.ts" />
     <TypeScriptCompile Include="src\LeaderBoards.ts" />
     <TypeScriptCompile Include="src\menus\view\LeaderBoardItem.ts" />
+    <TypeScriptCompile Include="src\menus\view\LoadingBar.ts" />
     <TypeScriptCompile Include="src\menus\view\PlayerNameOption.ts" />
     <TypeScriptCompile Include="src\view\Effect.ts" />
     <TypeScriptCompile Include="_references.ts" />

@@ -23,7 +23,7 @@
             this.assetsManifest = assetsManifest;
             
             //creates a preload queue
-            this.loader = new createjs.LoadQueue(false);
+            this.loader = new createjs.LoadQueue(true);
 
             //install sound plug-in for sounds format
             this.loader.installPlugin(createjs.Sound);
