@@ -33,7 +33,7 @@
     }
 
 
-    public setPlayerName(userName:string) {
+    public setPlayerName(userName: string) {
         UserData.saveValue("username", userName);
     }
 
@@ -135,7 +135,7 @@
     // #endregion
 
     //#region history
-    
+
 
     public history(value: string) {
         var hist = UserData.loadValue("history", {});
@@ -147,7 +147,7 @@
         var hist = UserData.loadValue("history", {});
         return hist[value];
     }
-    
+
     public static getHistoryRevive() {
         return this.loadValue("revive");
     }
