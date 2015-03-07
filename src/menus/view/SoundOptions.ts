@@ -20,10 +20,11 @@
             f.regX = f.getBounds().width / 2;
             this.addChild(f);
 
-            var t = gameui.ImagesManager.getBitmapText(StringResources.menus.sound, "debussy")
-            t.y = -190;
-            t.regX = t.getBounds().width / 2;
-            this.addChild(t)
+            var title = gameui.ImagesManager.getBitmapText(StringResources.menus.sound, "debussy")
+            title.y = -190;
+            title.scaleX = title.scaleY = 1.1;
+            title.regX = title.getBounds().width / 2;
+            this.addChild(title)
 
             //add continue button;
             this.musicBtOn = new gameui.ImageButton("BtMusic", (() => { this.setMusic(0) }));

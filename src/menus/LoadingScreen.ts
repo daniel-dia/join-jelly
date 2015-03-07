@@ -137,6 +137,8 @@ module joinjelly {
             { id: "particle", src: "Particle.png" },
 
             { id: "BtRestart", src: "BtRestart.png" },
+            { id: "BtLeaderBoards", src: "BtLeaderBoards.png" },
+            { id: "BtEdit", src: "BtEdit.png" },
             { id: "BtHome", src: "BtHome.png" },
             { id: "BtPlay", src: "BtPlay.png" },
             { id: "BtStore", src: "BtStore.png" },

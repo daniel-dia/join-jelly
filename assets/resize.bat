@@ -1,10 +1,13 @@
 @echo off
 call:copyAndResize images images_0.5x 50%%%% 
 call:copyAndResize images images_0.25x 25%%%% 
+
+echo DONE
+PAUSE
 goto:eof
 
 :copyAndResize
-echo. Resising "%~1"  "%~2"  at "%~3"
+echo. ---------- Resising "%~1" to "%~2"  at "%~3" ---------- 
 for /f %%a in ('xcopy "%~1"  "%~2" /L /D /Y') do @(
 	if exist "%%a" (
 		echo. %%a 
@@ -12,6 +15,5 @@ for /f %%a in ('xcopy "%~1"  "%~2" /L /D /Y') do @(
 		convert %~2/%%~nxa -resize %~3 %~2/%%~nxa 
 	)
 )
-
 goto:eof
-@pause
+

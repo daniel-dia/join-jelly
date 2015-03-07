@@ -378,6 +378,7 @@
     <Content Include="assets\sounds\sound_s2.mp3" />
     <Content Include="assets\sounds\sound_s3.mp3" />
     <Content Include="assets\style.css" />
+    <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\EaselJS Editor.js" />
     <Content Include="scripts\Plataform.js" />
     <Content Include="test.html" />
@@ -395,6 +396,7 @@
     <TypeScriptCompile Include="src\menus\ScoreWall.ts" />
     <TypeScriptCompile Include="src\LeaderBoards.ts" />
     <TypeScriptCompile Include="src\menus\view\LeaderBoardItem.ts" />
+    <TypeScriptCompile Include="src\menus\view\PlayerNameOption.ts" />
     <TypeScriptCompile Include="src\view\Effect.ts" />
     <TypeScriptCompile Include="_references.ts" />
     <Content Include="web.config" />

@@ -13,8 +13,10 @@ module joinjelly {
 
         public static init() {
 
+            this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new ItemsData();
+
             AzureLeaderBoards.init();
 
 
@@ -29,7 +31,7 @@ module joinjelly {
 
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight,fps,true);
             
-            this.userData = new UserData();
+            
             var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             // verify test
@@ -96,7 +98,7 @@ module joinjelly {
         public static showSettings() {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };
-            this.gameScreen.switchScreen(new MainMenu(), null, transition);
+            this.gameScreen.switchScreen(new menus.MainMenu(), null, transition);
         }
         public static showAbout() {
             this.gameScreen.switchScreen(new About());

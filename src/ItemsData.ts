@@ -17,7 +17,7 @@
 
         constructor() {
             this.items = <Array<number>>(new Object());
-            this.items = UserData.loadItems();
+            this.items = JoinJelly.userData.loadItems();
         }
 
         public getItemAmmount(item: string): number {
@@ -37,7 +37,7 @@
             if (ammount < 0) ammount = 0;
 
             this.items[item] = ammount;
-            UserData.saveItems(this.items);
+            JoinJelly.userData.saveItems(this.items);
         }
 
     }

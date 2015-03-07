@@ -157,7 +157,6 @@ var gameui;
             this.loader.installPlugin(createjs.Sound);
             //create eventListeners
             this.loader.addEventListener("fileload", function (evt) {
-                console.log(evt.item.type + " " + evt.item.id);
                 if (evt.item.type == "image")
                     _this.imagesArray[evt.item.id] = evt.result;
                 return true;
@@ -749,7 +748,7 @@ var joinjelly;
     var ItemsData = (function () {
         function ItemsData() {
             this.items = (new Object());
-            this.items = UserData.loadItems();
+            this.items = joinjelly.JoinJelly.userData.loadItems();
         }
         ItemsData.prototype.getItemAmmount = function (item) {
             return this.items[item] || 0;
@@ -768,7 +767,7 @@ var joinjelly;
             if (ammount < 0)
                 ammount = 0;
             this.items[item] = ammount;
-            UserData.saveItems(this.items);
+            joinjelly.JoinJelly.userData.saveItems(this.items);
         };
         ItemsData.items = [Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE, Items.EVOLVE, Items.LUCKY];
         return ItemsData;
@@ -794,6 +793,8 @@ var StringResources = {
         about: "About",
         tutorial: "Tutorial",
         shop: "shop",
+        playerName: "Player Name",
+        playerNameDesc: "Type your name for the leaderboards.",
     },
     tutorial: {
         msgheplme: "Help me to evolve\nJoin another jelly to me",
@@ -880,6 +881,8 @@ var StringResources_pt = {
         about: "Sobre",
         tutorial: "Tutorial",
         shop: "Compras",
+        playerName: "Nome do Jogador",
+        playerNameDesc: "Digite seu nome para aparecer no placar dos melhores",
     },
     tutorial: {
         msgheplme: "Me ajude a desenvolver\nJunte outra geleia comigo",
@@ -1207,6 +1210,8 @@ var joinjelly;
                 { id: "shadow", src: "shadow.png" },
                 { id: "particle", src: "Particle.png" },
                 { id: "BtRestart", src: "BtRestart.png" },
+                { id: "BtLeaderBoards", src: "BtLeaderBoards.png" },
+                { id: "BtEdit", src: "BtEdit.png" },
                 { id: "BtHome", src: "BtHome.png" },
                 { id: "BtPlay", src: "BtPlay.png" },
                 { id: "BtStore", src: "BtStore.png" },
@@ -1374,7 +1379,7 @@ var joinjelly;
             this.content.addChild(lobby);
             // play button
             var button = new gameui.ImageButton("BtPlay", function () {
-                if (UserData.getHistoryTutorialPlayed())
+                if (joinjelly.JoinJelly.userData.getHistory(histories.FIRSTPLAY))
                     joinjelly.JoinJelly.startLevel();
                 else
                     joinjelly.JoinJelly.startTutorial();
@@ -1974,37 +1979,51 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
-    var MainMenu = (function (_super) {
-        __extends(MainMenu, _super);
-        function MainMenu() {
-            _super.call(this, StringResources.menus.menu);
-            this.maxScroll = 1700;
-            var space = 270;
-            var y = 400;
-            // add Sound Button
-            var soundOptions = new joinjelly.menus.view.SoundOptions();
-            this.scrollableContent.addChild(soundOptions);
-            this.scrollableContent.x = defaultWidth / 2;
-            soundOptions.y = y += space;
-            // add Tutorial button
-            var tutorial = new gameui.BitmapTextButton(StringResources.menus.tutorial, "debussy", "BtTextBg", function () {
-                joinjelly.JoinJelly.startTutorial();
-            });
-            tutorial.y = y += space;
-            this.scrollableContent.addChild(tutorial);
-            // add Reset Button
-            var reset = new gameui.BitmapTextButton(StringResources.menus.reset, "debussy", "BtTextBg", function () {
-                if (confirm(StringResources.menus.resetWarning)) {
-                    joinjelly.JoinJelly.userData.resetAll();
-                    joinjelly.JoinJelly.showMainMenu();
-                }
-            });
-            reset.y = y += space;
-            this.scrollableContent.addChild(reset);
-        }
-        return MainMenu;
-    })(joinjelly.ScrollablePage);
-    joinjelly.MainMenu = MainMenu;
+    var menus;
+    (function (menus) {
+        var MainMenu = (function (_super) {
+            __extends(MainMenu, _super);
+            function MainMenu() {
+                _super.call(this, StringResources.menus.menu);
+                this.maxScroll = 1700;
+                var space = 270;
+                var y = 400;
+                // add Sound Button
+                var soundOptions = new menus.view.SoundOptions();
+                this.scrollableContent.addChild(soundOptions);
+                this.scrollableContent.x = defaultWidth / 2;
+                soundOptions.y = y += space;
+                // add Player name
+                var playerNameTitle = new menus.view.PlayerNameOptions();
+                this.scrollableContent.addChild(playerNameTitle);
+                playerNameTitle.y = y += space + 80;
+                // add Tutorial button
+                var tutorial = new gameui.BitmapTextButton(StringResources.menus.tutorial, "debussy", "BtTextBg", function () {
+                    joinjelly.JoinJelly.startTutorial();
+                });
+                tutorial.y = y += space;
+                this.scrollableContent.addChild(tutorial);
+                // add Reset Button
+                var reset = new gameui.BitmapTextButton(StringResources.menus.reset, "debussy", "BtTextBg", function () {
+                    Cocoon.Dialog.confirm({
+                        title: StringResources.menus.reset,
+                        message: StringResources.menus.resetWarning
+                    }, function (accepted) {
+                        if (accepted) {
+                            joinjelly.JoinJelly.userData.resetAll();
+                            joinjelly.JoinJelly.showMainMenu();
+                        }
+                        else {
+                        }
+                    });
+                });
+                reset.y = y += space;
+                this.scrollableContent.addChild(reset);
+            }
+            return MainMenu;
+        })(joinjelly.ScrollablePage);
+        menus.MainMenu = MainMenu;
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
@@ -2036,10 +2055,11 @@ var joinjelly;
                     f.y = -130;
                     f.regX = f.getBounds().width / 2;
                     this.addChild(f);
-                    var t = gameui.ImagesManager.getBitmapText(StringResources.menus.sound, "debussy");
-                    t.y = -190;
-                    t.regX = t.getBounds().width / 2;
-                    this.addChild(t);
+                    var title = gameui.ImagesManager.getBitmapText(StringResources.menus.sound, "debussy");
+                    title.y = -190;
+                    title.scaleX = title.scaleY = 1.1;
+                    title.regX = title.getBounds().width / 2;
+                    this.addChild(title);
                     //add continue button;
                     this.musicBtOn = new gameui.ImageButton("BtMusic", (function () {
                         _this.setMusic(0);
@@ -3704,7 +3724,7 @@ var joinjelly;
                 this.board.releaseAll();
                 // save high score
                 if (score > joinjelly.JoinJelly.userData.getHighScore()) {
-                    joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getUserName());
+                    joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
                     joinjelly.JoinJelly.userData.setScore(score);
                 }
                 // remove other ui items
@@ -4072,8 +4092,6 @@ var joinjelly;
                     for (var t in tiles)
                         if (tiles[t].getNumber() > 0 && tiles[t].isUnlocked())
                             selectedTiles.push(tiles[t]);
-                //set history played
-                UserData.historyFirstEvolve();
                 if (selectedTiles.length == 0)
                     return false;
                 // select random elegible tile
@@ -4464,7 +4482,7 @@ var joinjelly;
                         _this.waitMessage();
                     },
                     function () {
-                        UserData.historyTutorialPlayed();
+                        joinjelly.JoinJelly.userData.history(histories.TUTORIAL);
                         joinjelly.JoinJelly.startLevel();
                     }
                 ];
@@ -4616,12 +4634,14 @@ var UserData = (function () {
             return value;
         return 0;
     };
-    UserData.prototype.getUserName = function () {
+    UserData.prototype.setPlayerName = function (userName) {
+        UserData.saveValue("username", userName);
+    };
+    UserData.prototype.getPlayerName = function () {
         var un = UserData.loadValue("username");
-        if (un)
-            return un;
-        un = prompt("Please enter your name", "");
-        UserData.saveValue("username", un);
+        if (!un)
+            un = "Anonymous";
+        return un;
     };
     //#endregion
     //#region options
@@ -4639,11 +4659,11 @@ var UserData = (function () {
     };
     //#endregion
     // #region items
-    UserData.saveItems = function (items) {
-        return this.saveValue("items", items);
+    UserData.prototype.saveItems = function (items) {
+        return UserData.saveValue("items", items);
     };
-    UserData.loadItems = function () {
-        return this.loadValue("items", {});
+    UserData.prototype.loadItems = function () {
+        return UserData.loadValue("items", {});
     };
     // #endregion
     //#region gamestate
@@ -4672,20 +4692,14 @@ var UserData = (function () {
     };
     // #endregion
     //#region history
-    UserData.historyTutorialPlayed = function () {
-        this.saveValue("tutorial", true);
+    UserData.prototype.history = function (value) {
+        var hist = UserData.loadValue("history", {});
+        hist[value] = true;
+        UserData.saveValue("history", hist);
     };
-    UserData.getHistoryTutorialPlayed = function () {
-        return this.loadValue("tutorial");
-    };
-    UserData.historyFirstEvolve = function () {
-        this.saveValue("firstEvolve", true);
-    };
-    UserData.getHistoryFirstEvolved = function () {
-        return this.loadValue("firstEvolve");
-    };
-    UserData.historyRevive = function () {
-        this.saveValue("revive", true);
+    UserData.prototype.getHistory = function (value) {
+        var hist = UserData.loadValue("history", {});
+        return hist[value];
     };
     UserData.getHistoryRevive = function () {
         return this.loadValue("revive");
@@ -4699,6 +4713,15 @@ var UserData = (function () {
     UserData.prefix = "FastPair_";
     return UserData;
 })();
+var histories = (function () {
+    function histories() {
+    }
+    histories.TUTORIAL = "tutorial";
+    histories.REVIVE = "revive";
+    histories.EVOLVE = "evolve";
+    histories.FIRSTPLAY = "firstplay";
+    return histories;
+})();
 var joinjelly;
 (function (joinjelly) {
     var JoinJelly = (function () {
@@ -4706,6 +4729,7 @@ var joinjelly;
         }
         JoinJelly.init = function () {
             var _this = this;
+            this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
             joinjelly.AzureLeaderBoards.init();
@@ -4720,7 +4744,6 @@ var joinjelly;
             if (window.location.search == "?test")
                 fps = 30;
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps, true);
-            this.userData = new UserData();
             var loadingScreen = new joinjelly.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             // verify test
@@ -4786,7 +4809,7 @@ var joinjelly;
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
                 transition = { type: "left", time: 500 };
-            this.gameScreen.switchScreen(new joinjelly.MainMenu(), null, transition);
+            this.gameScreen.switchScreen(new joinjelly.menus.MainMenu(), null, transition);
         };
         JoinJelly.showAbout = function () {
             this.gameScreen.switchScreen(new joinjelly.About());
@@ -5051,6 +5074,64 @@ var joinjelly;
                 return LeaderBoardItem;
             })(createjs.Container);
             view.LeaderBoardItem = LeaderBoardItem;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var PlayerNameOptions = (function (_super) {
+                __extends(PlayerNameOptions, _super);
+                function PlayerNameOptions() {
+                    _super.call(this);
+                    this.addObjects();
+                }
+                PlayerNameOptions.prototype.addObjects = function () {
+                    var _this = this;
+                    var bg = gameui.ImagesManager.getBitmap("FlyGroup");
+                    bg.y = -130;
+                    bg.regX = bg.getBounds().width / 2;
+                    this.addChild(bg);
+                    var title = gameui.ImagesManager.getBitmapText(StringResources.menus.playerName, "debussy");
+                    title.y = -190;
+                    title.scaleX = title.scaleY = 1.1;
+                    title.regX = title.getBounds().width / 2;
+                    this.addChild(title);
+                    var playerName = gameui.ImagesManager.getBitmapText(joinjelly.JoinJelly.userData.getPlayerName(), "debussy");
+                    this.addChild(playerName);
+                    this.playerName = playerName;
+                    playerName.x = -450;
+                    playerName.y = -60;
+                    var playerNameEdit = new gameui.ImageButton("BtEdit", function () {
+                        _this.editPlayerName();
+                    });
+                    this.addChild(playerNameEdit);
+                    playerNameEdit.x = 400;
+                };
+                PlayerNameOptions.prototype.editPlayerName = function () {
+                    var _this = this;
+                    if (Cocoon) {
+                        Cocoon.Dialog.prompt({
+                            title: StringResources.menus.playerName,
+                            message: StringResources.menus.playerNameDesc,
+                            text: "",
+                            type: "text",
+                        }, {
+                            success: function (text) {
+                                joinjelly.JoinJelly.userData.setPlayerName(text);
+                                _this.playerName.text = text;
+                            },
+                            cancel: function () {
+                            }
+                        });
+                    }
+                };
+                return PlayerNameOptions;
+            })(createjs.Container);
+            view.PlayerNameOptions = PlayerNameOptions;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));

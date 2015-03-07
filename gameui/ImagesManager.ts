@@ -30,7 +30,6 @@
 
             //create eventListeners
             this.loader.addEventListener("fileload", (evt: any): boolean => {
-                console.log(evt.item.type + " " + evt.item.id)
                 if (evt.item.type == "image") 
                     this.imagesArray[evt.item.id] = <HTMLImageElement>evt.result;
                 return true;

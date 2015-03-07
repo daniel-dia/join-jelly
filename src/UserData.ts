@@ -1,19 +1,20 @@
 ﻿class UserData {
-    
+
     constructor() {
 
         gameui.AudiosManager.setSoundVeolume(this.getSoundVol());
         gameui.AudiosManager.setMusicVolume(this.getMusicVol());
 
+
     }
-    
+
     // #region score
     public setScore(score) {
         var highscore = this.getHighScore();
         if (score > highscore) UserData.saveValue("HighScore", score);
     }
 
-    public getHighScore(): number{
+    public getHighScore(): number {
         var value = <number>UserData.loadValue("HighScore");
         if (value) return value;
         return 0;
@@ -21,7 +22,7 @@
 
     public setLastJelly(value: number) {
         var highValue = this.getLastJelly();
-        if(value > highValue)
+        if (value > highValue)
             UserData.saveValue("LastJelly", value);
     }
 
@@ -31,50 +32,56 @@
         return 0;
     }
 
-    public getUserName(): string {
-        var un = UserData.loadValue("username");
-        if (un) return un;
 
-        un = prompt("Please enter your name", "");
-        UserData.saveValue("username", un);
+    public setPlayerName(userName:string) {
+        UserData.saveValue("username", userName);
     }
+
+
+    public getPlayerName(): string {
+        var un = UserData.loadValue("username");
+        if (!un) un = "Anonymous";
+        return un;
+    }
+
+
 
     //#endregion
 
     //#region options
 
     public getMusicVol(): number {
-        return UserData.loadValue("music",1); 
+        return UserData.loadValue("music", 1);
     }
 
     public setMusicVol(volume: number) {
         UserData.saveValue("music", volume);
     }
 
-    public getSoundVol(): number{
-        return UserData.loadValue("sound",1);
+    public getSoundVol(): number {
+        return UserData.loadValue("sound", 1);
     }
 
     public setSoundVol(volume: number) {
-        UserData.saveValue("sound",volume);
+        UserData.saveValue("sound", volume);
     }
 
     //#endregion
 
     // #region items
-    public static saveItems(items:Array<number>) {
-        return this.saveValue("items", items);
+    public saveItems(items: Array<number>) {
+        return UserData.saveValue("items", items);
     }
 
-    public static loadItems(): Array<number> {
-        return this.loadValue("items", {});
+    public loadItems(): Array<number> {
+        return UserData.loadValue("items", {});
     }
 
     // #endregion
 
     //#region gamestate
 
-    public saveGame(savegame:SaveGame) {
+    public saveGame(savegame: SaveGame) {
         UserData.saveValue("savegame", savegame);
     }
 
@@ -85,7 +92,7 @@
     public deleteSaveGame() {
         UserData.saveValue("savegame", null);
     }
-    
+
     //#endregion
 
     // #region generic
@@ -100,7 +107,7 @@
         }
     }
 
-    private static loadValue(key: string,defaultVaule?): any {
+    private static loadValue(key: string, defaultVaule?): any {
         var value = localStorage.getItem(UserData.prefix + key);
         if (!value)
             return defaultVaule;
@@ -109,26 +116,19 @@
     // #endregion
 
     //#region history
-    public static historyTutorialPlayed() {
-        this.saveValue("tutorial", true);
+    
+
+    public history(value: string) {
+        var hist = UserData.loadValue("history", {});
+        hist[value] = true;
+        UserData.saveValue("history", hist);
     }
 
-    public static getHistoryTutorialPlayed(): boolean {
-        return this.loadValue("tutorial");
+    public getHistory(value: string): boolean {
+        var hist = UserData.loadValue("history", {});
+        return hist[value];
     }
-
-    public static historyFirstEvolve() {
-        this.saveValue("firstEvolve",true)
-    }
-
-    public static getHistoryFirstEvolved() {
-        return this.loadValue("firstEvolve");
-    }
-
-    public static historyRevive() {
-        this.saveValue("revive", true)
-    }
-
+    
     public static getHistoryRevive() {
         return this.loadValue("revive");
     }
@@ -139,6 +139,14 @@
         localStorage.clear();
     }
 }
+
+class histories {
+    static TUTORIAL = "tutorial";
+    static REVIVE = "revive";
+    static EVOLVE = "evolve";
+    static FIRSTPLAY = "firstplay";
+}
+
 
 interface SaveGame {
     tiles: Array<number>;

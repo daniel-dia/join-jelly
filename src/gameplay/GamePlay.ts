@@ -373,7 +373,7 @@
 
             // save high score
             if (score > JoinJelly.userData.getHighScore()) {
-                AzureLeaderBoards.setScore(score, JoinJelly.userData.getUserName());
+                AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
                 JoinJelly.userData.setScore(score);
             }
 
@@ -838,9 +838,6 @@
                 for (var t in tiles)
                     if (tiles[t].getNumber() > 0 && tiles[t].isUnlocked())
                         selectedTiles.push(tiles[t]);
-
-            //set history played
-            UserData.historyFirstEvolve();
 
             if (selectedTiles.length == 0)
                 return false;

@@ -18,6 +18,9 @@
         about: "About",
         tutorial: "Tutorial",
         shop: "shop",
+        playerName:"Player Name",
+        playerNameDesc: "Type your name for the leaderboards.",
+        
         
     },
     tutorial: {
@@ -110,6 +113,8 @@ var StringResources_pt = {
         about: "Sobre",
         tutorial: "Tutorial",
         shop: "Compras",
+        playerName: "Nome do Jogador",
+        playerNameDesc: "Digite seu nome para aparecer no placar dos melhores",
 
     },
     tutorial: {
