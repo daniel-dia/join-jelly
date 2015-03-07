@@ -32,12 +32,10 @@
         return 0;
     }
 
-
     public setPlayerName(userName: string) {
         UserData.saveValue("username", userName);
     }
-
-
+    
     public getPlayerName(): string {
         var un = UserData.loadValue("username");
         if (!un) un = "Anonymous";
