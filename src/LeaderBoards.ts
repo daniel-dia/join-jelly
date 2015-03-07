@@ -28,14 +28,6 @@ module joinjelly {
             });
         }
 
-        public static addRandomData() {
-            for (var t = 0; t < 40; t++) {
-                var scpre = Math.floor(Math.random() * 50000);
-                var name = "DIA " + Math.floor(Math.random() * 50); 
-                this.setScore(scpre, name,true);
-            }
-        }
-
         // saves scores to the cloud
         public static setScore(score:number, name:string, newId:boolean=false) {
             // if device id is already saved

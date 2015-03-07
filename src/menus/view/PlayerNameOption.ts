@@ -28,7 +28,7 @@
             playerName.x= -450
             playerName.y = -60;
 
-            var playerNameEdit = new gameui.ImageButton("BtEdit", () => { JoinJelly.userData.promptPlayerName(() => { 
+            var playerNameEdit = new gameui.ImageButton("BtSettings", () => { JoinJelly.userData.promptPlayerName(() => { 
                 this.playerName.text = JoinJelly.userData.getPlayerName(); ;
             })});
             this.addChild(playerNameEdit);

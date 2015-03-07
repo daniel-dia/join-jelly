@@ -373,8 +373,16 @@
 
             // save high score
             if (score > JoinJelly.userData.getHighScore()) {
-                AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
-                JoinJelly.userData.setScore(score);
+
+                if (JoinJelly.userData.getPlayerName() == "")
+                    JoinJelly.userData.promptPlayerName(() => {
+                        AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
+                        JoinJelly.userData.setScore(score);
+                    });
+                else {
+                    AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
+                    JoinJelly.userData.setScore(score);
+                }
             }
 
             // remove other ui items

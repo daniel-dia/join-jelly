@@ -3717,8 +3717,15 @@ var joinjelly;
                 this.board.releaseAll();
                 // save high score
                 if (score > joinjelly.JoinJelly.userData.getHighScore()) {
-                    joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
-                    joinjelly.JoinJelly.userData.setScore(score);
+                    if (joinjelly.JoinJelly.userData.getPlayerName() == "")
+                        joinjelly.JoinJelly.userData.promptPlayerName(function () {
+                            joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
+                            joinjelly.JoinJelly.userData.setScore(score);
+                        });
+                    else {
+                        joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
+                        joinjelly.JoinJelly.userData.setScore(score);
+                    }
                 }
                 // remove other ui items
                 this.gameHeader.mouseEnabled = false;
@@ -4753,7 +4760,7 @@ var joinjelly;
             var fps = 60;
             if (window.location.search == "?test")
                 fps = 30;
-            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps, true);
+            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             // verify test
@@ -4974,13 +4981,6 @@ var joinjelly;
                 callback(queryResults);
             });
         };
-        AzureLeaderBoards.addRandomData = function () {
-            for (var t = 0; t < 40; t++) {
-                var scpre = Math.floor(Math.random() * 50000);
-                var name = "DIA " + Math.floor(Math.random() * 50);
-                this.setScore(scpre, name, true);
-            }
-        };
         // saves scores to the cloud
         AzureLeaderBoards.setScore = function (score, name, newId) {
             var _this = this;
@@ -5154,7 +5154,7 @@ var joinjelly;
                     this.playerName = playerName;
                     playerName.x = -450;
                     playerName.y = -60;
-                    var playerNameEdit = new gameui.ImageButton("BtEdit", function () {
+                    var playerNameEdit = new gameui.ImageButton("BtSettings", function () {
                         joinjelly.JoinJelly.userData.promptPlayerName(function () {
                             _this.playerName.text = joinjelly.JoinJelly.userData.getPlayerName();
                             ;

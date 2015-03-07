@@ -29,7 +29,7 @@ module joinjelly {
             var fps = 60;
             if (window.location.search == "?test") fps = 30;
 
-            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight,fps,true);
+            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight,fps);
             
             
             var loadingScreen = new joinjelly.menus.Loading();
