@@ -31,10 +31,10 @@ module joinjelly.menus {
             else                 this.imagePath = "assets/images_" + assetscale + "x/";
              
             
-            //createjs.Sound.registerManifest(this.audioManifest,);
+            createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
 
-            var imageQueue = gameui.ImagesManager.loadAssets(this.audioManifest, "/assets/sounds/");
-            imageQueue.loadManifest(this.imageManifest, true,this.imagePath);
+            var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest,this.imagePath );
+            //imageQueue.loadManifest(this.audioManifest, true, "assets/sounds/");
 
             //set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";

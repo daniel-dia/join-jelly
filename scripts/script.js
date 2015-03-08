@@ -152,7 +152,7 @@ var gameui;
             this.bitmapFontSpriteSheetDataArray = new Array();
             this.assetsManifest = assetsManifest;
             //creates a preload queue
-            this.loader = new createjs.LoadQueue(true);
+            this.loader = new createjs.LoadQueue(false);
             //install sound plug-in for sounds format
             this.loader.installPlugin(createjs.Sound);
             //create eventListeners
@@ -1312,9 +1312,9 @@ var joinjelly;
                     this.imagePath = "assets/images/";
                 else
                     this.imagePath = "assets/images_" + assetscale + "x/";
-                //createjs.Sound.registerManifest(this.audioManifest,);
-                var imageQueue = gameui.ImagesManager.loadAssets(this.audioManifest, "/assets/sounds/");
-                imageQueue.loadManifest(this.imageManifest, true, this.imagePath);
+                createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
+                var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest, this.imagePath);
+                //imageQueue.loadManifest(this.audioManifest, true, "assets/sounds/");
                 //set default sound button
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 //load font
