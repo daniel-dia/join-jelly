@@ -4972,11 +4972,15 @@ var joinjelly;
         }
         AzureLeaderBoards.init = function () {
             this.deviceId = localStorage.getItem("deviceId");
+            if (!WindowsAzure)
+                return;
             this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
             this.table = this.client.getTable("LeaderBoards");
         };
         // get all scores wall
         AzureLeaderBoards.getScoreNames = function (callback, count) {
+            if (!this.table)
+                return;
             this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
                 callback(queryResults);
             });
@@ -4985,23 +4989,23 @@ var joinjelly;
         AzureLeaderBoards.setScore = function (score, name, newId) {
             var _this = this;
             if (newId === void 0) { newId = false; }
+            if (!this.table)
+                return;
             // if device id is already saved
             if (this.deviceId && !newId) {
                 //update the current id
-                if (this.table)
-                    this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
             }
             else {
                 // insert a new id and get the device ID from server
-                if (this.table)
-                    this.table.insert({ name: name, score: score, gameid: this.gameId }).then(function (result) {
-                        if (result.id) {
-                            //get id from server
-                            _this.deviceId = result.id;
-                            //save local storage
-                            localStorage.setItem("deviceId", _this.deviceId);
-                        }
-                    });
+                this.table.insert({ name: name, score: score, gameid: this.gameId }).then(function (result) {
+                    if (result.id) {
+                        //get id from server
+                        _this.deviceId = result.id;
+                        //save local storage
+                        localStorage.setItem("deviceId", _this.deviceId);
+                    }
+                });
             }
         };
         AzureLeaderBoards.host = "https://dialeaderboards.azure-mobile.net";

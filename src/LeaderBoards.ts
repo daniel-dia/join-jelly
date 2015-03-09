@@ -1,6 +1,6 @@
 ﻿declare var WindowsAzure: any;
 module joinjelly {
- 
+
     export class AzureLeaderBoards {
 
         private static deviceId: string;
@@ -17,36 +17,39 @@ module joinjelly {
 
         public static init() {
             this.deviceId = localStorage.getItem("deviceId");
-            this.client = new WindowsAzure.MobileServiceClient(this.host,this.key);
+            if (!WindowsAzure) return;
+            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
             this.table = this.client.getTable("LeaderBoards");
         }
 
         // get all scores wall
-        public static getScoreNames(callback:(result:Array<any>)=>void,count) {
+        public static getScoreNames(callback: (result: Array<any>) => void, count) {
+            if (!this.table) return;
             this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
                 callback(queryResults);
             });
         }
 
         // saves scores to the cloud
-        public static setScore(score:number, name:string, newId:boolean=false) {
+        public static setScore(score: number, name: string, newId: boolean= false) {
+
+            if (!this.table) return;
+
             // if device id is already saved
-            if (this.deviceId  && !newId) {
+            if (this.deviceId && !newId) {
                 //update the current id
-                if (this.table)
-                    this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
             }
             else {
                 // insert a new id and get the device ID from server
-                if (this.table)
-                    this.table.insert({ name: name, score: score, gameid: this.gameId}).then((result) => {
-                        if (result.id) {
-                            //get id from server
-                            this.deviceId = result.id;
-                            //save local storage
-                            localStorage.setItem("deviceId", this.deviceId);
-                        }
-                    });
+                this.table.insert({ name: name, score: score, gameid: this.gameId }).then((result) => {
+                    if (result.id) {
+                        //get id from server
+                        this.deviceId = result.id;
+                        //save local storage
+                        localStorage.setItem("deviceId", this.deviceId);
+                    }
+                });
             }
         }
 
