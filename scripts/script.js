@@ -1372,7 +1372,7 @@ var joinjelly;
             this.content.addChild(lobby);
             // play button
             var button = new gameui.ImageButton("BtPlay", function () {
-                if (joinjelly.JoinJelly.userData.getHistory(histories.FIRSTPLAY))
+                if (joinjelly.JoinJelly.userData.getHistory(histories.TUTORIAL))
                     joinjelly.JoinJelly.startLevel();
                 else
                     joinjelly.JoinJelly.startTutorial();
