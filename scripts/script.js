@@ -1027,7 +1027,7 @@ var Analytics = (function () {
     Analytics.prototype.logEndGame = function (level, lastJelly, moves, time) {
         this.sendEvent("GameEnd", "Time:" + this.normalizeNumber(parseInt((time / 60000).toFixed())), 1, level);
         this.sendEvent("GameEnd", "Level:" + this.normalizeNumber(level), 1, level);
-        this.sendEvent("GameEnd", "LastJelly:" + this.log2(lastJelly), 1, level);
+        this.sendEvent("GameEnd", "LastJelly:" + this.normalizeNumber(this.log2(lastJelly)), 1, level);
     };
     Analytics.prototype.logWinGame = function (level, lastJelly, moves, time) {
         this.sendEvent("GameWin", "Time:" + this.normalizeNumber(parseInt((time / 60000).toFixed())), 1, level);

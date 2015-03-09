@@ -94,7 +94,7 @@ class Analytics {
     public logEndGame(level: number, lastJelly: number, moves: number, time: number) {
         this.sendEvent("GameEnd", "Time:" + this.normalizeNumber(parseInt((time / 60000).toFixed())),1, level)
         this.sendEvent("GameEnd", "Level:"+ this.normalizeNumber(level),1, level)
-        this.sendEvent("GameEnd", "LastJelly:"+ this.log2(lastJelly),1, level)
+        this.sendEvent("GameEnd", "LastJelly:" + this.normalizeNumber(this.log2(lastJelly)),1, level)
     }
 
     public logWinGame(level: number, lastJelly: number, moves: number, time: number) {
