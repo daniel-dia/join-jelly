@@ -371,20 +371,6 @@
             // releases all jellys
             this.board.releaseAll();
 
-            // save high score
-            if (score > JoinJelly.userData.getHighScore()) {
-
-                if (JoinJelly.userData.getPlayerName() == "")
-                    JoinJelly.userData.promptPlayerName(() => {
-                        AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
-                        JoinJelly.userData.setScore(score);
-                    });
-                else {
-                    AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
-                    JoinJelly.userData.setScore(score);
-                }
-            }
-
             // remove other ui items
             this.gameHeader.mouseEnabled = false;
             this.gameFooter.mouseEnabled = false;
@@ -408,6 +394,20 @@
 
                 this.updateFooter();
                 createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
+
+                // save high score
+                if (score > JoinJelly.userData.getHighScore()) {
+
+                    if (JoinJelly.userData.getPlayerName() == "")
+                        JoinJelly.userData.promptPlayerName(() => {
+                            AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
+                            JoinJelly.userData.setScore(score);
+                        });
+                    else {
+                        AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
+                        JoinJelly.userData.setScore(score);
+                    }
+                }
 
             }, 1200);
             this.finishMenu.setValues(score, highScore, highJelly, message);
@@ -565,7 +565,6 @@
             if (item) this.animateItemFromTile(target, item);
      
             // update score
-            this.userData.setScore(this.score);
             this.userData.setLastJelly(newValue);
             this.updateInterfaceInfos();
 

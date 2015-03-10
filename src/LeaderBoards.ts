@@ -25,9 +25,13 @@ module joinjelly {
         // get all scores wall
         public static getScoreNames(callback: (result: Array<any>) => void, count) {
             if (!this.table) return;
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
-                callback(queryResults);
-            });
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(
+                (queryResults, a2) => {
+                    alert(window.location.hostname);
+                    alert(window.location);
+                    alert("result: " + JSON.stringify(queryResults));
+                    callback(queryResults);
+                });
         }
 
         // saves scores to the cloud

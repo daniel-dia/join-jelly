@@ -3715,18 +3715,6 @@ var joinjelly;
                 this.board.setAlarm(false);
                 // releases all jellys
                 this.board.releaseAll();
-                // save high score
-                if (score > joinjelly.JoinJelly.userData.getHighScore()) {
-                    if (joinjelly.JoinJelly.userData.getPlayerName() == "")
-                        joinjelly.JoinJelly.userData.promptPlayerName(function () {
-                            joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
-                            joinjelly.JoinJelly.userData.setScore(score);
-                        });
-                    else {
-                        joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
-                        joinjelly.JoinJelly.userData.setScore(score);
-                    }
-                }
                 // remove other ui items
                 this.gameHeader.mouseEnabled = false;
                 this.gameFooter.mouseEnabled = false;
@@ -3746,6 +3734,18 @@ var joinjelly;
                     _this.gameFooter.highlight(joinjelly.Items.REVIVE);
                     _this.updateFooter();
                     createjs.Tween.get(_this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
+                    // save high score
+                    if (score > joinjelly.JoinJelly.userData.getHighScore()) {
+                        if (joinjelly.JoinJelly.userData.getPlayerName() == "")
+                            joinjelly.JoinJelly.userData.promptPlayerName(function () {
+                                joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
+                                joinjelly.JoinJelly.userData.setScore(score);
+                            });
+                        else {
+                            joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
+                            joinjelly.JoinJelly.userData.setScore(score);
+                        }
+                    }
                 }, 1200);
                 this.finishMenu.setValues(score, highScore, highJelly, message);
                 // log event
@@ -3865,7 +3865,6 @@ var joinjelly;
                 if (item)
                     this.animateItemFromTile(target, item);
                 // update score
-                this.userData.setScore(this.score);
                 this.userData.setLastJelly(newValue);
                 this.updateInterfaceInfos();
                 // log HighJelly Event
@@ -4981,7 +4980,10 @@ var joinjelly;
         AzureLeaderBoards.getScoreNames = function (callback, count) {
             if (!this.table)
                 return;
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults, a2) {
+                alert(window.location.hostname);
+                alert(window.location);
+                alert("result: " + JSON.stringify(queryResults));
                 callback(queryResults);
             });
         };
