@@ -380,14 +380,13 @@
     <Content Include="assets\style.css" />
     <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\EaselJS Editor.js" />
+    <Content Include="scripts\MobileServices.Web-1.2.5.min.js" />
     <Content Include="scripts\Plataform.js" />
     <Content Include="test.html" />
     <Content Include="index.html" />
     <Content Include="scripts\BitmapScalePath.js" />
-    <Content Include="scripts\createjs-2013.12.12.min.js" />
     <Content Include="scripts\createjs-2014.12.12.min.js" />
     <Content Include="scripts\fontConverter.js" />
-    <Content Include="scripts\jquery-2.1.1.min.js" />
     <Content Include="scripts\md5.js" />
     <TypeScriptCompile Include="gameui\WpAudioManager.ts" />
     <TypeScriptCompile Include="gameui\AudioManager.ts" />

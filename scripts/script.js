@@ -4971,7 +4971,7 @@ var joinjelly;
         }
         AzureLeaderBoards.init = function () {
             this.deviceId = localStorage.getItem("deviceId");
-            if (!WindowsAzure)
+            if (typeof WindowsAzure == 'undefined')
                 return;
             this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
             this.table = this.client.getTable("LeaderBoards");
