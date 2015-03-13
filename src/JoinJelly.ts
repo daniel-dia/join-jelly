@@ -24,14 +24,14 @@ module joinjelly {
             var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt": StringResources = StringResources_pt; break;
-            } 
+            }
 
             var fps = 60;
-            if (window.location.search == "?test") fps = 30;
+            if (window.location.search == "?test") fps = 10;
 
-            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight,fps);
-            
-            
+            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
+
+
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             // verify test
@@ -39,11 +39,9 @@ module joinjelly {
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
                 if (window.location.search == "?test") {
-                    var gs = new gameplay.ExplodeBricks(this.userData);
-                    this.gameScreen.switchScreen(gs);
-                    gs.selfPeformanceTest(false); 
+                    this.startTest();
+                    this.gameScreen.
                 } else {
-
                     var loadedGame = this.userData.loadGame();
                     if (loadedGame)
                         joinjelly.JoinJelly.startLevel(loadedGame);
@@ -51,6 +49,12 @@ module joinjelly {
                         JoinJelly.showMainMenu();
                 }
             }
+        }
+
+        public static startTest() {
+            var gs = new gameplay.ExplodeBricks(this.userData);
+            this.gameScreen.switchScreen(gs);
+            gs.selfPeformanceTest(false);
         }
 
         public static showAboutScreen() {

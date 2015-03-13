@@ -977,7 +977,7 @@ var Analytics = (function () {
         return this.sessionId;
     };
     Analytics.prototype.getBuild = function () {
-        return "alpha7";
+        return "alpha 72";
     };
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, level, x, y) {
         var game_key = '8c544aeba45e500f2af6e9b1beee996a';
@@ -4211,12 +4211,16 @@ var joinjelly;
                 var _this = this;
                 if (fast)
                     this.initialInterval = 200;
-                setInterval(function () {
-                    document.title = (_this.initialInterval + " " + _this.finalInterval + " " + _this.easeInterval + " " + _this.getTimeInterval(_this.level, _this.initialInterval, _this.finalInterval, _this.easeInterval));
+                var interval = setInterval(function () {
+                    // document.title = (this.initialInterval + " " + this.finalInterval + " " + this.easeInterval + " " + this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
                     if (_this.gamestate == 2 /* paused */)
                         return;
                     _this.useRevive();
                     _this.useFast(true);
+                    if (_this.gamestate == 5 /* win */) {
+                        clearInterval(interval);
+                        joinjelly.JoinJelly.startTest();
+                    }
                 }, 250);
             };
             return GamePlayScreen;
@@ -4770,9 +4774,7 @@ var joinjelly;
             // verifies if there is a savedGame
             loadingScreen.loaded = function () {
                 if (window.location.search == "?test") {
-                    var gs = new joinjelly.gameplay.ExplodeBricks(_this.userData);
-                    _this.gameScreen.switchScreen(gs);
-                    gs.selfPeformanceTest(false);
+                    _this.startTest();
                 }
                 else {
                     var loadedGame = _this.userData.loadGame();
@@ -4782,6 +4784,11 @@ var joinjelly;
                         JoinJelly.showMainMenu();
                 }
             };
+        };
+        JoinJelly.startTest = function () {
+            var gs = new joinjelly.gameplay.ExplodeBricks(this.userData);
+            this.gameScreen.switchScreen(gs);
+            gs.selfPeformanceTest(false);
         };
         JoinJelly.showAboutScreen = function () {
             //not Implemented

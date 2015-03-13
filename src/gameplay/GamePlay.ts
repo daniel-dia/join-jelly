@@ -977,13 +977,18 @@
         public selfPeformanceTest(fast?: boolean) {
 
             if (fast) this.initialInterval = 200;
-
-            setInterval(() => {
-                document.title = (this.initialInterval + " " + this.finalInterval + " " + this.easeInterval + " " + this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
+            var interval = setInterval(() => {
+                // document.title = (this.initialInterval + " " + this.finalInterval + " " + this.easeInterval + " " + this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
                 if (this.gamestate == GameState.paused) return;
                 this.useRevive();
                 this.useFast(true);
 
+                if (this.gamestate == GameState.win) {
+                    clearInterval(interval);
+                    JoinJelly.startTest();
+                }
+
+                
             }, 250);
         }
 

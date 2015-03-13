@@ -1,5 +1,4 @@
-﻿declare var $;
-declare var CryptoJS;
+﻿declare var CryptoJS;
 
 class Analytics {
 
@@ -29,7 +28,7 @@ class Analytics {
     }
 
     private getBuild(): string {
-        return "alpha7";
+        return "alpha 72";
     }
 
     private sendEvent(eventId: string, subEventId, value: number, level?: number, x?: number, y?: number) {
@@ -60,7 +59,7 @@ class Analytics {
     }
 
     private postAjax(url: string, data: any, header_auth_hex: string) {
-
+   
         var xhr: XMLHttpRequest = new XMLHttpRequest();
         xhr.open("POST", url, true)
 
