@@ -1,2 +1,2 @@
-del jj.zip
-"C:\Program Files\7-Zip\7z" a JJ.zip index.html assets scripts 
+del JoinJelly.zip 
+"C:\Program Files\7-Zip\7z" a JoinJelly.zip index.html assets scripts 
