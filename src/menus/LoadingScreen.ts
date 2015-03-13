@@ -85,7 +85,6 @@ module joinjelly.menus {
             { id: "bonus_border", src: "bonus_border.png" },
             { id: "bonus_icon", src: "bonus_icon.png" },
             { id: "font", src: "font.png" },
-            { id: "font2", src: "font2.png" },
             { id: "e1", src: "e1.png" },
             { id: "e128", src: "e128.png" },
             { id: "e16", src: "e16.png" },
