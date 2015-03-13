@@ -26,11 +26,11 @@ module joinjelly {
         public static getScoreNames(callback: (result: Array<any>) => void, count) {
             if (!this.table) return;
             this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(
-                (queryResults, a2) => {
-                    alert(window.location.hostname);
-                    alert(window.location);
-                    alert("result: " + JSON.stringify(queryResults));
-                    callback(queryResults);
+                (queryResults) => {
+                      callback(queryResults);
+                },
+                (queryResults) => {
+                    callback(null);
                 });
         }
 

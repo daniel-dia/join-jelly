@@ -20,7 +20,7 @@
         shop: "shop",
         playerName:"Player Name",
         playerNameDesc: "Type your name for the leaderboards.",
-        
+        error:"Sorry, Something went wrong",
         
     },
     tutorial: {
@@ -115,7 +115,7 @@ var StringResources_pt = {
         shop: "Compras",
         playerName: "Nome do Jogador",
         playerNameDesc: "Digite seu nome para aparecer no placar dos melhores",
-
+        error: "Desculpe, algo deu errado.",
     },
     tutorial: {
         msgheplme: "Me ajude a desenvolver\nJunte outra geleia comigo",

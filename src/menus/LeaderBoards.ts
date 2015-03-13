@@ -14,9 +14,21 @@
             loading.x = defaultWidth / 2;
             loading.y = 800;
 
+            var error = gameui.ImagesManager.getBitmapText(StringResources.menus.error,"debussy");
+            this.scrollableContent.addChild(error);
+            error.regX = error.getBounds().width / 2;
+            error.x = defaultWidth / 2;
+            error.y = 800;
+            error.visible = false;
+
             this.loadLeaderBoards((results: Array<any>) => {
-                this.fillLeaderBoards(results);
                 loading.visible = false;
+
+                if (results != null) 
+                    this.fillLeaderBoards(results);
+                else 
+                    error.visible = true;
+                
             });
         }
 
