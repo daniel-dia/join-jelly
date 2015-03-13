@@ -624,8 +624,7 @@
             itemDO.mouseEnabled = false;
             itemDO.regX = itemDO.getBounds().width / 2;
             itemDO.regY = itemDO.getBounds().height / 2;
-            this.content.addChild(itemDO);
-
+           
             // animate item to footer
             var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
             var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
@@ -637,13 +636,14 @@
                 xf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).x;
                 yf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).y;
             }
-
+            itemDO.alpha = 0;
             createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1}, 400, createjs.Ease.quadInOut).to({x:xf,y:yf}, 1000, createjs.Ease.quadInOut).call(() => { 
                 this.content.removeChild(itemDO);
                 this.updateFooter();
             });
-
-
+            
+            this.content.addChild(itemDO);
+            
         }
 
         // animate a score in the board
@@ -653,16 +653,17 @@
             var textDO = gameui.ImagesManager.getBitmapText(score.toString(), "debussy");
             textDO.regX = textDO.getBounds().width / 2;
             textDO.mouseEnabled = false;
-            this.content.addChild(textDO);
+           
 
             var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
             var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
-                        
+            textDO.alpha = 0;
             createjs.Tween.get(textDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi-170, alpha: 1 }, 400, createjs.Ease.quadOut).to({alpha:0},400).call(() => {
                 this.content.removeChild(textDO);
                 delete textDO;
             });
-
+            
+            this.content.addChild(textDO);
         }
 
         // #endregion

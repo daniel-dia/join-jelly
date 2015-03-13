@@ -3917,7 +3917,6 @@ var joinjelly;
                 itemDO.mouseEnabled = false;
                 itemDO.regX = itemDO.getBounds().width / 2;
                 itemDO.regY = itemDO.getBounds().height / 2;
-                this.content.addChild(itemDO);
                 // animate item to footer
                 var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
                 var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
@@ -3929,10 +3928,12 @@ var joinjelly;
                     xf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).x;
                     yf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).y;
                 }
+                itemDO.alpha = 0;
                 createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(function () {
                     _this.content.removeChild(itemDO);
                     _this.updateFooter();
                 });
+                this.content.addChild(itemDO);
             };
             // animate a score in the board
             GamePlayScreen.prototype.animateScoreFromTile = function (tile, score) {
@@ -3941,13 +3942,14 @@ var joinjelly;
                 var textDO = gameui.ImagesManager.getBitmapText(score.toString(), "debussy");
                 textDO.regX = textDO.getBounds().width / 2;
                 textDO.mouseEnabled = false;
-                this.content.addChild(textDO);
                 var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
                 var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
+                textDO.alpha = 0;
                 createjs.Tween.get(textDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 170, alpha: 1 }, 400, createjs.Ease.quadOut).to({ alpha: 0 }, 400).call(function () {
                     _this.content.removeChild(textDO);
                     delete textDO;
                 });
+                this.content.addChild(textDO);
             };
             // #endregion
             // #region =================================== Items =========================================================
@@ -4766,7 +4768,7 @@ var joinjelly;
             }
             var fps = 60;
             if (window.location.search == "?test")
-                fps = 30;
+                fps = 10;
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
@@ -4853,128 +4855,44 @@ window.onload = function () {
 //module gameui {
 var joinjelly;
 (function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var ItemsFooter = (function (_super) {
-                __extends(ItemsFooter, _super);
-                function ItemsFooter(items) {
-                    _super.call(this);
-                    this.itemSize = 270;
-                    this.itemsButtons = [];
-                    this.addObjects();
-                    this.setItems(items);
+    var menus;
+    (function (menus) {
+        var LeaderBoards = (function (_super) {
+            __extends(LeaderBoards, _super);
+            function LeaderBoards() {
+                var _this = this;
+                _super.call(this, StringResources.menus.leaderboards);
+                this.maxScroll = 1700;
+                var loading = new joinjelly.view.LoadingBall();
+                this.scrollableContent.addChild(loading);
+                loading.x = defaultWidth / 2;
+                loading.y = 800;
+                this.loadLeaderBoards(function (results) {
+                    _this.fillLeaderBoards(results);
+                    loading.visible = false;
+                });
+            }
+            LeaderBoards.prototype.fillLeaderBoards = function (results) {
+                var space = 200;
+                var start = 400;
+                for (var r in results) {
+                    var i = new menus.view.LeaderBoardItem(results[r].score, results[r].name, parseInt(r) + 1);
+                    i.x = defaultWidth / 2;
+                    i.y = start + space * r;
+                    this.scrollableContent.addChild(i);
                 }
-                // add all button items
-                ItemsFooter.prototype.setItems = function (items) {
-                    var itemSize = this.itemSize;
-                    if (items.length >= 5)
-                        itemSize = 200;
-                    // clean all buttons
-                    this.cleanButtons();
-                    if (!items)
-                        return;
-                    for (var i in items)
-                        this.addItem(items[i], i);
-                    for (var i in items) {
-                        //set button position
-                        this.itemsButtons[items[i]].y = -150;
-                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
-                    }
-                };
-                // clean buttons
-                ItemsFooter.prototype.cleanButtons = function () {
-                    for (var i in this.itemsButtons)
-                        this.removeChild(this.itemsButtons[i]);
-                    this.itemsButtons = [];
-                };
-                // add objects to the footer
-                ItemsFooter.prototype.addObjects = function () {
-                    //add background
-                    var bg = gameui.ImagesManager.getBitmap("footer");
-                    this.addChild(bg);
-                    bg.y = -162;
-                    bg.x = (defaultWidth - 1161) / 2;
-                    // add Lucky clover
-                    // TODO verify with item
-                    var lucky = gameui.ImagesManager.getBitmap("lucky");
-                    this.addChild(lucky);
-                    lucky.y = -210;
-                    lucky.x = 1285;
-                    this.lucky = lucky;
-                    // lucky.visible = false;
-                    this.gameMessage = new view.TutoralMessage();
-                    this.addChild(this.gameMessage);
-                };
-                //add a single item button to the footer
-                ItemsFooter.prototype.addItem = function (item, pos) {
-                    var _this = this;
-                    //create button
-                    var bt = new view.ItemButton(item);
-                    this.addChild(bt);
-                    this.itemsButtons[item] = bt;
-                    //add event listener
-                    bt.addEventListener("click", function () {
-                        _this.dispatchEvent({ type: "useitem", item: item });
-                    });
-                };
-                // get a item display object
-                ItemsFooter.prototype.getItemButton = function (item) {
-                    return this.itemsButtons[item];
-                };
-                // set item ammount
-                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
-                    if (this.itemsButtons[item])
-                        this.itemsButtons[item].setAmmount(ammount);
-                    if (item == "lucky")
-                        this.lucky.visible = (ammount > 0);
-                };
-                // show item message
-                ItemsFooter.prototype.showMessage = function (itemId, message) {
-                    this.gameMessage.x = this.getItemButton(itemId).x;
-                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
-                    this.gameMessage.show(message);
-                };
-                // hide message
-                ItemsFooter.prototype.hideMessage = function () {
-                    this.gameMessage.fadeOut();
-                };
-                // bounces an item
-                ItemsFooter.prototype.highlight = function (item) {
-                    this.unHighlightAll();
-                    this.getItemButton(item).highLight();
-                };
-                // stop bouncing an item
-                ItemsFooter.prototype.unHighlightAll = function () {
-                    for (var i in this.itemsButtons)
-                        this.itemsButtons[i].unHighlight();
-                };
-                // lock an item
-                ItemsFooter.prototype.lockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    if (b)
-                        b.lock();
-                };
-                //unlock an item
-                ItemsFooter.prototype.unlockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    b.unlock();
-                };
-                ItemsFooter.prototype.lockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].lock();
-                };
-                ItemsFooter.prototype.unlockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].unlock();
-                };
-                return ItemsFooter;
-            })(createjs.Container);
-            view.ItemsFooter = ItemsFooter;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+                this.maxScroll = start + results.length * space;
+            };
+            LeaderBoards.prototype.loadLeaderBoards = function (callback) {
+                joinjelly.AzureLeaderBoards.getScoreNames(callback, 20);
+            };
+            return LeaderBoards;
+        })(joinjelly.ScrollablePage);
+        menus.LeaderBoards = LeaderBoards;
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
+//module joinjelly.menus {
+//    export class ScoreWall extends ScrollablePage {
 var joinjelly;
 (function (joinjelly) {
     var AzureLeaderBoards = (function () {
@@ -5028,46 +4946,6 @@ var joinjelly;
     })();
     joinjelly.AzureLeaderBoards = AzureLeaderBoards;
 })(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var LeaderBoards = (function (_super) {
-            __extends(LeaderBoards, _super);
-            function LeaderBoards() {
-                var _this = this;
-                _super.call(this, StringResources.menus.leaderboards);
-                this.maxScroll = 1700;
-                var loading = new joinjelly.view.LoadingBall();
-                this.scrollableContent.addChild(loading);
-                loading.x = defaultWidth / 2;
-                loading.y = 800;
-                this.loadLeaderBoards(function (results) {
-                    _this.fillLeaderBoards(results);
-                    loading.visible = false;
-                });
-            }
-            LeaderBoards.prototype.fillLeaderBoards = function (results) {
-                var space = 200;
-                var start = 400;
-                for (var r in results) {
-                    var i = new menus.view.LeaderBoardItem(results[r].score, results[r].name, parseInt(r) + 1);
-                    i.x = defaultWidth / 2;
-                    i.y = start + space * r;
-                    this.scrollableContent.addChild(i);
-                }
-                this.maxScroll = start + results.length * space;
-            };
-            LeaderBoards.prototype.loadLeaderBoards = function (callback) {
-                joinjelly.AzureLeaderBoards.getScoreNames(callback, 20);
-            };
-            return LeaderBoards;
-        })(joinjelly.ScrollablePage);
-        menus.LeaderBoards = LeaderBoards;
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-//module joinjelly.menus {
-//    export class ScoreWall extends ScrollablePage {
 var joinjelly;
 (function (joinjelly) {
     var menus;
@@ -5263,5 +5141,129 @@ var joinjelly;
         })(createjs.Container);
         view.Effect = Effect;
     })(view = joinjelly.view || (joinjelly.view = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var ItemsFooter = (function (_super) {
+                __extends(ItemsFooter, _super);
+                function ItemsFooter(items) {
+                    _super.call(this);
+                    this.itemSize = 270;
+                    this.itemsButtons = [];
+                    this.addObjects();
+                    this.setItems(items);
+                }
+                // add all button items
+                ItemsFooter.prototype.setItems = function (items) {
+                    var itemSize = this.itemSize;
+                    if (items.length >= 5)
+                        itemSize = 200;
+                    // clean all buttons
+                    this.cleanButtons();
+                    if (!items)
+                        return;
+                    for (var i in items)
+                        this.addItem(items[i], i);
+                    for (var i in items) {
+                        //set button position
+                        this.itemsButtons[items[i]].y = -150;
+                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
+                    }
+                };
+                // clean buttons
+                ItemsFooter.prototype.cleanButtons = function () {
+                    for (var i in this.itemsButtons)
+                        this.removeChild(this.itemsButtons[i]);
+                    this.itemsButtons = [];
+                };
+                // add objects to the footer
+                ItemsFooter.prototype.addObjects = function () {
+                    //add background
+                    var bg = gameui.ImagesManager.getBitmap("footer");
+                    this.addChild(bg);
+                    bg.y = -162;
+                    bg.x = (defaultWidth - 1161) / 2;
+                    // add Lucky clover
+                    // TODO verify with item
+                    var lucky = gameui.ImagesManager.getBitmap("lucky");
+                    this.addChild(lucky);
+                    lucky.y = -210;
+                    lucky.x = 1285;
+                    this.lucky = lucky;
+                    // lucky.visible = false;
+                    this.gameMessage = new view.TutoralMessage();
+                    this.addChild(this.gameMessage);
+                };
+                //add a single item button to the footer
+                ItemsFooter.prototype.addItem = function (item, pos) {
+                    var _this = this;
+                    //create button
+                    var bt = new view.ItemButton(item);
+                    this.addChild(bt);
+                    this.itemsButtons[item] = bt;
+                    //add event listener
+                    bt.addEventListener("click", function () {
+                        _this.dispatchEvent({ type: "useitem", item: item });
+                    });
+                };
+                // get a item display object
+                ItemsFooter.prototype.getItemButton = function (item) {
+                    return this.itemsButtons[item];
+                };
+                // set item ammount
+                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
+                    if (this.itemsButtons[item])
+                        this.itemsButtons[item].setAmmount(ammount);
+                    if (item == "lucky")
+                        this.lucky.visible = (ammount > 0);
+                };
+                // show item message
+                ItemsFooter.prototype.showMessage = function (itemId, message) {
+                    this.gameMessage.x = this.getItemButton(itemId).x;
+                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
+                    this.gameMessage.show(message);
+                };
+                // hide message
+                ItemsFooter.prototype.hideMessage = function () {
+                    this.gameMessage.fadeOut();
+                };
+                // bounces an item
+                ItemsFooter.prototype.highlight = function (item) {
+                    this.unHighlightAll();
+                    this.getItemButton(item).highLight();
+                };
+                // stop bouncing an item
+                ItemsFooter.prototype.unHighlightAll = function () {
+                    for (var i in this.itemsButtons)
+                        this.itemsButtons[i].unHighlight();
+                };
+                // lock an item
+                ItemsFooter.prototype.lockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    if (b)
+                        b.lock();
+                };
+                //unlock an item
+                ItemsFooter.prototype.unlockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    b.unlock();
+                };
+                ItemsFooter.prototype.lockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].lock();
+                };
+                ItemsFooter.prototype.unlockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].unlock();
+                };
+                return ItemsFooter;
+            })(createjs.Container);
+            view.ItemsFooter = ItemsFooter;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map

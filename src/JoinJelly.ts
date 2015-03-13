@@ -39,8 +39,7 @@ module joinjelly {
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
                 if (window.location.search == "?test") {
-                    this.startTest();
-                    this.gameScreen.
+                    this.startTest(); 
                 } else {
                     var loadedGame = this.userData.loadGame();
                     if (loadedGame)
