@@ -1229,7 +1229,6 @@ var joinjelly;
                     { id: "BtOk", src: "BtOk.png" },
                     { id: "BtShare", src: "BtShare.png" },
                     { id: "BtTextBg", src: "BtTextBg.png" },
-                    { id: "BtPlusMini", src: "BtPlusMini.png" },
                     { id: "BtMenu", src: "BtMenu.png" },
                     { id: "BtPlusMini", src: "BtPlusMini.png" },
                     { id: "GameOverBgJelly", src: "GameOverBgJelly.png" },
@@ -1237,12 +1236,15 @@ var joinjelly;
                     { id: "fxJoin", src: "fxJoin.png" },
                     { id: "fxEvolve", src: "fxEvolve.png" },
                     { id: "fxPart", src: "fxPart.png" },
-                    { id: "t0", src: "t0.png" },
-                    { id: "t1", src: "t1.png" },
-                    { id: "t2", src: "t2.png" },
-                    { id: "t3", src: "t3.png" },
-                    { id: "t4", src: "t4.png" },
-                    { id: "t5", src: "t5.png" },
+                    { id: "title_join_1", src: "title_join_1.png" },
+                    { id: "title_join_2", src: "title_join_2.png" },
+                    { id: "title_join_3", src: "title_join_3.png" },
+                    { id: "title_join_4", src: "title_join_4.png" },
+                    { id: "title_jelly_1", src: "title_jelly_1.png" },
+                    { id: "title_jelly_2", src: "title_jelly_2.png" },
+                    { id: "title_jelly_3", src: "title_jelly_3.png" },
+                    { id: "title_jelly_4", src: "title_jelly_4.png" },
+                    { id: "title_jelly_5", src: "title_jelly_5.png" },
                     { id: "FlyBG", src: "FlyBG.png" },
                     { id: "FlyGroup", src: "FlyGroup.png" },
                     { id: "footer", src: "footer.png" },
@@ -1320,8 +1322,6 @@ var joinjelly;
                 //load font
                 debussy = createSpriteSheetFromFont(debussyFont, this.imagePath);
                 gameui.ImagesManager.loadFontSpriteSheet("debussy", debussy);
-                debussyFontMini = createSpriteSheetFromFont(debussyFontMini, this.imagePath);
-                gameui.ImagesManager.loadFontSpriteSheet("debussymini", debussyFontMini);
                 var l = new menus.view.LoadingBar(this.imagePath);
                 this.content.addChild(l);
                 l.x = defaultWidth / 2;
@@ -1482,32 +1482,35 @@ var joinjelly;
                     this.createJelly();
                 }
                 GameTitle.prototype.createJoin = function () {
-                    var j = new joinjelly.view.JellyContainer();
-                    var i = gameui.ImagesManager.getBitmap("t0");
-                    j.addChild(i);
-                    j.y = 114;
-                    j.x = 325;
-                    this.addChild(j);
-                    j.alpha = 0;
-                    j.y = 0;
-                    createjs.Tween.get(j).to({ alpha: 1, y: 114 }, 600, createjs.Ease.quadOut);
+                    var xPositions = [0, 213, 442, 631, 839];
+                    var waits = [0, 1, 0, 0, 1];
+                    var side = [0, 1, 1, -1, -1];
+                    var images = [];
+                    for (var char = 1; char <= 4; char++) {
+                        var image = gameui.ImagesManager.getBitmap("title_join_" + char);
+                        image.regX = image.getBounds().width / 2;
+                        image.regY = image.getBounds().height / 2;
+                        image.y = 514 + image.getBounds().height / 2 - image.getBounds().height;
+                        image.x = xPositions[char];
+                        image.alpha = 0;
+                        this.addChild(image);
+                        images[char] = image;
+                        createjs.Tween.get(image).wait(waits[char] * 400).to({ alpha: 0, x: xPositions[char] - 300 * side[char], scaleX: 3, scaleY: 0.333 }).to({ alpha: 2, x: xPositions[char], scaleX: 1, scaleY: 1 }, 2000, createjs.Ease.elasticInOut);
+                    }
                 };
                 GameTitle.prototype.createJelly = function () {
-                    var xs = [213, 492, 761, 1039, 1278];
-                    for (var l = 1; l <= 5; l++) {
-                        var j = new joinjelly.view.JellyContainer();
-                        j.visible = false;
-                        var x = 0;
-                        //setTimeout(() => {
-                        j.executeAnimationIn();
-                        ///}, l * 200 + 600);
-                        var i = gameui.ImagesManager.getBitmap("t" + l);
-                        j.imageContainer.addChild(i);
-                        this.addChild(j);
-                        i.regX = i.getBounds().width / 2;
-                        i.regY = i.getBounds().height;
-                        j.x = xs[l - 1];
-                        j.y = 769;
+                    var xPositions = [213, 492, 761, 1039, 1278];
+                    for (var char = 1; char <= 5; char++) {
+                        var image = gameui.ImagesManager.getBitmap("title_jelly_" + char);
+                        image.regX = image.getBounds().width / 2;
+                        image.regY = image.getBounds().height;
+                        var jelly = new joinjelly.view.JellyContainer();
+                        jelly.visible = false;
+                        jelly.executeAnimationIn(char * 100 + 1600);
+                        jelly.imageContainer.addChild(image);
+                        this.addChild(jelly);
+                        jelly.x = xPositions[char - 1];
+                        jelly.y = 800;
                     }
                 };
                 return GameTitle;
@@ -2128,8 +2131,9 @@ var joinjelly;
                 this.addChild(this.imageContainer);
             }
             //#region animations =============================================
-            JellyContainer.prototype.executeAnimationIn = function () {
+            JellyContainer.prototype.executeAnimationIn = function (delay) {
                 var _this = this;
+                if (delay === void 0) { delay = 0; }
                 if (this.state == "in")
                     return;
                 this.state = "in";
@@ -2144,10 +2148,10 @@ var joinjelly;
                     alpha: 0,
                     scaleX: 0,
                 });
-                createjs.Tween.get(this.imageContainer).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut).call(function () {
+                createjs.Tween.get(this.imageContainer).wait(delay).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut).call(function () {
                     _this.executeIdle();
                 });
-                createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(function () {
+                createjs.Tween.get(this.shadowContainer).wait(delay).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(function () {
                     //this.executeIdle();
                 });
                 ;

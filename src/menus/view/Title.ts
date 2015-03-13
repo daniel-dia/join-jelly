@@ -9,42 +9,53 @@
         }
 
         private createJoin() {
-            var j = new joinjelly.view.JellyContainer();
-            var i = gameui.ImagesManager.getBitmap("t0");
-            j.addChild(i);
-            j.y = 114;
-            j.x = 325;
-            this.addChild(j);
+           
+            var xPositions = [0, 213, 442, 631, 839];
+            var waits = [0, 1, 0, 0, 1];
+            var side = [0, 1, 1, -1, -1];
 
-            j.alpha = 0;
-            j.y = 0;
-            createjs.Tween.get(j).to({ alpha: 1, y: 114 }, 600, createjs.Ease.quadOut);
+            var images = [];
+
+            for (var char = 1; char <= 4; char++) {
+                var image = gameui.ImagesManager.getBitmap("title_join_" + char);
+
+                image.regX = image.getBounds().width / 2;
+                image.regY = image.getBounds().height / 2;
+                image.y = 514 + image.getBounds().height / 2 - image.getBounds().height;
+                image.x = xPositions[char];
+                image.alpha = 0;
+                this.addChild(image);
+                images[char] = image;
+
+                createjs.Tween.get(image)
+                    .wait(waits[char]* 400)
+                    .to({ alpha: 0, x: xPositions[char] - 300 * side[char], scaleX: 3, scaleY: 0.333 })
+                    .to({ alpha: 2, x: xPositions[char], scaleX: 1, scaleY: 1 }, 2000, createjs.Ease.elasticInOut);
+
+            }
+
+       
+ 
         }
 
         private createJelly() {
-            var xs = [213, 492, 761, 1039, 1278];
+            var xPositions = [213, 492, 761, 1039, 1278];
 
-            for (var l = 1; l <= 5; l++) {
-                var j = new joinjelly.view.JellyContainer();
-                j.visible = false;
-                var x = 0;
-                //setTimeout(() => {
-                j.executeAnimationIn()
-                ///}, l * 200 + 600);
+            for (var char = 1; char <= 5; char++) {
 
-                var i = <createjs.Bitmap>gameui.ImagesManager.getBitmap("t" + l);
-                j.imageContainer.addChild(i);
-                this.addChild(j);
+                var image = <createjs.Bitmap>gameui.ImagesManager.getBitmap("title_jelly_" + char);
 
+                image.regX = image.getBounds().width / 2;
+                image.regY = image.getBounds().height;
 
-                i.regX = i.getBounds().width / 2;
-                i.regY = i.getBounds().height;
+                var jelly = new joinjelly.view.JellyContainer();
+                jelly.visible = false;
+                jelly.executeAnimationIn(char*100 + 1600)
+                jelly.imageContainer.addChild(image);
+                this.addChild(jelly);
 
-
-
-                j.x = xs[l - 1];
-                j.y = 769;
-
+                jelly.x = xPositions[char - 1];
+                jelly.y = 800;
             }
 
         }

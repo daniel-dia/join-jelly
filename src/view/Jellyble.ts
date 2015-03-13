@@ -18,7 +18,7 @@
 
         //#region animations =============================================
 
-        public executeAnimationIn() {
+        public executeAnimationIn(delay:number=0) {
             if (this.state == "in") return;
             this.state = "in";
 
@@ -37,13 +37,13 @@
                     scaleX: 0,
                 });
 
-            createjs.Tween.get(this.imageContainer)
+            createjs.Tween.get(this.imageContainer).wait(delay)
                 .to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut)
                 .to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut).call(() => {
                     this.executeIdle();
                 });
 
-            createjs.Tween.get(this.shadowContainer)
+            createjs.Tween.get(this.shadowContainer).wait(delay)
                 .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(() => {
                     //this.executeIdle();
                 });;

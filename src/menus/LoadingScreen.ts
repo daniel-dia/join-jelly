@@ -1,6 +1,5 @@
-﻿declare var debussy
-declare var debussyFont
-declare var debussyFontMini;
+﻿declare var debussy;
+declare var debussyFont;
 
 declare function createSpriteSheetFromFont(font: any, path: string);
 declare var WP;
@@ -43,9 +42,7 @@ module joinjelly.menus {
             debussy = createSpriteSheetFromFont(debussyFont, this.imagePath);
             gameui.ImagesManager.loadFontSpriteSheet("debussy", debussy);
 
-            debussyFontMini = createSpriteSheetFromFont(debussyFontMini, this.imagePath);
-            gameui.ImagesManager.loadFontSpriteSheet("debussymini", debussyFontMini);
-
+ 
 
 
             var l = new view.LoadingBar(this.imagePath);
@@ -149,8 +146,7 @@ module joinjelly.menus {
             { id: "BtBoard", src: "BtBoard.png" },
             { id: "BtOk", src: "BtOk.png" },
             { id: "BtShare", src: "BtShare.png" },
-            { id: "BtTextBg", src: "BtTextBg.png" },
-            { id: "BtPlusMini", src: "BtPlusMini.png" },
+            { id: "BtTextBg", src: "BtTextBg.png" }, 
             { id: "BtMenu", src: "BtMenu.png" },
             { id: "BtPlusMini", src: "BtPlusMini.png" },
 
@@ -160,13 +156,17 @@ module joinjelly.menus {
             { id: "fxJoin", src: "fxJoin.png" },
             { id: "fxEvolve", src: "fxEvolve.png" },
             { id: "fxPart", src: "fxPart.png" },
-           
-            { id: "t0", src: "t0.png" },
-            { id: "t1", src: "t1.png" },
-            { id: "t2", src: "t2.png" },
-            { id: "t3", src: "t3.png" },
-            { id: "t4", src: "t4.png" },
-            { id: "t5", src: "t5.png" },
+
+            { id: "title_join_1", src: "title_join_1.png" },
+            { id: "title_join_2", src: "title_join_2.png" },
+            { id: "title_join_3", src: "title_join_3.png" },
+            { id: "title_join_4", src: "title_join_4.png" },
+                 
+            { id: "title_jelly_1", src: "title_jelly_1.png" },
+            { id: "title_jelly_2", src: "title_jelly_2.png" },
+            { id: "title_jelly_3", src: "title_jelly_3.png" },
+            { id: "title_jelly_4", src: "title_jelly_4.png" },
+            { id: "title_jelly_5", src: "title_jelly_5.png" },
             
             { id: "FlyBG", src: "FlyBG.png" },
             { id: "FlyGroup", src: "FlyGroup.png" },
