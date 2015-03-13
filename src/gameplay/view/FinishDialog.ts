@@ -93,7 +93,7 @@
             var tx = gameui.ImagesManager.getBitmapText(StringResources.menus.highJelly, "debussy")
             tx.set({ x: 420, y:820});
             //container.addChild(tx);
-            tx.scaleX = tx.scaleY = 0.7;
+            tx.scaleX = tx.scaleY = 0.5;
                                     
             //add Jelly
             var jelly = new gameplay.view.Jelly();
