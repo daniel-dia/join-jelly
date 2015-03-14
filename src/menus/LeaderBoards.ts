@@ -11,14 +11,14 @@
 
             var loading = new joinjelly.view.LoadingBall();
             this.scrollableContent.addChild(loading);
-            loading.x = defaultWidth / 2;
+            loading.x = defaultWidth / 2; 
             loading.y = 800;
 
             var message = gameui.ImagesManager.getBitmapText(StringResources.menus.loading,"debussy");
             this.scrollableContent.addChild(message);
             message.regX = message.getBounds().width / 2;
             message.x = defaultWidth / 2;
-            message.y = 800;
+            message.y = 900;
             message.visible = true;
 
             this.loadLeaderBoards((results: Array<any>) => {
