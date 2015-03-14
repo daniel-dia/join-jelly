@@ -53,7 +53,7 @@
         // add a single tile on board
         private addTile(x: number, y: number, tileSize: number) {
 
-            var bg = gameui.ImagesManager.getBitmap("hex");
+            var bg = gameui.AssetsManager.getBitmap("hex");
             this.tilesContainer.addChild(bg);
             bg.regX = 304 / 2;
             bg.regY = -40

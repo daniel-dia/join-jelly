@@ -6,7 +6,7 @@
         constructor() {
             super();
 
-            this.addChild(gameui.ImagesManager.getBitmap("ballon"));
+            this.addChild(gameui.AssetsManager.getBitmap("ballon"));
 
             this.visible = false;
             
@@ -16,7 +16,7 @@
             this.y = 941 + this.regY;
 
 
-            var t = gameui.ImagesManager.getBitmapText("", "debussy")
+            var t = gameui.AssetsManager.getBitmapText("", "debussy")
             this.addChild(t);
             t.scaleX = t.scaleY = 0.7;
             t.x = 50;

@@ -47,14 +47,14 @@
         }
 
         private createJelly(value: number) {
-            var img = <createjs.Bitmap>gameui.ImagesManager.getBitmap("j" + this.getAssetIdByValue(value));
+            var img = <createjs.Bitmap>gameui.AssetsManager.getBitmap("j" + this.getAssetIdByValue(value));
 
             //centralize
 
             img.regX = img.getBounds().width / 2;
             img.regY = img.getBounds().height;
 
-            var shadow = gameui.ImagesManager.getBitmap("shadow");
+            var shadow = gameui.AssetsManager.getBitmap("shadow");
             shadow.regY = 45;
             shadow.regX = 108;
             shadow.scaleX = shadow.scaleY = img.getBounds().width / 216;
@@ -67,7 +67,7 @@
 
             //add Eyes
             var eye = new createjs.Container();
-            var eyeImg = <createjs.Bitmap>gameui.ImagesManager.getBitmap("e" + this.getAssetIdByValue(value));
+            var eyeImg = <createjs.Bitmap>gameui.AssetsManager.getBitmap("e" + this.getAssetIdByValue(value));
             eyeImg.regY = 20;
             createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
             eye.addChild(eyeImg);

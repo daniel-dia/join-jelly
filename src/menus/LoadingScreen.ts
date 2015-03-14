@@ -32,7 +32,7 @@ module joinjelly.menus {
             
             createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
 
-            var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest,this.imagePath );
+            var imageQueue = gameui.AssetsManager.loadAssets(this.imageManifest,this.imagePath );
             //imageQueue.loadManifest(this.audioManifest, true, "assets/sounds/");
 
             //set default sound button
@@ -40,7 +40,7 @@ module joinjelly.menus {
 
             //load font
             debussy = createSpriteSheetFromFont(debussyFont, this.imagePath);
-            gameui.ImagesManager.loadFontSpriteSheet("debussy", debussy);
+            gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
 
  
 

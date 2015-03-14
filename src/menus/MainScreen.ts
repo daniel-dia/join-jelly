@@ -49,7 +49,7 @@
         }
 
         private createBackground() {
-            this.background.addChild(gameui.ImagesManager.getBitmap("backhome"));
+            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
         }
 
         private createHeader() {
@@ -58,7 +58,7 @@
 
         private createFooter() {
             if (this.userData) {
-                this.scoreText = gameui.ImagesManager.getBitmapText(StringResources.menus.highScore + " " + this.userData.getHighScore(), "debussy");
+                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore + " " + this.userData.getHighScore(), "debussy");
                 this.scoreText.x = 50;
                 this.scoreText.y = -100;
                 this.scoreText.scaleX = this.scoreText.scaleY = 0.8;    

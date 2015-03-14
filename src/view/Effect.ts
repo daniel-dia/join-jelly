@@ -6,7 +6,7 @@
 
 
         public castSimple() {
-            var fxs = <createjs.Bitmap>gameui.ImagesManager.getBitmap("fxJoin");
+            var fxs = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxJoin");
             fxs.regX = 100;
             fxs.regY = 100;
             this.addChild(fxs);
@@ -14,7 +14,7 @@
         } 
         
         public castSimpleInv() {
-            var fxs = <createjs.Bitmap>gameui.ImagesManager.getBitmap("fxJoin");
+            var fxs = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxJoin");
             fxs.regX = 100;
             fxs.regY = 100;
             this.addChild(fxs);
@@ -25,7 +25,7 @@
 
         public castPart() { 
         
-            var fxp = <createjs.Bitmap>gameui.ImagesManager.getBitmap("fxPart");
+            var fxp = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
             fxp.regX = 140;
             fxp.regY = 140;
             fxp.scaleX  = fxp.scaleY = 0.2;
@@ -38,7 +38,7 @@
 
         public castParts() {
 
-            var fxp = <createjs.Bitmap>gameui.ImagesManager.getBitmap("fxPart");
+            var fxp = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
             fxp.regX = 140;
             fxp.regY = 140;
             fxp.scaleX = fxp.scaleY = 0.4;
@@ -53,7 +53,7 @@
 
         public castPartsInv() {
 
-            var fxp = <createjs.Bitmap>gameui.ImagesManager.getBitmap("fxPart");
+            var fxp = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
             fxp.regX = 140;
             fxp.regY = 140;
             fxp.scaleX = fxp.scaleY = 4;

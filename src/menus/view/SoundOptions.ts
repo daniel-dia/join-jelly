@@ -15,12 +15,12 @@
 
         private addSoundOptions() {
            
-            var f = gameui.ImagesManager.getBitmap("FlyGroup");
+            var f = gameui.AssetsManager.getBitmap("FlyGroup");
             f.y = - 130;
             f.regX = f.getBounds().width / 2;
             this.addChild(f);
 
-            var title = gameui.ImagesManager.getBitmapText(StringResources.menus.sound, "debussy")
+            var title = gameui.AssetsManager.getBitmapText(StringResources.menus.sound, "debussy")
             title.y = -190;
             title.scaleX = title.scaleY = 1.1;
             title.regX = title.getBounds().width / 2;

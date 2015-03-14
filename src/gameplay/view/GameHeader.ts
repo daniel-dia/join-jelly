@@ -30,14 +30,14 @@
             this.addChild(pauseButton);
 
             //add levelBar
-            var levelBarBorder = gameui.ImagesManager.getBitmap("bonus_border");
+            var levelBarBorder = gameui.AssetsManager.getBitmap("bonus_border");
             this.addChild(levelBarBorder);
             levelBarBorder.x = 309  ;
             levelBarBorder.y = 122;
 
     
             
-            var levelBar = gameui.ImagesManager.getBitmap("bonus_bar");
+            var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
             levelBar.x = 372;
             levelBar.y = 207;
             levelBar.mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 939, 57));
@@ -46,7 +46,7 @@
             this.levelBar = levelBar;
             this.addChild(levelBar); 
             
-            var levelTip = gameui.ImagesManager.getBitmap("powerTip");
+            var levelTip = gameui.AssetsManager.getBitmap("powerTip");
             levelTip.x = 372;
             levelTip.y = 207;
             levelTip.regX = 67 / 2;
@@ -55,7 +55,7 @@
             this.addChild(levelTip);
 
 
-            var levelIcon = gameui.ImagesManager.getBitmap("bonus_icon");
+            var levelIcon = gameui.AssetsManager.getBitmap("bonus_icon");
             levelIcon.x = 1288 + 213 / 2
             levelIcon.y = 90 + 243 / 2
             levelIcon.regX = 213 / 2;
@@ -71,7 +71,7 @@
             this.effect.y = 90 + 243 / 2
 
             //add scores text
-            var score = gameui.ImagesManager.getBitmapText(StringResources.menus.score, "debussy")
+            var score = gameui.AssetsManager.getBitmapText(StringResources.menus.score, "debussy")
             score.x = 323+50;
             score.y = 124 -80+85;
             score.scaleX = score.scaleY = 0.85;
@@ -79,7 +79,7 @@
             this.addChild(score);
 
             //add scores text
-            var level = gameui.ImagesManager.getBitmapText(StringResources.menus.level, "debussy")
+            var level = gameui.AssetsManager.getBitmapText(StringResources.menus.level, "debussy")
      
             level.x = 1099;
             level.y = 242 -200;

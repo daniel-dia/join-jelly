@@ -15,15 +15,15 @@
 
         private addBackground(title:string) {
             // add Background
-            this.background.addChild(gameui.ImagesManager.getBitmap("backhome"));
-            var bg = gameui.ImagesManager.getBitmap('BigBG');
+            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
+            var bg = gameui.AssetsManager.getBitmap('BigBG');
             bg.mouseEnabled = true;
             this.content.addChild(bg);
             bg.x = (defaultWidth - 1463) / 2;
             bg.y = (defaultHeight - 1788) / 2;
 
             // add Title
-            var titleObj = gameui.ImagesManager.getBitmapText(title.toUpperCase(), "debussy");
+            var titleObj = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussy");
             this.content.addChild(titleObj);
             titleObj.y = bg.y + 50;
             titleObj.x = defaultWidth / 2;

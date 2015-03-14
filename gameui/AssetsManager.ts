@@ -1,7 +1,7 @@
 ﻿module gameui {
 
     // Class
-    export class ImagesManager{
+    export class AssetsManager{
 
         private static loader: createjs.LoadQueue;
         private static spriteSheets: Array<any>;
@@ -73,13 +73,13 @@
             var image = this.getLoadedImage(name);
             if (image) {
                 var imgobj = new createjs.Bitmap(image);
-                imgobj.mouseEnabled = ImagesManager.defaultMouseEnabled; 
+                imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled; 
                 return imgobj;
             }
 
             //or else try grab by filename
             var imgobj = new createjs.Bitmap(name);
-            imgobj.mouseEnabled = ImagesManager.defaultMouseEnabled;
+            imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
             return imgobj;
 
         }
@@ -87,7 +87,7 @@
         public static getBitmapText(text:string, bitmapFontId:string):createjs.BitmapText { 
             var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
             bitmapText.lineHeight = 100;
-            bitmapText.mouseEnabled = ImagesManager.defaultMouseEnabled;
+            bitmapText.mouseEnabled = AssetsManager.defaultMouseEnabled;
             return bitmapText;
             
         }

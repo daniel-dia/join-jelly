@@ -15,7 +15,7 @@
             var tContainer = new createjs.Container();
 
             // Add Background
-            var bg = gameui.ImagesManager.getBitmap("FlyGroup")
+            var bg = gameui.AssetsManager.getBitmap("FlyGroup")
             bg.x = 232;
             bg.y = 27;
             bg.scaleY = 1.25;
@@ -36,7 +36,7 @@
             }
 
 
-            var icon = gameui.ImagesManager.getBitmap(iconId);
+            var icon = gameui.AssetsManager.getBitmap(iconId);
             icon.regX = icon.getBounds().width / 2;
             icon.regY = icon.getBounds().height / 2;
             icon.x = 225;
@@ -46,8 +46,8 @@
 
             // Add Texts
 
-            var titleObj = gameui.ImagesManager.getBitmapText(product.Name, "debussy");
-            var descriptionObj = gameui.ImagesManager.getBitmapText(product.Description, "debussy");
+            var titleObj = gameui.AssetsManager.getBitmapText(product.Name, "debussy");
+            var descriptionObj = gameui.AssetsManager.getBitmapText(product.Description, "debussy");
             titleObj.y = 40;
             descriptionObj.y = 140;
             titleObj.scaleX = titleObj.scaleY = 1.1;
@@ -57,7 +57,7 @@
             tContainer.addChild(descriptionObj);
 
             // add price
-            var priceDO = gameui.ImagesManager.getBitmapText(product.FormattedPrice, "debussy");
+            var priceDO = gameui.AssetsManager.getBitmapText(product.FormattedPrice, "debussy");
             priceDO.y = 251;
             priceDO.x = 1199;
             priceDO.regX = priceDO.getBounds().width / 2;
@@ -68,7 +68,7 @@
             tContainer.cache(100, 27, 1250, 300);
              
             // add Check
-            var unchecked = gameui.ImagesManager.getBitmap("unchecked");
+            var unchecked = gameui.AssetsManager.getBitmap("unchecked");
             unchecked.regX = unchecked.getBounds().width / 2;
             unchecked.regY = unchecked.getBounds().height / 2;
             unchecked.y = 152;
@@ -76,7 +76,7 @@
             this.addChild(unchecked);
 
             // add Check
-            var check = gameui.ImagesManager.getBitmap("check");
+            var check = gameui.AssetsManager.getBitmap("check");
             check.regX = check.getBounds().width / 2;
             check.regY = check.getBounds().height / 2;
             check.y = 152;

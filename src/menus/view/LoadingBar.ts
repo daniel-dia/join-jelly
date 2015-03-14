@@ -7,9 +7,9 @@
         constructor(path: string) {
             super();
 
-            var bg = gameui.ImagesManager.getBitmap(path + "bonus_border.png");
-            var text = gameui.ImagesManager.getBitmapText(StringResources.menus.loading, "debussy");
-            var bar = gameui.ImagesManager.getBitmap(path + "bonus_bar.png");
+            var bg = gameui.AssetsManager.getBitmap(path + "bonus_border.png");
+            var text = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
+            var bar = gameui.AssetsManager.getBitmap(path + "bonus_bar.png");
 
             this.addChild(bg)
             this.addChild(text)

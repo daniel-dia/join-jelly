@@ -8,7 +8,7 @@
             this.previousScreen = previousScreen;
 
             // add loading info
-            var loading = gameui.ImagesManager.getBitmapText(StringResources.menus.loading, "debussy");
+            var loading = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
             loading.y = 500;
             loading.x = defaultWidth / 2;
             loading.regX = loading.getBounds().width / 2;

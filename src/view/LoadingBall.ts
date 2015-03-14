@@ -5,7 +5,7 @@
 
             super();
 
-            var b = gameui.ImagesManager.getBitmap("loadingBall");
+            var b = gameui.AssetsManager.getBitmap("loadingBall");
             this.addChild(b);
             b.regX = 94/2;
             b.regY = 94;

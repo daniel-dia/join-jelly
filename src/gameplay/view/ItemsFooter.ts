@@ -46,14 +46,14 @@
         // add objects to the footer
         private addObjects() {
             //add background
-            var bg = gameui.ImagesManager.getBitmap("footer");
+            var bg = gameui.AssetsManager.getBitmap("footer");
             this.addChild(bg);
             bg.y = -162;
             bg.x = (defaultWidth - 1161) / 2;
 
             // add Lucky clover
             // TODO verify with item
-            var lucky = gameui.ImagesManager.getBitmap("lucky");
+            var lucky = gameui.AssetsManager.getBitmap("lucky");
             this.addChild(lucky);
             lucky.y = -210;
             lucky.x =  1285

@@ -17,7 +17,7 @@
             var images = [];
 
             for (var char = 1; char <= 4; char++) {
-                var image = gameui.ImagesManager.getBitmap("title_join_" + char);
+                var image = gameui.AssetsManager.getBitmap("title_join_" + char);
 
                 image.regX = image.getBounds().width / 2;
                 image.regY = image.getBounds().height / 2;
@@ -43,7 +43,7 @@
 
             for (var char = 1; char <= 5; char++) {
 
-                var image = <createjs.Bitmap>gameui.ImagesManager.getBitmap("title_jelly_" + char);
+                var image = <createjs.Bitmap>gameui.AssetsManager.getBitmap("title_jelly_" + char);
 
                 image.regX = image.getBounds().width / 2;
                 image.regY = image.getBounds().height;

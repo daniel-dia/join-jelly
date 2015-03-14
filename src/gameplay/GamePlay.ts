@@ -65,20 +65,20 @@
         // create game effects
         private createEffects() {
 
-            this.freezeEffect = gameui.ImagesManager.getBitmap("freezeEffect");
+            this.freezeEffect = gameui.AssetsManager.getBitmap("freezeEffect");
             this.content.addChild(this.freezeEffect);
             this.normalizeEffect(this.freezeEffect);
 
-            this.evolveEffect = gameui.ImagesManager.getBitmap("fxEvolve");
+            this.evolveEffect = gameui.AssetsManager.getBitmap("fxEvolve");
             this.content.addChild(this.evolveEffect);
             this.evolveEffect.regX=150;
             this.normalizeEffect(this.evolveEffect);
 
-            this.reviveEffect = gameui.ImagesManager.getBitmap("reviveEffect");
+            this.reviveEffect = gameui.AssetsManager.getBitmap("reviveEffect");
             this.content.addChild(this.reviveEffect);
             this.normalizeEffect(this.reviveEffect);
 
-            this.cleanEffect = gameui.ImagesManager.getBitmap("cleanEffect");
+            this.cleanEffect = gameui.AssetsManager.getBitmap("cleanEffect");
             this.content.addChild(this.cleanEffect);
             this.normalizeEffect(this.cleanEffect);
 
@@ -94,7 +94,7 @@
 
         // create game background
         private createBackground() {
-            var bg = gameui.ImagesManager.getBitmap("Background");
+            var bg = gameui.AssetsManager.getBitmap("Background");
             this.background.addChild(bg);
         }
 
@@ -620,7 +620,7 @@
             gameui.AudiosManager.playSound("Interface Sound-11");
 
             // create item Object
-            var itemDO = gameui.ImagesManager.getBitmap("item" + item);
+            var itemDO = gameui.AssetsManager.getBitmap("item" + item);
             itemDO.mouseEnabled = false;
             itemDO.regX = itemDO.getBounds().width / 2;
             itemDO.regY = itemDO.getBounds().height / 2;
@@ -650,7 +650,7 @@
         private animateScoreFromTile(tile: Tile, score: number) {
 
             // create text Object
-            var textDO = gameui.ImagesManager.getBitmapText(score.toString(), "debussy");
+            var textDO = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
             textDO.regX = textDO.getBounds().width / 2;
             textDO.mouseEnabled = false;
            
