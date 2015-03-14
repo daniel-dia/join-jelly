@@ -137,11 +137,11 @@ var gameui;
 var gameui;
 (function (gameui) {
     // Class
-    var ImagesManager = (function () {
-        function ImagesManager() {
+    var AssetsManager = (function () {
+        function AssetsManager() {
         }
         //load assets
-        ImagesManager.loadAssets = function (assetsManifest, path, spriteSheets, imagesArray) {
+        AssetsManager.loadAssets = function (assetsManifest, path, spriteSheets, imagesArray) {
             var _this = this;
             if (path === void 0) { path = ""; }
             //cleans previous loaded assets.
@@ -166,11 +166,11 @@ var gameui;
             return this.loader;
         };
         // load a font spritesheet
-        ImagesManager.loadFontSpriteSheet = function (id, spritesheetData) {
+        AssetsManager.loadFontSpriteSheet = function (id, spritesheetData) {
             this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
         };
         // cleans all sprites in the bitmap array;
-        ImagesManager.cleanAssets = function () {
+        AssetsManager.cleanAssets = function () {
             if (this.imagesArray)
                 ;
             for (var i in this.imagesArray) {
@@ -181,11 +181,11 @@ var gameui;
             }
         };
         // return loaded image array
-        ImagesManager.getImagesArray = function () {
+        AssetsManager.getImagesArray = function () {
             return this.imagesArray;
         };
         //gets a image from assets
-        ImagesManager.getBitmap = function (name) {
+        AssetsManager.getBitmap = function (name) {
             //if image id is described in spritesheets
             if (this.spriteSheets)
                 if (this.spriteSheets[name])
@@ -194,29 +194,29 @@ var gameui;
             var image = this.getLoadedImage(name);
             if (image) {
                 var imgobj = new createjs.Bitmap(image);
-                imgobj.mouseEnabled = ImagesManager.defaultMouseEnabled;
+                imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
                 return imgobj;
             }
             //or else try grab by filename
             var imgobj = new createjs.Bitmap(name);
-            imgobj.mouseEnabled = ImagesManager.defaultMouseEnabled;
+            imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
             return imgobj;
         };
         //get a bitmap Text
-        ImagesManager.getBitmapText = function (text, bitmapFontId) {
+        AssetsManager.getBitmapText = function (text, bitmapFontId) {
             var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
             bitmapText.lineHeight = 100;
-            bitmapText.mouseEnabled = ImagesManager.defaultMouseEnabled;
+            bitmapText.mouseEnabled = AssetsManager.defaultMouseEnabled;
             return bitmapText;
         };
         //Get a preloaded Image from assets
-        ImagesManager.getLoadedImage = function (name) {
+        AssetsManager.getLoadedImage = function (name) {
             if (this.loader)
                 return this.loader.getResult(name);
             return null;
         };
         //return a sprite according to the image
-        ImagesManager.getSprite = function (name, play) {
+        AssetsManager.getSprite = function (name, play) {
             if (play === void 0) { play = true; }
             var data = this.spriteSheets[name];
             for (var i in data.images)
@@ -228,10 +228,10 @@ var gameui;
                 sprite.play();
             return sprite;
         };
-        ImagesManager.defaultMouseEnabled = false;
-        return ImagesManager;
+        AssetsManager.defaultMouseEnabled = false;
+        return AssetsManager;
     })();
-    gameui.ImagesManager = ImagesManager;
+    gameui.AssetsManager = AssetsManager;
 })(gameui || (gameui = {}));
 //TODO remove universal variable defaultWidth and DefaultHeigth
 var gameui;
@@ -634,7 +634,7 @@ var gameui;
                 this.addEventListener("click", event);
             //adds image into it
             if (image != null) {
-                this.background = gameui.ImagesManager.getBitmap(image);
+                this.background = gameui.AssetsManager.getBitmap(image);
                 this.addChildAt(this.background, 0);
                 //Sets the image into the pivot center.
                 if (this.background.getBounds()) {
@@ -685,7 +685,7 @@ var gameui;
             _super.call(this, background, event, soundId);
             //add text into it.
             text = text.toUpperCase();
-            this.bitmapText = gameui.ImagesManager.getBitmapText(text, bitmapFontId);
+            this.bitmapText = gameui.AssetsManager.getBitmapText(text, bitmapFontId);
             this.addChild(this.bitmapText);
             this.bitmapText.regX = this.bitmapText.getBounds().width / 2;
             this.bitmapText.regY = this.bitmapText.lineHeight / 2;
@@ -706,7 +706,7 @@ var gameui;
                 text = " " + text;
             _super.call(this, text, font, color, background, event, soundId);
             //loads icon Image
-            this.icon = gameui.ImagesManager.getBitmap(icon);
+            this.icon = gameui.AssetsManager.getBitmap(icon);
             this.addChild(this.icon);
             this.text.textAlign = "left";
             if (this.icon.getBounds())
@@ -1091,14 +1091,14 @@ var joinjelly;
         }
         ScrollablePage.prototype.addBackground = function (title) {
             // add Background
-            this.background.addChild(gameui.ImagesManager.getBitmap("backhome"));
-            var bg = gameui.ImagesManager.getBitmap('BigBG');
+            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
+            var bg = gameui.AssetsManager.getBitmap('BigBG');
             bg.mouseEnabled = true;
             this.content.addChild(bg);
             bg.x = (defaultWidth - 1463) / 2;
             bg.y = (defaultHeight - 1788) / 2;
             // add Title
-            var titleObj = gameui.ImagesManager.getBitmapText(title.toUpperCase(), "debussy");
+            var titleObj = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussy");
             this.content.addChild(titleObj);
             titleObj.y = bg.y + 50;
             titleObj.x = defaultWidth / 2;
@@ -1294,6 +1294,7 @@ var joinjelly;
                     { id: "Interface Sound-11", src: "Interface Sound-11.ogg" },
                     { id: "Interface Sound-14", src: "Interface Sound-14.ogg" },
                     { id: "Interface Sound-15", src: "Interface Sound-15.ogg" },
+                    { id: "evolve", src: "evolve.ogg" },
                     { id: "end", src: "end.ogg" },
                     { id: "musicIntro", src: "musicIntro.ogg" },
                     { id: "music1", src: "music1.ogg" },
@@ -1315,30 +1316,30 @@ var joinjelly;
                     this.imagePath = "assets/images/";
                 else
                     this.imagePath = "assets/images_" + assetscale + "x/";
-                createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
-                var imageQueue = gameui.ImagesManager.loadAssets(this.imageManifest, this.imagePath);
-                //imageQueue.loadManifest(this.audioManifest, true, "assets/sounds/");
+                //createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
+                var queue = gameui.AssetsManager.loadAssets(this.imageManifest, this.imagePath);
+                queue.loadManifest(this.audioManifest, true, "assets/sounds/");
                 //set default sound button
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 //load font
                 debussy = createSpriteSheetFromFont(debussyFont, this.imagePath);
-                gameui.ImagesManager.loadFontSpriteSheet("debussy", debussy);
+                gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
                 var l = new menus.view.LoadingBar(this.imagePath);
                 this.content.addChild(l);
                 l.x = defaultWidth / 2;
                 l.y = defaultHeight / 2;
                 //add update% functtion
-                imageQueue.addEventListener("progress", function (evt) {
+                queue.addEventListener("progress", function (evt) {
                     l.update(evt.progress);
                     return true;
                 });
                 //add update% functtion
-                imageQueue.addEventListener("fileload", function (evt) {
+                queue.addEventListener("fileload", function (evt) {
                     console.log(evt.item.src);
                     return true;
                 });
                 //creates load complete action
-                imageQueue.addEventListener("complete", function (evt) {
+                queue.addEventListener("complete", function (evt) {
                     if (_this.loaded)
                         _this.loaded();
                     return true;
@@ -1387,14 +1388,14 @@ var joinjelly;
             this.content.addChild(t);
         };
         MainScreen.prototype.createBackground = function () {
-            this.background.addChild(gameui.ImagesManager.getBitmap("backhome"));
+            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
         };
         MainScreen.prototype.createHeader = function () {
         };
         MainScreen.prototype.createFooter = function () {
             var _this = this;
             if (this.userData) {
-                this.scoreText = gameui.ImagesManager.getBitmapText(StringResources.menus.highScore + " " + this.userData.getHighScore(), "debussy");
+                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore + " " + this.userData.getHighScore(), "debussy");
                 this.scoreText.x = 50;
                 this.scoreText.y = -100;
                 this.scoreText.scaleX = this.scoreText.scaleY = 0.8;
@@ -1488,7 +1489,7 @@ var joinjelly;
                     var side = [0, 1, 1, -1, -1];
                     var images = [];
                     for (var char = 1; char <= 4; char++) {
-                        var image = gameui.ImagesManager.getBitmap("title_join_" + char);
+                        var image = gameui.AssetsManager.getBitmap("title_join_" + char);
                         image.regX = image.getBounds().width / 2;
                         image.regY = image.getBounds().height / 2;
                         image.y = 514 + image.getBounds().height / 2 - image.getBounds().height;
@@ -1502,7 +1503,7 @@ var joinjelly;
                 GameTitle.prototype.createJelly = function () {
                     var xPositions = [213, 492, 761, 1039, 1278];
                     for (var char = 1; char <= 5; char++) {
-                        var image = gameui.ImagesManager.getBitmap("title_jelly_" + char);
+                        var image = gameui.AssetsManager.getBitmap("title_jelly_" + char);
                         image.regX = image.getBounds().width / 2;
                         image.regY = image.getBounds().height;
                         var jelly = new joinjelly.view.JellyContainer();
@@ -1616,13 +1617,13 @@ var joinjelly;
                 };
                 // creates menu background
                 FlyOutMenu.prototype.AddBG = function (heigth) {
-                    var dk = gameui.ImagesManager.getBitmap("popupdark");
+                    var dk = gameui.AssetsManager.getBitmap("popupdark");
                     this.addChild(dk);
                     dk.scaleX = dk.scaleY = 16;
                     dk.x = -defaultWidth / 2;
                     dk.y = -defaultHeight / 2;
                     dk.mouseEnabled = false;
-                    var bg = gameui.ImagesManager.getBitmap("FlyBG");
+                    var bg = gameui.AssetsManager.getBitmap("FlyBG");
                     bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
                     bg.scaleY = heigth / 1022;
                     this.addChild(bg);
@@ -1631,7 +1632,7 @@ var joinjelly;
                 // creates menu title
                 FlyOutMenu.prototype.addTitle = function (title) {
                     //create "points" text
-                    this.title = gameui.ImagesManager.getBitmapText("", "debussy");
+                    this.title = gameui.AssetsManager.getBitmapText("", "debussy");
                     this.title.set({ x: defaultWidth / 2, y: 600 });
                     this.addChild(this.title);
                     this.setTitle(title);
@@ -1685,12 +1686,12 @@ var joinjelly;
                 function JellyPediaItem(value, title, description) {
                     _super.call(this);
                     // Add Background
-                    var bg = gameui.ImagesManager.getBitmap("pediaItem");
+                    var bg = gameui.AssetsManager.getBitmap("pediaItem");
                     this.addChild(bg);
                     // Add Texts
                     var tContainer = new createjs.Container();
-                    var titleObj = gameui.ImagesManager.getBitmapText(title, "debussy");
-                    var descriptionObj = gameui.ImagesManager.getBitmapText(description, "debussy");
+                    var titleObj = gameui.AssetsManager.getBitmapText(title, "debussy");
+                    var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
                     titleObj.y = 30;
                     descriptionObj.y = 130;
                     titleObj.scaleX = titleObj.scaleY = 1.2;
@@ -1727,7 +1728,7 @@ var joinjelly;
                     this.product = product;
                     var tContainer = new createjs.Container();
                     // Add Background
-                    var bg = gameui.ImagesManager.getBitmap("FlyGroup");
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
                     bg.x = 232;
                     bg.y = 27;
                     bg.scaleY = 1.25;
@@ -1759,7 +1760,7 @@ var joinjelly;
                             iconId = "lucky";
                             break;
                     }
-                    var icon = gameui.ImagesManager.getBitmap(iconId);
+                    var icon = gameui.AssetsManager.getBitmap(iconId);
                     icon.regX = icon.getBounds().width / 2;
                     icon.regY = icon.getBounds().height / 2;
                     icon.x = 225;
@@ -1767,8 +1768,8 @@ var joinjelly;
                     icon.scaleX = icon.scaleY = 1.5;
                     tContainer.addChild(icon);
                     // Add Texts
-                    var titleObj = gameui.ImagesManager.getBitmapText(product.Name, "debussy");
-                    var descriptionObj = gameui.ImagesManager.getBitmapText(product.Description, "debussy");
+                    var titleObj = gameui.AssetsManager.getBitmapText(product.Name, "debussy");
+                    var descriptionObj = gameui.AssetsManager.getBitmapText(product.Description, "debussy");
                     titleObj.y = 40;
                     descriptionObj.y = 140;
                     titleObj.scaleX = titleObj.scaleY = 1.1;
@@ -1777,7 +1778,7 @@ var joinjelly;
                     tContainer.addChild(titleObj);
                     tContainer.addChild(descriptionObj);
                     // add price
-                    var priceDO = gameui.ImagesManager.getBitmapText(product.FormattedPrice, "debussy");
+                    var priceDO = gameui.AssetsManager.getBitmapText(product.FormattedPrice, "debussy");
                     priceDO.y = 251;
                     priceDO.x = 1199;
                     priceDO.regX = priceDO.getBounds().width / 2;
@@ -1786,14 +1787,14 @@ var joinjelly;
                     this.addChild(tContainer);
                     tContainer.cache(100, 27, 1250, 300);
                     // add Check
-                    var unchecked = gameui.ImagesManager.getBitmap("unchecked");
+                    var unchecked = gameui.AssetsManager.getBitmap("unchecked");
                     unchecked.regX = unchecked.getBounds().width / 2;
                     unchecked.regY = unchecked.getBounds().height / 2;
                     unchecked.y = 152;
                     unchecked.x = 1199;
                     this.addChild(unchecked);
                     // add Check
-                    var check = gameui.ImagesManager.getBitmap("check");
+                    var check = gameui.AssetsManager.getBitmap("check");
                     check.regX = check.getBounds().width / 2;
                     check.regY = check.getBounds().height / 2;
                     check.y = 152;
@@ -1859,7 +1860,7 @@ var joinjelly;
                 _super.call(this, StringResources.store.title);
                 this.previousScreen = previousScreen;
                 // add loading info
-                var loading = gameui.ImagesManager.getBitmapText(StringResources.menus.loading, "debussy");
+                var loading = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
                 loading.y = 500;
                 loading.x = defaultWidth / 2;
                 loading.regX = loading.getBounds().width / 2;
@@ -2048,11 +2049,11 @@ var joinjelly;
                 }
                 SoundOptions.prototype.addSoundOptions = function () {
                     var _this = this;
-                    var f = gameui.ImagesManager.getBitmap("FlyGroup");
+                    var f = gameui.AssetsManager.getBitmap("FlyGroup");
                     f.y = -130;
                     f.regX = f.getBounds().width / 2;
                     this.addChild(f);
-                    var title = gameui.ImagesManager.getBitmapText(StringResources.menus.sound, "debussy");
+                    var title = gameui.AssetsManager.getBitmapText(StringResources.menus.sound, "debussy");
                     title.y = -190;
                     title.scaleX = title.scaleY = 1.1;
                     title.regX = title.getBounds().width / 2;
@@ -2288,7 +2289,7 @@ var joinjelly;
             __extends(LoadingBall, _super);
             function LoadingBall() {
                 _super.call(this);
-                var b = gameui.ImagesManager.getBitmap("loadingBall");
+                var b = gameui.AssetsManager.getBitmap("loadingBall");
                 this.addChild(b);
                 b.regX = 94 / 2;
                 b.regY = 94;
@@ -2332,11 +2333,11 @@ var joinjelly;
                     pauseButton.y = 215;
                     this.addChild(pauseButton);
                     //add levelBar
-                    var levelBarBorder = gameui.ImagesManager.getBitmap("bonus_border");
+                    var levelBarBorder = gameui.AssetsManager.getBitmap("bonus_border");
                     this.addChild(levelBarBorder);
                     levelBarBorder.x = 309;
                     levelBarBorder.y = 122;
-                    var levelBar = gameui.ImagesManager.getBitmap("bonus_bar");
+                    var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
                     levelBar.x = 372;
                     levelBar.y = 207;
                     levelBar.mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 939, 57));
@@ -2344,14 +2345,14 @@ var joinjelly;
                     levelBar.mask.y = 207;
                     this.levelBar = levelBar;
                     this.addChild(levelBar);
-                    var levelTip = gameui.ImagesManager.getBitmap("powerTip");
+                    var levelTip = gameui.AssetsManager.getBitmap("powerTip");
                     levelTip.x = 372;
                     levelTip.y = 207;
                     levelTip.regX = 67 / 2;
                     levelTip.regY = 77 / 2;
                     this.levelTip = levelTip;
                     this.addChild(levelTip);
-                    var levelIcon = gameui.ImagesManager.getBitmap("bonus_icon");
+                    var levelIcon = gameui.AssetsManager.getBitmap("bonus_icon");
                     levelIcon.x = 1288 + 213 / 2;
                     levelIcon.y = 90 + 243 / 2;
                     levelIcon.regX = 213 / 2;
@@ -2367,14 +2368,14 @@ var joinjelly;
                     this.effect.x = 1288 + 213 / 2;
                     this.effect.y = 90 + 243 / 2;
                     //add scores text
-                    var score = gameui.ImagesManager.getBitmapText(StringResources.menus.score, "debussy");
+                    var score = gameui.AssetsManager.getBitmapText(StringResources.menus.score, "debussy");
                     score.x = 323 + 50;
                     score.y = 124 - 80 + 85;
                     score.scaleX = score.scaleY = 0.85;
                     this.scoreText = score;
                     this.addChild(score);
                     //add scores text
-                    var level = gameui.ImagesManager.getBitmapText(StringResources.menus.level, "debussy");
+                    var level = gameui.AssetsManager.getBitmapText(StringResources.menus.level, "debussy");
                     level.x = 1099;
                     level.y = 242 - 200;
                     level.scaleX = level.scaleY = 2;
@@ -2450,11 +2451,11 @@ var joinjelly;
                     return Jelly.jellies[Math.log(value) / Math.log(2)];
                 };
                 Jelly.prototype.createJelly = function (value) {
-                    var img = gameui.ImagesManager.getBitmap("j" + this.getAssetIdByValue(value));
+                    var img = gameui.AssetsManager.getBitmap("j" + this.getAssetIdByValue(value));
                     //centralize
                     img.regX = img.getBounds().width / 2;
                     img.regY = img.getBounds().height;
-                    var shadow = gameui.ImagesManager.getBitmap("shadow");
+                    var shadow = gameui.AssetsManager.getBitmap("shadow");
                     shadow.regY = 45;
                     shadow.regX = 108;
                     shadow.scaleX = shadow.scaleY = img.getBounds().width / 216;
@@ -2464,7 +2465,7 @@ var joinjelly;
                 Jelly.prototype.createEyes = function (value) {
                     //add Eyes
                     var eye = new createjs.Container();
-                    var eyeImg = gameui.ImagesManager.getBitmap("e" + this.getAssetIdByValue(value));
+                    var eyeImg = gameui.AssetsManager.getBitmap("e" + this.getAssetIdByValue(value));
                     eyeImg.regY = 20;
                     createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
                     eye.addChild(eyeImg);
@@ -2534,7 +2535,6 @@ var joinjelly;
                     }, 1000);
                     setTimeout(function () {
                         _this.playLevelUp();
-                        gameui.AudiosManager.playSound("sounditemfast");
                     }, 1100);
                 };
                 Jelly.jellies = [
@@ -2575,7 +2575,7 @@ var joinjelly;
                 }
                 LevelIndicator.prototype.showLevel = function (levelId) {
                     var _this = this;
-                    var text = gameui.ImagesManager.getBitmapText("level", "debussy");
+                    var text = gameui.AssetsManager.getBitmapText("level", "debussy");
                     this.addChild(text);
                     //text.textAlign = "center";
                     text.text = "LEVEL " + levelId;
@@ -2613,12 +2613,12 @@ var joinjelly;
                         _this.dispatchEvent({ type: "useitem", item: item });
                     });
                     //create Item
-                    var bg = gameui.ImagesManager.getBitmap("itemBG");
-                    var bgd = gameui.ImagesManager.getBitmap("itemBGDisabled");
-                    var img = gameui.ImagesManager.getBitmap("item" + item);
-                    var text = gameui.ImagesManager.getBitmapText("0", "debussy");
-                    var name = gameui.ImagesManager.getBitmapText(StringResources.items[item], "debussy");
-                    var add = gameui.ImagesManager.getBitmap("BtPlusMini");
+                    var bg = gameui.AssetsManager.getBitmap("itemBG");
+                    var bgd = gameui.AssetsManager.getBitmap("itemBGDisabled");
+                    var img = gameui.AssetsManager.getBitmap("item" + item);
+                    var text = gameui.AssetsManager.getBitmapText("0", "debussy");
+                    var name = gameui.AssetsManager.getBitmapText(StringResources.items[item], "debussy");
+                    var add = gameui.AssetsManager.getBitmap("BtPlusMini");
                     this.disabled = bgd;
                     this.addChild(bg);
                     this.addChild(bgd);
@@ -2764,9 +2764,9 @@ var joinjelly;
                 }
                 TimeBar.prototype.initializeObjects = function () {
                     var percentBar = new createjs.Container();
-                    var bar = gameui.ImagesManager.getBitmap("time_bar");
-                    var bright = gameui.ImagesManager.getBitmap("time_bar_bright");
-                    var red = gameui.ImagesManager.getBitmap("time_bar_red");
+                    var bar = gameui.AssetsManager.getBitmap("time_bar");
+                    var bright = gameui.AssetsManager.getBitmap("time_bar_bright");
+                    var red = gameui.AssetsManager.getBitmap("time_bar_red");
                     bright.alpha = 0;
                     this.redFx = red;
                     this.brightFx = bright;
@@ -2851,22 +2851,22 @@ var joinjelly;
                 FinishMenu.prototype.addPoints = function () {
                     var container = new createjs.Container();
                     //creates points Bg
-                    var bg = gameui.ImagesManager.getBitmap("GameOverBgPoints");
+                    var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
                     bg.set({ x: defaultWidth / 2, y: 565, regX: 1056 / 2 });
                     container.addChild(bg);
                     //create points object
-                    var tx = gameui.ImagesManager.getBitmapText("Score", "debussy");
+                    var tx = gameui.AssetsManager.getBitmapText("Score", "debussy");
                     tx.set({ x: 288, y: 442 });
                     tx.scaleX = tx.scaleY = 0.7;
                     //container.addChild(tx);
                     //create "points" text
-                    var tx = gameui.ImagesManager.getBitmapText("", "debussy");
+                    var tx = gameui.AssetsManager.getBitmapText("", "debussy");
                     tx.set({ x: defaultWidth / 2, y: 587 });
                     container.addChild(tx);
                     tx.scaleX = tx.scaleY = 2;
                     this.scoreText = tx;
                     //create HighScore text
-                    var tx = gameui.ImagesManager.getBitmapText("", "debussy");
+                    var tx = gameui.AssetsManager.getBitmapText("", "debussy");
                     tx.set({ x: 1240, y: 775 });
                     container.addChild(tx);
                     tx.scaleX = tx.scaleY = 0.7;
@@ -2880,11 +2880,11 @@ var joinjelly;
                     var container = new createjs.Container();
                     this.addChild(container);
                     //add background
-                    var bg = gameui.ImagesManager.getBitmap("GameOverBgJelly");
+                    var bg = gameui.AssetsManager.getBitmap("GameOverBgJelly");
                     bg.set({ x: defaultWidth / 2, y: 951, regX: 797 / 2 });
                     container.addChild(bg);
                     //add "LastJelly" Text
-                    var tx = gameui.ImagesManager.getBitmapText(StringResources.menus.highJelly, "debussy");
+                    var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.highJelly, "debussy");
                     tx.set({ x: 420, y: 820 });
                     //container.addChild(tx);
                     tx.scaleX = tx.scaleY = 0.5;
@@ -2896,7 +2896,7 @@ var joinjelly;
                     jelly.set({ x: defaultWidth / 2, y: 1350 });
                     this.jelly = jelly;
                     //add "LastJelly" name Text
-                    var tx = gameui.ImagesManager.getBitmapText("1", "debussy");
+                    var tx = gameui.AssetsManager.getBitmapText("1", "debussy");
                     tx.set({ x: defaultWidth / 2, y: 1358 });
                     tx.scaleX = tx.scaleY = 0.7;
                     this.jellyText = tx;
@@ -2942,8 +2942,8 @@ var joinjelly;
                 __extends(TutorialMove, _super);
                 function TutorialMove() {
                     _super.call(this);
-                    this.fingerUp = gameui.ImagesManager.getBitmap("tutorialFinger");
-                    this.fingerDown = gameui.ImagesManager.getBitmap("tutorialFingerDown");
+                    this.fingerUp = gameui.AssetsManager.getBitmap("tutorialFinger");
+                    this.fingerDown = gameui.AssetsManager.getBitmap("tutorialFingerDown");
                     this.addChild(this.fingerUp);
                     this.addChild(this.fingerDown);
                     this.fingerDown.y = this.fingerUp.image.height - this.fingerDown.image.height;
@@ -3008,13 +3008,13 @@ var joinjelly;
                 function TutoralMessage() {
                     var _this = this;
                     _super.call(this);
-                    this.addChild(gameui.ImagesManager.getBitmap("ballon"));
+                    this.addChild(gameui.AssetsManager.getBitmap("ballon"));
                     this.visible = false;
                     this.regX = 316;
                     this.regY = 366;
                     this.x = 164 + this.regX;
                     this.y = 941 + this.regY;
-                    var t = gameui.ImagesManager.getBitmapText("", "debussy");
+                    var t = gameui.AssetsManager.getBitmapText("", "debussy");
                     this.addChild(t);
                     t.scaleX = t.scaleY = 0.7;
                     t.x = 50;
@@ -3078,7 +3078,7 @@ var joinjelly;
             };
             // add a single tile on board
             Board.prototype.addTile = function (x, y, tileSize) {
-                var bg = gameui.ImagesManager.getBitmap("hex");
+                var bg = gameui.AssetsManager.getBitmap("hex");
                 this.tilesContainer.addChild(bg);
                 bg.regX = 304 / 2;
                 bg.regY = -40;
@@ -3498,17 +3498,17 @@ var joinjelly;
             }
             // create game effects
             GamePlayScreen.prototype.createEffects = function () {
-                this.freezeEffect = gameui.ImagesManager.getBitmap("freezeEffect");
+                this.freezeEffect = gameui.AssetsManager.getBitmap("freezeEffect");
                 this.content.addChild(this.freezeEffect);
                 this.normalizeEffect(this.freezeEffect);
-                this.evolveEffect = gameui.ImagesManager.getBitmap("fxEvolve");
+                this.evolveEffect = gameui.AssetsManager.getBitmap("fxEvolve");
                 this.content.addChild(this.evolveEffect);
                 this.evolveEffect.regX = 150;
                 this.normalizeEffect(this.evolveEffect);
-                this.reviveEffect = gameui.ImagesManager.getBitmap("reviveEffect");
+                this.reviveEffect = gameui.AssetsManager.getBitmap("reviveEffect");
                 this.content.addChild(this.reviveEffect);
                 this.normalizeEffect(this.reviveEffect);
-                this.cleanEffect = gameui.ImagesManager.getBitmap("cleanEffect");
+                this.cleanEffect = gameui.AssetsManager.getBitmap("cleanEffect");
                 this.content.addChild(this.cleanEffect);
                 this.normalizeEffect(this.cleanEffect);
             };
@@ -3521,7 +3521,7 @@ var joinjelly;
             };
             // create game background
             GamePlayScreen.prototype.createBackground = function () {
-                var bg = gameui.ImagesManager.getBitmap("Background");
+                var bg = gameui.AssetsManager.getBitmap("Background");
                 this.background.addChild(bg);
             };
             // create a new board
@@ -3933,7 +3933,7 @@ var joinjelly;
                 // play sound
                 gameui.AudiosManager.playSound("Interface Sound-11");
                 // create item Object
-                var itemDO = gameui.ImagesManager.getBitmap("item" + item);
+                var itemDO = gameui.AssetsManager.getBitmap("item" + item);
                 itemDO.mouseEnabled = false;
                 itemDO.regX = itemDO.getBounds().width / 2;
                 itemDO.regY = itemDO.getBounds().height / 2;
@@ -3959,7 +3959,7 @@ var joinjelly;
             GamePlayScreen.prototype.animateScoreFromTile = function (tile, score) {
                 var _this = this;
                 // create text Object
-                var textDO = gameui.ImagesManager.getBitmapText(score.toString(), "debussy");
+                var textDO = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
                 textDO.regX = textDO.getBounds().width / 2;
                 textDO.mouseEnabled = false;
                 var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
@@ -4129,8 +4129,10 @@ var joinjelly;
                 tile.jelly.playThunder();
                 setTimeout(function () {
                     tile.unlock();
+                    gameui.AudiosManager.playSound("evolve");
                 }, 1000);
                 // cast a thunder effects 
+                gameui.AudiosManager.playSound("sounditemfast");
                 var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
                 var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
                 this.evolveEffect.visible = true;
@@ -4902,13 +4904,13 @@ var joinjelly;
                 // add objects to the footer
                 ItemsFooter.prototype.addObjects = function () {
                     //add background
-                    var bg = gameui.ImagesManager.getBitmap("footer");
+                    var bg = gameui.AssetsManager.getBitmap("footer");
                     this.addChild(bg);
                     bg.y = -162;
                     bg.x = (defaultWidth - 1161) / 2;
                     // add Lucky clover
                     // TODO verify with item
-                    var lucky = gameui.ImagesManager.getBitmap("lucky");
+                    var lucky = gameui.AssetsManager.getBitmap("lucky");
                     this.addChild(lucky);
                     lucky.y = -210;
                     lucky.x = 1285;
@@ -5051,7 +5053,7 @@ var joinjelly;
                 this.scrollableContent.addChild(loading);
                 loading.x = defaultWidth / 2;
                 loading.y = 800;
-                var message = gameui.ImagesManager.getBitmapText(StringResources.menus.loading, "debussy");
+                var message = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
                 this.scrollableContent.addChild(message);
                 message.regX = message.getBounds().width / 2;
                 message.x = defaultWidth / 2;
@@ -5104,14 +5106,14 @@ var joinjelly;
                     _super.call(this);
                     this.regX = 1056 / 2;
                     // Add Background
-                    var bg = gameui.ImagesManager.getBitmap("FlyGroup");
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
                     bg.scaleY = 0.65;
                     this.addChild(bg);
                     // Add Texts
                     var tContainer = new createjs.Container();
-                    var titleObj = gameui.ImagesManager.getBitmapText(name, "debussy");
-                    var positionObj = gameui.ImagesManager.getBitmapText(position.toString(), "debussy");
-                    var scoreObj = gameui.ImagesManager.getBitmapText(score.toString(), "debussy");
+                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
+                    var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
+                    var scoreObj = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
                     scoreObj.regX = scoreObj.getBounds().width;
                     positionObj.y = 30;
                     titleObj.y = 30;
@@ -5142,9 +5144,9 @@ var joinjelly;
                 __extends(LoadingBar, _super);
                 function LoadingBar(path) {
                     _super.call(this);
-                    var bg = gameui.ImagesManager.getBitmap(path + "bonus_border.png");
-                    var text = gameui.ImagesManager.getBitmapText(StringResources.menus.loading, "debussy");
-                    var bar = gameui.ImagesManager.getBitmap(path + "bonus_bar.png");
+                    var bg = gameui.AssetsManager.getBitmap(path + "bonus_border.png");
+                    var text = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
+                    var bar = gameui.AssetsManager.getBitmap(path + "bonus_bar.png");
                     this.addChild(bg);
                     this.addChild(text);
                     this.addChild(bar);
@@ -5180,16 +5182,16 @@ var joinjelly;
                 }
                 PlayerNameOptions.prototype.addObjects = function () {
                     var _this = this;
-                    var bg = gameui.ImagesManager.getBitmap("FlyGroup");
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
                     bg.y = -130;
                     bg.regX = bg.getBounds().width / 2;
                     this.addChild(bg);
-                    var title = gameui.ImagesManager.getBitmapText(StringResources.menus.playerName, "debussy");
+                    var title = gameui.AssetsManager.getBitmapText(StringResources.menus.playerName, "debussy");
                     title.y = -190;
                     title.scaleX = title.scaleY = 1.1;
                     title.regX = title.getBounds().width / 2;
                     this.addChild(title);
-                    var playerName = gameui.ImagesManager.getBitmapText(joinjelly.JoinJelly.userData.getPlayerName(), "debussy");
+                    var playerName = gameui.AssetsManager.getBitmapText(joinjelly.JoinJelly.userData.getPlayerName(), "debussy");
                     this.addChild(playerName);
                     this.playerName = playerName;
                     playerName.x = -450;
@@ -5220,7 +5222,7 @@ var joinjelly;
             }
             Effect.prototype.castSimple = function () {
                 var _this = this;
-                var fxs = gameui.ImagesManager.getBitmap("fxJoin");
+                var fxs = gameui.AssetsManager.getBitmap("fxJoin");
                 fxs.regX = 100;
                 fxs.regY = 100;
                 this.addChild(fxs);
@@ -5230,7 +5232,7 @@ var joinjelly;
             };
             Effect.prototype.castSimpleInv = function () {
                 var _this = this;
-                var fxs = gameui.ImagesManager.getBitmap("fxJoin");
+                var fxs = gameui.AssetsManager.getBitmap("fxJoin");
                 fxs.regX = 100;
                 fxs.regY = 100;
                 this.addChild(fxs);
@@ -5241,7 +5243,7 @@ var joinjelly;
             };
             Effect.prototype.castPart = function () {
                 var _this = this;
-                var fxp = gameui.ImagesManager.getBitmap("fxPart");
+                var fxp = gameui.AssetsManager.getBitmap("fxPart");
                 fxp.regX = 140;
                 fxp.regY = 140;
                 fxp.scaleX = fxp.scaleY = 0.2;
@@ -5254,7 +5256,7 @@ var joinjelly;
             };
             Effect.prototype.castParts = function () {
                 var _this = this;
-                var fxp = gameui.ImagesManager.getBitmap("fxPart");
+                var fxp = gameui.AssetsManager.getBitmap("fxPart");
                 fxp.regX = 140;
                 fxp.regY = 140;
                 fxp.scaleX = fxp.scaleY = 0.4;
@@ -5267,7 +5269,7 @@ var joinjelly;
             };
             Effect.prototype.castPartsInv = function () {
                 var _this = this;
-                var fxp = gameui.ImagesManager.getBitmap("fxPart");
+                var fxp = gameui.AssetsManager.getBitmap("fxPart");
                 fxp.regX = 140;
                 fxp.regY = 140;
                 fxp.scaleX = fxp.scaleY = 4;

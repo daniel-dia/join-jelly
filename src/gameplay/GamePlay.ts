@@ -860,9 +860,11 @@
 
             // cast Effect On Tile
             tile.jelly.playThunder();
-            setTimeout(() => {tile.unlock();}, 1000);
+            setTimeout(() => {tile.unlock();gameui.AudiosManager.playSound("evolve")}, 1000);
 
             // cast a thunder effects 
+            gameui.AudiosManager.playSound("sounditemfast");
+
             var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
             var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
  

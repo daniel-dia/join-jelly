@@ -28,12 +28,12 @@ module joinjelly.menus {
              
             if (assetscale == 1) this.imagePath = "assets/images/";
             else                 this.imagePath = "assets/images_" + assetscale + "x/";
-             
+               
             
-            createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
+            //createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
 
-            var imageQueue = gameui.AssetsManager.loadAssets(this.imageManifest,this.imagePath );
-            //imageQueue.loadManifest(this.audioManifest, true, "assets/sounds/");
+            var queue = gameui.AssetsManager.loadAssets(this.imageManifest,this.imagePath );
+            queue.loadManifest(this.audioManifest, true, "assets/sounds/");
 
             //set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";
@@ -42,8 +42,6 @@ module joinjelly.menus {
             debussy = createSpriteSheetFromFont(debussyFont, this.imagePath);
             gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
 
- 
-
 
             var l = new view.LoadingBar(this.imagePath);
             this.content.addChild(l);
@@ -51,19 +49,19 @@ module joinjelly.menus {
             l.y = defaultHeight / 2;
 
             //add update% functtion
-            imageQueue.addEventListener("progress", (evt: any): boolean => {
+            queue.addEventListener("progress", (evt: any): boolean => {
                 l.update(evt.progress);
                 return true;
             });           
             
             //add update% functtion
-            imageQueue.addEventListener("fileload", (evt: any): boolean => {
+            queue.addEventListener("fileload", (evt: any): boolean => {
                 console.log(evt.item.src);
                 return true;
             });
 
             //creates load complete action
-            imageQueue.addEventListener("complete", (evt: Object): boolean => {
+            queue.addEventListener("complete", (evt: Object): boolean => {
                 if (this.loaded) this.loaded();
                 return true;
             });
@@ -226,8 +224,10 @@ module joinjelly.menus {
             { id: "Interface Sound-11", src: "Interface Sound-11.ogg" },
             { id: "Interface Sound-14", src: "Interface Sound-14.ogg" },
             { id: "Interface Sound-15", src: "Interface Sound-15.ogg" },
+            { id: "evolve", src: "evolve.ogg" },
             { id: "end", src: "end.ogg" },
 
+            
             { id: "musicIntro", src: "musicIntro.ogg" },
             { id: "music1", src: "music1.ogg" },
         ]

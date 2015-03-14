@@ -142,7 +142,7 @@
             setTimeout(() => { this.playLevelUp();}, 330);
             setTimeout(() => { this.playEvolve(); }, 660);
             setTimeout(() => { this.playLevelUp();}, 1000);
-            setTimeout(() => { this.playLevelUp(); gameui.AudiosManager.playSound("sounditemfast"); }, 1100);
+            setTimeout(() => { this.playLevelUp();}, 1100);
         }
 
         /// #endregion
