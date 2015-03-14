@@ -135,7 +135,14 @@
         public playEvolve() {
             this.effect.alpha = 1;
             this.effect.castBoth();
+        }
 
+        public playThunder() {
+            setTimeout(() => { this.playEvolve(); }, 10);
+            setTimeout(() => { this.playLevelUp();}, 330);
+            setTimeout(() => { this.playEvolve(); }, 660);
+            setTimeout(() => { this.playLevelUp();}, 1000);
+            setTimeout(() => { this.playLevelUp(); gameui.AudiosManager.playSound("sounditemfast"); }, 1100);
         }
 
         /// #endregion

@@ -853,18 +853,16 @@
             // select random elegible tile
             var selected = Math.floor(Math.random() * selectedTiles.length);
             var tile = selectedTiles[selected];
+
+            //lock tile and change number
             tile.lock();
             tile.setNumber(tile.getNumber() * 2);
 
-            //cast Effect On Tile
-            setTimeout(() => { tile.jelly.playEvolve(); }, 10);
-            setTimeout(() => { tile.jelly.playLevelUp(); }, 330);
-            setTimeout(() => { tile.jelly.playEvolve(); }, 660);
-            setTimeout(() => { tile.unlock(); tile.jelly.playLevelUp(); }, 1000);
-            setTimeout(() => { tile.jelly.playLevelUp(); }, 1100);
+            // cast Effect On Tile
+            tile.jelly.playThunder();
+            setTimeout(() => {tile.unlock();}, 1000);
 
-            //cast effects 
-            
+            // cast a thunder effects 
             var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
             var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
  
@@ -878,11 +876,10 @@
             
             createjs.Tween.removeTweens(this.evolveEffect);
             createjs.Tween.get(this.evolveEffect).to({ scaleY: scale }, 200) 
-            
             createjs.Tween.get(this.evolveEffect).to({ alpha: 0 }, 1200,createjs.Ease.quadIn).call(() => {
                 this.evolveEffect.visible = false
             });
-            gameui.AudiosManager.playSound("sounditemfast");
+            
 
             return true;
         }
