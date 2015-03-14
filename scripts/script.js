@@ -3495,6 +3495,15 @@ var joinjelly;
                 // try to load a saved Game
                 if (saveGame)
                     this.loadGame();
+                //if is first time then give some items.
+                if (joinjelly.JoinJelly.userData.getHistory("firstPlay")) {
+                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.REVIVE, 1);
+                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.TIME, 2);
+                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.FAST, 2);
+                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.CLEAN, 2);
+                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
+                }
+                joinjelly.JoinJelly.userData.history("firstPlay");
             }
             // create game effects
             GamePlayScreen.prototype.createEffects = function () {

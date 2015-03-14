@@ -59,6 +59,18 @@
             
             // try to load a saved Game
             if (saveGame) this.loadGame();
+
+            //if is first time then give some items.
+            if(JoinJelly.userData.getHistory("firstPlay")) {
+                JoinJelly.itemData.setItemAmmount(Items.REVIVE,1)
+                JoinJelly.itemData.setItemAmmount(Items.TIME, 2)
+                JoinJelly.itemData.setItemAmmount(Items.FAST, 2)
+                JoinJelly.itemData.setItemAmmount(Items.CLEAN, 2)
+                JoinJelly.itemData.setItemAmmount(Items.LUCKY, 0)
+            }
+
+            JoinJelly.userData.history("firstPlay")
+
         
         }
 
