@@ -1316,9 +1316,9 @@ var joinjelly;
                     this.imagePath = "assets/images/";
                 else
                     this.imagePath = "assets/images_" + assetscale + "x/";
-                //createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
+                createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
                 var queue = gameui.AssetsManager.loadAssets(this.imageManifest, this.imagePath);
-                queue.loadManifest(this.audioManifest, true, "assets/sounds/");
+                //queue.loadManifest(this.audioManifest, true, "assets/sounds/");
                 //set default sound button
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 //load font
