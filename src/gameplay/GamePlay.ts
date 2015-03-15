@@ -258,7 +258,7 @@
             // defines alarm condition
             var emptySpaces = this.board.getPercentEmptySpaces();
             var alarm = false;
-            if (emptySpaces < 0.25 && emptySpaces > 0)
+            if (emptySpaces < 0.15 && emptySpaces > 0)
                 var alarm = true;
 
             // updates the header
