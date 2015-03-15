@@ -21,6 +21,7 @@
         private finishMenu: view.FinishMenu;
         private pauseMenu: view.PauseMenu;
         private showBoardButton: gameui.Button;
+        private countDown: view.CountDown;
         protected gameMessage: view.TutoralMessage;
 
         // parameters
@@ -155,7 +156,12 @@
             // create game message
             this.gameMessage = new view.TutoralMessage();
             this.content.addChild(this.gameMessage);
- 
+
+            // countdown
+            this.countDown = new view.CountDown();
+            this.content.addChild(this.countDown);
+            this.countDown.x = defaultWidth / 2;
+            this.countDown.y = defaultHeight / 2;
 
             // creates a toggle button
             var tbt = new gameui.ImageButton("BtBoard", () => {
@@ -348,11 +354,21 @@
 
         // unpause game
         private continueGame() {
+            //hide menus
             this.pauseMenu.hide();
-            this.gamestate = GameState.playing;
-            this.board.unlock();
-            this.gameHeader.mouseEnabled = true;
-            this.content.mouseEnabled = true;
+
+            //wait 3 seconds to unpause
+            setTimeout(() => {
+                this.gamestate = GameState.playing;
+                this.board.unlock();
+                this.gameHeader.mouseEnabled = true;
+                this.content.mouseEnabled = true;
+
+            }, 3000);
+
+            //show a 3 seconds countdown to resume game
+            this.countDown.countDown(3);
+
         }
 
         // winTheGame
@@ -677,6 +693,8 @@
             
             this.content.addChild(textDO);
         }
+
+
 
         // #endregion
 

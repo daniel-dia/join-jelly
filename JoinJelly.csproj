@@ -389,6 +389,7 @@
     <TypeScriptCompile Include="gameui\WpAudioManager.ts" />
     <TypeScriptCompile Include="gameui\AudioManager.ts" />
     <Content Include="scripts\script.js" />
+    <TypeScriptCompile Include="src\gameplay\view\CountDown.ts" />
     <TypeScriptCompile Include="src\menus\LeaderBoards.ts" />
     <TypeScriptCompile Include="src\menus\ScoreWall.ts" />
     <TypeScriptCompile Include="src\LeaderBoards.ts" />

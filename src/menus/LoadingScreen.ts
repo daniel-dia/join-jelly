@@ -105,7 +105,12 @@ module joinjelly.menus {
             { id: "esquare", src: "esquare.png" },
             { id: "j8192b", src: "j8192b.png" },
             { id: "e8192b", src: "e8192b.png" },
-          
+
+
+            { id: "n1", src: "n1.png" },
+            { id: "n2", src: "n2.png" },
+            { id: "n3", src: "n3.png" },
+                      
             { id: "footer", src: "footer.png" }, 
             { id: "j-1", src: "j-1.png" },
             { id: "e-1", src: "e-1.png" },

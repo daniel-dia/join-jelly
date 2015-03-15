@@ -1193,6 +1193,9 @@ var joinjelly;
                     { id: "esquare", src: "esquare.png" },
                     { id: "j8192b", src: "j8192b.png" },
                     { id: "e8192b", src: "e8192b.png" },
+                    { id: "n1", src: "n1.png" },
+                    { id: "n2", src: "n2.png" },
+                    { id: "n3", src: "n3.png" },
                     { id: "footer", src: "footer.png" },
                     { id: "j-1", src: "j-1.png" },
                     { id: "e-1", src: "e-1.png" },
@@ -3572,6 +3575,11 @@ var joinjelly;
                 // create game message
                 this.gameMessage = new gameplay.view.TutoralMessage();
                 this.content.addChild(this.gameMessage);
+                // countdown
+                this.countDown = new gameplay.view.CountDown();
+                this.content.addChild(this.countDown);
+                this.countDown.x = defaultWidth / 2;
+                this.countDown.y = defaultHeight / 2;
                 // creates a toggle button
                 var tbt = new gameui.ImageButton("BtBoard", function () {
                     _this.finishMenu.show();
@@ -3721,11 +3729,18 @@ var joinjelly;
             };
             // unpause game
             GamePlayScreen.prototype.continueGame = function () {
+                var _this = this;
+                //hide menus
                 this.pauseMenu.hide();
-                this.gamestate = 1 /* playing */;
-                this.board.unlock();
-                this.gameHeader.mouseEnabled = true;
-                this.content.mouseEnabled = true;
+                //wait 3 seconds to unpause
+                setTimeout(function () {
+                    _this.gamestate = 1 /* playing */;
+                    _this.board.unlock();
+                    _this.gameHeader.mouseEnabled = true;
+                    _this.content.mouseEnabled = true;
+                }, 3000);
+                //show a 3 seconds countdown to resume game
+                this.countDown.countDown(3);
             };
             // winTheGame
             GamePlayScreen.prototype.winGame = function () {
@@ -4872,6 +4887,44 @@ window.onload = function () {
 };
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var CountDown = (function (_super) {
+                __extends(CountDown, _super);
+                function CountDown() {
+                    _super.apply(this, arguments);
+                }
+                CountDown.prototype.countDown = function (total) {
+                    var _this = this;
+                    if (total === void 0) { total = 3; }
+                    // initialize
+                    var ns = [];
+                    var time = 1000;
+                    var transition = 200;
+                    for (var n = total; n > 0; n--) {
+                        //create and add child
+                        ns[n] = gameui.AssetsManager.getBitmap("n" + n);
+                        this.addChild(ns[n]);
+                        //centralize number
+                        ns[n].regX = ns[n].getBounds().width / 2;
+                        ns[n].regY = ns[n].getBounds().height / 2;
+                        ns[n].mouseEnabled = false;
+                        //make animation
+                        createjs.Tween.get(ns[n]).to({ scaleX: 2, scaleY: 2, alpha: 0 }).wait((total - n) * time).to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut).wait(time - transition).to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn).call(function (obj) {
+                            _this.removeChild(obj);
+                        });
+                    }
+                };
+                return CountDown;
+            })(createjs.Container);
+            view.CountDown = CountDown;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
