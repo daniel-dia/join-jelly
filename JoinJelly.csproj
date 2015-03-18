@@ -398,7 +398,32 @@
     <TypeScriptCompile Include="src\menus\view\PlayerNameOption.ts" />
     <TypeScriptCompile Include="src\view\Effect.ts" />
     <TypeScriptCompile Include="_references.ts" />
-    <Content Include="web.config" />
+    <Content Include="type-a-number-js\css\style.css" />
+    <Content Include="type-a-number-js\img\genericLeaderboard.png" />
+    <Content Include="type-a-number-js\img\gplus_signin_normal.png" />
+    <Content Include="type-a-number-js\img\Question_mark.png" />
+    <Content Include="type-a-number-js\index.html" />
+    <Content Include="type-a-number-js\js\achievementManager.js" />
+    <Content Include="type-a-number-js\js\achievementTable.js" />
+    <Content Include="type-a-number-js\js\achievementWidget.js" />
+    <Content Include="type-a-number-js\js\admin.js" />
+    <Content Include="type-a-number-js\js\challenge.js" />
+    <Content Include="type-a-number-js\js\constants.js" />
+    <Content Include="type-a-number-js\js\friendsTable.js" />
+    <Content Include="type-a-number-js\js\game.js" />
+    <Content Include="type-a-number-js\js\leaderboardManager.js" />
+    <Content Include="type-a-number-js\js\leaderboardsTable.js" />
+    <Content Include="type-a-number-js\js\leaderboardTable.js" />
+    <Content Include="type-a-number-js\js\leaderboardWidget.js" />
+    <Content Include="type-a-number-js\js\login.js" />
+    <Content Include="type-a-number-js\js\player.js" />
+    <Content Include="type-a-number-js\js\utils.js" />
+    <Content Include="type-a-number-js\js\welcome.js" />
+    <Content Include="type-a-number-js\linkPage\480.png" />
+    <Content Include="type-a-number-js\linkPage\index.php" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="gameui\AssetsManager.ts" />
@@ -485,6 +510,8 @@
     <Content Include="assets\sounds\sound_s1.ogg" />
     <Content Include="assets\sounds\sound_s2.ogg" />
     <Content Include="assets\sounds\sound_s3.ogg" />
+    <Content Include="type-a-number-js\LICENSE" />
+    <Content Include="type-a-number-js\readme.md" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
