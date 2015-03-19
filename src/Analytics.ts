@@ -72,7 +72,7 @@ class Analytics {
     }
 
     private normalizeNumber(value: number= 0): string {
-        var s = "000000000" + value.toString();
+        var s = "000000000" + (value%1).toString();
         return s.substr(s.length - 3);
     }
 

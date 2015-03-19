@@ -7439,11 +7439,16 @@ Cocoon.define("Cocoon.Social", function (extension) {
         publishMessageWithDialog: function (message, callback) {
             this.fb.showShareDialog(fromCocoonMessageToFBMessage(message), function (response) {
                 if (callback) {
-                    if (response.error)
-                        callback(response.error)
-                    else if(!response.post_id)
-                        callback({ message: "Not posted" });
-                }
+                    var error = {message: "Not posted"};
+                    if(response){
+                        if (response.error)
+                            error = response.error;
+                        else if (response.post_id)
+                            error = null;
+                    }
+
+                    callback(error);
+               }
             });
         },
 

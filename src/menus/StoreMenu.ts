@@ -48,21 +48,42 @@
 
                 // executa a compra do app.
                 pi.addEventListener("buy", (event: createjs.Event) => {
-                    var si: view.StoreItem = <view.StoreItem>event.currentTarget 
+                    var si: view.StoreItem = <view.StoreItem>event.currentTarget
 
                     si.setPurchasing();
                     this.lockUI();
 
-                    this.purchaseProduct(event["product"], (sucess: boolean) => { 
+                    this.purchaseProduct(event["product"], (sucess: boolean) => {
                         if (sucess) {
                             si.setPurchased();
                             gameui.AudiosManager.playSound("Interface Sound-11");
                         }
-                        this.updateFooter(); 
+                        this.updateFooter();
                         this.unlockUI();
-                       
+
                     });
                 });
+
+                pi.addEventListener("share", (event: createjs.Event) => {
+                    var si: view.StoreItem = <view.StoreItem>event.currentTarget
+
+                    si.setPurchasing();
+                    this.lockUI();
+
+                    this.purchaseShareProduct(event["product"], (sucess: boolean) => {
+                        if (sucess) {
+                            si.setPurchased();
+                            gameui.AudiosManager.playSound("Interface Sound-11");
+                        } else {
+                            si.setNormal();
+                        }
+                        this.updateFooter();
+                        this.unlockUI(); 
+                    });
+                });
+
+
+
             }
         }
 
@@ -70,11 +91,50 @@
         private purchaseProduct(productId: string, callback: (sucess:boolean) => void) {
            
             InAppPurchases.purchaseProductRequest(productId, (productId: string,sucess:boolean) => {
-                this.fullFillPurchase(productId);
-                InAppPurchases.reportProductFullfillment(productId);
+
+                if (sucess) {
+                    this.fullFillPurchase(productId);
+                    InAppPurchases.reportProductFullfillment(productId);
+                }
                 callback(sucess);
             });
         }
+
+        // call for product purchasing
+        private purchaseShareProduct(productId: string, callback: (sucess: boolean) => void) {
+           
+             var fb = Cocoon.Social.Facebook;
+
+            //initialize the Facebook Service the same way as the Official JS SDK
+            fb.init({ appId: fbAppId});
+
+ 
+            var socialService = fb.getSocialInterface();
+
+            // mediaURL, linkURL, linkText, linkCaption
+            var message = new Cocoon.Social.Message(
+                StringResources.social.shareDescription,
+                gameWebsiteIcon,
+                gameWebsite,
+                StringResources.social.shareTitle,
+                StringResources.social.shareCaption);
+            var that = this;
+            socialService.publishMessageWithDialog(message, function (error) {
+                console.log("shared " +JSON.stringify(error))
+                var sucess = true;
+                if (error) sucess = false;
+
+                if (sucess) {
+                    that.fullFillPurchase(productId);
+                    InAppPurchases.reportProductFullfillment(productId);
+                }
+
+                callback(sucess);
+            });
+        }
+ 
+  
+
 
         private lockUI(timeout: number=5000) {
             this.content.mouseEnabled = false;

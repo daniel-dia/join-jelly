@@ -31,7 +31,7 @@
                 case "revive5x": iconId = "itemrevive"; break;
                 case "evolve5x": iconId = "itemevolve"; break;
                 case "clean5x": iconId = "itemclean"; break;
-                case "pack5x": case "pack10x": iconId = "itemPack"; break;
+                case "pack5x": case "pack1x": case "pack10x": iconId = "itemPack"; break;
                 case "lucky": iconId = "lucky"; break;
             }
 
@@ -55,18 +55,7 @@
             titleObj.x = descriptionObj.x = 400;
             tContainer.addChild(titleObj);
             tContainer.addChild(descriptionObj);
-
-            // add price
-            var priceDO = gameui.AssetsManager.getBitmapText(product.FormattedPrice, "debussy");
-            priceDO.y = 251;
-            priceDO.x = 1199;
-            priceDO.regX = priceDO.getBounds().width / 2;
-            priceDO.scaleX = priceDO.scaleY = 0.8;
-            tContainer.addChild(priceDO);
-            
-            this.addChild(tContainer);
-            tContainer.cache(100, 27, 1250, 300);
-             
+         
             // add Check
             var unchecked = gameui.AssetsManager.getBitmap("unchecked");
             unchecked.regX = unchecked.getBounds().width / 2;
@@ -91,18 +80,41 @@
             this.loadingIcon = loading;
             this.addChild(loading);
 
+            // add price
+            var priceDO = gameui.AssetsManager.getBitmapText(product.FormattedPrice, "debussy");
+            priceDO.y = 251;
+            priceDO.x = 1199;
+            priceDO.regX = priceDO.getBounds().width / 2;
+            priceDO.scaleX = priceDO.scaleY = 0.8;
+            if (product.FormattedPrice != "share") tContainer.addChild(priceDO);
+
+
+            // special button for sharing
             // add purchase buttton
-            var button = new gameui.ImageButton("BtStore", () => {
-                this.dispatchEvent({ type: "buy", product: this.product.ProductId });
-            });
+            if (product.FormattedPrice == "share") {
+                var button = new gameui.ImageButton("BtShare", () => {
+                    this.dispatchEvent({ type: "share", product: this.product.ProductId });
+                });
+            } else { 
+                var button = new gameui.ImageButton("BtStore", () => {
+                    this.dispatchEvent({ type: "buy", product: this.product.ProductId });
+                });
+            }
+
             button.y = 152;
             button.x = 1199;
             this.purchaseButton = button;
             this.addChild(button);
+
+ 
+
+            this.addChild(tContainer);
+            tContainer.cache(100, 27, 1250, 300);
         }
 
         public setPurchasing() {
              this.disable()
+            this.loadingIcon.visible = true;
         }
 
         public loading() { 
@@ -123,6 +135,13 @@
             this.purchasedIcon.visible = true; 
             this.loadingIcon.visible = false;
         }
+
+        public setNormal() {
+            this.purchaseButton.fadeIn();
+            this.purchasedIcon.visible = false;
+            this.loadingIcon.visible = false;
+        }
+
 
         public enable() { 
             this.purchaseButton.fadeIn();

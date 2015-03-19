@@ -446,7 +446,7 @@
     <TypeScriptCompile Include="typings\soundjs\soundjs.d.ts" />
     <TypeScriptCompile Include="typings\tweenjs\tweenjs.d.ts" />
     <TypeScriptCompile Include="src\Analytics.ts" />
-    <TypeScriptCompile Include="src\Definitions.ts" />
+    <TypeScriptCompile Include="src\Constants.ts" />
     <TypeScriptCompile Include="src\JoinJelly.ts" />
     <TypeScriptCompile Include="src\gameplay\view\ItemsFooter.ts" />
     <TypeScriptCompile Include="src\gameplay\view\ItemButton.ts" />

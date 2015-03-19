@@ -862,6 +862,11 @@ var StringResources = {
         },
     },
     credit: {},
+    social: {
+        shareDescription: "",
+        shareTitle: "JoinJelly",
+        shareCaption: "",
+    }
 };
 var StringResources_pt = {
     menus: {
@@ -957,9 +962,12 @@ var StringResources_pt = {
         },
     },
     credit: {},
+    social: {
+        shareDescription: "",
+        shareTitle: "JoinJelly",
+        shareCaption: "",
+    }
 };
-var defaultWidth = 768 * 2;
-var defaultHeight = 1024 * 2;
 var Analytics = (function () {
     function Analytics() {
     }
@@ -1013,7 +1021,7 @@ var Analytics = (function () {
     };
     Analytics.prototype.normalizeNumber = function (value) {
         if (value === void 0) { value = 0; }
-        var s = "000000000" + value.toString();
+        var s = "000000000" + (value % 1).toString();
         return s.substr(s.length - 3);
     };
     Analytics.prototype.log2 = function (value) {
@@ -1048,12 +1056,13 @@ var InAppPurchases = (function () {
         setTimeout(function () {
             if (callback)
                 callback([
+                    { ProductId: "pack1x", Name: "Item Pack", Description: "One of each item", FormattedPrice: "share", },
                     { ProductId: "time5x", Name: "5x Snow", Description: "Freeze Screen \nfor 5 seconds", FormattedPrice: "R$1,99", },
                     { ProductId: "fast5x", Name: "5x Magnet", Description: "Join jellies on \nscreen", FormattedPrice: "R$1,99", },
                     { ProductId: "revive5x", Name: "5x Revive", Description: "Give you another \nchance to continue", FormattedPrice: "R$1,99", },
                     { ProductId: "clean5x", Name: "5x Clean", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$1,99", },
-                    { ProductId: "pack5x", Name: "Item Pack 3x", Description: "5 of each item", FormattedPrice: "R$4,99", },
-                    { ProductId: "pack10x", Name: "Item Pack 9x", Description: "10 of each item", FormattedPrice: "R$6,99", },
+                    { ProductId: "pack5x", Name: "3x Item Pack", Description: "5 of each item", FormattedPrice: "R$4,99", },
+                    { ProductId: "pack10x", Name: "10x Item Pack", Description: "10 of each item", FormattedPrice: "R$6,99", },
                     { ProductId: "lucky", Name: "Lucky Clover", Description: "Doubles chance for \nfinding a item", FormattedPrice: "R$3,99", },
                 ]);
         }, 1000);
@@ -1756,6 +1765,7 @@ var joinjelly;
                             iconId = "itemclean";
                             break;
                         case "pack5x":
+                        case "pack1x":
                         case "pack10x":
                             iconId = "itemPack";
                             break;
@@ -1780,15 +1790,6 @@ var joinjelly;
                     titleObj.x = descriptionObj.x = 400;
                     tContainer.addChild(titleObj);
                     tContainer.addChild(descriptionObj);
-                    // add price
-                    var priceDO = gameui.AssetsManager.getBitmapText(product.FormattedPrice, "debussy");
-                    priceDO.y = 251;
-                    priceDO.x = 1199;
-                    priceDO.regX = priceDO.getBounds().width / 2;
-                    priceDO.scaleX = priceDO.scaleY = 0.8;
-                    tContainer.addChild(priceDO);
-                    this.addChild(tContainer);
-                    tContainer.cache(100, 27, 1250, 300);
                     // add Check
                     var unchecked = gameui.AssetsManager.getBitmap("unchecked");
                     unchecked.regX = unchecked.getBounds().width / 2;
@@ -1810,17 +1811,36 @@ var joinjelly;
                     loading.x = 1199;
                     this.loadingIcon = loading;
                     this.addChild(loading);
+                    // add price
+                    var priceDO = gameui.AssetsManager.getBitmapText(product.FormattedPrice, "debussy");
+                    priceDO.y = 251;
+                    priceDO.x = 1199;
+                    priceDO.regX = priceDO.getBounds().width / 2;
+                    priceDO.scaleX = priceDO.scaleY = 0.8;
+                    if (product.FormattedPrice != "share")
+                        tContainer.addChild(priceDO);
+                    // special button for sharing
                     // add purchase buttton
-                    var button = new gameui.ImageButton("BtStore", function () {
-                        _this.dispatchEvent({ type: "buy", product: _this.product.ProductId });
-                    });
+                    if (product.FormattedPrice == "share") {
+                        var button = new gameui.ImageButton("BtShare", function () {
+                            _this.dispatchEvent({ type: "share", product: _this.product.ProductId });
+                        });
+                    }
+                    else {
+                        var button = new gameui.ImageButton("BtStore", function () {
+                            _this.dispatchEvent({ type: "buy", product: _this.product.ProductId });
+                        });
+                    }
                     button.y = 152;
                     button.x = 1199;
                     this.purchaseButton = button;
                     this.addChild(button);
+                    this.addChild(tContainer);
+                    tContainer.cache(100, 27, 1250, 300);
                 }
                 StoreItem.prototype.setPurchasing = function () {
                     this.disable();
+                    this.loadingIcon.visible = true;
                 };
                 StoreItem.prototype.loading = function () {
                     this.disable();
@@ -1836,6 +1856,11 @@ var joinjelly;
                 StoreItem.prototype.setPurchased = function () {
                     this.purchaseButton.fadeOut();
                     this.purchasedIcon.visible = true;
+                    this.loadingIcon.visible = false;
+                };
+                StoreItem.prototype.setNormal = function () {
+                    this.purchaseButton.fadeIn();
+                    this.purchasedIcon.visible = false;
                     this.loadingIcon.visible = false;
                 };
                 StoreItem.prototype.enable = function () {
@@ -1910,14 +1935,53 @@ var joinjelly;
                             _this.unlockUI();
                         });
                     });
+                    pi.addEventListener("share", function (event) {
+                        var si = event.currentTarget;
+                        si.setPurchasing();
+                        _this.lockUI();
+                        _this.purchaseShareProduct(event["product"], function (sucess) {
+                            if (sucess) {
+                                si.setPurchased();
+                                gameui.AudiosManager.playSound("Interface Sound-11");
+                            }
+                            else {
+                                si.setNormal();
+                            }
+                            _this.updateFooter();
+                            _this.unlockUI();
+                        });
+                    });
                 }
             };
             // call for product purchasing
             StoreMenu.prototype.purchaseProduct = function (productId, callback) {
                 var _this = this;
                 InAppPurchases.purchaseProductRequest(productId, function (productId, sucess) {
-                    _this.fullFillPurchase(productId);
-                    InAppPurchases.reportProductFullfillment(productId);
+                    if (sucess) {
+                        _this.fullFillPurchase(productId);
+                        InAppPurchases.reportProductFullfillment(productId);
+                    }
+                    callback(sucess);
+                });
+            };
+            // call for product purchasing
+            StoreMenu.prototype.purchaseShareProduct = function (productId, callback) {
+                var fb = Cocoon.Social.Facebook;
+                //initialize the Facebook Service the same way as the Official JS SDK
+                fb.init({ appId: fbAppId });
+                var socialService = fb.getSocialInterface();
+                // mediaURL, linkURL, linkText, linkCaption
+                var message = new Cocoon.Social.Message(StringResources.social.shareDescription, gameWebsiteIcon, gameWebsite, StringResources.social.shareTitle, StringResources.social.shareCaption);
+                var that = this;
+                socialService.publishMessageWithDialog(message, function (error) {
+                    console.log("shared " + JSON.stringify(error));
+                    var sucess = true;
+                    if (error)
+                        sucess = false;
+                    if (sucess) {
+                        that.fullFillPurchase(productId);
+                        InAppPurchases.reportProductFullfillment(productId);
+                    }
                     callback(sucess);
                 });
             };
@@ -3894,12 +3958,12 @@ var joinjelly;
             };
             // verifies if a tile can pair another, and make it happens
             GamePlayScreen.prototype.match = function (origin, target) {
+                //calculate new value
+                var newValue = target.getNumber() + origin.getNumber();
                 //check if match is correct
                 if (!this.canMatch(origin, target))
                     return false;
                 this.matches++;
-                //calculate new value
-                var newValue = target.getNumber() + origin.getNumber();
                 //animate the mach
                 this.board.match(origin, target);
                 // increase score
@@ -4887,6 +4951,11 @@ window.onload = function () {
 };
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
+var defaultWidth = 768 * 2;
+var defaultHeight = 1024 * 2;
+var fbAppId = "1416523228649363";
+var gameWebsite = "www.joinjelly.com";
+var gameWebsiteIcon = "www.joinjelly.com/icon.png";
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
@@ -4924,6 +4993,182 @@ var joinjelly;
             view.CountDown = CountDown;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var ItemsFooter = (function (_super) {
+                __extends(ItemsFooter, _super);
+                function ItemsFooter(items) {
+                    _super.call(this);
+                    this.itemSize = 270;
+                    this.itemsButtons = [];
+                    this.addObjects();
+                    this.setItems(items);
+                }
+                // add all button items
+                ItemsFooter.prototype.setItems = function (items) {
+                    var itemSize = this.itemSize;
+                    if (items.length >= 5)
+                        itemSize = 200;
+                    // clean all buttons
+                    this.cleanButtons();
+                    if (!items)
+                        return;
+                    for (var i in items)
+                        this.addItem(items[i], i);
+                    for (var i in items) {
+                        //set button position
+                        this.itemsButtons[items[i]].y = -150;
+                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
+                    }
+                };
+                // clean buttons
+                ItemsFooter.prototype.cleanButtons = function () {
+                    for (var i in this.itemsButtons)
+                        this.removeChild(this.itemsButtons[i]);
+                    this.itemsButtons = [];
+                };
+                // add objects to the footer
+                ItemsFooter.prototype.addObjects = function () {
+                    //add background
+                    var bg = gameui.AssetsManager.getBitmap("footer");
+                    this.addChild(bg);
+                    bg.y = -162;
+                    bg.x = (defaultWidth - 1161) / 2;
+                    // add Lucky clover
+                    // TODO verify with item
+                    var lucky = gameui.AssetsManager.getBitmap("lucky");
+                    this.addChild(lucky);
+                    lucky.y = -210;
+                    lucky.x = 1285;
+                    this.lucky = lucky;
+                    // lucky.visible = false;
+                    this.gameMessage = new view.TutoralMessage();
+                    this.addChild(this.gameMessage);
+                };
+                //add a single item button to the footer
+                ItemsFooter.prototype.addItem = function (item, pos) {
+                    var _this = this;
+                    //create button
+                    var bt = new view.ItemButton(item);
+                    this.addChild(bt);
+                    this.itemsButtons[item] = bt;
+                    //add event listener
+                    bt.addEventListener("click", function () {
+                        _this.dispatchEvent({ type: "useitem", item: item });
+                    });
+                };
+                // get a item display object
+                ItemsFooter.prototype.getItemButton = function (item) {
+                    return this.itemsButtons[item];
+                };
+                // set item ammount
+                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
+                    if (this.itemsButtons[item])
+                        this.itemsButtons[item].setAmmount(ammount);
+                    if (item == "lucky")
+                        this.lucky.visible = (ammount > 0);
+                };
+                // show item message
+                ItemsFooter.prototype.showMessage = function (itemId, message) {
+                    this.gameMessage.x = this.getItemButton(itemId).x;
+                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
+                    this.gameMessage.show(message);
+                };
+                // hide message
+                ItemsFooter.prototype.hideMessage = function () {
+                    this.gameMessage.fadeOut();
+                };
+                // bounces an item
+                ItemsFooter.prototype.highlight = function (item) {
+                    this.unHighlightAll();
+                    this.getItemButton(item).highLight();
+                };
+                // stop bouncing an item
+                ItemsFooter.prototype.unHighlightAll = function () {
+                    for (var i in this.itemsButtons)
+                        this.itemsButtons[i].unHighlight();
+                };
+                // lock an item
+                ItemsFooter.prototype.lockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    if (b)
+                        b.lock();
+                };
+                //unlock an item
+                ItemsFooter.prototype.unlockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    b.unlock();
+                };
+                ItemsFooter.prototype.lockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].lock();
+                };
+                ItemsFooter.prototype.unlockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].unlock();
+                };
+                return ItemsFooter;
+            })(createjs.Container);
+            view.ItemsFooter = ItemsFooter;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var AzureLeaderBoards = (function () {
+        function AzureLeaderBoards() {
+        }
+        AzureLeaderBoards.init = function () {
+            this.deviceId = localStorage.getItem("deviceId");
+            if (typeof WindowsAzure == 'undefined')
+                return;
+            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
+            this.table = this.client.getTable("LeaderBoards");
+        };
+        // get all scores wall
+        AzureLeaderBoards.getScoreNames = function (callback, count) {
+            if (!this.table)
+                return;
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
+                callback(queryResults);
+            }, function (queryResults) {
+                callback(null);
+            });
+        };
+        // saves scores to the cloud
+        AzureLeaderBoards.setScore = function (score, name, newId) {
+            var _this = this;
+            if (newId === void 0) { newId = false; }
+            if (!this.table)
+                return;
+            // if device id is already saved
+            if (this.deviceId && !newId) {
+                //update the current id
+                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+            }
+            else {
+                // insert a new id and get the device ID from server
+                this.table.insert({ name: name, score: score, gameid: this.gameId }).then(function (result) {
+                    if (result.id) {
+                        //get id from server
+                        _this.deviceId = result.id;
+                        //save local storage
+                        localStorage.setItem("deviceId", _this.deviceId);
+                    }
+                });
+            }
+        };
+        AzureLeaderBoards.host = "https://dialeaderboards.azure-mobile.net";
+        AzureLeaderBoards.key = "GyalJGfVBZeaGMTMGxKuytNMXjjoqC94";
+        AzureLeaderBoards.gameId = "joinjelly";
+        return AzureLeaderBoards;
+    })();
+    joinjelly.AzureLeaderBoards = AzureLeaderBoards;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
@@ -4979,58 +5224,6 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 //module joinjelly.menus {
 //    export class ScoreWall extends ScrollablePage {
-var joinjelly;
-(function (joinjelly) {
-    var AzureLeaderBoards = (function () {
-        function AzureLeaderBoards() {
-        }
-        AzureLeaderBoards.init = function () {
-            this.deviceId = localStorage.getItem("deviceId");
-            if (typeof WindowsAzure == 'undefined')
-                return;
-            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
-            this.table = this.client.getTable("LeaderBoards");
-        };
-        // get all scores wall
-        AzureLeaderBoards.getScoreNames = function (callback, count) {
-            if (!this.table)
-                return;
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
-                callback(queryResults);
-            }, function (queryResults) {
-                callback(null);
-            });
-        };
-        // saves scores to the cloud
-        AzureLeaderBoards.setScore = function (score, name, newId) {
-            var _this = this;
-            if (newId === void 0) { newId = false; }
-            if (!this.table)
-                return;
-            // if device id is already saved
-            if (this.deviceId && !newId) {
-                //update the current id
-                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
-            }
-            else {
-                // insert a new id and get the device ID from server
-                this.table.insert({ name: name, score: score, gameid: this.gameId }).then(function (result) {
-                    if (result.id) {
-                        //get id from server
-                        _this.deviceId = result.id;
-                        //save local storage
-                        localStorage.setItem("deviceId", _this.deviceId);
-                    }
-                });
-            }
-        };
-        AzureLeaderBoards.host = "https://dialeaderboards.azure-mobile.net";
-        AzureLeaderBoards.key = "GyalJGfVBZeaGMTMGxKuytNMXjjoqC94";
-        AzureLeaderBoards.gameId = "joinjelly";
-        return AzureLeaderBoards;
-    })();
-    joinjelly.AzureLeaderBoards = AzureLeaderBoards;
-})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var menus;
@@ -5226,129 +5419,5 @@ var joinjelly;
         })(createjs.Container);
         view.Effect = Effect;
     })(view = joinjelly.view || (joinjelly.view = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var ItemsFooter = (function (_super) {
-                __extends(ItemsFooter, _super);
-                function ItemsFooter(items) {
-                    _super.call(this);
-                    this.itemSize = 270;
-                    this.itemsButtons = [];
-                    this.addObjects();
-                    this.setItems(items);
-                }
-                // add all button items
-                ItemsFooter.prototype.setItems = function (items) {
-                    var itemSize = this.itemSize;
-                    if (items.length >= 5)
-                        itemSize = 200;
-                    // clean all buttons
-                    this.cleanButtons();
-                    if (!items)
-                        return;
-                    for (var i in items)
-                        this.addItem(items[i], i);
-                    for (var i in items) {
-                        //set button position
-                        this.itemsButtons[items[i]].y = -150;
-                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
-                    }
-                };
-                // clean buttons
-                ItemsFooter.prototype.cleanButtons = function () {
-                    for (var i in this.itemsButtons)
-                        this.removeChild(this.itemsButtons[i]);
-                    this.itemsButtons = [];
-                };
-                // add objects to the footer
-                ItemsFooter.prototype.addObjects = function () {
-                    //add background
-                    var bg = gameui.AssetsManager.getBitmap("footer");
-                    this.addChild(bg);
-                    bg.y = -162;
-                    bg.x = (defaultWidth - 1161) / 2;
-                    // add Lucky clover
-                    // TODO verify with item
-                    var lucky = gameui.AssetsManager.getBitmap("lucky");
-                    this.addChild(lucky);
-                    lucky.y = -210;
-                    lucky.x = 1285;
-                    this.lucky = lucky;
-                    // lucky.visible = false;
-                    this.gameMessage = new view.TutoralMessage();
-                    this.addChild(this.gameMessage);
-                };
-                //add a single item button to the footer
-                ItemsFooter.prototype.addItem = function (item, pos) {
-                    var _this = this;
-                    //create button
-                    var bt = new view.ItemButton(item);
-                    this.addChild(bt);
-                    this.itemsButtons[item] = bt;
-                    //add event listener
-                    bt.addEventListener("click", function () {
-                        _this.dispatchEvent({ type: "useitem", item: item });
-                    });
-                };
-                // get a item display object
-                ItemsFooter.prototype.getItemButton = function (item) {
-                    return this.itemsButtons[item];
-                };
-                // set item ammount
-                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
-                    if (this.itemsButtons[item])
-                        this.itemsButtons[item].setAmmount(ammount);
-                    if (item == "lucky")
-                        this.lucky.visible = (ammount > 0);
-                };
-                // show item message
-                ItemsFooter.prototype.showMessage = function (itemId, message) {
-                    this.gameMessage.x = this.getItemButton(itemId).x;
-                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
-                    this.gameMessage.show(message);
-                };
-                // hide message
-                ItemsFooter.prototype.hideMessage = function () {
-                    this.gameMessage.fadeOut();
-                };
-                // bounces an item
-                ItemsFooter.prototype.highlight = function (item) {
-                    this.unHighlightAll();
-                    this.getItemButton(item).highLight();
-                };
-                // stop bouncing an item
-                ItemsFooter.prototype.unHighlightAll = function () {
-                    for (var i in this.itemsButtons)
-                        this.itemsButtons[i].unHighlight();
-                };
-                // lock an item
-                ItemsFooter.prototype.lockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    if (b)
-                        b.lock();
-                };
-                //unlock an item
-                ItemsFooter.prototype.unlockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    b.unlock();
-                };
-                ItemsFooter.prototype.lockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].lock();
-                };
-                ItemsFooter.prototype.unlockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].unlock();
-                };
-                return ItemsFooter;
-            })(createjs.Container);
-            view.ItemsFooter = ItemsFooter;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map

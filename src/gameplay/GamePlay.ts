@@ -569,14 +569,15 @@
 
         // verifies if a tile can pair another, and make it happens
         protected match(origin: Tile, target: Tile): boolean {
-            //check if match is correct
-            if (!this.canMatch(origin, target)) return false;
-
-            this.matches++;
 
             //calculate new value
             var newValue = target.getNumber() + origin.getNumber();
 
+            //check if match is correct
+            if (!this.canMatch(origin, target)) return false;
+
+            this.matches++;
+            
             //animate the mach
             this.board.match(origin, target);
 

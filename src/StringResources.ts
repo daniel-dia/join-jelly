@@ -12,16 +12,16 @@
         pause: "paused",
         sound: "Sound",
         menu: "menu",
-        leaderboards:"Leaderboards",
+        leaderboards: "Leaderboards",
         reset: "Reset All Data",
         resetWarning: "Are you sure. All you progress will be lost",
         about: "About",
         tutorial: "Tutorial",
         shop: "shop",
-        playerName:"Player Name",
+        playerName: "Player Name",
         playerNameDesc: "Type your name for the leaderboards.",
-        error:"Sorry, Something went wrong",
-        
+        error: "Sorry, Something went wrong",
+
     },
     tutorial: {
         msgheplme: "Help me to evolve\nJoin  2 identical jellies.",
@@ -31,7 +31,7 @@
         msgItemClean: "You can always use items.\n this cleans the board",
         msgItemFast: "this one join some jellies",
         msgItemTime: "this one make time slower",
-        msgItemRevive:"if you loose, use this to revive",
+        msgItemRevive: "if you loose, use this to revive",
         msgBoardFill: "but be careful, \ndo not let the board fill, \nthis is the end for us.",
 
     },
@@ -91,6 +91,11 @@
     credit: {
     },
 
+    social: {
+        shareDescription: "",
+        shareTitle: "JoinJelly",
+        shareCaption: "",
+    }
 }
 
 var StringResources_pt = {
@@ -191,5 +196,10 @@ var StringResources_pt = {
     },
     credit: {
     },
+    social: {
+        shareDescription: "",
+        shareTitle: "JoinJelly",
+        shareCaption: "",
+    }
 
 }

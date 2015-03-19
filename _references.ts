@@ -13,8 +13,7 @@
 /// <reference path="gameui/Button.ts" />
 
 /// <reference path="src/ItemsData.ts" />
-/// <reference path="src/StringResources.ts" />
-/// <reference path="src/Definitions.ts" />
+/// <reference path="src/StringResources.ts" /> 
 /// <reference path="src/Analytics.ts" />
 /// <reference path="src/InAppPurchases.ts" />
 
