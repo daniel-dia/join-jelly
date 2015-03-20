@@ -1056,7 +1056,6 @@ var InAppPurchases = (function () {
         setTimeout(function () {
             if (callback)
                 callback([
-                    { ProductId: "pack1x", Name: "Item Pack", Description: "One of each item", FormattedPrice: "share", },
                     { ProductId: "time5x", Name: "5x Snow", Description: "Freeze Screen \nfor 5 seconds", FormattedPrice: "R$1,99", },
                     { ProductId: "fast5x", Name: "5x Magnet", Description: "Join jellies on \nscreen", FormattedPrice: "R$1,99", },
                     { ProductId: "revive5x", Name: "5x Revive", Description: "Give you another \nchance to continue", FormattedPrice: "R$1,99", },
@@ -1985,6 +1984,7 @@ var joinjelly;
                     callback(sucess);
                 });
             };
+            //lock UI for a time interval
             StoreMenu.prototype.lockUI = function (timeout) {
                 var _this = this;
                 if (timeout === void 0) { timeout = 5000; }
@@ -1997,6 +1997,7 @@ var joinjelly;
             StoreMenu.prototype.unlockUI = function () {
                 this.content.mouseEnabled = true;
             };
+            // verify product avaliability
             StoreMenu.prototype.updateProductsAvaliability = function () {
             };
             StoreMenu.prototype.fullFillPurchase = function (productId) {

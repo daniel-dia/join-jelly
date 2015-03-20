@@ -81,9 +81,6 @@
                         this.unlockUI(); 
                     });
                 });
-
-
-
             }
         }
 
@@ -133,9 +130,7 @@
             });
         }
  
-  
-
-
+        //lock UI for a time interval
         private lockUI(timeout: number=5000) {
             this.content.mouseEnabled = false;
             setTimeout(() => { this.unlockUI();}, timeout);
@@ -146,7 +141,9 @@
             this.content.mouseEnabled = true;
         }
 
+        // verify product avaliability
         private updateProductsAvaliability() {
+
         }
 
         private fullFillPurchase(productId: string): boolean{
