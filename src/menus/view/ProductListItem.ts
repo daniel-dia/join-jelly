@@ -1,16 +1,15 @@
 ﻿module joinjelly.menus.view {
 
-    export class StoreItem extends createjs.Container {
+    export class ProductListItem extends createjs.Container {
 
-        private product: ProductListing;
 
         private purchaseButton: gameui.Button;
-        private purchasedIcon:  createjs.DisplayObject;
+        private purchasedIcon: createjs.DisplayObject;
         private loadingIcon: createjs.DisplayObject;
 
-        constructor(product: ProductListing) {
+        constructor(productId: string, name: string, description: string, localizedPrice: string) {
             super();
-            this.product = product
+
 
             var tContainer = new createjs.Container();
 
@@ -25,7 +24,7 @@
             // Add Icon
 
             var iconId = "";
-            switch (product.ProductId) {
+            switch (productId) {
                 case "time5x": iconId = "itemtime"; break;
                 case "fast5x": iconId = "itemfast"; break;
                 case "revive5x": iconId = "itemrevive"; break;
@@ -33,6 +32,7 @@
                 case "clean5x": iconId = "itemclean"; break;
                 case "pack5x": case "pack1x": case "pack10x": iconId = "itemPack"; break;
                 case "lucky": iconId = "lucky"; break;
+                default: iconId = "itemPack";
             }
 
 
@@ -41,13 +41,12 @@
             icon.regY = icon.getBounds().height / 2;
             icon.x = 225;
             icon.y = 188;
-            icon.scaleX = icon.scaleY = 1.5;
             tContainer.addChild(icon);
 
             // Add Texts
 
-            var titleObj = gameui.AssetsManager.getBitmapText(product.Name, "debussy");
-            var descriptionObj = gameui.AssetsManager.getBitmapText(product.Description, "debussy");
+            var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
+            var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
             titleObj.y = 40;
             descriptionObj.y = 140;
             titleObj.scaleX = titleObj.scaleY = 1.1;
@@ -55,7 +54,7 @@
             titleObj.x = descriptionObj.x = 400;
             tContainer.addChild(titleObj);
             tContainer.addChild(descriptionObj);
-         
+
             // add Check
             var unchecked = gameui.AssetsManager.getBitmap("unchecked");
             unchecked.regX = unchecked.getBounds().width / 2;
@@ -81,23 +80,25 @@
             this.addChild(loading);
 
             // add price
-            var priceDO = gameui.AssetsManager.getBitmapText(product.FormattedPrice, "debussy");
+            var priceDO = gameui.AssetsManager.getBitmapText(localizedPrice, "debussy");
             priceDO.y = 251;
             priceDO.x = 1199;
             priceDO.regX = priceDO.getBounds().width / 2;
             priceDO.scaleX = priceDO.scaleY = 0.8;
-            if (product.FormattedPrice != "share") tContainer.addChild(priceDO);
+            if (localizedPrice != "share") tContainer.addChild(priceDO);
 
 
             // special button for sharing
             // add purchase buttton
-            if (product.FormattedPrice == "share") {
+            if (localizedPrice == "share") {
                 var button = new gameui.ImageButton("BtShare", () => {
-                    this.dispatchEvent({ type: "share", product: this.product.ProductId });
+                    this.setPurchasing();
+                    this.dispatchEvent({ type: "share", productId: productId });
                 });
-            } else { 
+            } else {
                 var button = new gameui.ImageButton("BtStore", () => {
-                    this.dispatchEvent({ type: "buy", product: this.product.ProductId });
+                    this.setPurchasing();
+                    this.dispatchEvent({ type: "buy", productId: productId });
                 });
             }
 
@@ -106,34 +107,35 @@
             this.purchaseButton = button;
             this.addChild(button);
 
- 
+
 
             this.addChild(tContainer);
             tContainer.cache(100, 27, 1250, 300);
         }
 
         public setPurchasing() {
-             this.disable()
+            this.disable()
             this.loadingIcon.visible = true;
         }
 
-        public loading() { 
+        public loading() {
             this.disable();
             this.loadingIcon.visible = true;
         }
 
-        public setNotAvaliable() { 
+        public setNotAvaliable() {
             this.purchaseButton.fadeOut();
             this.purchasedIcon.visible = false;
-            this.loadingIcon.visible = false; 
+            this.loadingIcon.visible = false;
         }
 
-        public setAvaliable()    { }
+        public setAvaliable() { }
 
-        public setPurchased()    {
+        public setPurchased() {
             this.purchaseButton.fadeOut();
-            this.purchasedIcon.visible = true; 
+            this.purchasedIcon.visible = true;
             this.loadingIcon.visible = false;
+            gameui.AudiosManager.playSound("Interface Sound-11");
         }
 
         public setNormal() {
@@ -143,15 +145,15 @@
         }
 
 
-        public enable() { 
+        public enable() {
             this.purchaseButton.fadeIn();
             this.loadingIcon.visible = false;
         }
 
         public disable() {
             this.purchasedIcon.visible = false;
-            this.purchaseButton.fadeOut(); 
+            this.purchaseButton.fadeOut();
         }
-    
+
     }
 }

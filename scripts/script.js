@@ -1729,239 +1729,166 @@ var joinjelly;
 (function (joinjelly) {
     var menus;
     (function (menus) {
-        var view;
-        (function (view) {
-            var StoreItem = (function (_super) {
-                __extends(StoreItem, _super);
-                function StoreItem(product) {
-                    var _this = this;
-                    _super.call(this);
-                    this.product = product;
-                    var tContainer = new createjs.Container();
-                    // Add Background
-                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
-                    bg.x = 232;
-                    bg.y = 27;
-                    bg.scaleY = 1.25;
-                    bg.scaleX = 0.75;
-                    tContainer.addChild(bg);
-                    // Add Icon
-                    var iconId = "";
-                    switch (product.ProductId) {
-                        case "time5x":
-                            iconId = "itemtime";
-                            break;
-                        case "fast5x":
-                            iconId = "itemfast";
-                            break;
-                        case "revive5x":
-                            iconId = "itemrevive";
-                            break;
-                        case "evolve5x":
-                            iconId = "itemevolve";
-                            break;
-                        case "clean5x":
-                            iconId = "itemclean";
-                            break;
-                        case "pack5x":
-                        case "pack1x":
-                        case "pack10x":
-                            iconId = "itemPack";
-                            break;
-                        case "lucky":
-                            iconId = "lucky";
-                            break;
-                    }
-                    var icon = gameui.AssetsManager.getBitmap(iconId);
-                    icon.regX = icon.getBounds().width / 2;
-                    icon.regY = icon.getBounds().height / 2;
-                    icon.x = 225;
-                    icon.y = 188;
-                    icon.scaleX = icon.scaleY = 1.5;
-                    tContainer.addChild(icon);
-                    // Add Texts
-                    var titleObj = gameui.AssetsManager.getBitmapText(product.Name, "debussy");
-                    var descriptionObj = gameui.AssetsManager.getBitmapText(product.Description, "debussy");
-                    titleObj.y = 40;
-                    descriptionObj.y = 140;
-                    titleObj.scaleX = titleObj.scaleY = 1.1;
-                    descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
-                    titleObj.x = descriptionObj.x = 400;
-                    tContainer.addChild(titleObj);
-                    tContainer.addChild(descriptionObj);
-                    // add Check
-                    var unchecked = gameui.AssetsManager.getBitmap("unchecked");
-                    unchecked.regX = unchecked.getBounds().width / 2;
-                    unchecked.regY = unchecked.getBounds().height / 2;
-                    unchecked.y = 152;
-                    unchecked.x = 1199;
-                    this.addChild(unchecked);
-                    // add Check
-                    var check = gameui.AssetsManager.getBitmap("check");
-                    check.regX = check.getBounds().width / 2;
-                    check.regY = check.getBounds().height / 2;
-                    check.y = 152;
-                    check.x = 1199;
-                    this.purchasedIcon = check;
-                    this.addChild(check);
-                    // add loading
-                    var loading = new joinjelly.view.LoadingBall();
-                    loading.y = 152;
-                    loading.x = 1199;
-                    this.loadingIcon = loading;
-                    this.addChild(loading);
-                    // add price
-                    var priceDO = gameui.AssetsManager.getBitmapText(product.FormattedPrice, "debussy");
-                    priceDO.y = 251;
-                    priceDO.x = 1199;
-                    priceDO.regX = priceDO.getBounds().width / 2;
-                    priceDO.scaleX = priceDO.scaleY = 0.8;
-                    if (product.FormattedPrice != "share")
-                        tContainer.addChild(priceDO);
-                    // special button for sharing
-                    // add purchase buttton
-                    if (product.FormattedPrice == "share") {
-                        var button = new gameui.ImageButton("BtShare", function () {
-                            _this.dispatchEvent({ type: "share", product: _this.product.ProductId });
-                        });
-                    }
-                    else {
-                        var button = new gameui.ImageButton("BtStore", function () {
-                            _this.dispatchEvent({ type: "buy", product: _this.product.ProductId });
-                        });
-                    }
-                    button.y = 152;
-                    button.x = 1199;
-                    this.purchaseButton = button;
-                    this.addChild(button);
-                    this.addChild(tContainer);
-                    tContainer.cache(100, 27, 1250, 300);
-                }
-                StoreItem.prototype.setPurchasing = function () {
-                    this.disable();
-                    this.loadingIcon.visible = true;
-                };
-                StoreItem.prototype.loading = function () {
-                    this.disable();
-                    this.loadingIcon.visible = true;
-                };
-                StoreItem.prototype.setNotAvaliable = function () {
-                    this.purchaseButton.fadeOut();
-                    this.purchasedIcon.visible = false;
-                    this.loadingIcon.visible = false;
-                };
-                StoreItem.prototype.setAvaliable = function () {
-                };
-                StoreItem.prototype.setPurchased = function () {
-                    this.purchaseButton.fadeOut();
-                    this.purchasedIcon.visible = true;
-                    this.loadingIcon.visible = false;
-                };
-                StoreItem.prototype.setNormal = function () {
-                    this.purchaseButton.fadeIn();
-                    this.purchasedIcon.visible = false;
-                    this.loadingIcon.visible = false;
-                };
-                StoreItem.prototype.enable = function () {
-                    this.purchaseButton.fadeIn();
-                    this.loadingIcon.visible = false;
-                };
-                StoreItem.prototype.disable = function () {
-                    this.purchasedIcon.visible = false;
-                    this.purchaseButton.fadeOut();
-                };
-                return StoreItem;
-            })(createjs.Container);
-            view.StoreItem = StoreItem;
-        })(view = menus.view || (menus.view = {}));
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
         var StoreMenu = (function (_super) {
             __extends(StoreMenu, _super);
+            // initialize object
             function StoreMenu(previousScreen) {
-                var _this = this;
                 _super.call(this, StringResources.store.title);
                 this.previousScreen = previousScreen;
                 // add loading info
-                var loading = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
-                loading.y = 500;
-                loading.x = defaultWidth / 2;
-                loading.regX = loading.getBounds().width / 2;
-                this.scrollableContent.addChild(loading);
-                var ball = new joinjelly.view.LoadingBall();
-                this.scrollableContent.addChild(ball);
-                ball.y = 800;
-                ball.x = defaultWidth / 2;
-                // request product list
-                InAppPurchases.requestProductList(function (productList) {
-                    _this.scrollableContent.removeChild(loading);
-                    _this.scrollableContent.removeChild(ball);
-                    _this.fillProducts(productList);
-                });
+                var statusText = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
+                statusText.y = 500;
+                statusText.x = defaultWidth / 2;
+                statusText.regX = statusText.getBounds().width / 2;
+                this.StatusText = statusText;
+                this.scrollableContent.addChild(statusText);
+                // add loading animation
+                var loadingBall = new joinjelly.view.LoadingBall();
+                loadingBall.y = 800;
+                loadingBall.x = defaultWidth / 2;
+                this.loadingBall = loadingBall;
+                this.scrollableContent.addChild(loadingBall);
                 // add Footer
                 this.gameFooter = new joinjelly.gameplay.view.ItemsFooter([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE]);
                 this.footer.addChild(this.gameFooter);
                 this.gameFooter.mouseEnabled = false;
                 this.updateFooter();
                 this.content.y -= 200;
+                // buton to close menu
                 this.okButtonAction = function () {
                     joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen);
                 };
+                // initialize market
+                this.initializeStore();
             }
+            //#region Interface =====================================================================================
             // add all products in the list
             StoreMenu.prototype.fillProducts = function (productList) {
-                var _this = this;
-                for (var p in productList) {
-                    var pi = new menus.view.StoreItem(productList[p]);
-                    this.scrollableContent.addChild(pi);
-                    pi.y = p * 380 + 380;
-                    pi.x = 70;
-                    // executa a compra do app.
-                    pi.addEventListener("buy", function (event) {
-                        var si = event.currentTarget;
-                        si.setPurchasing();
-                        _this.lockUI();
-                        _this.purchaseProduct(event["product"], function (sucess) {
-                            if (sucess) {
-                                si.setPurchased();
-                                gameui.AudiosManager.playSound("Interface Sound-11");
-                            }
-                            _this.updateFooter();
-                            _this.unlockUI();
-                        });
-                    });
-                    pi.addEventListener("share", function (event) {
-                        var si = event.currentTarget;
-                        si.setPurchasing();
-                        _this.lockUI();
-                        _this.purchaseShareProduct(event["product"], function (sucess) {
-                            if (sucess) {
-                                si.setPurchased();
-                                gameui.AudiosManager.playSound("Interface Sound-11");
-                            }
-                            else {
-                                si.setNormal();
-                            }
-                            _this.updateFooter();
-                            _this.unlockUI();
-                        });
-                    });
-                }
+                this.productsListItems = {};
+                this.showLoaded();
+                for (var p in productList)
+                    this.addProduct(productList[p], p);
             };
-            // call for product purchasing
-            StoreMenu.prototype.purchaseProduct = function (productId, callback) {
+            // add a single product in the list
+            StoreMenu.prototype.addProduct = function (product, p) {
                 var _this = this;
-                InAppPurchases.purchaseProductRequest(productId, function (productId, sucess) {
-                    if (sucess) {
-                        _this.fullFillPurchase(productId);
-                        InAppPurchases.reportProductFullfillment(productId);
-                    }
-                    callback(sucess);
+                var productListItem = new menus.view.ProductListItem(product.productId, product.productAlias, product.description, product.localizedPrice);
+                this.productsListItems[product.productId] = productListItem;
+                this.scrollableContent.addChild(productListItem);
+                productListItem.y = p * 380 + 380;
+                productListItem.x = 70;
+                // add function callback
+                productListItem.addEventListener("buy", function (event) {
+                    Cocoon.Store.purchase(event["productId"]);
                 });
+                productListItem.addEventListener("share", function (event) {
+                    var productObject = event.currentTarget;
+                    productObject.setPurchasing();
+                    _this.lockUI();
+                    _this.purchaseShareProduct(event["productId"], function (sucess) {
+                        if (sucess) {
+                            productObject.setPurchased();
+                            gameui.AudiosManager.playSound("Interface Sound-11");
+                        }
+                        else {
+                            productObject.setNormal();
+                        }
+                        _this.updateFooter();
+                        _this.unlockUI();
+                    });
+                });
+            };
+            // show a loading message
+            StoreMenu.prototype.showLoading = function () {
+                this.StatusText.text = StringResources.menus.loading;
+                this.loadingBall.visible = true;
+            };
+            // show a loading message
+            StoreMenu.prototype.showLoaded = function () {
+                this.StatusText.visible = false;
+                this.loadingBall.visible = false;
+            };
+            // show a error message in it
+            StoreMenu.prototype.showError = function () {
+                this.StatusText.text = StringResources.menus.error;
+                this.loadingBall.visible = false;
+            };
+            //lock UI for a time interval
+            StoreMenu.prototype.lockUI = function (timeout) {
+                var _this = this;
+                if (timeout === void 0) { timeout = 5000; }
+                this.content.mouseEnabled = false;
+                setTimeout(function () {
+                    _this.unlockUI();
+                }, timeout);
+            };
+            //locks unlocks ui
+            StoreMenu.prototype.unlockUI = function () {
+                this.content.mouseEnabled = true;
+            };
+            // update footer
+            StoreMenu.prototype.updateFooter = function () {
+                var items = joinjelly.ItemsData.items;
+                for (var i in items)
+                    this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
+            };
+            // reurn a object corresponding to productId
+            StoreMenu.prototype.getProductListItem = function (productId) {
+                return this.productsListItems[productId];
+            };
+            //#endregion 
+            //#region market =====================================================================================
+            // initialize product listing
+            StoreMenu.prototype.initializeStore = function () {
+                var _this = this;
+                if (!Cocoon.Store.nativeAvailable)
+                    return;
+                // on loaded products
+                Cocoon.Store.on("load", {
+                    started: function () {
+                        _this.showLoading();
+                    },
+                    success: function (products) {
+                        _this.fillProducts(products);
+                    },
+                    error: function (errorMessage) {
+                        _this.showError();
+                    }
+                });
+                // on purchasing products
+                Cocoon.Store.on("purchase", {
+                    started: function (productId) {
+                        _this.getProductListItem(productId).setPurchasing();
+                        _this.lockUI();
+                    },
+                    success: function (purchaseInfo) {
+                        _this.getProductListItem(purchaseInfo.productId).setPurchased();
+                        _this.fullFillPurchase(purchaseInfo.productId);
+                        _this.updateFooter();
+                        _this.unlockUI();
+                        //InAppPurchases.reportProductFullfillment(purchaseInfo.productId
+                    },
+                    error: function (productId, error) {
+                        _this.getProductListItem(productId).setNormal();
+                        _this.unlockUI();
+                    }
+                });
+                // on consume products
+                Cocoon.Store.on("consume", {
+                    started: function (transactionId) {
+                        console.log("Consume purchase started: " + transactionId);
+                    },
+                    success: function (transactionId) {
+                        console.log("Consume purchase completed: " + transactionId);
+                    },
+                    error: function (transactionId, err) {
+                        console.log("Consume purchase failed: " + err);
+                    }
+                });
+                // initialize store
+                Cocoon.Store.initialize({ sandbox: true, managed: true });
+                // load products
+                Cocoon.Store.loadProducts(["time5x", "fast5x", "revive5x", "clean5x", "pack5x", "pack10x", "lucky",]);
             };
             // call for product purchasing
             StoreMenu.prototype.purchaseShareProduct = function (productId, callback) {
@@ -1984,22 +1911,10 @@ var joinjelly;
                     callback(sucess);
                 });
             };
-            //lock UI for a time interval
-            StoreMenu.prototype.lockUI = function (timeout) {
-                var _this = this;
-                if (timeout === void 0) { timeout = 5000; }
-                this.content.mouseEnabled = false;
-                setTimeout(function () {
-                    _this.unlockUI();
-                }, timeout);
-            };
-            //locks unlocks ui
-            StoreMenu.prototype.unlockUI = function () {
-                this.content.mouseEnabled = true;
-            };
             // verify product avaliability
             StoreMenu.prototype.updateProductsAvaliability = function () {
             };
+            // show that product is consumed
             StoreMenu.prototype.fullFillPurchase = function (productId) {
                 switch (productId) {
                     case "time5x":
@@ -2031,12 +1946,6 @@ var joinjelly;
                         break;
                 }
                 return true;
-            };
-            // update footer
-            StoreMenu.prototype.updateFooter = function () {
-                var items = joinjelly.ItemsData.items;
-                for (var i in items)
-                    this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
             };
             return StoreMenu;
         })(joinjelly.ScrollablePage);
@@ -5340,6 +5249,160 @@ var joinjelly;
                 return PlayerNameOptions;
             })(createjs.Container);
             view.PlayerNameOptions = PlayerNameOptions;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var ProductListItem = (function (_super) {
+                __extends(ProductListItem, _super);
+                function ProductListItem(productId, name, description, localizedPrice) {
+                    var _this = this;
+                    _super.call(this);
+                    var tContainer = new createjs.Container();
+                    // Add Background
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
+                    bg.x = 232;
+                    bg.y = 27;
+                    bg.scaleY = 1.25;
+                    bg.scaleX = 0.75;
+                    tContainer.addChild(bg);
+                    // Add Icon
+                    var iconId = "";
+                    switch (productId) {
+                        case "time5x":
+                            iconId = "itemtime";
+                            break;
+                        case "fast5x":
+                            iconId = "itemfast";
+                            break;
+                        case "revive5x":
+                            iconId = "itemrevive";
+                            break;
+                        case "evolve5x":
+                            iconId = "itemevolve";
+                            break;
+                        case "clean5x":
+                            iconId = "itemclean";
+                            break;
+                        case "pack5x":
+                        case "pack1x":
+                        case "pack10x":
+                            iconId = "itemPack";
+                            break;
+                        case "lucky":
+                            iconId = "lucky";
+                            break;
+                        default:
+                            iconId = "itemPack";
+                    }
+                    var icon = gameui.AssetsManager.getBitmap(iconId);
+                    icon.regX = icon.getBounds().width / 2;
+                    icon.regY = icon.getBounds().height / 2;
+                    icon.x = 225;
+                    icon.y = 188;
+                    tContainer.addChild(icon);
+                    // Add Texts
+                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
+                    var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
+                    titleObj.y = 40;
+                    descriptionObj.y = 140;
+                    titleObj.scaleX = titleObj.scaleY = 1.1;
+                    descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
+                    titleObj.x = descriptionObj.x = 400;
+                    tContainer.addChild(titleObj);
+                    tContainer.addChild(descriptionObj);
+                    // add Check
+                    var unchecked = gameui.AssetsManager.getBitmap("unchecked");
+                    unchecked.regX = unchecked.getBounds().width / 2;
+                    unchecked.regY = unchecked.getBounds().height / 2;
+                    unchecked.y = 152;
+                    unchecked.x = 1199;
+                    this.addChild(unchecked);
+                    // add Check
+                    var check = gameui.AssetsManager.getBitmap("check");
+                    check.regX = check.getBounds().width / 2;
+                    check.regY = check.getBounds().height / 2;
+                    check.y = 152;
+                    check.x = 1199;
+                    this.purchasedIcon = check;
+                    this.addChild(check);
+                    // add loading
+                    var loading = new joinjelly.view.LoadingBall();
+                    loading.y = 152;
+                    loading.x = 1199;
+                    this.loadingIcon = loading;
+                    this.addChild(loading);
+                    // add price
+                    var priceDO = gameui.AssetsManager.getBitmapText(localizedPrice, "debussy");
+                    priceDO.y = 251;
+                    priceDO.x = 1199;
+                    priceDO.regX = priceDO.getBounds().width / 2;
+                    priceDO.scaleX = priceDO.scaleY = 0.8;
+                    if (localizedPrice != "share")
+                        tContainer.addChild(priceDO);
+                    // special button for sharing
+                    // add purchase buttton
+                    if (localizedPrice == "share") {
+                        var button = new gameui.ImageButton("BtShare", function () {
+                            _this.setPurchasing();
+                            _this.dispatchEvent({ type: "share", productId: productId });
+                        });
+                    }
+                    else {
+                        var button = new gameui.ImageButton("BtStore", function () {
+                            _this.setPurchasing();
+                            _this.dispatchEvent({ type: "buy", productId: productId });
+                        });
+                    }
+                    button.y = 152;
+                    button.x = 1199;
+                    this.purchaseButton = button;
+                    this.addChild(button);
+                    this.addChild(tContainer);
+                    tContainer.cache(100, 27, 1250, 300);
+                }
+                ProductListItem.prototype.setPurchasing = function () {
+                    this.disable();
+                    this.loadingIcon.visible = true;
+                };
+                ProductListItem.prototype.loading = function () {
+                    this.disable();
+                    this.loadingIcon.visible = true;
+                };
+                ProductListItem.prototype.setNotAvaliable = function () {
+                    this.purchaseButton.fadeOut();
+                    this.purchasedIcon.visible = false;
+                    this.loadingIcon.visible = false;
+                };
+                ProductListItem.prototype.setAvaliable = function () {
+                };
+                ProductListItem.prototype.setPurchased = function () {
+                    this.purchaseButton.fadeOut();
+                    this.purchasedIcon.visible = true;
+                    this.loadingIcon.visible = false;
+                    gameui.AudiosManager.playSound("Interface Sound-11");
+                };
+                ProductListItem.prototype.setNormal = function () {
+                    this.purchaseButton.fadeIn();
+                    this.purchasedIcon.visible = false;
+                    this.loadingIcon.visible = false;
+                };
+                ProductListItem.prototype.enable = function () {
+                    this.purchaseButton.fadeIn();
+                    this.loadingIcon.visible = false;
+                };
+                ProductListItem.prototype.disable = function () {
+                    this.purchasedIcon.visible = false;
+                    this.purchaseButton.fadeOut();
+                };
+                return ProductListItem;
+            })(createjs.Container);
+            view.ProductListItem = ProductListItem;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
