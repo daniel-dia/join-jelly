@@ -376,7 +376,6 @@
     <Content Include="assets\images_0.5x\unchecked.png" />
     <Content Include="assets\resize.bat" />
     <Content Include="assets\style.css" />
-    <Content Include="index2.html" />
     <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\EaselJS Editor.js" />
     <Content Include="scripts\MobileServices.Web-1.2.5.min.js" />
@@ -392,7 +391,6 @@
     <Content Include="scripts\script.js" />
     <TypeScriptCompile Include="src\gameplay\view\CountDown.ts" />
     <TypeScriptCompile Include="src\menus\LeaderBoards.ts" />
-    <TypeScriptCompile Include="src\menus\ScoreWall.ts" />
     <TypeScriptCompile Include="src\LeaderBoards.ts" />
     <TypeScriptCompile Include="src\menus\view\LeaderBoardItem.ts" />
     <TypeScriptCompile Include="src\menus\view\LoadingBar.ts" />
