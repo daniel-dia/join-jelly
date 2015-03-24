@@ -60,11 +60,13 @@
         // add a single product in the list
         private addProduct(product: Cocoon.Store.ProductInfo,p:number) {
 
-            var productListItem = new view.ProductListItem(product.productId, product.productAlias, product.description, product.localizedPrice);
+            var productListItem = new view.ProductListItem(product.productId, product.title.replace("(Join Jelly)", ""), product.description, product.localizedPrice);
             this.productsListItems[product.productId] = productListItem;
             this.scrollableContent.addChild(productListItem);
             productListItem.y = p * 380 + 380;
             productListItem.x = 70;
+
+            console.log(JSON.stringify(product))
 
             // add function callback
             productListItem.addEventListener("buy", (event: createjs.Event) => { Cocoon.Store.purchase(event["productId"]);});
@@ -136,7 +138,7 @@
 
         // initialize product listing
         private initializeStore() {
-            if (!Cocoon.Store.nativeAvailable) return;
+          //  if (!Cocoon.Store.nativeAvailable) return;
             
             // on loaded products
             Cocoon.Store.on("load", {
@@ -158,40 +160,36 @@
                     this.lockUI();
                 },
                 success: (purchaseInfo) => {
-                    this.getProductListItem(purchaseInfo.productId).setPurchased();
+                    
                     this.fullFillPurchase(purchaseInfo.productId);
                     this.updateFooter();
                     this.unlockUI();
 
-                    //InAppPurchases.reportProductFullfillment(purchaseInfo.productId
+                    if (productsData[purchaseInfo.productId].consumable) {
+                        this.getProductListItem(purchaseInfo.productId).setPurchased(true);
+                        Cocoon.Store.consume(purchaseInfo.transactionId, purchaseInfo.productId);
+                    }
+                    
+                    this.getProductListItem(purchaseInfo.productId).setPurchased();
+                     
+
+                    Cocoon.Store.finish(purchaseInfo.transactionId)
                 },
                 error: (productId, error) => {
                     this.getProductListItem(productId).setNormal();
                     this.unlockUI();
                 }
             });
- 
-            // on consume products
-            Cocoon.Store.on("consume", {
-                started: function (transactionId) {
-                    console.log("Consume purchase started: " + transactionId);
-                },
-                success: function (transactionId) {
-                    console.log("Consume purchase completed: " + transactionId);
-                },
-                error: function (transactionId, err) {
-                    console.log("Consume purchase failed: " + err);
-                }
-            });
-            
+        
             // initialize store
-            Cocoon.Store.initialize({sandbox: true,managed: true});
+            Cocoon.Store.initialize({sandbox: true, managed: true});
 
             // load products
-            Cocoon.Store.loadProducts(["time5x", "fast5x", "revive5x", "clean5x", "pack5x", "pack10x", "lucky", ])
+            var products = []; 
+            for(var p in productsData) products.push(p);
+            Cocoon.Store.loadProducts(products);
         }
-
-
+        
         // call for product purchasing
         private purchaseShareProduct(productId: string, callback: (sucess: boolean) => void) {
 
@@ -218,7 +216,7 @@
 
                 if (sucess) {
                     that.fullFillPurchase(productId);
-                    InAppPurchases.reportProductFullfillment(productId);
+                    //InAppPurchases.reportProductFullfillment(productId);
                 }
 
                 callback(sucess);

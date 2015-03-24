@@ -1049,43 +1049,16 @@ var Analytics = (function () {
     };
     return Analytics;
 })();
-var InAppPurchases = (function () {
-    function InAppPurchases() {
-    }
-    InAppPurchases.requestProductList = function (callback) {
-        setTimeout(function () {
-            if (callback)
-                callback([
-                    { ProductId: "time5x", Name: "5x Snow", Description: "Freeze Screen \nfor 5 seconds", FormattedPrice: "R$1,99", },
-                    { ProductId: "fast5x", Name: "5x Magnet", Description: "Join jellies on \nscreen", FormattedPrice: "R$1,99", },
-                    { ProductId: "revive5x", Name: "5x Revive", Description: "Give you another \nchance to continue", FormattedPrice: "R$1,99", },
-                    { ProductId: "clean5x", Name: "5x Clean", Description: "Removes all little\njellys and dirtys", FormattedPrice: "R$1,99", },
-                    { ProductId: "pack5x", Name: "3x Item Pack", Description: "5 of each item", FormattedPrice: "R$4,99", },
-                    { ProductId: "pack10x", Name: "10x Item Pack", Description: "10 of each item", FormattedPrice: "R$6,99", },
-                    { ProductId: "lucky", Name: "Lucky Clover", Description: "Doubles chance for \nfinding a item", FormattedPrice: "R$3,99", },
-                ]);
-        }, 1000);
-    };
-    InAppPurchases.purchaseProductRequest = function (productId, callback) {
-        setTimeout(function () {
-            if (callback)
-                callback(productId, true);
-        }, 2000);
-    };
-    InAppPurchases.reportProductFullfillment = function (productId, callback) {
-        setTimeout(function () {
-            if (callback)
-                callback();
-        }, 2000);
-    };
-    return InAppPurchases;
-})();
-var ProductAvaliability;
-(function (ProductAvaliability) {
-    ProductAvaliability[ProductAvaliability["AVALIABLE"] = 0] = "AVALIABLE";
-    ProductAvaliability[ProductAvaliability["PURCHASED"] = 1] = "PURCHASED";
-    ProductAvaliability[ProductAvaliability["NOTAVALIABLE"] = 2] = "NOTAVALIABLE";
-})(ProductAvaliability || (ProductAvaliability = {}));
+var productsData = {
+    "pack1x": { icon: "Item Pack", consumable: false, share: true },
+    "time5x": { icon: "5x Snow", consumable: true },
+    "fast5x": { icon: "5x Magnet", consumable: true },
+    "revive5x": { icon: "5x Revive", consumable: true },
+    "clean5x": { icon: "5x Clean", consumable: true },
+    "pack5x": { icon: "3x Item Pack", consumable: true },
+    "pack10x": { icon: "10x Item Pack", consumable: true },
+    "lucky": { icon: "Lucky Clover", consumable: false },
+};
 var joinjelly;
 (function (joinjelly) {
     var ScrollablePage = (function (_super) {
@@ -1772,11 +1745,12 @@ var joinjelly;
             // add a single product in the list
             StoreMenu.prototype.addProduct = function (product, p) {
                 var _this = this;
-                var productListItem = new menus.view.ProductListItem(product.productId, product.productAlias, product.description, product.localizedPrice);
+                var productListItem = new menus.view.ProductListItem(product.productId, product.title.replace("(Join Jelly)", ""), product.description, product.localizedPrice);
                 this.productsListItems[product.productId] = productListItem;
                 this.scrollableContent.addChild(productListItem);
                 productListItem.y = p * 380 + 380;
                 productListItem.x = 70;
+                console.log(JSON.stringify(product));
                 // add function callback
                 productListItem.addEventListener("buy", function (event) {
                     Cocoon.Store.purchase(event["productId"]);
@@ -1840,9 +1814,8 @@ var joinjelly;
             //#region market =====================================================================================
             // initialize product listing
             StoreMenu.prototype.initializeStore = function () {
+                //  if (!Cocoon.Store.nativeAvailable) return;
                 var _this = this;
-                if (!Cocoon.Store.nativeAvailable)
-                    return;
                 // on loaded products
                 Cocoon.Store.on("load", {
                     started: function () {
@@ -1862,33 +1835,28 @@ var joinjelly;
                         _this.lockUI();
                     },
                     success: function (purchaseInfo) {
-                        _this.getProductListItem(purchaseInfo.productId).setPurchased();
                         _this.fullFillPurchase(purchaseInfo.productId);
                         _this.updateFooter();
                         _this.unlockUI();
-                        //InAppPurchases.reportProductFullfillment(purchaseInfo.productId
+                        if (productsData[purchaseInfo.productId].consumable) {
+                            _this.getProductListItem(purchaseInfo.productId).setPurchased(true);
+                            Cocoon.Store.consume(purchaseInfo.transactionId, purchaseInfo.productId);
+                        }
+                        _this.getProductListItem(purchaseInfo.productId).setPurchased();
+                        Cocoon.Store.finish(purchaseInfo.transactionId);
                     },
                     error: function (productId, error) {
                         _this.getProductListItem(productId).setNormal();
                         _this.unlockUI();
                     }
                 });
-                // on consume products
-                Cocoon.Store.on("consume", {
-                    started: function (transactionId) {
-                        console.log("Consume purchase started: " + transactionId);
-                    },
-                    success: function (transactionId) {
-                        console.log("Consume purchase completed: " + transactionId);
-                    },
-                    error: function (transactionId, err) {
-                        console.log("Consume purchase failed: " + err);
-                    }
-                });
                 // initialize store
                 Cocoon.Store.initialize({ sandbox: true, managed: true });
                 // load products
-                Cocoon.Store.loadProducts(["time5x", "fast5x", "revive5x", "clean5x", "pack5x", "pack10x", "lucky",]);
+                var products = [];
+                for (var p in productsData)
+                    products.push(p);
+                Cocoon.Store.loadProducts(products);
             };
             // call for product purchasing
             StoreMenu.prototype.purchaseShareProduct = function (productId, callback) {
@@ -1906,7 +1874,6 @@ var joinjelly;
                         sucess = false;
                     if (sucess) {
                         that.fullFillPurchase(productId);
-                        InAppPurchases.reportProductFullfillment(productId);
                     }
                     callback(sucess);
                 });
@@ -5381,11 +5348,17 @@ var joinjelly;
                 };
                 ProductListItem.prototype.setAvaliable = function () {
                 };
-                ProductListItem.prototype.setPurchased = function () {
+                ProductListItem.prototype.setPurchased = function (timeOut) {
+                    var _this = this;
+                    if (timeOut === void 0) { timeOut = false; }
                     this.purchaseButton.fadeOut();
                     this.purchasedIcon.visible = true;
                     this.loadingIcon.visible = false;
                     gameui.AudiosManager.playSound("Interface Sound-11");
+                    if (timeOut)
+                        setTimeout(function () {
+                            _this.setNormal();
+                        }, 1000);
                 };
                 ProductListItem.prototype.setNormal = function () {
                     this.purchaseButton.fadeIn();

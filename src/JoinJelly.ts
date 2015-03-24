@@ -1,6 +1,4 @@
-﻿declare var Cocoon;
-
-module joinjelly {
+﻿module joinjelly {
     export class JoinJelly {
 
 

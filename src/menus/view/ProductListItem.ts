@@ -131,11 +131,12 @@
 
         public setAvaliable() { }
 
-        public setPurchased() {
+        public setPurchased(timeOut:boolean=false) {
             this.purchaseButton.fadeOut();
             this.purchasedIcon.visible = true;
             this.loadingIcon.visible = false;
             gameui.AudiosManager.playSound("Interface Sound-11");
+            if (timeOut) setTimeout(() => { this.setNormal(); }, 1000);
         }
 
         public setNormal() {

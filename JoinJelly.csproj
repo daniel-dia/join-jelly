@@ -376,6 +376,7 @@
     <Content Include="assets\images_0.5x\unchecked.png" />
     <Content Include="assets\resize.bat" />
     <Content Include="assets\style.css" />
+    <Content Include="index2.html" />
     <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\EaselJS Editor.js" />
     <Content Include="scripts\MobileServices.Web-1.2.5.min.js" />
@@ -397,6 +398,7 @@
     <TypeScriptCompile Include="src\menus\view\LoadingBar.ts" />
     <TypeScriptCompile Include="src\menus\view\PlayerNameOption.ts" />
     <TypeScriptCompile Include="src\view\Effect.ts" />
+    <TypeScriptCompile Include="typings\cocoon.d.ts" />
     <TypeScriptCompile Include="_references.ts" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
