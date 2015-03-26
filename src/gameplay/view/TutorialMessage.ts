@@ -18,7 +18,7 @@
 
             var t = gameui.AssetsManager.getBitmapText("", "debussy")
             this.addChild(t);
-            t.scaleX = t.scaleY = 0.7;
+            t.scaleX = t.scaleY = 0.8;
             t.x = 50;
             t.y = 50;
             this.bitmapText = t;

@@ -198,6 +198,7 @@
                     this.waitItem();
                 },
                 () =>{
+                    this.gameFooter.lockAll();
                     this.gameFooter.hideMessage();
                     this.hideTutorialFinger();
                     this.gameFooter.setItemAmmount(Items.FAST, 0)

@@ -898,10 +898,10 @@ var StringResources_pt = {
     tutorial: {
         msgheplme: "Me ajude a desenvolver\nJunte 2 geleias IGUAIS.",
         msgOnceMore: "Legal! Estou maior, \nMe desenvolva novamente",
-        msgDirt: "Olha, sujeiras\nJunte uma geleia lá para limpar.",
+        msgDirt: "Olha, sujeiras! Junte \numa geleia lá para limpar.",
         msgPlay: "Perfeito!\nVamos jogar!.",
         msgItemClean: "Sempre que precisar use items.\nEste limpa a bagunça",
-        msgItemFast: "Esse junta algumas geleias",
+        msgItemFast: "Esse junta \nalgumas geleias",
         msgItemTime: "Esse congela o tempo",
         msgItemRevive: "Se voce perder, use este para reviver",
         msgBoardFill: "Mas Tenha cuidado, se acabar \nos espaços no chão é o fim.",
@@ -2980,7 +2980,7 @@ var joinjelly;
                     this.y = 941 + this.regY;
                     var t = gameui.AssetsManager.getBitmapText("", "debussy");
                     this.addChild(t);
-                    t.scaleX = t.scaleY = 0.7;
+                    t.scaleX = t.scaleY = 0.8;
                     t.x = 50;
                     t.y = 50;
                     this.bitmapText = t;
@@ -4471,6 +4471,7 @@ var joinjelly;
                         _this.waitItem();
                     },
                     function () {
+                        _this.gameFooter.lockAll();
                         _this.gameFooter.hideMessage();
                         _this.hideTutorialFinger();
                         _this.gameFooter.setItemAmmount(joinjelly.Items.FAST, 0);
