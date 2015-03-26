@@ -2596,7 +2596,7 @@ var joinjelly;
                     bgd.regY = bg.regY = bg.getBounds().height / 2;
                     img.regX = img.getBounds().width / 2;
                     img.regY = img.getBounds().height / 2;
-                    img.scaleX = img.scaleY = 0.8;
+                    img.scaleX = img.scaleY = 0.4;
                     img.y = -25;
                     text.scaleX = text.scaleY = 0.7;
                     text.y = -110;
@@ -4849,6 +4849,11 @@ window.onload = function () {
 };
 /// <reference path="gameui/uiitem.ts" />
 //module gameui {
+var defaultWidth = 768 * 2;
+var defaultHeight = 1024 * 2;
+var fbAppId = "1416523228649363";
+var gameWebsite = "www.joinjelly.com";
+var gameWebsiteIcon = "www.joinjelly.com/icon.png";
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
@@ -4889,55 +4894,127 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var LeaderBoards = (function (_super) {
-            __extends(LeaderBoards, _super);
-            function LeaderBoards() {
-                var _this = this;
-                _super.call(this, StringResources.menus.leaderboards);
-                this.maxScroll = 1700;
-                var loading = new joinjelly.view.LoadingBall();
-                this.scrollableContent.addChild(loading);
-                loading.x = defaultWidth / 2;
-                loading.y = 800;
-                var message = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
-                this.scrollableContent.addChild(message);
-                message.regX = message.getBounds().width / 2;
-                message.x = defaultWidth / 2;
-                message.y = 900;
-                message.visible = true;
-                this.loadLeaderBoards(function (results) {
-                    loading.visible = false;
-                    if (results != null) {
-                        _this.fillLeaderBoards(results);
-                        message.visible = false;
-                    }
-                    else {
-                        message.text = StringResources.menus.error;
-                        message.visible = true;
-                        message.regX = message.getBounds().width / 2;
-                    }
-                });
-            }
-            LeaderBoards.prototype.fillLeaderBoards = function (results) {
-                var space = 200;
-                var start = 400;
-                for (var r in results) {
-                    var i = new menus.view.LeaderBoardItem(results[r].score, results[r].name, parseInt(r) + 1);
-                    i.x = defaultWidth / 2;
-                    i.y = start + space * r;
-                    this.scrollableContent.addChild(i);
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var ItemsFooter = (function (_super) {
+                __extends(ItemsFooter, _super);
+                function ItemsFooter(items) {
+                    _super.call(this);
+                    this.itemSize = 270;
+                    this.itemsButtons = [];
+                    this.addObjects();
+                    this.setItems(items);
                 }
-                this.maxScroll = start + results.length * space;
-            };
-            LeaderBoards.prototype.loadLeaderBoards = function (callback) {
-                joinjelly.AzureLeaderBoards.getScoreNames(callback, 20);
-            };
-            return LeaderBoards;
-        })(joinjelly.ScrollablePage);
-        menus.LeaderBoards = LeaderBoards;
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+                // add all button items
+                ItemsFooter.prototype.setItems = function (items) {
+                    var itemSize = this.itemSize;
+                    if (items.length >= 5)
+                        itemSize = 200;
+                    // clean all buttons
+                    this.cleanButtons();
+                    if (!items)
+                        return;
+                    for (var i in items)
+                        this.addItem(items[i], i);
+                    for (var i in items) {
+                        //set button position
+                        this.itemsButtons[items[i]].y = -150;
+                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
+                    }
+                };
+                // clean buttons
+                ItemsFooter.prototype.cleanButtons = function () {
+                    for (var i in this.itemsButtons)
+                        this.removeChild(this.itemsButtons[i]);
+                    this.itemsButtons = [];
+                };
+                // add objects to the footer
+                ItemsFooter.prototype.addObjects = function () {
+                    //add background
+                    var bg = gameui.AssetsManager.getBitmap("footer");
+                    this.addChild(bg);
+                    bg.y = -162;
+                    bg.x = (defaultWidth - 1161) / 2;
+                    // add Lucky clover
+                    // TODO verify with item
+                    var lucky = gameui.AssetsManager.getBitmap("lucky");
+                    this.addChild(lucky);
+                    lucky.y = -210;
+                    lucky.x = lucky.scaleX = lucky.scaleY = 0.5;
+                    this.lucky = lucky;
+                    // lucky.visible = false;
+                    this.gameMessage = new view.TutoralMessage();
+                    this.addChild(this.gameMessage);
+                };
+                //add a single item button to the footer
+                ItemsFooter.prototype.addItem = function (item, pos) {
+                    var _this = this;
+                    //create button
+                    var bt = new view.ItemButton(item);
+                    this.addChild(bt);
+                    this.itemsButtons[item] = bt;
+                    //add event listener
+                    bt.addEventListener("click", function () {
+                        _this.dispatchEvent({ type: "useitem", item: item });
+                    });
+                };
+                // get a item display object
+                ItemsFooter.prototype.getItemButton = function (item) {
+                    return this.itemsButtons[item];
+                };
+                // set item ammount
+                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
+                    if (this.itemsButtons[item])
+                        this.itemsButtons[item].setAmmount(ammount);
+                    if (item == "lucky")
+                        this.lucky.visible = (ammount > 0);
+                };
+                // show item message
+                ItemsFooter.prototype.showMessage = function (itemId, message) {
+                    this.gameMessage.x = this.getItemButton(itemId).x;
+                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
+                    this.gameMessage.show(message);
+                };
+                // hide message
+                ItemsFooter.prototype.hideMessage = function () {
+                    this.gameMessage.fadeOut();
+                };
+                // bounces an item
+                ItemsFooter.prototype.highlight = function (item) {
+                    this.unHighlightAll();
+                    this.getItemButton(item).highLight();
+                };
+                // stop bouncing an item
+                ItemsFooter.prototype.unHighlightAll = function () {
+                    for (var i in this.itemsButtons)
+                        this.itemsButtons[i].unHighlight();
+                };
+                // lock an item
+                ItemsFooter.prototype.lockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    if (b)
+                        b.lock();
+                };
+                //unlock an item
+                ItemsFooter.prototype.unlockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    b.unlock();
+                };
+                ItemsFooter.prototype.lockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].lock();
+                };
+                ItemsFooter.prototype.unlockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].unlock();
+                };
+                return ItemsFooter;
+            })(createjs.Container);
+            view.ItemsFooter = ItemsFooter;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
@@ -4990,6 +5067,58 @@ var joinjelly;
         return AzureLeaderBoards;
     })();
     joinjelly.AzureLeaderBoards = AzureLeaderBoards;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var LeaderBoards = (function (_super) {
+            __extends(LeaderBoards, _super);
+            function LeaderBoards() {
+                var _this = this;
+                _super.call(this, StringResources.menus.leaderboards);
+                this.maxScroll = 1700;
+                var loading = new joinjelly.view.LoadingBall();
+                this.scrollableContent.addChild(loading);
+                loading.x = defaultWidth / 2;
+                loading.y = 800;
+                var message = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
+                this.scrollableContent.addChild(message);
+                message.regX = message.getBounds().width / 2;
+                message.x = defaultWidth / 2;
+                message.y = 900;
+                message.visible = true;
+                this.loadLeaderBoards(function (results) {
+                    loading.visible = false;
+                    if (results != null) {
+                        _this.fillLeaderBoards(results);
+                        message.visible = false;
+                    }
+                    else {
+                        message.text = StringResources.menus.error;
+                        message.visible = true;
+                        message.regX = message.getBounds().width / 2;
+                    }
+                });
+            }
+            LeaderBoards.prototype.fillLeaderBoards = function (results) {
+                var space = 200;
+                var start = 400;
+                for (var r in results) {
+                    var i = new menus.view.LeaderBoardItem(results[r].score, results[r].name, parseInt(r) + 1);
+                    i.x = defaultWidth / 2;
+                    i.y = start + space * r;
+                    this.scrollableContent.addChild(i);
+                }
+                this.maxScroll = start + results.length * space;
+            };
+            LeaderBoards.prototype.loadLeaderBoards = function (callback) {
+                joinjelly.AzureLeaderBoards.getScoreNames(callback, 20);
+            };
+            return LeaderBoards;
+        })(joinjelly.ScrollablePage);
+        menus.LeaderBoards = LeaderBoards;
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
@@ -5108,213 +5237,6 @@ var joinjelly;
             view.PlayerNameOptions = PlayerNameOptions;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var view;
-    (function (view) {
-        var Effect = (function (_super) {
-            __extends(Effect, _super);
-            function Effect() {
-                _super.apply(this, arguments);
-            }
-            Effect.prototype.castSimple = function () {
-                var _this = this;
-                var fxs = gameui.AssetsManager.getBitmap("fxJoin");
-                fxs.regX = 100;
-                fxs.regY = 100;
-                this.addChild(fxs);
-                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () {
-                    _this.removeChild(fxs);
-                });
-            };
-            Effect.prototype.castSimpleInv = function () {
-                var _this = this;
-                var fxs = gameui.AssetsManager.getBitmap("fxJoin");
-                fxs.regX = 100;
-                fxs.regY = 100;
-                this.addChild(fxs);
-                fxs.scaleX = fxs.scaleX = fxs.alpha = 2;
-                createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(function () {
-                    _this.removeChild(fxs);
-                });
-            };
-            Effect.prototype.castPart = function () {
-                var _this = this;
-                var fxp = gameui.AssetsManager.getBitmap("fxPart");
-                fxp.regX = 140;
-                fxp.regY = 140;
-                fxp.scaleX = fxp.scaleY = 0.2;
-                fxp.alpha = 2;
-                this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
-                this.castParts();
-            };
-            Effect.prototype.castParts = function () {
-                var _this = this;
-                var fxp = gameui.AssetsManager.getBitmap("fxPart");
-                fxp.regX = 140;
-                fxp.regY = 140;
-                fxp.scaleX = fxp.scaleY = 0.4;
-                fxp.rotation = 360 / 16;
-                fxp.alpha = 2;
-                this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
-            };
-            Effect.prototype.castPartsInv = function () {
-                var _this = this;
-                var fxp = gameui.AssetsManager.getBitmap("fxPart");
-                fxp.regX = 140;
-                fxp.regY = 140;
-                fxp.scaleX = fxp.scaleY = 4;
-                fxp.rotation = 360 / 16;
-                fxp.alpha = 0;
-                this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2, rotation: 0 }, 1000, createjs.Ease.quadIn).call(function () {
-                    _this.removeChild(fxp);
-                });
-            };
-            Effect.prototype.castBoth = function () {
-                this.castPartsInv();
-                this.castSimpleInv();
-            };
-            return Effect;
-        })(createjs.Container);
-        view.Effect = Effect;
-    })(view = joinjelly.view || (joinjelly.view = {}));
-})(joinjelly || (joinjelly = {}));
-var defaultWidth = 768 * 2;
-var defaultHeight = 1024 * 2;
-var fbAppId = "1416523228649363";
-var gameWebsite = "www.joinjelly.com";
-var gameWebsiteIcon = "www.joinjelly.com/icon.png";
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var ItemsFooter = (function (_super) {
-                __extends(ItemsFooter, _super);
-                function ItemsFooter(items) {
-                    _super.call(this);
-                    this.itemSize = 270;
-                    this.itemsButtons = [];
-                    this.addObjects();
-                    this.setItems(items);
-                }
-                // add all button items
-                ItemsFooter.prototype.setItems = function (items) {
-                    var itemSize = this.itemSize;
-                    if (items.length >= 5)
-                        itemSize = 200;
-                    // clean all buttons
-                    this.cleanButtons();
-                    if (!items)
-                        return;
-                    for (var i in items)
-                        this.addItem(items[i], i);
-                    for (var i in items) {
-                        //set button position
-                        this.itemsButtons[items[i]].y = -150;
-                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
-                    }
-                };
-                // clean buttons
-                ItemsFooter.prototype.cleanButtons = function () {
-                    for (var i in this.itemsButtons)
-                        this.removeChild(this.itemsButtons[i]);
-                    this.itemsButtons = [];
-                };
-                // add objects to the footer
-                ItemsFooter.prototype.addObjects = function () {
-                    //add background
-                    var bg = gameui.AssetsManager.getBitmap("footer");
-                    this.addChild(bg);
-                    bg.y = -162;
-                    bg.x = (defaultWidth - 1161) / 2;
-                    // add Lucky clover
-                    // TODO verify with item
-                    var lucky = gameui.AssetsManager.getBitmap("lucky");
-                    this.addChild(lucky);
-                    lucky.y = -210;
-                    lucky.x = 1285;
-                    this.lucky = lucky;
-                    // lucky.visible = false;
-                    this.gameMessage = new view.TutoralMessage();
-                    this.addChild(this.gameMessage);
-                };
-                //add a single item button to the footer
-                ItemsFooter.prototype.addItem = function (item, pos) {
-                    var _this = this;
-                    //create button
-                    var bt = new view.ItemButton(item);
-                    this.addChild(bt);
-                    this.itemsButtons[item] = bt;
-                    //add event listener
-                    bt.addEventListener("click", function () {
-                        _this.dispatchEvent({ type: "useitem", item: item });
-                    });
-                };
-                // get a item display object
-                ItemsFooter.prototype.getItemButton = function (item) {
-                    return this.itemsButtons[item];
-                };
-                // set item ammount
-                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
-                    if (this.itemsButtons[item])
-                        this.itemsButtons[item].setAmmount(ammount);
-                    if (item == "lucky")
-                        this.lucky.visible = (ammount > 0);
-                };
-                // show item message
-                ItemsFooter.prototype.showMessage = function (itemId, message) {
-                    this.gameMessage.x = this.getItemButton(itemId).x;
-                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
-                    this.gameMessage.show(message);
-                };
-                // hide message
-                ItemsFooter.prototype.hideMessage = function () {
-                    this.gameMessage.fadeOut();
-                };
-                // bounces an item
-                ItemsFooter.prototype.highlight = function (item) {
-                    this.unHighlightAll();
-                    this.getItemButton(item).highLight();
-                };
-                // stop bouncing an item
-                ItemsFooter.prototype.unHighlightAll = function () {
-                    for (var i in this.itemsButtons)
-                        this.itemsButtons[i].unHighlight();
-                };
-                // lock an item
-                ItemsFooter.prototype.lockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    if (b)
-                        b.lock();
-                };
-                //unlock an item
-                ItemsFooter.prototype.unlockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    b.unlock();
-                };
-                ItemsFooter.prototype.lockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].lock();
-                };
-                ItemsFooter.prototype.unlockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].unlock();
-                };
-                return ItemsFooter;
-            })(createjs.Container);
-            view.ItemsFooter = ItemsFooter;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
@@ -5475,5 +5397,83 @@ var joinjelly;
             view.ProductListItem = ProductListItem;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var view;
+    (function (view) {
+        var Effect = (function (_super) {
+            __extends(Effect, _super);
+            function Effect() {
+                _super.apply(this, arguments);
+            }
+            Effect.prototype.castSimple = function () {
+                var _this = this;
+                var fxs = gameui.AssetsManager.getBitmap("fxJoin");
+                fxs.regX = 100;
+                fxs.regY = 100;
+                this.addChild(fxs);
+                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () {
+                    _this.removeChild(fxs);
+                });
+            };
+            Effect.prototype.castSimpleInv = function () {
+                var _this = this;
+                var fxs = gameui.AssetsManager.getBitmap("fxJoin");
+                fxs.regX = 100;
+                fxs.regY = 100;
+                this.addChild(fxs);
+                fxs.scaleX = fxs.scaleX = fxs.alpha = 2;
+                createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(function () {
+                    _this.removeChild(fxs);
+                });
+            };
+            Effect.prototype.castPart = function () {
+                var _this = this;
+                var fxp = gameui.AssetsManager.getBitmap("fxPart");
+                fxp.regX = 140;
+                fxp.regY = 140;
+                fxp.scaleX = fxp.scaleY = 0.2;
+                fxp.alpha = 2;
+                this.addChild(fxp);
+                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
+                    _this.removeChild(fxp);
+                });
+                this.castParts();
+            };
+            Effect.prototype.castParts = function () {
+                var _this = this;
+                var fxp = gameui.AssetsManager.getBitmap("fxPart");
+                fxp.regX = 140;
+                fxp.regY = 140;
+                fxp.scaleX = fxp.scaleY = 0.4;
+                fxp.rotation = 360 / 16;
+                fxp.alpha = 2;
+                this.addChild(fxp);
+                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
+                    _this.removeChild(fxp);
+                });
+            };
+            Effect.prototype.castPartsInv = function () {
+                var _this = this;
+                var fxp = gameui.AssetsManager.getBitmap("fxPart");
+                fxp.regX = 140;
+                fxp.regY = 140;
+                fxp.scaleX = fxp.scaleY = 4;
+                fxp.rotation = 360 / 16;
+                fxp.alpha = 0;
+                this.addChild(fxp);
+                createjs.Tween.get(fxp).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2, rotation: 0 }, 1000, createjs.Ease.quadIn).call(function () {
+                    _this.removeChild(fxp);
+                });
+            };
+            Effect.prototype.castBoth = function () {
+                this.castPartsInv();
+                this.castSimpleInv();
+            };
+            return Effect;
+        })(createjs.Container);
+        view.Effect = Effect;
+    })(view = joinjelly.view || (joinjelly.view = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map

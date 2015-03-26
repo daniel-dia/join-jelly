@@ -56,7 +56,8 @@
             var lucky = gameui.AssetsManager.getBitmap("lucky");
             this.addChild(lucky);
             lucky.y = -210;
-            lucky.x =  1285
+            lucky.x =
+            lucky.scaleX = lucky.scaleY = 0.5;
             this.lucky = lucky;
             // lucky.visible = false;
 

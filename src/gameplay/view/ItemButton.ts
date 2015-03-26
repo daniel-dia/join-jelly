@@ -37,7 +37,7 @@
             bgd.regY = bg.regY = bg.getBounds().height / 2;
             img.regX = img.getBounds().width / 2;
             img.regY = img.getBounds().height / 2;
-            img.scaleX = img.scaleY = 0.8;
+            img.scaleX = img.scaleY = 0.4;
             img.y = -25;
             text.scaleX = text.scaleY = 0.7;
             text.y = -110;
