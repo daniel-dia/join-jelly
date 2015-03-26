@@ -45,11 +45,11 @@
 
             // Add Texts
 
-            var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
+            var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
             var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
             titleObj.y = 40;
             descriptionObj.y = 140;
-            titleObj.scaleX = titleObj.scaleY = 1.1;
+            titleObj.scaleX = titleObj.scaleY = 0.8;
             descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
             titleObj.x = descriptionObj.x = 400;
             tContainer.addChild(titleObj);

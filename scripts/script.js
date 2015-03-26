@@ -1677,11 +1677,11 @@ var joinjelly;
                     this.addChild(bg);
                     // Add Texts
                     var tContainer = new createjs.Container();
-                    var titleObj = gameui.AssetsManager.getBitmapText(title, "debussy");
+                    var titleObj = gameui.AssetsManager.getBitmapText(title, "debussyBig");
                     var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
                     titleObj.y = 30;
                     descriptionObj.y = 130;
-                    titleObj.scaleX = titleObj.scaleY = 1.2;
+                    titleObj.scaleX = titleObj.scaleY = 0.9;
                     descriptionObj.scaleX = descriptionObj.scaleY = 0.9;
                     titleObj.x = descriptionObj.x = 450;
                     tContainer.addChild(titleObj);
@@ -5292,11 +5292,11 @@ var joinjelly;
                     icon.y = 188;
                     tContainer.addChild(icon);
                     // Add Texts
-                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
+                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
                     var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
                     titleObj.y = 40;
                     descriptionObj.y = 140;
-                    titleObj.scaleX = titleObj.scaleY = 1.1;
+                    titleObj.scaleX = titleObj.scaleY = 0.8;
                     descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
                     titleObj.x = descriptionObj.x = 400;
                     tContainer.addChild(titleObj);
