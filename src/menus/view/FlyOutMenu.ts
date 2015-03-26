@@ -46,8 +46,8 @@
         private addTitle(title:string) {
             //create "points" text
             
-            this.title = gameui.AssetsManager.getBitmapText("", "debussy")
-            this.title .set({ x: defaultWidth / 2, y: 600 });
+            this.title = gameui.AssetsManager.getBitmapText("", "debussyBig")
+            this.title .set({ x: defaultWidth / 2, y: 580 });
             this.addChild(this.title );
 
             this.setTitle(title);

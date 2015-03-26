@@ -73,17 +73,15 @@
             //add scores text
             var score = gameui.AssetsManager.getBitmapText(StringResources.menus.score, "debussy")
             score.x = 323+50;
-            score.y = 124 -80+85;
+            score.y = 124 -80+80;
             score.scaleX = score.scaleY = 0.85;
             this.scoreText = score;
             this.addChild(score);
 
             //add scores text
-            var level = gameui.AssetsManager.getBitmapText(StringResources.menus.level, "debussy")
-     
-            level.x = 1099;
-            level.y = 242 -200;
-            level.scaleX = level.scaleY = 2;
+            var level = gameui.AssetsManager.getBitmapText(StringResources.menus.level, "debussyBig")
+            level.x = 1000;
+            level.y = 242 -165;
             this.levelText = level;
             this.addChild(level);
 
@@ -94,7 +92,7 @@
         // updates level ad score status
         public updateStatus(score: number,level:number,percent?:number,emptyPercent?:number, alarm?:boolean) {
             this.scoreText.text =StringResources.menus.score.toUpperCase() + " " + score.toString();
-            this.levelText.text = level.toString();
+            this.levelText.text = "Lv. " + level.toString();
 
             var value = 1;
 
@@ -132,7 +130,7 @@
             //increase number
             createjs.Tween.removeTweens(this.levelText);
             this.levelText.set({ scaleY: 0, scaleX: 4 });
-            createjs.Tween.get(this.levelText).to({ scaleX: 2, scaleY: 2 }, 1000, createjs.Ease.elasticOut);
+            createjs.Tween.get(this.levelText).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
 
             //increase Icon
             createjs.Tween.removeTweens(this.levelIcon);
