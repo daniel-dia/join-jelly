@@ -789,6 +789,8 @@ var StringResources = {
         menu: "menu",
         leaderboards: "Leaderboards",
         reset: "Reset All Data",
+        restore: "Restore",
+        restoreWarning: "It will restore your purchases from store, Continue?",
         resetWarning: "Are you sure. All you progress will be lost",
         about: "About",
         tutorial: "Tutorial",
@@ -883,6 +885,8 @@ var StringResources_pt = {
         menu: "Menu",
         leaderboards: "Placar",
         reset: "Apagar tudo",
+        restore: "Recuperar",
+        restoreWarning: "Isso vai recuperar suas compras da loja, quer continuar?",
         resetWarning: "Você tem certeza? tudo que voce consquistou será perdido.",
         about: "Sobre",
         tutorial: "Tutorial",
@@ -1079,12 +1083,11 @@ var joinjelly;
             bg.x = (defaultWidth - 1463) / 2;
             bg.y = (defaultHeight - 1788) / 2;
             // add Title
-            var titleObj = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussy");
+            var titleObj = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussyBig");
             this.content.addChild(titleObj);
             titleObj.y = bg.y + 50;
             titleObj.x = defaultWidth / 2;
             titleObj.regX = titleObj.getBounds().width / 2;
-            titleObj.scaleX = titleObj.scaleY = 1.5;
         };
         ScrollablePage.prototype.addScrollableArea = function () {
             var _this = this;
@@ -1124,7 +1127,7 @@ var joinjelly;
                 else
                     joinjelly.JoinJelly.showMainMenu();
             });
-            okButton.x = defaultWidth / 2;
+            okButton.x = defaultWidth * 3 / 4;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
         };
@@ -1306,8 +1309,8 @@ var joinjelly;
                 //set default sound button
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 //load font
-                debussy = createSpriteSheetFromFont(debussyFont, this.imagePath);
-                gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
+                gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, this.imagePath));
+                gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, this.imagePath));
                 var l = new menus.view.LoadingBar(this.imagePath);
                 this.content.addChild(l);
                 l.x = defaultWidth / 2;
@@ -1733,6 +1736,23 @@ var joinjelly;
                 };
                 // initialize market
                 this.initializeStore();
+                // add restore Button
+                // add Restore Button
+                var restore = new gameui.BitmapTextButton(StringResources.menus.restore, "debussy", "BtTextBg", function () {
+                    Cocoon.Dialog.confirm({
+                        title: StringResources.menus.restore,
+                        message: StringResources.menus.restoreWarning
+                    }, function (accepted) {
+                        if (accepted) {
+                            Cocoon.Store.restore();
+                        }
+                        else {
+                        }
+                    });
+                });
+                restore.x = defaultWidth * 2 / 3;
+                restore.y = defaultHeight - 200;
+                this.content.addChild(restore);
             }
             //#region Interface =====================================================================================
             // add all products in the list
@@ -5099,8 +5119,6 @@ var joinjelly;
         menus.LeaderBoards = LeaderBoards;
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
-//module joinjelly.menus {
-//    export class ScoreWall extends ScrollablePage {
 var joinjelly;
 (function (joinjelly) {
     var menus;

@@ -42,6 +42,21 @@
             // initialize market
             this.initializeStore();
 
+            // add restore Button
+            // add Restore Button
+            var restore = new gameui.BitmapTextButton(StringResources.menus.restore, "debussy", "BtTextBg", () => {
+                Cocoon.Dialog.confirm({
+                    title: StringResources.menus.restore,
+                    message: StringResources.menus.restoreWarning
+                }, function (accepted) {
+                        if (accepted) {
+                            Cocoon.Store.restore();
+                        } else { }
+                    });
+            });
+            restore.x = defaultWidth *2/ 3;
+            restore.y = defaultHeight - 200;
+            this.content.addChild(restore);
          }
 
         //#region Interface =====================================================================================
@@ -130,7 +145,6 @@
         private getProductListItem(productId): view.ProductListItem {
             return this.productsListItems[productId];
         }
-
 
         //#endregion 
 
@@ -255,6 +269,7 @@
         }
         
         //#endregion 
+
 
     }
 }

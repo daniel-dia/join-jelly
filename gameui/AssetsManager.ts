@@ -83,7 +83,8 @@
             return imgobj;
 
         }
-         //get a bitmap Text
+
+        //get a bitmap Text
         public static getBitmapText(text:string, bitmapFontId:string):createjs.BitmapText { 
             var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
             bitmapText.lineHeight = 100;

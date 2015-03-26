@@ -17,7 +17,8 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="assets\Deburil.js" />
+    <Content Include="assets\Debussy.js" />
+    <Content Include="assets\DebussyBig.js" />
     <Content Include="assets\htmlBG.jpg" />
     <Content Include="assets\images\Background.jpg" />
     <Content Include="assets\images\BackMain.jpg" />

@@ -1,5 +1,5 @@
-﻿declare var debussy;
-declare var debussyFont;
+﻿declare var debussyFont;
+declare var debussyFontBig;
 
 declare function createSpriteSheetFromFont(font: any, path: string);
 declare var WP;
@@ -39,8 +39,8 @@ module joinjelly.menus {
             gameui.Button.DefaultSoundId = "Interface Sound-06";
 
             //load font
-            debussy = createSpriteSheetFromFont(debussyFont, this.imagePath);
-            gameui.AssetsManager.loadFontSpriteSheet("debussy", debussy);
+            gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, this.imagePath));
+            gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, this.imagePath));
 
 
             var l = new view.LoadingBar(this.imagePath);

@@ -16,7 +16,6 @@
             this.scrollableContent.x = defaultWidth / 2;
             soundOptions.y = y += space ;
 
-
             // add Player name
             var playerNameTitle = new view.PlayerNameOptions();
             this.scrollableContent.addChild(playerNameTitle);
@@ -43,6 +42,8 @@
             });
             reset.y = y += space;
             this.scrollableContent.addChild(reset);
+
+    
 
         }
 

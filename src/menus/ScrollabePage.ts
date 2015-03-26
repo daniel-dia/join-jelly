@@ -23,15 +23,13 @@
             bg.y = (defaultHeight - 1788) / 2;
 
             // add Title
-            var titleObj = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussy");
+            var titleObj = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussyBig");
             this.content.addChild(titleObj);
             titleObj.y = bg.y + 50;
             titleObj.x = defaultWidth / 2;
-            titleObj.regX = titleObj.getBounds().width / 2;
-            titleObj.scaleX = titleObj.scaleY = 1.5;
+            titleObj.regX = titleObj.getBounds().width / 2; 
         }
-
-       
+               
         private addScrollableArea() {
             var scrollContent = new createjs.Container();
             var ScrollArea = new createjs.Container();
@@ -71,7 +69,7 @@
                 if (this.okButtonAction) this.okButtonAction();
                 else
                 joinjelly.JoinJelly.showMainMenu() });
-            okButton.x = defaultWidth / 2;
+            okButton.x = defaultWidth * 3/ 4;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
 
