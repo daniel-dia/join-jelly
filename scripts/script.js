@@ -3922,6 +3922,7 @@ var joinjelly;
                 itemDO.mouseEnabled = false;
                 itemDO.regX = itemDO.getBounds().width / 2;
                 itemDO.regY = itemDO.getBounds().height / 2;
+                itemDO.scaleY = itemDO.scaleX = 0.5;
                 // animate item to footer
                 var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
                 var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
