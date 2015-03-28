@@ -54,7 +54,7 @@
                         } else { }
                     });
             });
-            restore.x = defaultWidth *2/ 3;
+            restore.x = defaultWidth *1/ 3;
             restore.y = defaultHeight - 200;
             this.content.addChild(restore);
          }

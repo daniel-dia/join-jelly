@@ -54,6 +54,8 @@
     <Content Include="assets\images\ChubbyFont.png" />
     <Content Include="assets\images\cleanEffect.png" />
     <Content Include="assets\images\d256.png" />
+    <Content Include="assets\images\debussy.png" />
+    <Content Include="assets\images\debussyBig.png" />
     <Content Include="assets\images\e-1.png" />
     <Content Include="assets\images\e1.png" />
     <Content Include="assets\images\e1024.png" />
@@ -76,7 +78,6 @@
     <Content Include="assets\images\fastEffect.png" />
     <Content Include="assets\images\FlyBG.png" />
     <Content Include="assets\images\FlyGroup.png" />
-    <Content Include="assets\images\font.png" />
     <Content Include="assets\images\footer.png" />
     <Content Include="assets\images\freezeEffect.png" />
     <Content Include="assets\images\fxEvolve.png" />
@@ -115,6 +116,9 @@
     <Content Include="assets\images\loadingBall.png" />
     <Content Include="assets\images\lucky.png" />
     <Content Include="assets\images\MessageBox.png" />
+    <Content Include="assets\images\n1.png" />
+    <Content Include="assets\images\n2.png" />
+    <Content Include="assets\images\n3.png" />
     <Content Include="assets\images\Particle.png" />
     <Content Include="assets\images\pediaItem.png" />
     <Content Include="assets\images\popupdark.png" />
@@ -173,6 +177,8 @@
     <Content Include="assets\images_0.25x\ChubbyFont.png" />
     <Content Include="assets\images_0.25x\cleanEffect.png" />
     <Content Include="assets\images_0.25x\d256.png" />
+    <Content Include="assets\images_0.25x\debussy.png" />
+    <Content Include="assets\images_0.25x\debussyBig.png" />
     <Content Include="assets\images_0.25x\e-1.png" />
     <Content Include="assets\images_0.25x\e1.png" />
     <Content Include="assets\images_0.25x\e1024.png" />
@@ -234,6 +240,9 @@
     <Content Include="assets\images_0.25x\loadingBall.png" />
     <Content Include="assets\images_0.25x\lucky.png" />
     <Content Include="assets\images_0.25x\MessageBox.png" />
+    <Content Include="assets\images_0.25x\n1.png" />
+    <Content Include="assets\images_0.25x\n2.png" />
+    <Content Include="assets\images_0.25x\n3.png" />
     <Content Include="assets\images_0.25x\Particle.png" />
     <Content Include="assets\images_0.25x\pediaItem.png" />
     <Content Include="assets\images_0.25x\popupdark.png" />
@@ -292,6 +301,8 @@
     <Content Include="assets\images_0.5x\ChubbyFont.png" />
     <Content Include="assets\images_0.5x\cleanEffect.png" />
     <Content Include="assets\images_0.5x\d256.png" />
+    <Content Include="assets\images_0.5x\debussy.png" />
+    <Content Include="assets\images_0.5x\debussyBig.png" />
     <Content Include="assets\images_0.5x\e-1.png" />
     <Content Include="assets\images_0.5x\e1.png" />
     <Content Include="assets\images_0.5x\e1024.png" />
@@ -353,6 +364,9 @@
     <Content Include="assets\images_0.5x\loadingBall.png" />
     <Content Include="assets\images_0.5x\lucky.png" />
     <Content Include="assets\images_0.5x\MessageBox.png" />
+    <Content Include="assets\images_0.5x\n1.png" />
+    <Content Include="assets\images_0.5x\n2.png" />
+    <Content Include="assets\images_0.5x\n3.png" />
     <Content Include="assets\images_0.5x\Particle.png" />
     <Content Include="assets\images_0.5x\pediaItem.png" />
     <Content Include="assets\images_0.5x\popupdark.png" />
@@ -376,6 +390,33 @@
     <Content Include="assets\images_0.5x\tutorialFingerDown.png" />
     <Content Include="assets\images_0.5x\unchecked.png" />
     <Content Include="assets\resize.bat" />
+    <Content Include="assets\sounds\end.ogg" />
+    <Content Include="assets\sounds\Interface Sound-06.ogg" />
+    <Content Include="assets\sounds\Interface Sound-07.ogg" />
+    <Content Include="assets\sounds\Interface Sound-08.ogg" />
+    <Content Include="assets\sounds\Interface Sound-09.ogg" />
+    <Content Include="assets\sounds\Interface Sound-10.ogg" />
+    <Content Include="assets\sounds\Interface Sound-11.ogg" />
+    <Content Include="assets\sounds\Interface Sound-12.ogg" />
+    <Content Include="assets\sounds\Interface Sound-13.ogg" />
+    <Content Include="assets\sounds\Interface Sound-14.ogg" />
+    <Content Include="assets\sounds\Interface Sound-15.ogg" />
+    <Content Include="assets\sounds\levelUp.ogg" />
+    <Content Include="assets\sounds\music1.ogg" />
+    <Content Include="assets\sounds\musicIntro.ogg" />
+    <Content Include="assets\sounds\sounditemclean.ogg" />
+    <Content Include="assets\sounds\sounditemfast.ogg" />
+    <Content Include="assets\sounds\sounditemrevive.ogg" />
+    <Content Include="assets\sounds\sounditemtime.ogg" />
+    <Content Include="assets\sounds\sound_h1.ogg" />
+    <Content Include="assets\sounds\sound_j1.ogg" />
+    <Content Include="assets\sounds\sound_j2.ogg" />
+    <Content Include="assets\sounds\sound_j3.ogg" />
+    <Content Include="assets\sounds\sound_j4.ogg" />
+    <Content Include="assets\sounds\sound_r1.ogg" />
+    <Content Include="assets\sounds\sound_s1.ogg" />
+    <Content Include="assets\sounds\sound_s2.ogg" />
+    <Content Include="assets\sounds\sound_s3.ogg" />
     <Content Include="assets\style.css" />
     <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\EaselJS Editor.js" />
@@ -461,33 +502,7 @@
     <TypeScriptCompile Include="src\view\LoadingBall.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\sounds\end.ogg" />
-    <Content Include="assets\sounds\Interface Sound-06.ogg" />
-    <Content Include="assets\sounds\Interface Sound-07.ogg" />
-    <Content Include="assets\sounds\Interface Sound-08.ogg" />
-    <Content Include="assets\sounds\Interface Sound-09.ogg" />
-    <Content Include="assets\sounds\Interface Sound-10.ogg" />
-    <Content Include="assets\sounds\Interface Sound-11.ogg" />
-    <Content Include="assets\sounds\Interface Sound-12.ogg" />
-    <Content Include="assets\sounds\Interface Sound-13.ogg" />
-    <Content Include="assets\sounds\Interface Sound-14.ogg" />
-    <Content Include="assets\sounds\Interface Sound-15.ogg" />
-    <Content Include="assets\sounds\levelUp.ogg" />
-    <Content Include="assets\sounds\music1.ogg" />
-    <Content Include="assets\sounds\musicIntro.ogg" />
-    <Content Include="assets\sounds\sounditemclean.ogg" />
-    <Content Include="assets\sounds\sounditemfast.ogg" />
-    <Content Include="assets\sounds\sounditemrevive.ogg" />
-    <Content Include="assets\sounds\sounditemtime.ogg" />
-    <Content Include="assets\sounds\sound_h1.ogg" />
-    <Content Include="assets\sounds\sound_j1.ogg" />
-    <Content Include="assets\sounds\sound_j2.ogg" />
-    <Content Include="assets\sounds\sound_j3.ogg" />
-    <Content Include="assets\sounds\sound_j4.ogg" />
-    <Content Include="assets\sounds\sound_r1.ogg" />
-    <Content Include="assets\sounds\sound_s1.ogg" />
-    <Content Include="assets\sounds\sound_s2.ogg" />
-    <Content Include="assets\sounds\sound_s3.ogg" />
+    <Content Include="assets\sounds\evolve.ogg" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -495,7 +510,9 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="assets\imagens\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

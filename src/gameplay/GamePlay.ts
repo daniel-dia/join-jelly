@@ -32,7 +32,7 @@
         private timeoutInterval: number;
 
         private initialInterval: number = 800;
-        private finalInterval: number = 200;
+        private finalInterval: number = 300;
         private easeInterval: number = 0.98;
         
         // effect 

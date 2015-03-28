@@ -1751,7 +1751,7 @@ var joinjelly;
                         }
                     });
                 });
-                restore.x = defaultWidth * 2 / 3;
+                restore.x = defaultWidth * 1 / 3;
                 restore.y = defaultHeight - 200;
                 this.content.addChild(restore);
             }
@@ -3447,7 +3447,7 @@ var joinjelly;
                 this.itemProbability = 0.005;
                 this.timeByLevel = 20000;
                 this.initialInterval = 800;
-                this.finalInterval = 200;
+                this.finalInterval = 300;
                 this.easeInterval = 0.98;
                 this.userData = userData;
                 this.score = 0;

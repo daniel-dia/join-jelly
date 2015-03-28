@@ -7,17 +7,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoinJelly", "JoinJelly.cspr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedApp", "SharedApp", "{B446FDF5-66C9-4119-84D5-0EB1A9BF947D}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "JoinJellyWP.Shared", "..\JoinJellyWP\JoinJellyWP.Shared\JoinJellyWP.Shared.shproj", "{3D38A444-0470-47A8-942B-50BC22E8B425}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "JoinJellyWP.Shared", "..\Plataform\windows\JoinJellyWP.Shared\JoinJellyWP.Shared.shproj", "{3D38A444-0470-47A8-942B-50BC22E8B425}"
 EndProject
-Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "JoinJellyWP.Windows", "..\JoinJellyWP\JoinJellyWP.Windows\JoinJellyWP.Windows.jsproj", "{583F7CD6-467F-41FF-BC90-1F057E4BD5EC}"
+Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "JoinJellyWP.Windows", "..\Plataform\windows\JoinJellyWP.Windows\JoinJellyWP.Windows.jsproj", "{583F7CD6-467F-41FF-BC90-1F057E4BD5EC}"
 EndProject
-Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "JoinJellyWP.WindowsPhone", "..\JoinJellyWP\JoinJellyWP.WindowsPhone\JoinJellyWP.WindowsPhone.jsproj", "{EFBE4E48-AFCA-47CB-B939-4B0A42DC26ED}"
+Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "JoinJellyWP.WindowsPhone", "..\Plataform\windows\JoinJellyWP.WindowsPhone\JoinJellyWP.WindowsPhone.jsproj", "{EFBE4E48-AFCA-47CB-B939-4B0A42DC26ED}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\JoinJellyWP\JoinJellyWP.Shared\JoinJellyWP.Shared.projitems*{583f7cd6-467f-41ff-bc90-1f057e4bd5ec}*SharedItemsImports = 5
-		..\JoinJellyWP\JoinJellyWP.Shared\JoinJellyWP.Shared.projitems*{efbe4e48-afca-47cb-b939-4b0a42dc26ed}*SharedItemsImports = 5
-		..\JoinJellyWP\JoinJellyWP.Shared\JoinJellyWP.Shared.projitems*{3d38a444-0470-47a8-942b-50bc22e8b425}*SharedItemsImports = 13
+		..\Plataform\windows\JoinJellyWP.Shared\JoinJellyWP.Shared.projitems*{583f7cd6-467f-41ff-bc90-1f057e4bd5ec}*SharedItemsImports = 5
+		..\Plataform\windows\JoinJellyWP.Shared\JoinJellyWP.Shared.projitems*{efbe4e48-afca-47cb-b939-4b0a42dc26ed}*SharedItemsImports = 5
+		..\Plataform\windows\JoinJellyWP.Shared\JoinJellyWP.Shared.projitems*{3d38a444-0470-47a8-942b-50bc22e8b425}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
