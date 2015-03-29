@@ -3817,6 +3817,9 @@ var joinjelly;
             GamePlayScreen.prototype.addRandomTileOnBoard = function (value) {
                 if (value === void 0) { value = 1; }
                 var empty = this.board.getEmptyTiles();
+                for (var i = 10; i < this.level; i += 10)
+                    if (Math.random() > 0.9)
+                        value *= 2;
                 // if there is no more empty tiles, ends the game
                 if (empty.length > 0) {
                     var i = Math.floor(Math.random() * empty.length);

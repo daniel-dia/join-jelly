@@ -524,15 +524,17 @@
 
             var empty = this.board.getEmptyTiles();
 
+            // select a random value to add.
+            for(var i = 10; i < this.level; i +=10)
+                if (Math.random() > 0.9) value *= 2;
+            
+
             // if there is no more empty tiles, ends the game
             if (empty.length > 0) {
                 var i = Math.floor(Math.random() * empty.length);
                 var tile = empty[i];
                 tile.setNumber(value);
-
-
                 this.saveGame();
-
             }
         }
 
