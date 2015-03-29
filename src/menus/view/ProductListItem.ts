@@ -39,6 +39,7 @@
             var icon = gameui.AssetsManager.getBitmap(iconId);
             icon.regX = icon.getBounds().width / 2;
             icon.regY = icon.getBounds().height / 2;
+            icon.scaleX = icon.scaleY = 0.8;
             icon.x = 225;
             icon.y = 188;
             tContainer.addChild(icon);

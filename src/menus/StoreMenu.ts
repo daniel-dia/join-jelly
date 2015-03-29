@@ -49,10 +49,9 @@
                     title: StringResources.menus.restore,
                     message: StringResources.menus.restoreWarning
                 }, function (accepted) {
-                        if (accepted) {
-                            Cocoon.Store.restore();
-                        } else { }
-                    });
+                        if (accepted) 
+                          Cocoon.Store.restore();
+                });
             });
             restore.x = defaultWidth *1/ 3;
             restore.y = defaultHeight - 200;

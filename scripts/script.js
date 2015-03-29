@@ -1744,11 +1744,8 @@ var joinjelly;
                         title: StringResources.menus.restore,
                         message: StringResources.menus.restoreWarning
                     }, function (accepted) {
-                        if (accepted) {
+                        if (accepted)
                             Cocoon.Store.restore();
-                        }
-                        else {
-                        }
                     });
                 });
                 restore.x = defaultWidth * 1 / 3;
@@ -5290,6 +5287,7 @@ var joinjelly;
                     var icon = gameui.AssetsManager.getBitmap(iconId);
                     icon.regX = icon.getBounds().width / 2;
                     icon.regY = icon.getBounds().height / 2;
+                    icon.scaleX = icon.scaleY = 0.8;
                     icon.x = 225;
                     icon.y = 188;
                     tContainer.addChild(icon);
