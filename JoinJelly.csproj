@@ -61,7 +61,6 @@
     <Content Include="assets\images\e1024.png" />
     <Content Include="assets\images\e128.png" />
     <Content Include="assets\images\e16.png" />
-    <Content Include="assets\images\e16384.png" />
     <Content Include="assets\images\e2.png" />
     <Content Include="assets\images\e2048.png" />
     <Content Include="assets\images\e256.png" />
@@ -390,32 +389,61 @@
     <Content Include="assets\images_0.5x\tutorialFingerDown.png" />
     <Content Include="assets\images_0.5x\unchecked.png" />
     <Content Include="assets\resize.bat" />
+    <Content Include="assets\sounds\end.mp3" />
     <Content Include="assets\sounds\end.ogg" />
+    <Content Include="assets\sounds\evolve.mp3" />
+    <Content Include="assets\sounds\evolve.ogg" />
+    <Content Include="assets\sounds\Interface Sound-06.mp3" />
     <Content Include="assets\sounds\Interface Sound-06.ogg" />
+    <Content Include="assets\sounds\Interface Sound-07.mp3" />
     <Content Include="assets\sounds\Interface Sound-07.ogg" />
+    <Content Include="assets\sounds\Interface Sound-08.mp3" />
     <Content Include="assets\sounds\Interface Sound-08.ogg" />
+    <Content Include="assets\sounds\Interface Sound-09.mp3" />
     <Content Include="assets\sounds\Interface Sound-09.ogg" />
+    <Content Include="assets\sounds\Interface Sound-10.mp3" />
     <Content Include="assets\sounds\Interface Sound-10.ogg" />
+    <Content Include="assets\sounds\Interface Sound-11.mp3" />
     <Content Include="assets\sounds\Interface Sound-11.ogg" />
+    <Content Include="assets\sounds\Interface Sound-12.mp3" />
     <Content Include="assets\sounds\Interface Sound-12.ogg" />
+    <Content Include="assets\sounds\Interface Sound-13.mp3" />
     <Content Include="assets\sounds\Interface Sound-13.ogg" />
+    <Content Include="assets\sounds\Interface Sound-14.mp3" />
     <Content Include="assets\sounds\Interface Sound-14.ogg" />
+    <Content Include="assets\sounds\Interface Sound-15.mp3" />
     <Content Include="assets\sounds\Interface Sound-15.ogg" />
+    <Content Include="assets\sounds\levelUp.mp3" />
     <Content Include="assets\sounds\levelUp.ogg" />
+    <Content Include="assets\sounds\music1.mp3" />
     <Content Include="assets\sounds\music1.ogg" />
+    <Content Include="assets\sounds\musicIntro.mp3" />
     <Content Include="assets\sounds\musicIntro.ogg" />
+    <Content Include="assets\sounds\sounditemclean.mp3" />
     <Content Include="assets\sounds\sounditemclean.ogg" />
+    <Content Include="assets\sounds\sounditemfast.mp3" />
     <Content Include="assets\sounds\sounditemfast.ogg" />
+    <Content Include="assets\sounds\sounditemrevive.mp3" />
     <Content Include="assets\sounds\sounditemrevive.ogg" />
+    <Content Include="assets\sounds\sounditemtime.mp3" />
     <Content Include="assets\sounds\sounditemtime.ogg" />
+    <Content Include="assets\sounds\sound_h1.mp3" />
     <Content Include="assets\sounds\sound_h1.ogg" />
+    <Content Include="assets\sounds\sound_j1.mp3" />
     <Content Include="assets\sounds\sound_j1.ogg" />
+    <Content Include="assets\sounds\sound_j2.mp3" />
     <Content Include="assets\sounds\sound_j2.ogg" />
+    <Content Include="assets\sounds\sound_j3.mp3" />
     <Content Include="assets\sounds\sound_j3.ogg" />
+    <Content Include="assets\sounds\sound_j4.mp3" />
     <Content Include="assets\sounds\sound_j4.ogg" />
+    <Content Include="assets\sounds\sound_r1.mp3" />
     <Content Include="assets\sounds\sound_r1.ogg" />
+    <Content Include="assets\sounds\sound_s1.mp3" />
     <Content Include="assets\sounds\sound_s1.ogg" />
+    <Content Include="assets\sounds\sound_s2.mp3" />
     <Content Include="assets\sounds\sound_s2.ogg" />
+    <Content Include="assets\sounds\sound_s3.mp3" />
     <Content Include="assets\sounds\sound_s3.ogg" />
     <Content Include="assets\style.css" />
     <Content Include="scripts\cocoon.js" />
@@ -502,7 +530,6 @@
     <TypeScriptCompile Include="src\view\LoadingBall.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\sounds\evolve.ogg" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -510,9 +537,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="assets\imagens\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
