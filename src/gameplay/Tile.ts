@@ -22,19 +22,19 @@
             this.posx = posx;
             this.posy = posy;
 
-            ///set local positio
+            ///set local position
             this.regX = this.regY = tileSize / 2;
 
             //addObjects
             this.jelly = new view.Jelly();
             this.jelly.x = tileSize / 2;
             this.jelly.y = tileSize;
-            this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (310);
+            this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (450);
             this.addChild(this.jelly);
 
             //creates hitArea for the tile
             this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("000").drawRect(0, 0, tileSize, tileSize));
-
+      
         }
 
         public release() {

@@ -31,11 +31,10 @@
 
         constructor() {
             super();
-            this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("black").rect(-115, -230, 230, 230));
-           
+ 
             this.effect = new joinjelly.view.Effect();
             this.addChild(this.effect);
-            this.effect.scaleX = this.effect.scaleY = 0.7;
+            this.effect.scaleX = this.effect.scaleY = 1.2;
             this.effect.x = 0
             this.effect.y = -100; 
          //   this.setChildIndex(this.effect, 0);

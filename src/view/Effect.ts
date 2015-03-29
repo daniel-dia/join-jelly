@@ -18,7 +18,9 @@
             fxs.regX = 100;
             fxs.regY = 100;
             this.addChild(fxs);
-            fxs.scaleX = fxs.scaleX = fxs.alpha = 2;
+            fxs.alpha = 2;
+            fxs.scaleX = 2;
+            fxs.scaleY = 2;
             createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(() => { this.removeChild(fxs) });
         }
  

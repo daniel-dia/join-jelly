@@ -621,7 +621,7 @@
 
             // verifies if it can move, make it a little more faster
             if (!this.canMove()) this.step(0);
-            if (this.board.getEmptyTiles().length > 12) this.step(0);
+            
             return true;
         }
 

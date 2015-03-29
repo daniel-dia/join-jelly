@@ -1300,6 +1300,7 @@ var joinjelly;
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
+                assetscale = 0.25;
                 if (assetscale == 1)
                     this.imagePath = "assets/images/";
                 else
@@ -1564,14 +1565,14 @@ var joinjelly;
                         [4 / 7, 3.1],
                         [5 / 7, 3.3],
                     ];
-                    var jelly = new joinjelly.gameplay.Tile(0, 0, 500);
+                    var jelly = new joinjelly.gameplay.view.Jelly(); //gameplay.Tile(0, 0, 450);
                     // adds jelly
                     this.addChildAt(jelly, 0);
                     jelly.setNumber(value);
                     var m = (position % 2) ? -1 : 1;
                     jelly.x = (positions[position][0] * defaultWidth - defaultWidth / 2) * 1.2;
-                    jelly.y = positions[position][1] * -200 + 550;
-                    jelly.scaleX = jelly.scaleY = 0.9 - positions[position][1] / 7;
+                    jelly.y = positions[position][1] * -200 + 750;
+                    jelly.scaleX = jelly.scaleY = Math.min(1 - positions[position][1] / 7, 1);
                     //play JellySound
                     gameui.AudiosManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
@@ -2398,10 +2399,9 @@ var joinjelly;
                 // #region initialization =========================================
                 function Jelly() {
                     _super.call(this);
-                    this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("black").rect(-115, -230, 230, 230));
                     this.effect = new joinjelly.view.Effect();
                     this.addChild(this.effect);
-                    this.effect.scaleX = this.effect.scaleY = 0.7;
+                    this.effect.scaleX = this.effect.scaleY = 1.2;
                     this.effect.x = 0;
                     this.effect.y = -100;
                     //   this.setChildIndex(this.effect, 0);
@@ -3369,13 +3369,13 @@ var joinjelly;
                 this.tileSize = tileSize;
                 this.posx = posx;
                 this.posy = posy;
-                ///set local positio
+                ///set local position
                 this.regX = this.regY = tileSize / 2;
                 //addObjects
                 this.jelly = new gameplay.view.Jelly();
                 this.jelly.x = tileSize / 2;
                 this.jelly.y = tileSize;
-                this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (310);
+                this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (450);
                 this.addChild(this.jelly);
                 //creates hitArea for the tile
                 this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("000").drawRect(0, 0, tileSize, tileSize));
@@ -3893,8 +3893,6 @@ var joinjelly;
                 this.saveGame();
                 // verifies if it can move, make it a little more faster
                 if (!this.canMove())
-                    this.step(0);
-                if (this.board.getEmptyTiles().length > 12)
                     this.step(0);
                 return true;
             };
@@ -5425,7 +5423,9 @@ var joinjelly;
                 fxs.regX = 100;
                 fxs.regY = 100;
                 this.addChild(fxs);
-                fxs.scaleX = fxs.scaleX = fxs.alpha = 2;
+                fxs.alpha = 2;
+                fxs.scaleX = 2;
+                fxs.scaleY = 2;
                 createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(function () {
                     _this.removeChild(fxs);
                 });
