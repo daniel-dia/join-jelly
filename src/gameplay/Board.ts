@@ -55,8 +55,8 @@
 
             var bg = gameui.AssetsManager.getBitmap("hex");
             this.tilesContainer.addChild(bg);
-            bg.regX = 304 / 2;
-            bg.regY = -40
+            bg.regX = 358 / 2;
+            bg.regY = 0;
             bg.alpha = 0.15;
             bg.set(this.getTilePositionByCoords(x, y, tileSize,0));
 

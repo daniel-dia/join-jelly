@@ -57,10 +57,9 @@
             //container.addChild(tx);
             
             //create "points" text
-            var tx = gameui.AssetsManager.getBitmapText("", "debussy")
+            var tx = gameui.AssetsManager.getBitmapText("", "debussyBig")
             tx.set({ x: defaultWidth/2, y: 587});
             container.addChild(tx);
-            tx.scaleX = tx.scaleY = 2;
             this.scoreText = tx;            
 
             //create HighScore text
@@ -99,7 +98,7 @@
             var jelly = new gameplay.view.Jelly();
             container.addChild(jelly);
             this.addChild(container);
-            jelly.scaleX = jelly.scaleY = 1.75;
+            jelly.scaleX = jelly.scaleY = 1;
             jelly.set({ x: defaultWidth / 2, y: 1350 });
             this.jelly = jelly;
 
