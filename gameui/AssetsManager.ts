@@ -10,23 +10,30 @@
         private static assetsManifest: Array<any>;
         private static defaultMouseEnabled: boolean = false;
 
-        //load assets
-        public static loadAssets(assetsManifest: Array<any>,path:string="", spriteSheets?: Array<any>,imagesArray?:Array<HTMLImageElement>): createjs.LoadQueue {
+        public static onProgress: (progress: number) => void;
+        public static onComplete: () => void;
 
-            //cleans previous loaded assets.
-            this.cleanAssets();
+        //load assets
+        public static loadAssets(
+            assetsManifest: Array<any>,
+            path:string="", 
+            spriteSheets?: Array<any>,
+            imagesArray?:Array<HTMLImageElement>){
 
             // initialize objects
             this.spriteSheets = spriteSheets ? spriteSheets : new Array();
             this.imagesArray = imagesArray ? imagesArray : new Array();
             this.bitmapFontSpriteSheetDataArray = new Array();
             this.assetsManifest = assetsManifest;
-            
-            //creates a preload queue
-            this.loader = new createjs.LoadQueue(false);
 
-            //install sound plug-in for sounds format
-            this.loader.installPlugin(createjs.Sound);
+            if (!this.loader) {
+                //creates a preload queue
+                this.loader = new createjs.LoadQueue(false);
+                
+                //install sound plug-in for sounds format
+                this.loader.installPlugin(createjs.Sound);
+                createjs.Sound.alternateExtensions = ["mp3"];
+            }
 
             //create eventListeners
             this.loader.addEventListener("fileload", (evt: any): boolean => {
@@ -34,11 +41,13 @@
                     this.imagesArray[evt.item.id] = <HTMLImageElement>evt.result;
                 return true;
             });
+
+            // Adds callbacks
+            this.loader.addEventListener("complete", (evt: any) => { if(this.onComplete) this.onComplete()  })
+            this.loader.addEventListener("progress", (evt: any) => { if (this.onProgress) this.onProgress(evt.progress)})
             
             //loads entire manifest
             this.loader.loadManifest(this.assetsManifest,true,path);
-            
-            return this.loader;
         }
         
         // load a font spritesheet

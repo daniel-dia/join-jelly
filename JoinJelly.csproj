@@ -388,6 +388,7 @@
     <Content Include="assets\images_0.5x\tutorialFinger.png" />
     <Content Include="assets\images_0.5x\tutorialFingerDown.png" />
     <Content Include="assets\images_0.5x\unchecked.png" />
+    <Content Include="assets\Manifest.js" />
     <Content Include="assets\resize.bat" />
     <Content Include="assets\soundsmp3\end.mp3" />
     <Content Include="assets\soundsmp3\evolve.mp3" />
