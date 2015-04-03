@@ -4,7 +4,7 @@
     "fast5x"  :{ icon: "5x Magnet",       consumable:true },
     "revive5x":{ icon: "5x Revive",       consumable:true },
     "clean5x" :{ icon: "5x Clean",        consumable:true },
-    "pack5x"  :{ icon: "3x Item Pack",    consumable:true },
+    "pack5x"  :{ icon: "5x Item Pack",    consumable:true },
     "pack10x" :{ icon: "10x Item Pack",   consumable:true },
     "lucky"   :{ icon: "Lucky Clover",    consumable:false},
 }

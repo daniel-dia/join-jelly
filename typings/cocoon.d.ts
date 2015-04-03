@@ -1,25 +1,23 @@
 ﻿declare module Cocoon {
 
-    export class Store {
-        static addProduct(product: Cocoon.Store.ProductInfo);
-        static addPurchase(purchase: Cocoon.Store.PurchaseInfo);
-        static canPurchase();
-        static consume(transactionId, productId: string);
-        static finish(transactionId: string);
-        static getProducts();
-        static getPurchases();
-        static getStoreType();
-        static initialize(parameters?: Cocoon.Store.InitializatoinParameters);
-        static isProductPurchased(productId: string);
-        static loadProducts(products: Array<string>);
-        static purchase(productId);
-        static removeProduct(productI: string);
-        static removePurchase(transactionId: string);
-        static restore();
-        static on(event: string, callbacks: any);
-    }
-
     export module Store {
+
+        export function addProduct(product: Cocoon.Store.ProductInfo);
+        export function addPurchase(purchase: Cocoon.Store.PurchaseInfo);
+        export function canPurchase();
+        export function consume(transactionId, productId: string);
+        export function finish(transactionId: string);
+        export function getProducts();
+        export function getPurchases();
+        export function getStoreType();
+        export function initialize(parameters?: Cocoon.Store.InitializatoinParameters);
+        export function isProductPurchased(productId: string);
+        export function loadProducts(products: Array<string>);
+        export function purchase(productId);
+        export function removeProduct(productI: string);
+        export function removePurchase(transactionId: string);
+        export function restore();
+        export function on(event: string, callbacks: any);
 
         export interface InitializatoinParameters {
             sandbox: boolean;
@@ -126,11 +124,6 @@
         }
     }
 
-    export class Dialog {
-        static confirm(params:any, callback?:any);
-        static prompt(params: any, callback?: any);
-    }
-
     export module Dialog {
         enum keyboardType {
             TEXT,
@@ -139,5 +132,26 @@
             EMAIL,
             URL,
         }
+
+        export function confirm(params: any, callback?: any);
+        export function prompt(params: any, callback?: any);
+    }
+
+    export module Device {
+
+        export function getDeviceInfo(): DeviceInfo;
+
+        export class DeviceInfo {
+            os: string;
+            version: string;
+            dpi: string;
+            brand: string;
+            model: string;
+            imei: string;
+            platformId: string;
+            odin: string;
+            openudid: string;
+        }
+
     }
 }

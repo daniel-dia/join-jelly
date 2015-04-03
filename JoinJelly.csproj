@@ -389,39 +389,42 @@
     <Content Include="assets\images_0.5x\tutorialFingerDown.png" />
     <Content Include="assets\images_0.5x\unchecked.png" />
     <Content Include="assets\resize.bat" />
-    <Content Include="assets\sounds\end.mp3" />
-    <Content Include="assets\sounds\evolve.mp3" />
-    <Content Include="assets\sounds\Interface Sound-06.mp3" />
-    <Content Include="assets\sounds\Interface Sound-07.mp3" />
-    <Content Include="assets\sounds\Interface Sound-08.mp3" />
-    <Content Include="assets\sounds\Interface Sound-09.mp3" />
-    <Content Include="assets\sounds\Interface Sound-10.mp3" />
-    <Content Include="assets\sounds\Interface Sound-11.mp3" />
-    <Content Include="assets\sounds\Interface Sound-12.mp3" />
-    <Content Include="assets\sounds\Interface Sound-13.mp3" />
-    <Content Include="assets\sounds\Interface Sound-14.mp3" />
-    <Content Include="assets\sounds\Interface Sound-15.mp3" />
-    <Content Include="assets\sounds\levelUp.mp3" />
-    <Content Include="assets\sounds\music1.mp3" />
-    <Content Include="assets\sounds\musicIntro.mp3" />
-    <Content Include="assets\sounds\sounditemclean.mp3" />
-    <Content Include="assets\sounds\sounditemfast.mp3" />
-    <Content Include="assets\sounds\sounditemrevive.mp3" />
-    <Content Include="assets\sounds\sounditemtime.mp3" />
-    <Content Include="assets\sounds\sound_h1.mp3" />
-    <Content Include="assets\sounds\sound_j1.mp3" />
-    <Content Include="assets\sounds\sound_j2.mp3" />
-    <Content Include="assets\sounds\sound_j3.mp3" />
-    <Content Include="assets\sounds\sound_j4.mp3" />
-    <Content Include="assets\sounds\sound_r1.mp3" />
-    <Content Include="assets\sounds\sound_s1.mp3" />
-    <Content Include="assets\sounds\sound_s2.mp3" />
-    <Content Include="assets\sounds\sound_s3.mp3" />
+    <Content Include="assets\soundsmp3\end.mp3" />
+    <Content Include="assets\soundsmp3\evolve.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-06.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-07.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-08.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-09.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-10.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-11.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-12.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-13.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-14.mp3" />
+    <Content Include="assets\soundsmp3\Interface Sound-15.mp3" />
+    <Content Include="assets\soundsmp3\levelUp.mp3" />
+    <Content Include="assets\soundsmp3\music1.mp3" />
+    <Content Include="assets\soundsmp3\musicIntro.mp3" />
+    <Content Include="assets\soundsmp3\sounditemclean.mp3" />
+    <Content Include="assets\soundsmp3\sounditemfast.mp3" />
+    <Content Include="assets\soundsmp3\sounditemrevive.mp3" />
+    <Content Include="assets\soundsmp3\sounditemtime.mp3" />
+    <Content Include="assets\soundsmp3\sound_h1.mp3" />
+    <Content Include="assets\soundsmp3\sound_j1.mp3" />
+    <Content Include="assets\soundsmp3\sound_j2.mp3" />
+    <Content Include="assets\soundsmp3\sound_j3.mp3" />
+    <Content Include="assets\soundsmp3\sound_j4.mp3" />
+    <Content Include="assets\soundsmp3\sound_r1.mp3" />
+    <Content Include="assets\soundsmp3\sound_s1.mp3" />
+    <Content Include="assets\soundsmp3\sound_s2.mp3" />
+    <Content Include="assets\soundsmp3\sound_s3.mp3" />
     <Content Include="assets\style.css" />
     <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\EaselJS Editor.js" />
     <Content Include="scripts\MobileServices.Web-1.2.5.min.js" />
     <Content Include="scripts\Plataform.js" />
+    <Content Include="scripts\script.min.js">
+      <DependentUpon>script.js</DependentUpon>
+    </Content>
     <Content Include="test.html" />
     <Content Include="index.html" />
     <Content Include="scripts\BitmapScalePath.js" />
@@ -502,6 +505,37 @@
     <TypeScriptCompile Include="src\view\LoadingBall.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="scripts\script.min.js.map">
+      <DependentUpon>script.min.js</DependentUpon>
+    </Content>
+    <Content Include="assets\sounds\end.ogg" />
+    <Content Include="assets\sounds\evolve.ogg" />
+    <Content Include="assets\sounds\Interface Sound-06.ogg" />
+    <Content Include="assets\sounds\Interface Sound-07.ogg" />
+    <Content Include="assets\sounds\Interface Sound-08.ogg" />
+    <Content Include="assets\sounds\Interface Sound-09.ogg" />
+    <Content Include="assets\sounds\Interface Sound-10.ogg" />
+    <Content Include="assets\sounds\Interface Sound-11.ogg" />
+    <Content Include="assets\sounds\Interface Sound-12.ogg" />
+    <Content Include="assets\sounds\Interface Sound-13.ogg" />
+    <Content Include="assets\sounds\Interface Sound-14.ogg" />
+    <Content Include="assets\sounds\Interface Sound-15.ogg" />
+    <Content Include="assets\sounds\levelUp.ogg" />
+    <Content Include="assets\sounds\music1.ogg" />
+    <Content Include="assets\sounds\musicIntro.ogg" />
+    <Content Include="assets\sounds\sounditemclean.ogg" />
+    <Content Include="assets\sounds\sounditemfast.ogg" />
+    <Content Include="assets\sounds\sounditemrevive.ogg" />
+    <Content Include="assets\sounds\sounditemtime.ogg" />
+    <Content Include="assets\sounds\sound_h1.ogg" />
+    <Content Include="assets\sounds\sound_j1.ogg" />
+    <Content Include="assets\sounds\sound_j2.ogg" />
+    <Content Include="assets\sounds\sound_j3.ogg" />
+    <Content Include="assets\sounds\sound_j4.ogg" />
+    <Content Include="assets\sounds\sound_r1.ogg" />
+    <Content Include="assets\sounds\sound_s1.ogg" />
+    <Content Include="assets\sounds\sound_s2.ogg" />
+    <Content Include="assets\sounds\sound_s3.ogg" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -539,9 +573,9 @@
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
-    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptModuleKind>none</TypeScriptModuleKind>
     <TypeScriptOutFile>scripts/script.js</TypeScriptOutFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">

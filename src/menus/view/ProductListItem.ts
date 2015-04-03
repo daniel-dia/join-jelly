@@ -45,7 +45,7 @@
             tContainer.addChild(icon);
 
             // Add Texts
-
+            description = description.replace("  ", "\n");
             var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
             var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
             titleObj.y = 40;
@@ -107,8 +107,6 @@
             button.x = 1199;
             this.purchaseButton = button;
             this.addChild(button);
-
-
 
             this.addChild(tContainer);
             tContainer.cache(100, 27, 1250, 300);

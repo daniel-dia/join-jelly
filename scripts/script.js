@@ -6,7 +6,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var gameui;
 (function (gameui) {
-    // Class
     var UIItem = (function (_super) {
         __extends(UIItem, _super);
         function UIItem() {
@@ -75,13 +74,11 @@ var gameui;
                 _this.animating = false;
             });
         };
-        //calcula
         UIItem.prototype.createHitArea = function () {
             var hit = new createjs.Shape();
             var b = this.getBounds();
             if (b)
                 hit.graphics.beginFill("#000").drawRect(b.x, b.y, b.width, b.height);
-            //TODO. se for texto colocar uma sobra. !
             this.hitArea = hit;
         };
         return UIItem;
@@ -90,7 +87,6 @@ var gameui;
 })(gameui || (gameui = {}));
 var gameui;
 (function (gameui) {
-    // Class
     var AudiosManager = (function () {
         function AudiosManager() {
         }
@@ -136,40 +132,30 @@ var gameui;
 })(gameui || (gameui = {}));
 var gameui;
 (function (gameui) {
-    // Class
     var AssetsManager = (function () {
         function AssetsManager() {
         }
-        //load assets
         AssetsManager.loadAssets = function (assetsManifest, path, spriteSheets, imagesArray) {
             var _this = this;
             if (path === void 0) { path = ""; }
-            //cleans previous loaded assets.
             this.cleanAssets();
-            // initialize objects
             this.spriteSheets = spriteSheets ? spriteSheets : new Array();
             this.imagesArray = imagesArray ? imagesArray : new Array();
             this.bitmapFontSpriteSheetDataArray = new Array();
             this.assetsManifest = assetsManifest;
-            //creates a preload queue
             this.loader = new createjs.LoadQueue(false);
-            //install sound plug-in for sounds format
             this.loader.installPlugin(createjs.Sound);
-            //create eventListeners
             this.loader.addEventListener("fileload", function (evt) {
                 if (evt.item.type == "image")
                     _this.imagesArray[evt.item.id] = evt.result;
                 return true;
             });
-            //loads entire manifest
             this.loader.loadManifest(this.assetsManifest, true, path);
             return this.loader;
         };
-        // load a font spritesheet
         AssetsManager.loadFontSpriteSheet = function (id, spritesheetData) {
             this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
         };
-        // cleans all sprites in the bitmap array;
         AssetsManager.cleanAssets = function () {
             if (this.imagesArray)
                 ;
@@ -180,42 +166,34 @@ var gameui;
                 delete this.imagesArray[i];
             }
         };
-        // return loaded image array
         AssetsManager.getImagesArray = function () {
             return this.imagesArray;
         };
-        //gets a image from assets
         AssetsManager.getBitmap = function (name) {
-            //if image id is described in spritesheets
             if (this.spriteSheets)
                 if (this.spriteSheets[name])
                     return this.getSprite(name, false);
-            //if image is preloaded
             var image = this.getLoadedImage(name);
             if (image) {
                 var imgobj = new createjs.Bitmap(image);
                 imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
                 return imgobj;
             }
-            //or else try grab by filename
             var imgobj = new createjs.Bitmap(name);
             imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
             return imgobj;
         };
-        //get a bitmap Text
         AssetsManager.getBitmapText = function (text, bitmapFontId) {
             var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
             bitmapText.lineHeight = 100;
             bitmapText.mouseEnabled = AssetsManager.defaultMouseEnabled;
             return bitmapText;
         };
-        //Get a preloaded Image from assets
         AssetsManager.getLoadedImage = function (name) {
             if (this.loader)
                 return this.loader.getResult(name);
             return null;
         };
-        //return a sprite according to the image
         AssetsManager.getSprite = function (name, play) {
             if (play === void 0) { play = true; }
             var data = this.spriteSheets[name];
@@ -233,17 +211,14 @@ var gameui;
     })();
     gameui.AssetsManager = AssetsManager;
 })(gameui || (gameui = {}));
-//TODO remove universal variable defaultWidth and DefaultHeigth
 var gameui;
 (function (gameui) {
     var GameScreen = (function () {
-        //-----------------------------------------------------------------------
         function GameScreen(canvasId, gameWidth, gameHeight, fps, showFps) {
             var _this = this;
             if (fps === void 0) { fps = 60; }
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
-            //Initializes canvas Context            
             this.stage = new createjs.Stage(canvasId);
             createjs.Touch.enable(this.stage);
             var x = 0;
@@ -253,7 +228,6 @@ var gameui;
             createjs.Ticker.setFPS(fps);
             this.screenContainer = new createjs.Container();
             this.stage.addChild(this.screenContainer);
-            //Framerate meter
             if (showFps) {
                 var fpsMeter = new createjs.Text("FPS", " 18px Arial ", "#000");
                 fpsMeter.mouseEnabled = false;
@@ -264,24 +238,19 @@ var gameui;
                     fpsMeter.text = Math.floor(createjs.Ticker.getMeasuredFPS()) + " FPS";
                 });
             }
-            //var windowWidth = window.innerWidth;
             this.resizeGameScreen(window.innerWidth, window.innerHeight);
             window.onresize = function () {
                 _this.resizeGameScreen(window.innerWidth, window.innerHeight);
             };
         }
-        //switch current screen, optionaly with a pre defined transition
         GameScreen.prototype.switchScreen = function (newScreen, parameters, transition) {
             var _this = this;
-            //save oldscreen
             var oldScreen = this.currentScreen;
-            //applies a default trainsition
             if (!transition)
                 transition = new gameui.Transition();
             var x = 0;
             var y = 0;
             var alpha = 1;
-            //if transition
             if (transition && oldScreen) {
                 switch (transition.type) {
                     case "fade":
@@ -303,14 +272,11 @@ var gameui;
                         transition.time = 0;
                         break;
                 }
-                //and transition = fade
                 if (transition.type && transition.type != "none") {
                     newScreen.view.mouseEnabled = false;
                     oldScreen.view.mouseEnabled = false;
-                    //fade between transitions
                     newScreen.view.set({ alpha: alpha, x: -x, y: -y });
                     oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
-                    //fade old screen out
                     createjs.Tween.get(oldScreen.view).to({ alpha: alpha, x: x, y: y }, transition.time, createjs.Ease.quadInOut);
                     createjs.Tween.get(newScreen.view).to({ alpha: 1, x: 0, y: 0 }, transition.time, createjs.Ease.quadInOut).call(function () {
                         oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
@@ -330,17 +296,13 @@ var gameui;
                 this.removeOldScreen(oldScreen);
                 oldScreen = null;
             }
-            //adds the new screen on viewer
             newScreen.activate(parameters);
             this.screenContainer.addChild(newScreen.view);
             this.currentScreen = newScreen;
-            //updates current screen
             this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
         };
-        //resize GameScreen to a diferent scale
         GameScreen.prototype.resizeGameScreen = function (deviceWidth, deviceHeight, updateCSS) {
             if (updateCSS === void 0) { updateCSS = true; }
-            //keep aspect ratio 
             if (this.defaultHeight) {
                 var aspect = this.defaultWidth / this.defaultHeight;
                 var aspectReal = deviceWidth / deviceHeight;
@@ -353,23 +315,18 @@ var gameui;
             this.stage.canvas.height = deviceHeight;
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
         };
-        //updates screen viewer scale
         GameScreen.prototype.updateViewerScale = function (realWidth, realHeight, defaultWidth, defaultHeight) {
             var scale = realWidth / defaultWidth;
             this.currentHeight = realHeight / scale;
             this.currentWidth = realWidth / scale;
             this.defaultWidth = defaultWidth;
-            //set header and footer positions
             this.headerPosition = -(this.currentHeight - defaultHeight) / 2;
             this.footerPosition = defaultHeight + (this.currentHeight - defaultHeight) / 2;
-            //set the viewer offset to centralize in window
             this.screenContainer.scaleX = this.screenContainer.scaleY = scale;
             this.screenContainer.y = this.viewerOffset = (this.currentHeight - defaultHeight) / 2 * scale;
-            //updates current screen
             if (this.currentScreen)
                 this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
         };
-        //deletes old screen
         GameScreen.prototype.removeOldScreen = function (oldScreen) {
             if (oldScreen != null) {
                 oldScreen.desactivate();
@@ -383,30 +340,23 @@ var gameui;
 })(gameui || (gameui = {}));
 var gameui;
 (function (gameui) {
-    //this class alow user to arrange objects in a grid forrmat
-    //the anchor point is the center of object
     var Grid = (function (_super) {
         __extends(Grid, _super);
         function Grid(cols, rows, width, height, padding, flowHorizontal) {
             if (padding === void 0) { padding = 0; }
             _super.call(this);
-            //provided variables
             this.flowHorizontal = false;
-            //control variables;
             this.currentCol = 0;
             this.currentRow = 0;
-            //define the variables
             this.flowHorizontal = flowHorizontal;
             this.cols = cols;
             this.rows = rows;
             this.padding = padding;
             this.width = width;
             this.height = height;
-            //define other parameters
             this.wSpacing = (width - padding * 2) / cols;
             this.hSpacing = (height - padding * 2) / rows;
         }
-        //place objecrs into a grid format
         Grid.prototype.addObject = function (object) {
             this.addChild(object);
             object.x = this.getXPos();
@@ -419,7 +369,6 @@ var gameui;
         Grid.prototype.getYPos = function () {
             return this.padding + this.currentRow * this.hSpacing + this.hSpacing / 2;
         };
-        //define next Item position
         Grid.prototype.updatePosition = function () {
             if (!this.flowHorizontal) {
                 this.currentCol++;
@@ -444,14 +393,12 @@ var gameui;
 (function (gameui) {
     var Label = (function (_super) {
         __extends(Label, _super);
-        //public container: createjs.Container;
         function Label(text, font, color) {
             if (text === void 0) { text = ""; }
             if (font === void 0) { font = "600 90px Myriad Pro"; }
             if (color === void 0) { color = "#82e790"; }
             _super.call(this);
             text = text.toUpperCase();
-            //add text into it.
             this.textField = new createjs.Text(text, font, color);
             this.textField.textBaseline = "middle";
             this.textField.textAlign = "center";
@@ -474,14 +421,12 @@ var gameui;
             else
                 _super.call(this, 0, 1, width, height, 0, flowHorizontal);
         }
-        //adds a text object
         MenuContainer.prototype.addLabel = function (text) {
             var textObj;
             textObj = new gameui.Label(text);
             this.addObject(textObj);
             return textObj.textField;
         };
-        //creates a button object
         MenuContainer.prototype.addButton = function (text, event) {
             if (event === void 0) { event = null; }
             var buttonObj = new gameui.TextButton(text, null, null, null, event);
@@ -556,7 +501,7 @@ var gameui;
     var Transition = (function () {
         function Transition() {
             this.time = 300;
-            this.type = "fade"; // none,fade,left,top,right,bottom
+            this.type = "fade";
         }
         return Transition;
     })();
@@ -564,7 +509,6 @@ var gameui;
 })(gameui || (gameui = {}));
 var gameui;
 (function (gameui) {
-    // Class
     var Button = (function (_super) {
         __extends(Button, _super);
         function Button(soundId) {
@@ -632,11 +576,9 @@ var gameui;
             _super.call(this, soundId);
             if (event != null)
                 this.addEventListener("click", event);
-            //adds image into it
             if (image != null) {
                 this.background = gameui.AssetsManager.getBitmap(image);
                 this.addChildAt(this.background, 0);
-                //Sets the image into the pivot center.
                 if (this.background.getBounds()) {
                     this.centralizeImage();
                 }
@@ -662,12 +604,10 @@ var gameui;
         function TextButton(text, font, color, background, event, soundId) {
             if (text === void 0) { text = ""; }
             _super.call(this, background, event, soundId);
-            //add text into it.
             text = text.toUpperCase();
             this.text = new createjs.Text(text, font, color);
             this.text.textBaseline = "middle";
             this.text.textAlign = "center";
-            //createHitArea
             if (background == null) {
                 this.width = this.text.getMeasuredWidth() * 1.5;
                 this.height = this.text.getMeasuredHeight() * 1.5;
@@ -683,7 +623,6 @@ var gameui;
         __extends(BitmapTextButton, _super);
         function BitmapTextButton(text, bitmapFontId, background, event, soundId) {
             _super.call(this, background, event, soundId);
-            //add text into it.
             text = text.toUpperCase();
             this.bitmapText = gameui.AssetsManager.getBitmapText(text, bitmapFontId);
             this.addChild(this.bitmapText);
@@ -701,11 +640,9 @@ var gameui;
             if (icon === void 0) { icon = ""; }
             if (text === void 0) { text = ""; }
             if (font === void 0) { font = null; }
-            //add space before text
             if (text != "")
                 text = " " + text;
             _super.call(this, text, font, color, background, event, soundId);
-            //loads icon Image
             this.icon = gameui.AssetsManager.getBitmap(icon);
             this.addChild(this.icon);
             this.text.textAlign = "left";
@@ -975,7 +912,6 @@ var StringResources_pt = {
 var Analytics = (function () {
     function Analytics() {
     }
-    //create a random user ID
     Analytics.prototype.getUser = function () {
         if (!this.userId)
             this.userId = localStorage.getItem("dia_userID");
@@ -996,7 +932,6 @@ var Analytics = (function () {
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, level, x, y) {
         var game_key = '8c544aeba45e500f2af6e9b1beee996a';
         var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0';
-        //var data_api_key = 'd519f8572c1893fb49873fa2345d444c03afa172'
         var category = "design";
         var message = {
             "user_id": this.getUser(),
@@ -1020,7 +955,6 @@ var Analytics = (function () {
         xhr.setRequestHeader('Content-Type', 'text/plain');
         xhr.setRequestHeader('Content-Length', JSON.stringify(data).length.toString());
         xhr.setRequestHeader("Authorization", header_auth_hex);
-        //xhr.addEventListener('load', function (e) {}, false);
         xhr.send(JSON.stringify(data));
     };
     Analytics.prototype.normalizeNumber = function (value) {
@@ -1031,7 +965,6 @@ var Analytics = (function () {
     Analytics.prototype.log2 = function (value) {
         return Math.log(value) / Math.log(2);
     };
-    //# region log methods ================================================================================================
     Analytics.prototype.logGameStart = function () {
         this.sendEvent("GameStart", "start", 1);
     };
@@ -1059,7 +992,7 @@ var productsData = {
     "fast5x": { icon: "5x Magnet", consumable: true },
     "revive5x": { icon: "5x Revive", consumable: true },
     "clean5x": { icon: "5x Clean", consumable: true },
-    "pack5x": { icon: "3x Item Pack", consumable: true },
+    "pack5x": { icon: "5x Item Pack", consumable: true },
     "pack10x": { icon: "10x Item Pack", consumable: true },
     "lucky": { icon: "Lucky Clover", consumable: false },
 };
@@ -1075,14 +1008,12 @@ var joinjelly;
             this.addButton();
         }
         ScrollablePage.prototype.addBackground = function (title) {
-            // add Background
             this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
             var bg = gameui.AssetsManager.getBitmap('BigBG');
             bg.mouseEnabled = true;
             this.content.addChild(bg);
             bg.x = (defaultWidth - 1463) / 2;
             bg.y = (defaultHeight - 1788) / 2;
-            // add Title
             var titleObj = gameui.AssetsManager.getBitmapText(title.toUpperCase(), "debussyBig");
             this.content.addChild(titleObj);
             titleObj.y = bg.y + 50;
@@ -1098,7 +1029,6 @@ var joinjelly;
             this.scrollableContent = scrollContent;
             var mask = new createjs.Shape(new createjs.Graphics().f("rgb(254,254,254)").p("EALkCFSYAAomAAocAAomYAAgUAKgUAAgUYAAjwgKjwAKj6YAKi+AKi+AAi+YAKjwAKjmAKjwYAKiMAKiWAKiMYAylUB4lADIkiYEYmaFykEH0hQYDcgeDcgeDcgeYAKAAAAAAAKAAYAAAogKAoAAAoYAABuAKBkgKBuYgKC0AACqAAC0YgKCMA8BuBuBaYBkBQB4AUB4AAcArmAAAArmAAAArmAAAYAUAAAKAAAUAAYEOgKC+i+gKkOYAAiCAAh4AAh4YgKi+gKi+AAi+YAeAAAeAAAeAAYAKAAAKAKAUAAYDSAUDIAeDSAoYFUA8EiCgDwDwYCgCqCCDIBkDcYBuDmBGDwAUEEYAKCCAKB4AACCYAKDwAKDwAUDwYAABQgKBQAUBQYAAA8AAAyAAA8YgKAyAAA8AAAyYgKIIAKH+gKIIYAACqAACqAAC0YgKD6gKD6AAD6YgKC0AAC0AAC0YgUGQgKGGgKGQYgKC+gKDIAAC+YgUEigKEsgKEiYgKCqgKCqgKCqYgKD6gKDwgKD6YgKDcgUDcgKDmYgKDSgKDSgKDSYgKDcgUDcgKDcYgKC+gKDIgKC+YgKCWAACWgyCMYgoB4geB4gyB4YiWFKjIEYkYDcYjSCgjmBukYAKYi0AKi+AKi+AKYjSAKjSAAjSAKYiMAKiMgKiMAKYi0AKi0AAi0AAYnCAAnCAUnMgKYhaAAhQAAhaAAYgUAAgUAAgUAKYywAAy6AAywAAYgUAAgKgKgUAAYlyAAlyAAlygKYiCAAiCAAiCgKYkEAAkOgKkEgKYiqgKigAAiqgKYg8AAhGgKhGgUYjwg8i+iCi0igYiWiMhuiWhuigYiMjmhaj6g8kEYgeh4AKh4gKh4YgKjSgKjSgKjSYgUjmgKjwgKjmYgKkEgKj6gKkEYgKk2gUk2gKk2YgKjmAAjcgKjmYgKmkgUmkgKmkYgKlKAAlKgKlUYAAj6gKkEAAj6YAAjSAAjcAAjSYAAgUgKgKAAgU").cp().ef());
             ScrollArea.mask = mask;
-            // add scroll event
             var targetY = 0;
             var last;
             this.content.addEventListener("pressmove", function (evt) {
@@ -1120,7 +1050,6 @@ var joinjelly;
         };
         ScrollablePage.prototype.addButton = function () {
             var _this = this;
-            // add ok button
             var okButton = new gameui.ImageButton("BtOk", function () {
                 if (_this.okButtonAction)
                     _this.okButtonAction();
@@ -1260,34 +1189,32 @@ var joinjelly;
                     { id: "MessageBox", src: "MessageBox.png" },
                     { id: "popupdark", src: "popupdark.png" },
                 ];
-                //Android audio supported formats: “audio/wav”, “audio/x-wav”, “audio/ogg”
-                //iOs audio supported formats: “audio/mpeg”, “audio/mp4”, “audio/mp3”, “audio/x-wav”, “audio/ogg”
                 this.audioManifest = [
-                    { id: "sound_h1", src: "sound_h1.mp3" },
-                    { id: "sound_r1", src: "sound_r1.mp3" },
-                    { id: "sound_s1", src: "sound_s1.mp3" },
-                    { id: "sound_s2", src: "sound_s2.mp3" },
-                    { id: "sound_s3", src: "sound_s3.mp3" },
-                    { id: "sound_j1", src: "sound_j1.mp3" },
-                    { id: "sound_j2", src: "sound_j2.mp3" },
-                    { id: "sound_j3", src: "sound_j3.mp3" },
-                    { id: "sound_j4", src: "sound_j4.mp3" },
-                    { id: "levelUp", src: "levelUp.mp3" },
-                    { id: "sounditemfast", src: "sounditemfast.mp3" },
-                    { id: "sounditemclean", src: "sounditemclean.mp3" },
-                    { id: "sounditemrevive", src: "sounditemrevive.mp3" },
-                    { id: "sounditemtime", src: "sounditemtime.mp3" },
-                    { id: "Interface Sound-06", src: "Interface Sound-06.mp3" },
-                    { id: "Interface Sound-07", src: "Interface Sound-07.mp3" },
-                    { id: "Interface Sound-08", src: "Interface Sound-08.mp3" },
-                    { id: "Interface Sound-09", src: "Interface Sound-09.mp3" },
-                    { id: "Interface Sound-11", src: "Interface Sound-11.mp3" },
-                    { id: "Interface Sound-14", src: "Interface Sound-14.mp3" },
-                    { id: "Interface Sound-15", src: "Interface Sound-15.mp3" },
-                    { id: "evolve", src: "evolve.mp3" },
-                    { id: "end", src: "end.mp3" },
-                    { id: "musicIntro", src: "musicIntro.mp3" },
-                    { id: "music1", src: "music1.mp3" },
+                    { id: "sound_h1", src: "sound_h1.ogg" },
+                    { id: "sound_r1", src: "sound_r1.ogg" },
+                    { id: "sound_s1", src: "sound_s1.ogg" },
+                    { id: "sound_s2", src: "sound_s2.ogg" },
+                    { id: "sound_s3", src: "sound_s3.ogg" },
+                    { id: "sound_j1", src: "sound_j1.ogg" },
+                    { id: "sound_j2", src: "sound_j2.ogg" },
+                    { id: "sound_j3", src: "sound_j3.ogg" },
+                    { id: "sound_j4", src: "sound_j4.ogg" },
+                    { id: "levelUp", src: "levelUp.ogg" },
+                    { id: "sounditemfast", src: "sounditemfast.ogg" },
+                    { id: "sounditemclean", src: "sounditemclean.ogg" },
+                    { id: "sounditemrevive", src: "sounditemrevive.ogg" },
+                    { id: "sounditemtime", src: "sounditemtime.ogg" },
+                    { id: "Interface Sound-06", src: "Interface Sound-06.ogg" },
+                    { id: "Interface Sound-07", src: "Interface Sound-07.ogg" },
+                    { id: "Interface Sound-08", src: "Interface Sound-08.ogg" },
+                    { id: "Interface Sound-09", src: "Interface Sound-09.ogg" },
+                    { id: "Interface Sound-11", src: "Interface Sound-11.ogg" },
+                    { id: "Interface Sound-14", src: "Interface Sound-14.ogg" },
+                    { id: "Interface Sound-15", src: "Interface Sound-15.ogg" },
+                    { id: "evolve", src: "evolve.ogg" },
+                    { id: "end", src: "end.ogg" },
+                    { id: "musicIntro", src: "musicIntro.ogg" },
+                    { id: "music1", src: "music1.ogg" },
                 ];
                 this.initializeImages();
             }
@@ -1306,30 +1233,29 @@ var joinjelly;
                     this.imagePath = "assets/images/";
                 else
                     this.imagePath = "assets/images_" + assetscale + "x/";
-                //createjs.Sound.alternateExtensions = ["ogg"];    
-                createjs.Sound.registerManifest(this.audioManifest, "assets/sounds/");
+                var audioPath = "assets/sounds/";
+                createjs.Sound.alternateExtensions = ["mp3"];
+                if (Cocoon.Device.getDeviceInfo().os == "windows")
+                    audioPath = "assets/soundsmp3/";
+                createjs.Sound.registerManifest(this.audioManifest, audioPath);
                 var queue = gameui.AssetsManager.loadAssets(this.imageManifest, this.imagePath);
-                //queue.loadManifest(this.audioManifest, true, "assets/sounds/");
-                //set default sound button
+                if (Cocoon.Device.getDeviceInfo().os == "windows")
+                    queue.loadManifest(this.audioManifest, true, audioPath);
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
-                //load font
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, this.imagePath));
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, this.imagePath));
                 var l = new menus.view.LoadingBar(this.imagePath);
                 this.content.addChild(l);
                 l.x = defaultWidth / 2;
                 l.y = defaultHeight / 2;
-                //add update% functtion
                 queue.addEventListener("progress", function (evt) {
                     l.update(evt.progress);
                     return true;
                 });
-                //add update% functtion
                 queue.addEventListener("fileload", function (evt) {
                     console.log(evt.item.src);
                     return true;
                 });
-                //creates load complete action
                 queue.addEventListener("complete", function (evt) {
                     if (_this.loaded)
                         _this.loaded();
@@ -1358,12 +1284,10 @@ var joinjelly;
             gameui.AudiosManager.playMusic("musicIntro");
         }
         MainScreen.prototype.createContent = function () {
-            // adds jelly
             var lobby = new joinjelly.menus.view.JellyLobby(this.userData.getLastJelly());
             lobby.x = defaultWidth / 2;
             lobby.y = 1000;
             this.content.addChild(lobby);
-            // play button
             var button = new gameui.ImageButton("BtPlay", function () {
                 if (joinjelly.JoinJelly.userData.getHistory(histories.TUTORIAL))
                     joinjelly.JoinJelly.startLevel();
@@ -1394,35 +1318,30 @@ var joinjelly;
             }
             var x = defaultWidth + 100;
             var space = 250;
-            //add About button
             var settingsBt = new gameui.ImageButton("BtInfo", function () {
                 joinjelly.JoinJelly.showAbout();
             });
             settingsBt.y = 150;
             settingsBt.x = x - space;
             this.header.addChild(settingsBt);
-            //add Menu button
             var settingsBt = new gameui.ImageButton("BtMenu", function () {
                 joinjelly.JoinJelly.showSettings();
             });
             settingsBt.y = -150;
             settingsBt.x = x -= space;
             this.footer.addChild(settingsBt);
-            //add pedia button
             var aboutBt = new gameui.ImageButton("BtJelly", function () {
                 joinjelly.JoinJelly.showPedia();
             });
             aboutBt.y = -150;
             aboutBt.x = x -= space;
             this.footer.addChild(aboutBt);
-            //add store bt
             var storeBt = new gameui.ImageButton("BtStore", function () {
                 joinjelly.JoinJelly.showStore(_this);
             });
             storeBt.y = -150;
             storeBt.x = x -= space;
             this.footer.addChild(storeBt);
-            //add leaderboards button
             var leaderboardsBt = new gameui.ImageButton("BtLeaderBoards", function () {
                 joinjelly.JoinJelly.showLeaderboards();
             });
@@ -1440,7 +1359,6 @@ var joinjelly;
         __extends(Jellypedia, _super);
         function Jellypedia(userData, jellyInfos) {
             _super.call(this, StringResources.menus.jellypedia);
-            // add jelly items
             var itensContainer = new createjs.Container();
             this.scrollableContent.addChild(itensContainer);
             itensContainer.y = 400;
@@ -1522,18 +1440,14 @@ var joinjelly;
                 __extends(JellyLobby, _super);
                 function JellyLobby(lastJelly) {
                     _super.call(this);
-                    // drop all jellies
                     this.dropAllJellys(lastJelly);
                 }
-                //add all jellys to the container
                 JellyLobby.prototype.dropAllJellys = function (lastJelly) {
                     var _this = this;
-                    // set a default value to the last jelly
                     if (!lastJelly)
                         lastJelly = 1;
                     if (lastJelly > joinjelly.JoinJelly.maxJelly)
                         lastJelly = joinjelly.JoinJelly.maxJelly;
-                    // calculate all jellys already unlocked
                     var jellys = new Array();
                     for (var j = 1; j <= lastJelly; j *= 2)
                         jellys.push(j);
@@ -1546,7 +1460,6 @@ var joinjelly;
                             p *= 2;
                         }, j * 200);
                 };
-                //adds a single jelly to the container
                 JellyLobby.prototype.dropJelly = function (value, position) {
                     var positions = [
                         [3 / 6, 0],
@@ -1567,15 +1480,13 @@ var joinjelly;
                         [4 / 7, 3.1],
                         [5 / 7, 3.3],
                     ];
-                    var jelly = new joinjelly.gameplay.view.Jelly(); //gameplay.Tile(0, 0, 450);
-                    // adds jelly
+                    var jelly = new joinjelly.gameplay.view.Jelly();
                     this.addChildAt(jelly, 0);
                     jelly.setNumber(value);
                     var m = (position % 2) ? -1 : 1;
                     jelly.x = (positions[position][0] * defaultWidth - defaultWidth / 2) * 1.2;
                     jelly.y = positions[position][1] * -200 + 750;
                     jelly.scaleX = jelly.scaleY = Math.min(1 - positions[position][1] / 7, 1);
-                    //play JellySound
                     gameui.AudiosManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
                 return JellyLobby;
@@ -1606,7 +1517,6 @@ var joinjelly;
                     this.title.text = title.toUpperCase();
                     this.title.regX = this.title.getBounds().width / 2;
                 };
-                // creates menu background
                 FlyOutMenu.prototype.AddBG = function (heigth) {
                     var dk = gameui.AssetsManager.getBitmap("popupdark");
                     this.addChild(dk);
@@ -1620,18 +1530,14 @@ var joinjelly;
                     this.addChild(bg);
                     bg.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-bg.x + bg.regX, -bg.y + bg.regY, defaultWidth, defaultHeight));
                 };
-                // creates menu title
                 FlyOutMenu.prototype.addTitle = function (title) {
-                    //create "points" text
                     this.title = gameui.AssetsManager.getBitmapText("", "debussyBig");
                     this.title.set({ x: defaultWidth / 2, y: 580 });
                     this.addChild(this.title);
                     this.setTitle(title);
                 };
-                // animates menu entrance
                 FlyOutMenu.prototype.animateIn = function () {
                     createjs.Tween.removeTweens(this);
-                    // shows menus
                     this.visible = true;
                     this.y = this.top - 500;
                     this.alpha = 0;
@@ -1641,7 +1547,6 @@ var joinjelly;
                 };
                 FlyOutMenu.prototype.animateOut = function () {
                     var _this = this;
-                    // animate all
                     createjs.Tween.removeTweens(this);
                     this.alpha = 1;
                     this.scaleX = 1;
@@ -1676,10 +1581,8 @@ var joinjelly;
                 __extends(JellyPediaItem, _super);
                 function JellyPediaItem(value, title, description) {
                     _super.call(this);
-                    // Add Background
                     var bg = gameui.AssetsManager.getBitmap("pediaItem");
                     this.addChild(bg);
-                    // Add Texts
                     var tContainer = new createjs.Container();
                     var titleObj = gameui.AssetsManager.getBitmapText(title, "debussyBig");
                     var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
@@ -1691,8 +1594,6 @@ var joinjelly;
                     tContainer.addChild(titleObj);
                     tContainer.addChild(descriptionObj);
                     this.addChild(tContainer);
-                    //tContainer.cache(450, 0, 1000, 356);
-                    // Add Jelly
                     var j = new joinjelly.gameplay.view.Jelly();
                     j.setNumber(value);
                     j.x = 332 / 2;
@@ -1711,37 +1612,29 @@ var joinjelly;
     (function (menus) {
         var StoreMenu = (function (_super) {
             __extends(StoreMenu, _super);
-            // initialize object
             function StoreMenu(previousScreen) {
                 _super.call(this, StringResources.store.title);
                 this.previousScreen = previousScreen;
-                // add loading info
                 var statusText = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
                 statusText.y = 500;
                 statusText.x = defaultWidth / 2;
                 statusText.regX = statusText.getBounds().width / 2;
                 this.StatusText = statusText;
                 this.scrollableContent.addChild(statusText);
-                // add loading animation
                 var loadingBall = new joinjelly.view.LoadingBall();
                 loadingBall.y = 800;
                 loadingBall.x = defaultWidth / 2;
                 this.loadingBall = loadingBall;
                 this.scrollableContent.addChild(loadingBall);
-                // add Footer
                 this.gameFooter = new joinjelly.gameplay.view.ItemsFooter([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE]);
                 this.footer.addChild(this.gameFooter);
                 this.gameFooter.mouseEnabled = false;
                 this.updateFooter();
                 this.content.y -= 200;
-                // buton to close menu
                 this.okButtonAction = function () {
                     joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen);
                 };
-                // initialize market
                 this.initializeStore();
-                // add restore Button
-                // add Restore Button
                 var restore = new gameui.BitmapTextButton(StringResources.menus.restore, "debussy", "BtTextBg", function () {
                     Cocoon.Dialog.confirm({
                         title: StringResources.menus.restore,
@@ -1755,15 +1648,12 @@ var joinjelly;
                 restore.y = defaultHeight - 200;
                 this.content.addChild(restore);
             }
-            //#region Interface =====================================================================================
-            // add all products in the list
             StoreMenu.prototype.fillProducts = function (productList) {
                 this.productsListItems = {};
                 this.showLoaded();
                 for (var p in productList)
                     this.addProduct(productList[p], p);
             };
-            // add a single product in the list
             StoreMenu.prototype.addProduct = function (product, p) {
                 var _this = this;
                 var productListItem = new menus.view.ProductListItem(product.productId, product.title.replace("(Join Jelly)", ""), product.description, product.localizedPrice);
@@ -1772,7 +1662,6 @@ var joinjelly;
                 productListItem.y = p * 380 + 380;
                 productListItem.x = 70;
                 console.log(JSON.stringify(product));
-                // add function callback
                 productListItem.addEventListener("buy", function (event) {
                     Cocoon.Store.purchase(event["productId"]);
                 });
@@ -1793,22 +1682,18 @@ var joinjelly;
                     });
                 });
             };
-            // show a loading message
             StoreMenu.prototype.showLoading = function () {
                 this.StatusText.text = StringResources.menus.loading;
                 this.loadingBall.visible = true;
             };
-            // show a loading message
             StoreMenu.prototype.showLoaded = function () {
                 this.StatusText.visible = false;
                 this.loadingBall.visible = false;
             };
-            // show a error message in it
             StoreMenu.prototype.showError = function () {
                 this.StatusText.text = StringResources.menus.error;
                 this.loadingBall.visible = false;
             };
-            //lock UI for a time interval
             StoreMenu.prototype.lockUI = function (timeout) {
                 var _this = this;
                 if (timeout === void 0) { timeout = 5000; }
@@ -1817,27 +1702,19 @@ var joinjelly;
                     _this.unlockUI();
                 }, timeout);
             };
-            //locks unlocks ui
             StoreMenu.prototype.unlockUI = function () {
                 this.content.mouseEnabled = true;
             };
-            // update footer
             StoreMenu.prototype.updateFooter = function () {
                 var items = joinjelly.ItemsData.items;
                 for (var i in items)
                     this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
             };
-            // reurn a object corresponding to productId
             StoreMenu.prototype.getProductListItem = function (productId) {
                 return this.productsListItems[productId];
             };
-            //#endregion 
-            //#region market =====================================================================================
-            // initialize product listing
             StoreMenu.prototype.initializeStore = function () {
-                //  if (!Cocoon.Store.nativeAvailable) return;
                 var _this = this;
-                // on loaded products
                 Cocoon.Store.on("load", {
                     started: function () {
                         _this.showLoading();
@@ -1849,7 +1726,6 @@ var joinjelly;
                         _this.showError();
                     }
                 });
-                // on purchasing products
                 Cocoon.Store.on("purchase", {
                     started: function (productId) {
                         _this.getProductListItem(productId).setPurchasing();
@@ -1871,21 +1747,16 @@ var joinjelly;
                         _this.unlockUI();
                     }
                 });
-                // initialize store
                 Cocoon.Store.initialize({ sandbox: true, managed: true });
-                // load products
                 var products = [];
                 for (var p in productsData)
                     products.push(p);
                 Cocoon.Store.loadProducts(products);
             };
-            // call for product purchasing
             StoreMenu.prototype.purchaseShareProduct = function (productId, callback) {
                 var fb = Cocoon.Social.Facebook;
-                //initialize the Facebook Service the same way as the Official JS SDK
                 fb.init({ appId: fbAppId });
                 var socialService = fb.getSocialInterface();
-                // mediaURL, linkURL, linkText, linkCaption
                 var message = new Cocoon.Social.Message(StringResources.social.shareDescription, gameWebsiteIcon, gameWebsite, StringResources.social.shareTitle, StringResources.social.shareCaption);
                 var that = this;
                 socialService.publishMessageWithDialog(message, function (error) {
@@ -1899,10 +1770,8 @@ var joinjelly;
                     callback(sucess);
                 });
             };
-            // verify product avaliability
             StoreMenu.prototype.updateProductsAvaliability = function () {
             };
-            // show that product is consumed
             StoreMenu.prototype.fullFillPurchase = function (productId) {
                 switch (productId) {
                     case "time5x":
@@ -1951,22 +1820,18 @@ var joinjelly;
                 this.maxScroll = 1700;
                 var space = 270;
                 var y = 400;
-                // add Sound Button
                 var soundOptions = new menus.view.SoundOptions();
                 this.scrollableContent.addChild(soundOptions);
                 this.scrollableContent.x = defaultWidth / 2;
                 soundOptions.y = y += space;
-                // add Player name
                 var playerNameTitle = new menus.view.PlayerNameOptions();
                 this.scrollableContent.addChild(playerNameTitle);
                 playerNameTitle.y = y += space + 80;
-                // add Tutorial button
                 var tutorial = new gameui.BitmapTextButton(StringResources.menus.tutorial, "debussy", "BtTextBg", function () {
                     joinjelly.JoinJelly.startTutorial();
                 });
                 tutorial.y = y += space;
                 this.scrollableContent.addChild(tutorial);
-                // add Reset Button
                 var reset = new gameui.BitmapTextButton(StringResources.menus.reset, "debussy", "BtTextBg", function () {
                     Cocoon.Dialog.confirm({
                         title: StringResources.menus.reset,
@@ -2023,25 +1888,21 @@ var joinjelly;
                     title.scaleX = title.scaleY = 1.1;
                     title.regX = title.getBounds().width / 2;
                     this.addChild(title);
-                    //add continue button;
                     this.musicBtOn = new gameui.ImageButton("BtMusic", (function () {
                         _this.setMusic(0);
                     }));
                     this.musicBtOn.x = -145;
                     this.addChild(this.musicBtOn);
-                    //add share button;
                     this.soundBtOn = new gameui.ImageButton("BtSound", (function () {
                         _this.setSound(0);
                     }));
                     this.soundBtOn.x = 155;
                     this.addChild(this.soundBtOn);
-                    //add continue button;
                     this.musicBtOff = new gameui.ImageButton("BtMusicOff", (function () {
                         _this.setMusic(1);
                     }));
                     this.musicBtOff.x = -145;
                     this.addChild(this.musicBtOff);
-                    //add share button;
                     this.soundBtOff = new gameui.ImageButton("BtSoundOff", (function () {
                         _this.setSound(1);
                     }));
@@ -2097,7 +1958,6 @@ var joinjelly;
                 this.addChild(this.shadowContainer);
                 this.addChild(this.imageContainer);
             }
-            //#region animations =============================================
             JellyContainer.prototype.executeAnimationIn = function (delay) {
                 var _this = this;
                 if (delay === void 0) { delay = 0; }
@@ -2119,7 +1979,6 @@ var joinjelly;
                     _this.executeIdle();
                 });
                 createjs.Tween.get(this.shadowContainer).wait(delay).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(function () {
-                    //this.executeIdle();
                 });
                 ;
             };
@@ -2151,8 +2010,6 @@ var joinjelly;
                 });
                 createjs.Tween.get(this.shadowContainer).to({ alpha: 1 }, 200);
             };
-            //#endregion
-            //#region idle animations  =============================================
             JellyContainer.prototype.restore = function () {
                 this.state = "";
                 createjs.Tween.removeTweens(this.imageContainer);
@@ -2193,7 +2050,6 @@ var joinjelly;
                     skew = skew / 2;
                 var scale = Math.random();
                 var loop = 4 + Math.floor(Math.random() * 3);
-                //if (scale < 0.6) scale = scale / 2;
                 scale = scale / 10;
                 createjs.Tween.get(this.imageContainer).to({
                     skewX: 0,
@@ -2215,7 +2071,6 @@ var joinjelly;
                     skew = skew / 2;
                 var scale = Math.random() * 0.5 + 0.5;
                 var loop = 4 + Math.floor(Math.random() * 3);
-                //if (scale < 0.6) scale = scale / 2;
                 scale = scale / 10;
                 createjs.Tween.get(this.imageContainer).to({
                     scaleX: 1,
@@ -2290,14 +2145,12 @@ var joinjelly;
                 }
                 GameHeader.prototype.addObjects = function () {
                     var _this = this;
-                    //add pause button
                     var pauseButton = new gameui.ImageButton("BtPause", function () {
                         _this.dispatchEvent("pause");
                     });
                     pauseButton.x = 157;
                     pauseButton.y = 215;
                     this.addChild(pauseButton);
-                    //add levelBar
                     var levelBarBorder = gameui.AssetsManager.getBitmap("bonus_border");
                     this.addChild(levelBarBorder);
                     levelBarBorder.x = 309;
@@ -2332,26 +2185,22 @@ var joinjelly;
                     this.addChild(this.effect);
                     this.effect.x = 1288 + 213 / 2;
                     this.effect.y = 90 + 243 / 2;
-                    //add scores text
                     var score = gameui.AssetsManager.getBitmapText(StringResources.menus.score, "debussy");
                     score.x = 323 + 50;
                     score.y = 124 - 80 + 80;
                     score.scaleX = score.scaleY = 0.85;
                     this.scoreText = score;
                     this.addChild(score);
-                    //add scores text
                     var level = gameui.AssetsManager.getBitmapText(StringResources.menus.level, "debussyBig");
                     level.x = 1000;
                     level.y = 242 - 165;
                     this.levelText = level;
                     this.addChild(level);
                 };
-                // updates level ad score status
                 GameHeader.prototype.updateStatus = function (score, level, percent, emptyPercent, alarm) {
                     this.scoreText.text = StringResources.menus.score.toUpperCase() + " " + score.toString();
                     this.levelText.text = "Lv. " + level.toString();
                     var value = 1;
-                    //updates percent
                     if (percent != undefined)
                         if (score != this.lastScore) {
                             value = percent / 100;
@@ -2361,7 +2210,6 @@ var joinjelly;
                             createjs.Tween.get(this.levelTip).to({ x: value * 940 + this.levelBar.x, y: this.levelBar.y + 24 }, 1000, createjs.Ease.elasticOut);
                             createjs.Tween.get(this.levelTip).to({ scaleX: 2, scaleY: 2 }).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
                         }
-                    // if level changes. do some animations
                     if (this.lastLevel != level)
                         this.levelUpEffect();
                     this.lastLevel = level;
@@ -2370,16 +2218,13 @@ var joinjelly;
                 GameHeader.prototype.levelUpEffect = function () {
                     var _this = this;
                     this.effect.castBoth();
-                    //moves the bar
                     createjs.Tween.removeTweens(this.levelBar.mask);
                     createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () {
                         _this.levelBar.mask.scaleX = 0;
                     });
-                    //increase number
                     createjs.Tween.removeTweens(this.levelText);
                     this.levelText.set({ scaleY: 0, scaleX: 4 });
                     createjs.Tween.get(this.levelText).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
-                    //increase Icon
                     createjs.Tween.removeTweens(this.levelIcon);
                     this.levelIcon.set({ scaleY: 2, scaleX: 0.1 });
                     createjs.Tween.get(this.levelIcon).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
@@ -2398,7 +2243,6 @@ var joinjelly;
         (function (view) {
             var Jelly = (function (_super) {
                 __extends(Jelly, _super);
-                // #region initialization =========================================
                 function Jelly() {
                     _super.call(this);
                     this.effect = new joinjelly.view.Effect();
@@ -2406,7 +2250,6 @@ var joinjelly;
                     this.effect.scaleX = this.effect.scaleY = 1.2;
                     this.effect.x = 0;
                     this.effect.y = -100;
-                    //   this.setChildIndex(this.effect, 0);
                 }
                 Jelly.prototype.getAssetIdByValue = function (value) {
                     if (value < 0)
@@ -2415,7 +2258,6 @@ var joinjelly;
                 };
                 Jelly.prototype.createJelly = function (value) {
                     var img = gameui.AssetsManager.getBitmap("j" + this.getAssetIdByValue(value));
-                    //centralize
                     img.regX = img.getBounds().width / 2;
                     img.regY = img.getBounds().height;
                     var shadow = gameui.AssetsManager.getBitmap("shadow");
@@ -2426,7 +2268,6 @@ var joinjelly;
                     this.imageContainer.addChild(img);
                 };
                 Jelly.prototype.createEyes = function (value) {
-                    //add Eyes
                     var eye = new createjs.Container();
                     var eyeImg = gameui.AssetsManager.getBitmap("e" + this.getAssetIdByValue(value));
                     eyeImg.regY = 20;
@@ -2439,26 +2280,20 @@ var joinjelly;
                     this.imageContainer.addChild(eye);
                     this.eyeImg = eyeImg;
                 };
-                /// #endregion
-                // #region behaviour ==============================================
-                //set tile number
                 Jelly.prototype.setNumber = function (value) {
                     if (value > joinjelly.JoinJelly.maxJelly)
                         value = joinjelly.JoinJelly.maxJelly;
                     if (this.currentValue == value)
                         return;
                     this.currentValue = value;
-                    //update image 
                     if (this.eyeImg)
                         createjs.Tween.removeTweens(this.eyeImg);
                     this.imageContainer.removeAllChildren();
                     this.shadowContainer.removeAllChildren();
-                    //if values equals zero, hide the tile
                     if (value == 0 || !value) {
                         this.visible = false;
                     }
                     else {
-                        //enable visibility
                         this.visible = true;
                         this.alpha = 1;
                         this.createJelly(value);
@@ -2468,8 +2303,6 @@ var joinjelly;
                             this.playJoinFX();
                     }
                 };
-                // #endregion
-                // #region Animation ==============================================
                 Jelly.prototype.playJoinFX = function () {
                     this.effect.alpha = 0.5;
                     this.effect.castSimple();
@@ -2540,7 +2373,6 @@ var joinjelly;
                     var _this = this;
                     var text = gameui.AssetsManager.getBitmapText("level", "debussy");
                     this.addChild(text);
-                    //text.textAlign = "center";
                     text.text = "LEVEL " + levelId;
                     text.x = defaultWidth / 2;
                     text.y = defaultHeight / 2 + 140;
@@ -2575,7 +2407,6 @@ var joinjelly;
                     this.addEventListener("click", function () {
                         _this.dispatchEvent({ type: "useitem", item: item });
                     });
-                    //create Item
                     var bg = gameui.AssetsManager.getBitmap("itemBG");
                     var bgd = gameui.AssetsManager.getBitmap("itemBGDisabled");
                     var img = gameui.AssetsManager.getBitmap("item" + item);
@@ -2589,7 +2420,6 @@ var joinjelly;
                     this.addChild(text);
                     this.addChild(name);
                     this.addChild(add);
-                    //organize items
                     bgd.visible = false;
                     bgd.regX = bg.regX = bg.getBounds().width / 2;
                     bgd.regY = bg.regY = bg.getBounds().height / 2;
@@ -2672,39 +2502,23 @@ var joinjelly;
                     this.addChild(soundOptions);
                     soundOptions.set({ x: defaultWidth / 2, y: 1000 });
                 }
-                //creates buttons controls
                 PauseMenu.prototype.addButtons = function () {
                     var _this = this;
-                    //add continue button;
                     var ok = new gameui.ImageButton("BtPlay", (function () {
                         _this.dispatchEvent("play");
                     }));
                     ok.set({ x: 771, y: 1599 });
                     this.addChild(ok);
-                    //add share button;
                     var home = new gameui.ImageButton("BtHome", (function () {
                         _this.dispatchEvent("home");
                     }));
                     home.set({ x: 353, y: 1570 });
                     this.addChild(home);
-                    //add showBoard button
                     var restart = new gameui.ImageButton("BtRestart", (function () {
                         _this.dispatchEvent("restart");
                     }));
                     restart.set({ x: 1190, y: 1570 });
                     this.addChild(restart);
-                    ////add showBoard button
-                    //var test = new gameui.ImageButton("BtRestart", (() => {
-                    //    this.dispatchEvent("test")
-                    //}));
-                    //test.set({ x: 1190, y: 1770 });
-                    //this.addChild(test);
-                    ////add showBoard button
-                    //var test = new gameui.ImageButton("BtRestart", (() => {
-                    //    this.dispatchEvent("testFast")
-                    //}));
-                    //test.set({ x: 1190, y: 1970 });
-                    //this.addChild(test);
                 };
                 return PauseMenu;
             })(joinjelly.menus.view.FlyOutMenu);
@@ -2744,20 +2558,16 @@ var joinjelly;
                     percentBar.mask = this.percentBarMask;
                 };
                 TimeBar.prototype.setPercent = function (percent, alarm) {
-                    //if value is greater, do a animation for increasing
                     if (this.value < percent)
                         this.incrasePercent();
                     this.value = percent;
-                    // animates the bar
                     createjs.Tween.removeTweens(this.percentBarMask);
                     createjs.Tween.get(this.percentBarMask).to({ scaleX: percent }, 200, createjs.Ease.quadInOut);
-                    // set alarm
                     if (alarm)
                         this.setAlarmOn();
                     else
                         this.setAlarmOff();
                 };
-                // #region animations
                 TimeBar.prototype.incrasePercent = function () {
                     this.brightFx.alpha = 1;
                     createjs.Tween.get(this.brightFx).to({ alpha: 0 }, 300);
@@ -2788,46 +2598,36 @@ var joinjelly;
                     this.addPoints();
                     this.addLastJelly();
                 }
-                //creates buttons controls
                 FinishMenu.prototype.addButtons = function () {
                     var _this = this;
-                    //add continue button;
                     var ok = new gameui.ImageButton("BtOk", (function () {
                         _this.dispatchEvent("ok");
                     }));
                     ok.set({ x: 771, y: 1810 });
                     this.addChild(ok);
-                    //add share button;
                     var board = new gameui.ImageButton("BtBoard", (function () {
                         _this.dispatchEvent("board");
                     }));
                     board.set({ x: 353, y: 1780 });
                     this.addChild(board);
-                    //add showBoard button
                     var share = new gameui.ImageButton("BtShare", (function () {
                         _this.dispatchEvent("share");
                     }));
                     share.set({ x: 1190, y: 1780 });
                     this.addChild(share);
                 };
-                // create points control
                 FinishMenu.prototype.addPoints = function () {
                     var container = new createjs.Container();
-                    //creates points Bg
                     var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
                     bg.set({ x: defaultWidth / 2, y: 565, regX: 1056 / 2 });
                     container.addChild(bg);
-                    //create points object
                     var tx = gameui.AssetsManager.getBitmapText("Score", "debussy");
                     tx.set({ x: 288, y: 442 });
                     tx.scaleX = tx.scaleY = 0.7;
-                    //container.addChild(tx);
-                    //create "points" text
                     var tx = gameui.AssetsManager.getBitmapText("", "debussyBig");
                     tx.set({ x: defaultWidth / 2, y: 587 });
                     container.addChild(tx);
                     this.scoreText = tx;
-                    //create HighScore text
                     var tx = gameui.AssetsManager.getBitmapText("", "debussy");
                     tx.set({ x: 1240, y: 775 });
                     container.addChild(tx);
@@ -2837,27 +2637,21 @@ var joinjelly;
                     this.addChild(container);
                     return container;
                 };
-                // creates last jelly control
                 FinishMenu.prototype.addLastJelly = function () {
                     var container = new createjs.Container();
                     this.addChild(container);
-                    //add background
                     var bg = gameui.AssetsManager.getBitmap("GameOverBgJelly");
                     bg.set({ x: defaultWidth / 2, y: 951, regX: 797 / 2 });
                     container.addChild(bg);
-                    //add "LastJelly" Text
                     var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.highJelly, "debussy");
                     tx.set({ x: 420, y: 820 });
-                    //container.addChild(tx);
                     tx.scaleX = tx.scaleY = 0.5;
-                    //add Jelly
                     var jelly = new gameplay.view.Jelly();
                     container.addChild(jelly);
                     this.addChild(container);
                     jelly.scaleX = jelly.scaleY = 1;
                     jelly.set({ x: defaultWidth / 2, y: 1350 });
                     this.jelly = jelly;
-                    //add "LastJelly" name Text
                     var tx = gameui.AssetsManager.getBitmapText("1", "debussy");
                     tx.set({ x: defaultWidth / 2, y: 1358 });
                     tx.scaleX = tx.scaleY = 0.7;
@@ -2866,7 +2660,6 @@ var joinjelly;
                     container.y += 200;
                     return container;
                 };
-                //set values
                 FinishMenu.prototype.setValues = function (score, best, jelly, title) {
                     var _this = this;
                     if (best > joinjelly.JoinJelly.maxJelly)
@@ -2983,16 +2776,13 @@ var joinjelly;
                     t.y = 50;
                     this.bitmapText = t;
                     t.mouseEnabled = false;
-                    // add hitArea
                     this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-this.x + this.regX, -this.y + this.regY, defaultWidth, defaultHeight));
-                    // add click event
                     this.addEventListener("click", function () {
                         _this.fadeOut();
                         _this.dispatchEvent("closed");
                         gameui.AudiosManager.playSound("Interface Sound-15");
                     });
                 }
-                // show a text on screen
                 TutoralMessage.prototype.show = function (text) {
                     this.bitmapText.text = text;
                     this.fadeIn();
@@ -3010,35 +2800,27 @@ var joinjelly;
     (function (gameplay) {
         var Board = (function (_super) {
             __extends(Board, _super);
-            // #region Initialization ----------------------------------------------------------------------
             function Board(boardWidth, boardHeight, tileSize, img) {
                 _super.call(this);
                 this.touchDictionary = new Array();
                 this.alarming = false;
-                //initialize variables
                 this.tiles = [];
                 this.boardHeight = boardHeight;
                 this.boardWidth = boardWidth;
                 this.tileSize = tileSize;
-                // create tiles container
                 this.tilesContainer = new createjs.Container();
                 this.addChild(this.tilesContainer);
-                //define cache for click
                 this.tilesContainer.hitArea = new createjs.Shape(new createjs.Graphics().f("red").r(0, 0, boardWidth * tileSize, (boardHeight + 0.5) * tileSize));
-                // create all tiles
                 this.addTiles(boardWidth, boardHeight, tileSize, img);
                 this.addMouseEvents(tileSize);
-                //set pivot
                 this.regX = (boardWidth * tileSize / 2);
                 this.regY = (boardHeight * tileSize / 2);
             }
-            // add tiles on the board
             Board.prototype.addTiles = function (boardWidth, boardHeight, tileSize, img) {
                 for (var x = 0; x < boardWidth; x++)
                     for (var y = 0; y < boardHeight; y++)
                         this.addTile(x, y, tileSize);
             };
-            // add a single tile on board
             Board.prototype.addTile = function (x, y, tileSize) {
                 var bg = gameui.AssetsManager.getBitmap("hex");
                 this.tilesContainer.addChild(bg);
@@ -3047,14 +2829,12 @@ var joinjelly;
                 bg.alpha = 0.15;
                 bg.set(this.getTilePositionByCoords(x, y, tileSize, 0));
                 var tileDO = new gameplay.Tile(x, y, tileSize);
-                // add a jelly on tile
                 this.tiles.push(tileDO);
                 this.tilesContainer.addChild(tileDO);
                 tileDO.setNumber(0);
                 tileDO.name = (this.boardWidth * y + x).toString();
                 tileDO.set(this.getTilePositionByCoords(x, y, tileSize));
             };
-            // add mouse board interacion
             Board.prototype.addMouseEvents = function (tileSize) {
                 var _this = this;
                 var touchOffset = [];
@@ -3063,23 +2843,18 @@ var joinjelly;
                     if (tile && tile.isUnlocked() && tile.isEnabled()) {
                         tile.lock();
                         _this.touchDictionary[e.pointerID] = tile;
-                        //store offset mouse position
                         touchOffset[e.pointerID] = { x: tile.x - e.localX, y: tile.y - e.localY };
                         tile.drag();
-                        //bring to front
                         _this.tilesContainer.setChildIndex(tile, _this.tilesContainer.getNumChildren() - 1);
                         gameui.AudiosManager.playSound('soundh_1');
                     }
                 });
-                //Press Move
                 this.tilesContainer.addEventListener("pressmove", function (e) {
-                    //get tile by touch
                     var tile = _this.touchDictionary[e.pointerID];
                     if (tile) {
                         tile.x = e.localX + touchOffset[e.pointerID].x;
                         tile.y = e.localY + touchOffset[e.pointerID].y;
                         tile.lock();
-                        //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
                         var target = _this.getTileByRawPos(e.localX, e.localY, tileSize);
                         if (target && target.name.toString() != tile.name) {
                             if (target.isUnlocked()) {
@@ -3092,7 +2867,6 @@ var joinjelly;
                         }
                     }
                 });
-                //Press Up
                 this.tilesContainer.addEventListener("pressup", function (e) {
                     var tile = _this.touchDictionary[e.pointerID];
                     if (tile) {
@@ -3102,8 +2876,6 @@ var joinjelly;
                     }
                 });
             };
-            // #endregion
-            // #region Tile manager ------------------------------------------------------------------------
             Board.prototype.setTiles = function (tiles) {
                 this.unlock();
                 for (var t in tiles) {
@@ -3112,38 +2884,31 @@ var joinjelly;
                     this.getTileById(t).enable();
                 }
             };
-            // set a tile value
             Board.prototype.setTileValue = function (tileId, value) {
                 var t = this.getTileById(tileId);
                 if (t)
                     t.setNumber(value);
-                //plays sound if is new jelly
                 if (value == 1)
                     gameui.AudiosManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
             };
-            // get a tile id by its x and y pos
             Board.prototype.getTileIdByPos = function (rawx, rawy, tileSize) {
                 var coords = this.getTileCoordsByRawPos(rawx, rawy, tileSize);
                 return (this.boardWidth * coords.y + coords.x);
             };
-            // get tule position by pointer position
             Board.prototype.getTileByRawPos = function (rawx, rawy, tileSize) {
                 var id = this.getTileIdByPos(rawx, rawy, tileSize);
                 return this.getTileById(id);
             };
-            // get tile coordinates by pointer position
             Board.prototype.getTileCoordsByRawPos = function (rawx, rawy, tileSize) {
                 var x = Math.floor(rawx / tileSize);
                 var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
                 var y = Math.floor((rawy - hexaOffset) / tileSize);
                 return { x: x, y: y };
             };
-            // get a tile basend on x and y index
             Board.prototype.getTileByIndex = function (x, y) {
                 var id = this.boardWidth * y + x;
                 return this.getTileById(id);
             };
-            // get a new position for a tile based on its index
             Board.prototype.getTilePositionByCoords = function (x, y, tileSize, random) {
                 if (random === void 0) { random = 1; }
                 var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
@@ -3152,11 +2917,9 @@ var joinjelly;
                     y: (y + 1 / 2) * tileSize + random * (Math.random() - 0.5) * tileSize / 10 + hexaOffset - tileSize / 5
                 };
             };
-            // get a tile object by its id
             Board.prototype.getTileById = function (id) {
                 return this.tilesContainer.getChildByName(id.toString());
             };
-            // release all Jellyies
             Board.prototype.releaseAll = function () {
                 for (var t in this.touchDictionary)
                     this.releaseDrag(this.touchDictionary[t]);
@@ -3169,7 +2932,6 @@ var joinjelly;
                 return sum;
             };
             Board.prototype.getEmptyTiles = function () {
-                //get next jelly
                 var total = this.boardHeight * this.boardWidth;
                 var tiles = [];
                 for (var t = 0; t < total; t++)
@@ -3178,7 +2940,6 @@ var joinjelly;
                 return tiles;
             };
             Board.prototype.getLockedTiles = function () {
-                //get next jelly
                 var total = this.boardHeight * this.boardWidth;
                 var tiles = [];
                 for (var t = 0; t < total; t++)
@@ -3198,12 +2959,10 @@ var joinjelly;
             Board.prototype.getTileId = function (tile) {
                 return parseInt(tile.name);
             };
-            // get all neighbor tiles 
             Board.prototype.getNeighborTiles = function (tile) {
                 var neighbor = [];
                 var tileId = this.getTileId(tile);
                 var hexaOffset = (tile.posx == 1 || tile.posx == 3) ? 1 : -1;
-                // consider all neighbores
                 var neighborCoords = [
                     { x: tile.posx, y: tile.posy - 1 },
                     { x: tile.posx, y: tile.posy + 1 },
@@ -3213,19 +2972,15 @@ var joinjelly;
                     { x: tile.posx + 1, y: tile.posy + hexaOffset },
                 ];
                 for (var p in neighborCoords)
-                    // remove beyound borders
                     if (neighborCoords[p].x >= 0 && neighborCoords[p].y >= 0 && neighborCoords[p].x < this.boardWidth && neighborCoords[p].y < this.boardHeight)
-                        // add to array
                         neighbor.push(this.getTileByIndex(neighborCoords[p].x, neighborCoords[p].y));
                 return neighbor;
             };
-            // calculate a percent 
             Board.prototype.getPercentEmptySpaces = function () {
                 var total = this.boardHeight * this.boardWidth;
                 var empty = this.getEmptyTiles().length;
                 return empty / total;
             };
-            // release e tile
             Board.prototype.releaseDrag = function (tile, match, target) {
                 var _this = this;
                 if (match === void 0) { match = true; }
@@ -3233,7 +2988,6 @@ var joinjelly;
                 delete this.touchDictionary[index];
                 createjs.Tween.removeTweens(tile);
                 tile.scaleY = tile.scaleX = 1;
-                //if tiles match
                 if (match && target) {
                     var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
                     this.fadeTileToPos(tile, pos.x, pos.y);
@@ -3241,9 +2995,7 @@ var joinjelly;
                 else {
                     tile.release();
                     createjs.Tween.get(tile).to(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize), 200, createjs.Ease.sineInOut).call(function () {
-                        // set the z-order
                         _this.arrangeZOrder();
-                        // unlock that tile
                         tile.unlock();
                     });
                 }
@@ -3261,27 +3013,20 @@ var joinjelly;
             Board.prototype.unlock = function () {
                 this.tilesContainer.mouseEnabled = true;
             };
-            // #endregion
-            // #region behaviour ---------------------------------------------------------------------------
-            // organize all z-order
             Board.prototype.arrangeZOrder = function () {
                 for (var t = 0; t < this.tiles.length; t++)
                     this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.getNumChildren() - 1);
             };
-            // match 2 tiles
             Board.prototype.match = function (origin, target) {
                 this.releaseDrag(origin, true, target);
                 target.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
                 createjs.Tween.get(target).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
                 gameui.AudiosManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
             };
-            // clar all board
             Board.prototype.cleanBoard = function () {
                 for (var t in this.tiles)
                     this.tiles[t].setNumber(0);
             };
-            // #endregion
-            // #region Animations --------------------------------------------------------------------------
             Board.prototype.fadeTileToPos = function (tile, posx, posy, time, delay, alpha) {
                 var _this = this;
                 if (time === void 0) { time = 100; }
@@ -3295,46 +3040,28 @@ var joinjelly;
                     tile.alpha = 1;
                 });
             };
-            // create and execute a level up effect on tiles
             Board.prototype.levelUpEffect = function () {
                 var _this = this;
-                // reseteffect timeOut id
                 var currentTile = 0;
                 for (var t in this.tiles) {
-                    // set timeout for the animation. each tile by time interval
                     setTimeout(function () {
-                        // calculate tile id
                         var calculatedTile = (_this.boardHeight * _this.boardWidth) - (currentTile % _this.boardWidth * _this.boardWidth + Math.floor(currentTile / _this.boardWidth)) - 1;
-                        // define tile by it id
                         var tile = _this.tiles[calculatedTile];
-                        // create a tween fast move
                         createjs.Tween.get(tile).to({ scaleY: 1.5 }, 100).to({ scaleY: 1 }, 100);
-                        // play a jelly light effect
                         tile.jelly.playLevelUp();
-                        // unlocks it
-                        ///tile.unlock();
-                        // increment effect timeOut id
                         currentTile++;
                     }, 20 * t);
                 }
             };
-            // create and execute a end game effect on tiles
             Board.prototype.endGameEffect = function () {
                 var _this = this;
-                // reseteffect timeOut id
                 var currentTile = 0;
                 for (var t in this.tiles) {
-                    // set timeout for the animation. each tile by time interval
                     setTimeout(function () {
-                        // increment effect timeOut id
                         currentTile++;
-                        // calculate tile id
                         var x = (currentTile % _this.boardWidth * _this.boardWidth + Math.floor(currentTile / _this.boardWidth));
-                        // define tile by it id
                         var tile = _this.tiles[x];
-                        // create a tween fast move
                         createjs.Tween.get(tile).to({ scaleY: 0.5 }, 100).to({ scaleY: 1 }, 100);
-                        // play a jelly light effect
                         tile.jelly.playLevelUp();
                     }, 20 * t);
                 }
@@ -3363,22 +3090,17 @@ var joinjelly;
     (function (gameplay) {
         var Tile = (function (_super) {
             __extends(Tile, _super);
-            // contructr
             function Tile(posx, posy, tileSize) {
                 _super.call(this);
-                //store local variables
                 this.tileSize = tileSize;
                 this.posx = posx;
                 this.posy = posy;
-                ///set local position
                 this.regX = this.regY = tileSize / 2;
-                //addObjects
                 this.jelly = new gameplay.view.Jelly();
                 this.jelly.x = tileSize / 2;
                 this.jelly.y = tileSize;
                 this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (450);
                 this.addChild(this.jelly);
-                //creates hitArea for the tile
                 this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("000").drawRect(0, 0, tileSize, tileSize));
             }
             Tile.prototype.release = function () {
@@ -3407,7 +3129,6 @@ var joinjelly;
             Tile.prototype.isEnabled = function () {
                 return this.enabled;
             };
-            // set tile number
             Tile.prototype.setNumber = function (value) {
                 if (value > joinjelly.JoinJelly.maxJelly)
                     value = joinjelly.JoinJelly.maxJelly;
@@ -3436,11 +3157,9 @@ var joinjelly;
     (function (gameplay) {
         var GamePlayScreen = (function (_super) {
             __extends(GamePlayScreen, _super);
-            //#region =================================== initialization ================================================
             function GamePlayScreen(userData, saveGame) {
                 _super.call(this);
                 this.matches = 0;
-                // parameters
                 this.boardSize = 5;
                 this.itemProbability = 0.005;
                 this.timeByLevel = 20000;
@@ -3454,10 +3173,8 @@ var joinjelly;
                 this.createGUI();
                 this.createEffects();
                 this.start();
-                // try to load a saved Game
                 if (saveGame)
                     this.loadGame();
-                //if is first time then give some items.
                 if (joinjelly.JoinJelly.userData.getHistory("firstPlay")) {
                     joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.REVIVE, 1);
                     joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.TIME, 2);
@@ -3467,7 +3184,6 @@ var joinjelly;
                 }
                 joinjelly.JoinJelly.userData.history("firstPlay");
             }
-            // create game effects
             GamePlayScreen.prototype.createEffects = function () {
                 this.freezeEffect = gameui.AssetsManager.getBitmap("freezeEffect");
                 this.content.addChild(this.freezeEffect);
@@ -3490,12 +3206,10 @@ var joinjelly;
                 fxObj.scaleY = 2 * joinjelly.JoinJelly.gameScreen.currentHeight / defaultHeight;
                 fxObj.mouseEnabled = false;
             };
-            // create game background
             GamePlayScreen.prototype.createBackground = function () {
                 var bg = gameui.AssetsManager.getBitmap("Background");
                 this.background.addChild(bg);
             };
-            // create a new board
             GamePlayScreen.prototype.createBoard = function () {
                 var _this = this;
                 this.board = new gameplay.Board(this.boardSize, this.boardSize, 1536 / 5, true);
@@ -3506,16 +3220,12 @@ var joinjelly;
                 this.board.x = defaultWidth / 2;
                 this.board.y = defaultHeight / 2;
             };
-            // creates the game GUI
             GamePlayScreen.prototype.createGUI = function () {
                 var _this = this;
-                // creates game level indicator
                 this.gameLevelIndicator = new gameplay.view.LevelIndicator();
                 this.content.addChild(this.gameLevelIndicator);
-                // creates game header
                 this.gameHeader = new gameplay.view.GameHeader();
                 this.header.addChild(this.gameHeader);
-                // create game footer
                 var items = [joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST];
                 this.gameFooter = new gameplay.view.ItemsFooter(items);
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
@@ -3524,22 +3234,17 @@ var joinjelly;
                 this.gameFooter.addEventListener("useitem", function (e) {
                     _this.useItem(e.item);
                 });
-                // creates pause menu
                 this.pauseMenu = new gameplay.view.PauseMenu();
                 this.overlay.addChild(this.pauseMenu);
-                // creates a end menu
                 this.finishMenu = new gameplay.view.FinishMenu();
                 this.overlay.addChild(this.finishMenu);
                 this.finishMenu.y = -200;
-                // create game message
                 this.gameMessage = new gameplay.view.TutoralMessage();
                 this.content.addChild(this.gameMessage);
-                // countdown
                 this.countDown = new gameplay.view.CountDown();
                 this.content.addChild(this.countDown);
                 this.countDown.x = defaultWidth / 2;
                 this.countDown.y = defaultHeight / 2;
-                // creates a toggle button
                 var tbt = new gameui.ImageButton("BtBoard", function () {
                     _this.finishMenu.show();
                     tbt.fadeOut();
@@ -3548,7 +3253,6 @@ var joinjelly;
                 tbt.set({ x: 150, y: -150, visible: false });
                 this.footer.addChild(tbt);
                 this.showBoardButton = tbt;
-                //add eventListener
                 this.finishMenu.addEventListener("ok", function () {
                     joinjelly.JoinJelly.showMainMenu();
                 });
@@ -3585,7 +3289,6 @@ var joinjelly;
                     }, 200);
                 });
             };
-            // redim screen
             GamePlayScreen.prototype.redim = function (headerY, footerY, width, heigth) {
                 _super.prototype.redim.call(this, headerY, footerY, width, heigth);
                 var relativeScale = (this.screenHeight - 2048) / 400;
@@ -3595,7 +3298,6 @@ var joinjelly;
                     relativeScale = 1;
                 this.board.scaleX = this.board.scaleY = 1 - (0.2 - relativeScale * 0.2);
             };
-            //acivate the screen
             GamePlayScreen.prototype.activate = function (parameters) {
                 var _this = this;
                 _super.prototype.activate.call(this, parameters);
@@ -3605,78 +3307,52 @@ var joinjelly;
                 }, 500);
                 this.updateFooter();
             };
-            //#endregion
-            // #region =================================== interface =====================================================
-            // update GUI iformaion
             GamePlayScreen.prototype.updateInterfaceInfos = function () {
-                //calculate interval 
                 var nextLevelScore = this.getMovesByLevel(this.level);
                 var currentLevelScore = this.getMovesByLevel(this.level - 1);
                 var percent = (this.matches - currentLevelScore) / (nextLevelScore - currentLevelScore) * 100;
-                // defines alarm condition
                 var emptySpaces = this.board.getPercentEmptySpaces();
                 var alarm = false;
                 if (emptySpaces < 0.15 && emptySpaces > 0)
                     var alarm = true;
-                // updates the header
                 this.gameHeader.updateStatus(this.score, this.level, percent, emptySpaces, alarm);
-                // updates board shaking.
                 this.board.setAlarm(alarm);
             };
-            // level up
             GamePlayScreen.prototype.levelUpInterfaceEffect = function (level) {
                 this.gameLevelIndicator.showLevel(level);
                 gameui.AudiosManager.playSound("levelUp");
                 this.board.levelUpEffect();
             };
-            // #endregion
-            // #region =================================== gamelay =======================================================
-            // starts the game
             GamePlayScreen.prototype.start = function () {
-                //this.selfPeformanceTest()
                 this.level = 1;
                 this.matches = 0;
                 this.time = Date.now();
                 this.highJelly = 0;
-                // board initialization
                 this.board.cleanBoard();
                 this.board.unlock();
-                // update interfaces
                 this.updateInterfaceInfos();
-                // play music
                 gameui.AudiosManager.playMusic("music1");
-                // initialize gameloop
                 this.gamestate = 1 /* playing */;
                 this.step(500);
-                // log game start event
                 joinjelly.JoinJelly.analytics.logGameStart();
             };
-            // time step for adding tiles.
             GamePlayScreen.prototype.step = function (timeout) {
                 var _this = this;
                 clearTimeout(this.timeoutInterval);
                 this.timeoutInterval = setTimeout(function () {
-                    // if is not playing, than does not execute a step
                     if (_this.gamestate == 1 /* playing */)
                         _this.gameInteraction();
-                    // set timeout to another iteraction if game is not over
                     if (_this.gamestate != 3 /* ended */)
                         _this.step(_this.getTimeInterval(_this.level, _this.initialInterval, _this.finalInterval, _this.easeInterval));
                 }, timeout);
             };
-            // executes a game interaction
             GamePlayScreen.prototype.gameInteraction = function () {
-                // add a new tile  on board
                 this.addRandomTileOnBoard();
-                // updates interafce information
                 this.updateInterfaceInfos();
-                // verifies if game is loosed after 500ms again. if them both than loose game
                 if (this.verifyGameLoose())
                     this.endGame();
-                // update currentLevel
                 this.updateCurrentLevel();
             };
-            // pause game
             GamePlayScreen.prototype.pauseGame = function () {
                 if (this.gamestate == 3 /* ended */)
                     return;
@@ -3686,28 +3362,21 @@ var joinjelly;
                 this.gameHeader.mouseEnabled = false;
                 this.content.mouseEnabled = false;
             };
-            // unpause game
             GamePlayScreen.prototype.continueGame = function () {
                 var _this = this;
-                //hide menus
                 this.pauseMenu.hide();
-                //wait 3 seconds to unpause
                 setTimeout(function () {
                     _this.gamestate = 1 /* playing */;
                     _this.board.unlock();
                     _this.gameHeader.mouseEnabled = true;
                     _this.content.mouseEnabled = true;
                 }, 3000);
-                //show a 3 seconds countdown to resume game
                 this.countDown.countDown(3);
             };
-            // winTheGame
             GamePlayScreen.prototype.winGame = function () {
                 this.endGame(StringResources.menus.gameOver, true);
                 this.gameFooter.visible = false;
-                // TODO something greater and memorable
             };
-            // finishes the game
             GamePlayScreen.prototype.endGame = function (message, win) {
                 var _this = this;
                 this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
@@ -3716,18 +3385,14 @@ var joinjelly;
                 var score = this.score;
                 var highScore = joinjelly.JoinJelly.userData.getHighScore();
                 var highJelly = this.board.getHighestTileValue();
-                // disable mouse interaction
                 this.pauseMenu.hide();
                 this.board.lock();
                 this.board.setAlarm(false);
-                // releases all jellys
                 this.board.releaseAll();
-                // remove other ui items
                 this.gameHeader.mouseEnabled = false;
                 this.gameFooter.mouseEnabled = false;
                 createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
-                // shows finished game menu
                 setTimeout(function () {
                     if (win)
                         _this.gamestate = 5 /* win */;
@@ -3735,13 +3400,11 @@ var joinjelly;
                         _this.gamestate = 3 /* ended */;
                     _this.finishMenu.show();
                     _this.gameFooter.mouseEnabled = true;
-                    // set footer items form revive
                     _this.gameFooter.setItems([joinjelly.Items.REVIVE]);
                     _this.gameFooter.unlockItem(joinjelly.Items.REVIVE);
                     _this.gameFooter.highlight(joinjelly.Items.REVIVE);
                     _this.updateFooter();
                     createjs.Tween.get(_this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
-                    // save high score
                     if (score > joinjelly.JoinJelly.userData.getHighScore()) {
                         if (joinjelly.JoinJelly.userData.getPlayerName() == "")
                             joinjelly.JoinJelly.userData.promptPlayerName(function () {
@@ -3755,17 +3418,13 @@ var joinjelly;
                     }
                 }, 1200);
                 this.finishMenu.setValues(score, highScore, highJelly, message);
-                // log event
                 if (win)
                     joinjelly.JoinJelly.analytics.logWinGame(this.level, highJelly, this.matches, Date.now() - this.time);
                 else
                     joinjelly.JoinJelly.analytics.logEndGame(this.level, highJelly, this.matches, Date.now() - this.time);
-                // play end soud
                 gameui.AudiosManager.playSound("end");
-                // play end game effect
                 this.board.endGameEffect();
             };
-            // update current level
             GamePlayScreen.prototype.updateCurrentLevel = function () {
                 var newLevel = this.getLevelByMoves(this.matches);
                 if (newLevel > this.level) {
@@ -3776,11 +3435,9 @@ var joinjelly;
                 }
                 this.level = newLevel;
             };
-            // give bonus when level up
             GamePlayScreen.prototype.levelUpBonus = function () {
                 this.useEvolve();
             };
-            // calculate current level by moves. once level calculation is a iterative processe, this method uses a iterative calculation
             GamePlayScreen.prototype.getLevelByMoves = function (moves) {
                 var totalMoves = 0;
                 var level = 0;
@@ -3792,7 +3449,6 @@ var joinjelly;
                 }
                 return Math.max(level, 1);
             };
-            // get how moves is needed for each level;
             GamePlayScreen.prototype.getMovesByLevel = function (level) {
                 var totalMoves = 0;
                 for (var calculatedLevel = 0; calculatedLevel < level; calculatedLevel++) {
@@ -3802,11 +3458,9 @@ var joinjelly;
                 }
                 return totalMoves;
             };
-            // calculate time interval for a level.
             GamePlayScreen.prototype.getTimeInterval = function (level, initialInterval, finalInterval, intervalEase) {
                 return initialInterval * Math.pow(intervalEase, level) + finalInterval * (1 - Math.pow(intervalEase, level));
             };
-            // Verifies if game is over
             GamePlayScreen.prototype.verifyGameLoose = function () {
                 var empty = this.board.getEmptyTiles();
                 var locked = this.board.getLockedTiles();
@@ -3814,14 +3468,12 @@ var joinjelly;
                     return true;
                 return false;
             };
-            // add a random tile with value 1 on board
             GamePlayScreen.prototype.addRandomTileOnBoard = function (value) {
                 if (value === void 0) { value = 1; }
                 var empty = this.board.getEmptyTiles();
                 for (var i = 10; i < this.level; i += 10)
                     if (Math.random() > 0.9)
                         value *= 2;
-                // if there is no more empty tiles, ends the game
                 if (empty.length > 0) {
                     var i = Math.floor(Math.random() * empty.length);
                     var tile = empty[i];
@@ -3829,16 +3481,12 @@ var joinjelly;
                     this.saveGame();
                 }
             };
-            //called when a tile is dragged
             GamePlayScreen.prototype.dragged = function (origin, target) {
-                //try to match the tiles
                 this.match(origin, target);
             };
-            // verifies if 2 tiles can match
             GamePlayScreen.prototype.canMatch = function (origin, target) {
                 return (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked());
             };
-            // verify if can move
             GamePlayScreen.prototype.canMove = function () {
                 var tiles = this.board.getAllTiles();
                 var tilesCount = this.board.getEmptyTiles().length;
@@ -3854,75 +3502,54 @@ var joinjelly;
                         return true;
                 return false;
             };
-            // verifies if a tile can pair another, and make it happens
             GamePlayScreen.prototype.match = function (origin, target) {
-                //calculate new value
                 var newValue = target.getNumber() + origin.getNumber();
-                //check if match is correct
                 if (!this.canMatch(origin, target))
                     return false;
                 this.matches++;
-                //animate the mach
                 this.board.match(origin, target);
-                // increase score
                 var sum = newValue * 10 + Math.floor(Math.random() * newValue * 10);
                 this.score += sum;
-                this.animateScoreFromTile(target, sum); // animate a score number
-                //reset the previous tile
+                this.animateScoreFromTile(target, sum);
                 origin.setNumber(0);
-                // chance to win a item
                 var item = this.giveItemChance([joinjelly.Items.CLEAN, joinjelly.Items.REVIVE, joinjelly.Items.TIME, joinjelly.Items.FAST]);
                 if (item)
                     this.animateItemFromTile(target, item);
-                // update score
                 this.userData.setLastJelly(newValue);
                 this.updateInterfaceInfos();
-                // log HighJelly Event
                 if (this.highJelly < newValue)
                     joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time);
                 this.highJelly = newValue;
-                // notify match
                 if (this.matchNotify)
                     this.matchNotify();
-                // verify winGame
                 if (newValue > joinjelly.JoinJelly.maxJelly)
                     this.winGame();
                 else
                     target.setNumber(newValue);
-                // update currentLevel
                 this.updateCurrentLevel();
                 this.saveGame();
-                // verifies if it can move, make it a little more faster
                 if (!this.canMove())
                     this.step(0);
                 return true;
             };
-            //give item to user
             GamePlayScreen.prototype.giveItemChance = function (items) {
                 var item = null;
                 var lucky = joinjelly.JoinJelly.itemData.getItemAmmount(joinjelly.Items.LUCKY) ? 2 : 1;
-                // calculate random change to win a item
                 var goodChance = (Math.random() < this.itemProbability * lucky);
-                // if true
                 if (goodChance) {
                     item = items[Math.floor(Math.random() * items.length)];
-                    // give item to user (user data)
                     joinjelly.JoinJelly.itemData.increaseItemAmmount(item);
                 }
                 return item;
             };
-            // animate a item moving from tile to the footer
             GamePlayScreen.prototype.animateItemFromTile = function (tile, item) {
                 var _this = this;
-                // play sound
                 gameui.AudiosManager.playSound("Interface Sound-11");
-                // create item Object
                 var itemDO = gameui.AssetsManager.getBitmap("item" + item);
                 itemDO.mouseEnabled = false;
                 itemDO.regX = itemDO.getBounds().width / 2;
                 itemDO.regY = itemDO.getBounds().height / 2;
                 itemDO.scaleY = itemDO.scaleX = 0.5;
-                // animate item to footer
                 var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
                 var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
                 var xf = defaultWidth / 2;
@@ -3940,10 +3567,8 @@ var joinjelly;
                 });
                 this.content.addChild(itemDO);
             };
-            // animate a score in the board
             GamePlayScreen.prototype.animateScoreFromTile = function (tile, score) {
                 var _this = this;
-                // create text Object
                 var textDO = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
                 textDO.regX = textDO.getBounds().width / 2;
                 textDO.mouseEnabled = false;
@@ -3956,8 +3581,6 @@ var joinjelly;
                 });
                 this.content.addChild(textDO);
             };
-            // #endregion
-            // #region =================================== Items =========================================================
             GamePlayScreen.prototype.useItem = function (item) {
                 if (joinjelly.JoinJelly.itemData.getItemAmmount(item) > 0) {
                     var sucess = false;
@@ -3979,9 +3602,7 @@ var joinjelly;
                             break;
                     }
                     if (sucess) {
-                        // decrease item quantity
                         joinjelly.JoinJelly.itemData.decreaseItemAmmount(item);
-                        //notify utem used
                         if (this.itemNotify)
                             this.itemNotify();
                     }
@@ -3992,13 +3613,11 @@ var joinjelly;
                 }
                 this.updateFooter();
             };
-            // reduces jellys per time during 5 seconds.
             GamePlayScreen.prototype.useTime = function () {
                 var _this = this;
                 if (this.gamestate == 3 /* ended */)
                     return;
                 this.step(4000);
-                //cast effects
                 this.freezeEffect.alpha = 0;
                 this.freezeEffect.visible = true;
                 createjs.Tween.removeTweens(this.freezeEffect);
@@ -4008,7 +3627,6 @@ var joinjelly;
                 gameui.AudiosManager.playSound("sounditemtime");
                 return true;
             };
-            //clan all simple jellys
             GamePlayScreen.prototype.useClean = function () {
                 var _this = this;
                 if (this.gamestate == 3 /* ended */)
@@ -4020,7 +3638,6 @@ var joinjelly;
                         tiles[t].setNumber(0);
                     }
                 this.updateInterfaceInfos();
-                //cast effects
                 this.cleanEffect.alpha = 0;
                 this.cleanEffect.visible = true;
                 createjs.Tween.removeTweens(this.cleanEffect);
@@ -4031,40 +3648,26 @@ var joinjelly;
                 gameui.AudiosManager.playSound("sounditemclean");
                 return true;
             };
-            // revive after game end
             GamePlayScreen.prototype.useRevive = function (test) {
                 var _this = this;
                 if (test === void 0) { test = false; }
                 if (this.gamestate != 3 /* ended */)
                     return false;
-                // set use it
                 UserData.getHistoryRevive();
-                //save game
                 this.saveGame();
-                // back state to playing
                 this.gamestate = 1 /* playing */;
-                //ullock board
                 this.board.unlock();
-                // hide finish menu
                 this.finishMenu.hide();
-                // set next iteraction after 4 seconds
                 this.step(4000);
-                // update all interface
                 this.updateInterfaceInfos();
-                // set board alarm
                 this.board.setAlarm(true);
-                // hide show board button
                 this.showBoardButton.fadeOut();
-                // set footer items
                 this.gameFooter.setItems([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST]);
                 this.gameFooter.unlockAll();
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
-                // remove other ui items
                 this.gameHeader.mouseEnabled = true;
                 createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
-                // if not test, than play effects.
                 if (!test) {
-                    //cast effects
                     this.reviveEffect.alpha = 0;
                     this.reviveEffect.visible = true;
                     createjs.Tween.removeTweens(this.reviveEffect);
@@ -4077,7 +3680,6 @@ var joinjelly;
             };
             GamePlayScreen.prototype.useEvolve = function () {
                 var _this = this;
-                // evolve some random tile, except maximun tile
                 if (this.gamestate == 3 /* ended */)
                     return;
                 var tiles = this.board.getAllTiles();
@@ -4085,7 +3687,6 @@ var joinjelly;
                 for (var t in tiles)
                     if (tiles[t].getNumber() > maxTile)
                         maxTile = tiles[t].getNumber();
-                //select elegible tiles to evolve
                 var selectedTiles = new Array();
                 for (var t in tiles)
                     if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 2) && tiles[t].isUnlocked())
@@ -4104,19 +3705,15 @@ var joinjelly;
                             selectedTiles.push(tiles[t]);
                 if (selectedTiles.length == 0)
                     return false;
-                // select random elegible tile
                 var selected = Math.floor(Math.random() * selectedTiles.length);
                 var tile = selectedTiles[selected];
-                //lock tile and change number
                 tile.lock();
                 tile.setNumber(tile.getNumber() * 2);
-                // cast Effect On Tile
                 tile.jelly.playThunder();
                 setTimeout(function () {
                     tile.unlock();
                     gameui.AudiosManager.playSound("evolve");
                 }, 1000);
-                // cast a thunder effects 
                 gameui.AudiosManager.playSound("sounditemfast");
                 var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
                 var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
@@ -4133,7 +3730,6 @@ var joinjelly;
                 });
                 return true;
             };
-            // match 5 pair of jelly if avaliabe
             GamePlayScreen.prototype.useFast = function (test) {
                 if (test === void 0) { test = false; }
                 if (this.gamestate == 3 /* ended */)
@@ -4141,7 +3737,6 @@ var joinjelly;
                 var tiles = this.board.getAllTiles();
                 var matches = [];
                 for (var t in tiles) {
-                    // 5 times
                     if (matches.length >= 5)
                         break;
                     var origin = tiles[t];
@@ -4161,7 +3756,6 @@ var joinjelly;
                     this.matchJelly(matches[m][0], matches[m][1]);
                 return true;
             };
-            // match two jellys with animation
             GamePlayScreen.prototype.matchJelly = function (origin, target) {
                 var _this = this;
                 target.lock();
@@ -4173,14 +3767,11 @@ var joinjelly;
                     _this.match(origin, target);
                 }, 300);
             };
-            // update footer
             GamePlayScreen.prototype.updateFooter = function () {
                 var items = joinjelly.ItemsData.items;
                 for (var i in items)
                     this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
             };
-            // #endregion
-            // #region =================================== SaveGame =====================================================
             GamePlayScreen.prototype.saveGame = function () {
                 var sg = {
                     level: this.level,
@@ -4203,13 +3794,11 @@ var joinjelly;
                 this.updateInterfaceInfos();
                 this.pauseGame();
             };
-            // #endregion
             GamePlayScreen.prototype.selfPeformanceTest = function (fast) {
                 var _this = this;
                 if (fast)
                     this.initialInterval = 200;
                 var interval = setInterval(function () {
-                    // document.title = (this.initialInterval + " " + this.finalInterval + " " + this.easeInterval + " " + this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
                     if (_this.gamestate == 2 /* paused */)
                         return;
                     _this.useRevive();
@@ -4246,17 +3835,14 @@ var joinjelly;
                 this.finalDirtyProbability = 0.6;
                 this.easeDirtyProbability = 0.98;
             }
-            // add a random tile with value 1 on board
             ExplodeBricks.prototype.addRandomTileOnBoard = function () {
                 var _this = this;
                 _super.prototype.addRandomTileOnBoard.call(this);
-                // randomly adda a dirty to the board
                 if (this.getDirtyProbabilityByLevel(this.level, this.initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
                     setTimeout(function () {
                         _super.prototype.addRandomTileOnBoard.call(_this, -1);
                     }, 500);
             };
-            // verifies if a tile can pair another, and make it happens
             ExplodeBricks.prototype.match = function (origin, target) {
                 var match = _super.prototype.match.call(this, origin, target);
                 if (match) {
@@ -4273,12 +3859,10 @@ var joinjelly;
                 }
                 return match;
             };
-            // level up
             ExplodeBricks.prototype.levelUpBonus = function () {
                 _super.prototype.levelUpBonus.call(this);
                 this.cleanDirty();
             };
-            // clean dirty
             ExplodeBricks.prototype.cleanDirty = function () {
                 var tiles = this.board.getAllTiles();
                 for (var t in tiles) {
@@ -4286,7 +3870,6 @@ var joinjelly;
                         tiles[t].setNumber(0);
                 }
             };
-            // calculate time interval for a level.
             ExplodeBricks.prototype.getDirtyProbabilityByLevel = function (level, initialDirtyProbability, finalDirtyProbability, easeDirtyProbability) {
                 return initialDirtyProbability * Math.pow(easeDirtyProbability, level) + finalDirtyProbability * (1 - Math.pow(easeDirtyProbability, level));
             };
@@ -4303,10 +3886,8 @@ var joinjelly;
             __extends(Tutorial, _super);
             function Tutorial() {
                 _super.apply(this, arguments);
-                // tutoral current step
                 this.currentTutorialStep = 0;
             }
-            // #region tutorial ====================================================================================================
             Tutorial.prototype.createGUI = function () {
                 var _this = this;
                 _super.prototype.createGUI.call(this);
@@ -4331,7 +3912,6 @@ var joinjelly;
                 this.executeTutorialStep();
             };
             Tutorial.prototype.step = function () {
-                //do nothing
             };
             Tutorial.prototype.resetTutorialStep = function () {
                 this.currentTutorialStep = -1;
@@ -4491,7 +4071,6 @@ var joinjelly;
                         joinjelly.JoinJelly.startLevel();
                     }
                 ];
-                // execute the step
                 if (steps[this.currentTutorialStep])
                     steps[this.currentTutorialStep]();
             };
@@ -4561,18 +4140,13 @@ var joinjelly;
                         break;
                 }
                 if (sucess) {
-                    // decrease item quantity
                     joinjelly.JoinJelly.itemData.decreaseItemAmmount(item);
-                    //notify utem used
                     if (this.itemNotify)
                         this.itemNotify();
                 }
             };
-            // #endregion 
-            // update footer
             Tutorial.prototype.updateFooter = function () {
             };
-            // override savegame
             Tutorial.prototype.saveGame = function () {
             };
             return Tutorial;
@@ -4616,7 +4190,6 @@ var UserData = (function () {
         gameui.AudiosManager.setSoundVeolume(this.getSoundVol());
         gameui.AudiosManager.setMusicVolume(this.getMusicVol());
     }
-    // #region score
     UserData.prototype.setScore = function (score) {
         var highscore = this.getHighScore();
         if (score > highscore)
@@ -4665,8 +4238,6 @@ var UserData = (function () {
             }
         });
     };
-    //#endregion
-    //#region options
     UserData.prototype.getMusicVol = function () {
         return UserData.loadValue("music", 1);
     };
@@ -4679,16 +4250,12 @@ var UserData = (function () {
     UserData.prototype.setSoundVol = function (volume) {
         UserData.saveValue("sound", volume);
     };
-    //#endregion
-    // #region items
     UserData.prototype.saveItems = function (items) {
         return UserData.saveValue("items", items);
     };
     UserData.prototype.loadItems = function () {
         return UserData.loadValue("items", {});
     };
-    // #endregion
-    //#region gamestate
     UserData.prototype.saveGame = function (savegame) {
         UserData.saveValue("savegame", savegame);
     };
@@ -4712,8 +4279,6 @@ var UserData = (function () {
             return defaultVaule;
         return JSON.parse(value);
     };
-    // #endregion
-    //#region history
     UserData.prototype.history = function (value) {
         var hist = UserData.loadValue("history", {});
         hist[value] = true;
@@ -4726,12 +4291,9 @@ var UserData = (function () {
     UserData.getHistoryRevive = function () {
         return this.loadValue("revive");
     };
-    //#endregion
     UserData.prototype.resetAll = function () {
         localStorage.clear();
     };
-    //#endregion
-    // #region generic
     UserData.prefix = "FastPair_";
     return UserData;
 })();
@@ -4755,7 +4317,6 @@ var joinjelly;
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
             joinjelly.AzureLeaderBoards.init();
-            //define language
             var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt":
@@ -4768,8 +4329,6 @@ var joinjelly;
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
-            // verify test
-            // verifies if there is a savedGame
             loadingScreen.loaded = function () {
                 if (window.location.search == "?test") {
                     _this.startTest();
@@ -4789,7 +4348,6 @@ var joinjelly;
             gs.selfPeformanceTest(false);
         };
         JoinJelly.showAboutScreen = function () {
-            //not Implemented
             alert("beta");
         };
         JoinJelly.showMainMenu = function () {
@@ -4847,8 +4405,6 @@ var joinjelly;
 window.onload = function () {
     joinjelly.JoinJelly.init();
 };
-/// <reference path="gameui/uiitem.ts" />
-//module gameui {
 var defaultWidth = 768 * 2;
 var defaultHeight = 1024 * 2;
 var fbAppId = "1416523228649363";
@@ -4868,19 +4424,15 @@ var joinjelly;
                 CountDown.prototype.countDown = function (total) {
                     var _this = this;
                     if (total === void 0) { total = 3; }
-                    // initialize
                     var ns = [];
                     var time = 1000;
                     var transition = 200;
                     for (var n = total; n > 0; n--) {
-                        //create and add child
                         ns[n] = gameui.AssetsManager.getBitmap("n" + n);
                         this.addChild(ns[n]);
-                        //centralize number
                         ns[n].regX = ns[n].getBounds().width / 2;
                         ns[n].regY = ns[n].getBounds().height / 2;
                         ns[n].mouseEnabled = false;
-                        //make animation
                         createjs.Tween.get(ns[n]).to({ scaleX: 2, scaleY: 2, alpha: 0 }).wait((total - n) * time).to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut).wait(time - transition).to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn).call(function (obj) {
                             _this.removeChild(obj);
                         });
@@ -4907,97 +4459,77 @@ var joinjelly;
                     this.addObjects();
                     this.setItems(items);
                 }
-                // add all button items
                 ItemsFooter.prototype.setItems = function (items) {
                     var itemSize = this.itemSize;
                     if (items.length >= 5)
                         itemSize = 200;
-                    // clean all buttons
                     this.cleanButtons();
                     if (!items)
                         return;
                     for (var i in items)
                         this.addItem(items[i], i);
                     for (var i in items) {
-                        //set button position
                         this.itemsButtons[items[i]].y = -150;
                         this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
                     }
                 };
-                // clean buttons
                 ItemsFooter.prototype.cleanButtons = function () {
                     for (var i in this.itemsButtons)
                         this.removeChild(this.itemsButtons[i]);
                     this.itemsButtons = [];
                 };
-                // add objects to the footer
                 ItemsFooter.prototype.addObjects = function () {
-                    //add background
                     var bg = gameui.AssetsManager.getBitmap("footer");
                     this.addChild(bg);
                     bg.y = -162;
                     bg.x = (defaultWidth - 1161) / 2;
-                    // add Lucky clover
-                    // TODO verify with item
                     var lucky = gameui.AssetsManager.getBitmap("lucky");
                     this.addChild(lucky);
                     lucky.y = -210;
                     lucky.x = lucky.scaleX = lucky.scaleY = 0.5;
                     this.lucky = lucky;
-                    // lucky.visible = false;
                     this.gameMessage = new view.TutoralMessage();
                     this.addChild(this.gameMessage);
                 };
-                //add a single item button to the footer
                 ItemsFooter.prototype.addItem = function (item, pos) {
                     var _this = this;
-                    //create button
                     var bt = new view.ItemButton(item);
                     this.addChild(bt);
                     this.itemsButtons[item] = bt;
-                    //add event listener
                     bt.addEventListener("click", function () {
                         _this.dispatchEvent({ type: "useitem", item: item });
                     });
                 };
-                // get a item display object
                 ItemsFooter.prototype.getItemButton = function (item) {
                     return this.itemsButtons[item];
                 };
-                // set item ammount
                 ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
                     if (this.itemsButtons[item])
                         this.itemsButtons[item].setAmmount(ammount);
                     if (item == "lucky")
                         this.lucky.visible = (ammount > 0);
                 };
-                // show item message
                 ItemsFooter.prototype.showMessage = function (itemId, message) {
                     this.gameMessage.x = this.getItemButton(itemId).x;
                     this.gameMessage.y = this.getItemButton(itemId).y - 120;
                     this.gameMessage.show(message);
                 };
-                // hide message
                 ItemsFooter.prototype.hideMessage = function () {
                     this.gameMessage.fadeOut();
                 };
-                // bounces an item
                 ItemsFooter.prototype.highlight = function (item) {
                     this.unHighlightAll();
                     this.getItemButton(item).highLight();
                 };
-                // stop bouncing an item
                 ItemsFooter.prototype.unHighlightAll = function () {
                     for (var i in this.itemsButtons)
                         this.itemsButtons[i].unHighlight();
                 };
-                // lock an item
                 ItemsFooter.prototype.lockItem = function (itemId) {
                     var b = this.getItemButton(itemId);
                     if (b)
                         b.lock();
                 };
-                //unlock an item
                 ItemsFooter.prototype.unlockItem = function (itemId) {
                     var b = this.getItemButton(itemId);
                     b.unlock();
@@ -5028,7 +4560,6 @@ var joinjelly;
             this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
             this.table = this.client.getTable("LeaderBoards");
         };
-        // get all scores wall
         AzureLeaderBoards.getScoreNames = function (callback, count) {
             if (!this.table)
                 return;
@@ -5038,24 +4569,18 @@ var joinjelly;
                 callback(null);
             });
         };
-        // saves scores to the cloud
         AzureLeaderBoards.setScore = function (score, name, newId) {
             var _this = this;
             if (newId === void 0) { newId = false; }
             if (!this.table)
                 return;
-            // if device id is already saved
             if (this.deviceId && !newId) {
-                //update the current id
                 this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
             }
             else {
-                // insert a new id and get the device ID from server
                 this.table.insert({ name: name, score: score, gameid: this.gameId }).then(function (result) {
                     if (result.id) {
-                        //get id from server
                         _this.deviceId = result.id;
-                        //save local storage
                         localStorage.setItem("deviceId", _this.deviceId);
                     }
                 });
@@ -5132,11 +4657,9 @@ var joinjelly;
                     if (position === void 0) { position = 1; }
                     _super.call(this);
                     this.regX = 1056 / 2;
-                    // Add Background
                     var bg = gameui.AssetsManager.getBitmap("FlyGroup");
                     bg.scaleY = 0.65;
                     this.addChild(bg);
-                    // Add Texts
                     var tContainer = new createjs.Container();
                     var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
                     var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
@@ -5148,8 +4671,6 @@ var joinjelly;
                     positionObj.x = 30;
                     titleObj.x = 150;
                     scoreObj.x = 1000;
-                    //titleObj.scaleX = titleObj.scaleY = 1.2;
-                    //scoreObj.scaleX = scoreObj.scaleY = 0.9;
                     tContainer.addChild(titleObj);
                     tContainer.addChild(scoreObj);
                     tContainer.addChild(positionObj);
@@ -5250,14 +4771,12 @@ var joinjelly;
                     var _this = this;
                     _super.call(this);
                     var tContainer = new createjs.Container();
-                    // Add Background
                     var bg = gameui.AssetsManager.getBitmap("FlyGroup");
                     bg.x = 232;
                     bg.y = 27;
                     bg.scaleY = 1.25;
                     bg.scaleX = 0.75;
                     tContainer.addChild(bg);
-                    // Add Icon
                     var iconId = "";
                     switch (productId) {
                         case "time5x":
@@ -5293,7 +4812,7 @@ var joinjelly;
                     icon.x = 225;
                     icon.y = 188;
                     tContainer.addChild(icon);
-                    // Add Texts
+                    description = description.replace("  ", "\n");
                     var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
                     var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
                     titleObj.y = 40;
@@ -5303,14 +4822,12 @@ var joinjelly;
                     titleObj.x = descriptionObj.x = 400;
                     tContainer.addChild(titleObj);
                     tContainer.addChild(descriptionObj);
-                    // add Check
                     var unchecked = gameui.AssetsManager.getBitmap("unchecked");
                     unchecked.regX = unchecked.getBounds().width / 2;
                     unchecked.regY = unchecked.getBounds().height / 2;
                     unchecked.y = 152;
                     unchecked.x = 1199;
                     this.addChild(unchecked);
-                    // add Check
                     var check = gameui.AssetsManager.getBitmap("check");
                     check.regX = check.getBounds().width / 2;
                     check.regY = check.getBounds().height / 2;
@@ -5318,13 +4835,11 @@ var joinjelly;
                     check.x = 1199;
                     this.purchasedIcon = check;
                     this.addChild(check);
-                    // add loading
                     var loading = new joinjelly.view.LoadingBall();
                     loading.y = 152;
                     loading.x = 1199;
                     this.loadingIcon = loading;
                     this.addChild(loading);
-                    // add price
                     var priceDO = gameui.AssetsManager.getBitmapText(localizedPrice, "debussy");
                     priceDO.y = 251;
                     priceDO.x = 1199;
@@ -5332,8 +4847,6 @@ var joinjelly;
                     priceDO.scaleX = priceDO.scaleY = 0.8;
                     if (localizedPrice != "share")
                         tContainer.addChild(priceDO);
-                    // special button for sharing
-                    // add purchase buttton
                     if (localizedPrice == "share") {
                         var button = new gameui.ImageButton("BtShare", function () {
                             _this.setPurchasing();
