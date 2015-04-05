@@ -24,18 +24,22 @@ module joinjelly.menus {
             if (window.innerWidth <= 384) assetscale = 0.25;
             if (assetscale != 1) imagePath = "assets/images_" + assetscale + "x/";
 
-            // change extensio to mp3 if windows.
-            if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows") audioPath = "assets/soundsmp3/";
-  
-            //load assets
+            if (!testMode) {
+                //load assets
+                if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows")
+                    gameui.AssetsManager.loadAssets(audioManifest, audioPath);
+                else
+                    createjs.Sound.registerManifest(audioManifest, audioPath);
+            }
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
-            gameui.AssetsManager.loadAssets(audioManifest, audioPath);
             gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
             gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
 
             // add update % function and complete action
             gameui.AssetsManager.onProgress = (progress: any) => { loadinBar.update(progress); };
             gameui.AssetsManager.onComplete = () => { if (this.loaded) this.loaded(); };
+
+     
 
             // set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";
@@ -46,8 +50,7 @@ module joinjelly.menus {
             loadinBar.x = defaultWidth / 2;
             loadinBar.y = defaultHeight / 2;
 
-         
-         
+
         }
     }
 }

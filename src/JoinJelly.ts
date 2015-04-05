@@ -1,4 +1,6 @@
-﻿module joinjelly {
+﻿var testMode;
+
+module joinjelly {
     export class JoinJelly {
 
 
@@ -25,7 +27,10 @@
             }
 
             var fps = 60;
-            if (window.location.search == "?test") fps = 10;
+            if (window.location.search == "?test") {
+                fps = 10;
+                testMode = true;
+            }
 
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
 

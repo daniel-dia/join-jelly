@@ -135,32 +135,38 @@ var gameui;
     var AssetsManager = (function () {
         function AssetsManager() {
         }
-        AssetsManager.loadAssets = function (assetsManifest, path, spriteSheets, imagesArray) {
+        AssetsManager.loadAssets = function (manifest, path, spriteSheets, imagesArray) {
             var _this = this;
             if (path === void 0) { path = ""; }
             this.spriteSheets = spriteSheets ? spriteSheets : new Array();
             this.imagesArray = imagesArray ? imagesArray : new Array();
-            this.bitmapFontSpriteSheetDataArray = new Array();
-            this.assetsManifest = assetsManifest;
+            this.bitmapFontSpriteSheetDataArray = this.bitmapFontSpriteSheetDataArray ? this.bitmapFontSpriteSheetDataArray : new Array();
+            this.assetsManifest = manifest;
+            createjs.Sound.alternateExtensions = ["mp3"];
             if (!this.loader) {
                 this.loader = new createjs.LoadQueue(false);
                 this.loader.installPlugin(createjs.Sound);
-                createjs.Sound.alternateExtensions = ["mp3"];
+                this.loader.addEventListener("filestart", function (evt) {
+                    console.log("loading " + evt.item.src);
+                });
+                this.loader.addEventListener("fileload", function (evt) {
+                    console.log("loaded " + evt.item.src);
+                });
+                this.loader.addEventListener("complete", function (evt) {
+                    if (_this.onComplete)
+                        _this.onComplete();
+                });
+                this.loader.addEventListener("progress", function (evt) {
+                    if (_this.onProgress)
+                        _this.onProgress(evt.progress);
+                });
+                this.loader.addEventListener("fileload", function (evt) {
+                    if (evt.item.type == "image")
+                        _this.imagesArray[evt.item.id] = evt.result;
+                    return true;
+                });
             }
-            this.loader.addEventListener("fileload", function (evt) {
-                if (evt.item.type == "image")
-                    _this.imagesArray[evt.item.id] = evt.result;
-                return true;
-            });
-            this.loader.addEventListener("complete", function (evt) {
-                if (_this.onComplete)
-                    _this.onComplete();
-            });
-            this.loader.addEventListener("progress", function (evt) {
-                if (_this.onProgress)
-                    _this.onProgress(evt.progress);
-            });
-            this.loader.loadManifest(this.assetsManifest, true, path);
+            this.loader.loadManifest(manifest, true, path);
         };
         AssetsManager.loadFontSpriteSheet = function (id, spritesheetData) {
             this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
@@ -936,9 +942,9 @@ var Analytics = (function () {
         return this.sessionId;
     };
     Analytics.prototype.getBuild = function () {
-        return "alpha 72";
+        return "alpha 75";
     };
-    Analytics.prototype.sendEvent = function (eventId, subEventId, value, level, x, y) {
+    Analytics.prototype.sendEvent = function (eventId, subEventId, value, area, x, y) {
         var game_key = '8c544aeba45e500f2af6e9b1beee996a';
         var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0';
         var category = "design";
@@ -948,7 +954,7 @@ var Analytics = (function () {
             "build": this.getBuild(),
             "event_id": eventId + ":" + subEventId,
             "value": value,
-            "area": this.normalizeNumber(level),
+            "area": this.normalizeNumber(area),
             "x": x,
             "y": y,
         };
@@ -964,7 +970,8 @@ var Analytics = (function () {
         xhr.setRequestHeader('Content-Type', 'text/plain');
         xhr.setRequestHeader('Content-Length', JSON.stringify(data).length.toString());
         xhr.setRequestHeader("Authorization", header_auth_hex);
-        xhr.send(JSON.stringify(data));
+        if (xhr.readyState == 1)
+            xhr.send(JSON.stringify(data));
     };
     Analytics.prototype.normalizeNumber = function (value) {
         if (value === void 0) { value = 0; }
@@ -981,17 +988,17 @@ var Analytics = (function () {
         this.sendEvent("UseItem", itemId, 1, level);
     };
     Analytics.prototype.logEndGame = function (level, lastJelly, moves, time) {
-        this.sendEvent("GameEnd", "Time:" + this.normalizeNumber(parseInt((time / 60000).toFixed())), 1, level);
-        this.sendEvent("GameEnd", "Level:" + this.normalizeNumber(level), 1, level);
-        this.sendEvent("GameEnd", "LastJelly:" + this.normalizeNumber(this.log2(lastJelly)), 1, level);
+        this.sendEvent("GameEnd", "Time", 1, parseInt((time / 60000).toFixed()));
+        this.sendEvent("GameEnd", "Level", 1, level);
+        this.sendEvent("LastJelly", this.log2(lastJelly), 1);
     };
     Analytics.prototype.logWinGame = function (level, lastJelly, moves, time) {
-        this.sendEvent("GameWin", "Time:" + this.normalizeNumber(parseInt((time / 60000).toFixed())), 1, level);
+        this.sendEvent("GameWin", "Time", 1, parseInt((time / 60000).toFixed()));
         this.sendEvent("GameWin", "Moves", moves, level);
     };
     Analytics.prototype.logNewJelly = function (jellyId, level, time) {
-        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), parseInt((time / 1000).toFixed()), level);
-        this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), level, level);
+        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), 1, parseInt((time / 1000).toFixed()));
+        this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), 1, level);
     };
     return Analytics;
 })();
@@ -1091,10 +1098,13 @@ var joinjelly;
                     assetscale = 0.25;
                 if (assetscale != 1)
                     imagePath = "assets/images_" + assetscale + "x/";
-                if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows")
-                    audioPath = "assets/soundsmp3/";
+                if (!testMode) {
+                    if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows")
+                        gameui.AssetsManager.loadAssets(audioManifest, audioPath);
+                    else
+                        createjs.Sound.registerManifest(audioManifest, audioPath);
+                }
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
-                gameui.AssetsManager.loadAssets(audioManifest, audioPath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
                 gameui.AssetsManager.onProgress = function (progress) {
@@ -3319,9 +3329,10 @@ var joinjelly;
             GamePlayScreen.prototype.addRandomTileOnBoard = function (value) {
                 if (value === void 0) { value = 1; }
                 var empty = this.board.getEmptyTiles();
-                for (var i = 10; i < this.level; i += 10)
-                    if (Math.random() > 0.9)
-                        value *= 2;
+                if (value > 0)
+                    for (var i = 10; i < this.level; i += 10)
+                        if (Math.random() > 0.9)
+                            value *= 2;
                 if (empty.length > 0) {
                     var i = Math.floor(Math.random() * empty.length);
                     var tile = empty[i];
@@ -4154,6 +4165,7 @@ var histories = (function () {
     histories.FIRSTPLAY = "firstplay";
     return histories;
 })();
+var testMode;
 var joinjelly;
 (function (joinjelly) {
     var JoinJelly = (function () {
@@ -4172,8 +4184,10 @@ var joinjelly;
                     break;
             }
             var fps = 60;
-            if (window.location.search == "?test")
+            if (window.location.search == "?test") {
                 fps = 10;
+                testMode = true;
+            }
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);

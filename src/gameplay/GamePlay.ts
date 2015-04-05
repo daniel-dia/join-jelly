@@ -525,8 +525,9 @@
             var empty = this.board.getEmptyTiles();
 
             // select a random value to add.
-            for(var i = 10; i < this.level; i +=10)
-                if (Math.random() > 0.9) value *= 2;
+            if (value > 0)
+                for(var i = 10; i < this.level; i +=10)
+                    if (Math.random() > 0.9) value *= 2;
             
 
             // if there is no more empty tiles, ends the game

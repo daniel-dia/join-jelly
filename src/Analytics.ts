@@ -28,10 +28,10 @@ class Analytics {
     }
 
     private getBuild(): string {
-        return "alpha 72";
+        return "alpha 75";
     }
 
-    private sendEvent(eventId: string, subEventId, value: number, level?: number, x?: number, y?: number) {
+    private sendEvent(eventId: string, subEventId, value: number, area?: number, x?: number, y?: number) {
         var game_key = '8c544aeba45e500f2af6e9b1beee996a'
         var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0'
         //var data_api_key = 'd519f8572c1893fb49873fa2345d444c03afa172'
@@ -44,7 +44,7 @@ class Analytics {
             "build": this.getBuild(),
             "event_id": eventId + ":" + subEventId,
             "value": value,
-            "area": this.normalizeNumber(level),
+            "area": this.normalizeNumber(area),
             "x": x,
             "y": y,
         };
@@ -67,8 +67,9 @@ class Analytics {
         xhr.setRequestHeader('Content-Length', JSON.stringify(data).length.toString());
         xhr.setRequestHeader("Authorization", header_auth_hex);
         //xhr.addEventListener('load', function (e) {}, false);
-
-        xhr.send(JSON.stringify(data));
+        
+        if (xhr.readyState == 1) 
+            xhr.send(JSON.stringify(data));
     }
 
     private normalizeNumber(value: number= 0): string {
@@ -91,19 +92,19 @@ class Analytics {
     }
 
     public logEndGame(level: number, lastJelly: number, moves: number, time: number) {
-        this.sendEvent("GameEnd", "Time:" + this.normalizeNumber(parseInt((time / 60000).toFixed())),1, level)
-        this.sendEvent("GameEnd", "Level:"+ this.normalizeNumber(level),1, level)
-        this.sendEvent("GameEnd", "LastJelly:" + this.normalizeNumber(this.log2(lastJelly)),1, level)
+        this.sendEvent("GameEnd", "Time", 1,  parseInt((time / 60000).toFixed()));
+        this.sendEvent("GameEnd", "Level", 1, level);
+        this.sendEvent("LastJelly", this.log2(lastJelly),1)
     }
 
     public logWinGame(level: number, lastJelly: number, moves: number, time: number) {
-        this.sendEvent("GameWin", "Time:" + this.normalizeNumber(parseInt((time / 60000).toFixed())), 1, level)
+        this.sendEvent("GameWin", "Time", 1, parseInt((time / 60000).toFixed()))
         this.sendEvent("GameWin", "Moves", moves, level)
     }
 
     public logNewJelly(jellyId: number, level: number, time: number) {
-        this.sendEvent("NewJelly", "Time:"  + this.normalizeNumber(jellyId), parseInt((time / 1000).toFixed()) , level);
-        this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), level, level);
+        this.sendEvent("NewJelly", "Time:"  + this.normalizeNumber(jellyId), 1, parseInt((time / 1000).toFixed()) );
+        this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), 1, level);
     }
 
     //# end region 
