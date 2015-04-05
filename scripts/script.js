@@ -971,7 +971,11 @@ var Analytics = (function () {
         xhr.setRequestHeader('Content-Length', JSON.stringify(data).length.toString());
         xhr.setRequestHeader("Authorization", header_auth_hex);
         if (xhr.readyState == 1)
-            xhr.send(JSON.stringify(data));
+            try {
+                xhr.send(JSON.stringify(data));
+            }
+            catch (e) {
+            }
     };
     Analytics.prototype.normalizeNumber = function (value) {
         if (value === void 0) { value = 0; }
@@ -4674,7 +4678,8 @@ var joinjelly;
                     icon.x = 225;
                     icon.y = 188;
                     tContainer.addChild(icon);
-                    description = description.replace("  ", "\n");
+                    if (description)
+                        description = description.replace("  ", "\n");
                     var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
                     var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
                     titleObj.y = 40;

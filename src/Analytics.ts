@@ -67,9 +67,11 @@ class Analytics {
         xhr.setRequestHeader('Content-Length', JSON.stringify(data).length.toString());
         xhr.setRequestHeader("Authorization", header_auth_hex);
         //xhr.addEventListener('load', function (e) {}, false);
-        
-        if (xhr.readyState == 1) 
-            xhr.send(JSON.stringify(data));
+
+        if (xhr.readyState == 1)
+            try {
+                xhr.send(JSON.stringify(data));
+            } catch (e) { }
     }
 
     private normalizeNumber(value: number= 0): string {
