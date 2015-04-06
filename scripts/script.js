@@ -945,8 +945,8 @@ var Analytics = (function () {
         return "alpha 75";
     };
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, area, x, y) {
-        var game_key = '8c544aeba45e500f2af6e9b1beee996a';
-        var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0';
+        var game_key = 'f8ddc946b8ec021d5339343e63f2e773';
+        var secret_key = '41a3b9e858f42efe02cc0066eb544edc6838f0e7';
         var category = "design";
         var message = {
             "user_id": this.getUser(),
