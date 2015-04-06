@@ -32,8 +32,8 @@ class Analytics {
     }
 
     private sendEvent(eventId: string, subEventId, value: number, area?: number, x?: number, y?: number) {
-        var game_key = '8c544aeba45e500f2af6e9b1beee996a'
-        var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0'
+        var game_key = 'f8ddc946b8ec021d5339343e63f2e773'
+        var secret_key = '41a3b9e858f42efe02cc0066eb544edc6838f0e7'
         //var data_api_key = 'd519f8572c1893fb49873fa2345d444c03afa172'
 
         var category = "design";
