@@ -28,13 +28,13 @@ class Analytics {
     }
 
     private getBuild(): string {
-        return "alpha 75";
+        return "alpha 76";
     }
 
     private sendEvent(eventId: string, subEventId, value: number, area?: number, x?: number, y?: number) {
-        var game_key = 'f8ddc946b8ec021d5339343e63f2e773'
-        var secret_key = '41a3b9e858f42efe02cc0066eb544edc6838f0e7'
-        //var data_api_key = 'd519f8572c1893fb49873fa2345d444c03afa172'
+        var game_key = '8c544aeba45e500f2af6e9b1beee996a'
+        var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0'
+        //var data_api_key = '7a0a0ca9b1db2b56a94925ea5c640730e45dffed'
 
         var category = "design";
 
@@ -75,12 +75,12 @@ class Analytics {
     }
 
     private normalizeNumber(value: number= 0): string {
-        var s = "000000000" + (value%1).toString();
+        var s = "000000000" + (Math.floor(value)).toString();
         return s.substr(s.length - 3);
     }
 
     private log2(value: number): number {
-        return Math.log(value) / Math.log(2);
+        return Math.floor(Math.log(value) / Math.log(2));
     }
 
     //# region log methods ================================================================================================
@@ -105,7 +105,7 @@ class Analytics {
     }
 
     public logNewJelly(jellyId: number, level: number, time: number) {
-        this.sendEvent("NewJelly", "Time:"  + this.normalizeNumber(jellyId), 1, parseInt((time / 1000).toFixed()) );
+        this.sendEvent("NewJelly", "Time:"  + this.normalizeNumber(jellyId), 1, parseInt((time / 60000).toFixed()) );
         this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), 1, level);
     }
 
