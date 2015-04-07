@@ -942,11 +942,11 @@ var Analytics = (function () {
         return this.sessionId;
     };
     Analytics.prototype.getBuild = function () {
-        return "alpha 75";
+        return "alpha 76";
     };
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, area, x, y) {
-        var game_key = 'f8ddc946b8ec021d5339343e63f2e773';
-        var secret_key = '41a3b9e858f42efe02cc0066eb544edc6838f0e7';
+        var game_key = '8c544aeba45e500f2af6e9b1beee996a';
+        var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0';
         var category = "design";
         var message = {
             "user_id": this.getUser(),
@@ -979,11 +979,11 @@ var Analytics = (function () {
     };
     Analytics.prototype.normalizeNumber = function (value) {
         if (value === void 0) { value = 0; }
-        var s = "000000000" + (value % 1).toString();
+        var s = "000000000" + (Math.floor(value)).toString();
         return s.substr(s.length - 3);
     };
     Analytics.prototype.log2 = function (value) {
-        return Math.log(value) / Math.log(2);
+        return Math.floor(Math.log(value) / Math.log(2));
     };
     Analytics.prototype.logGameStart = function () {
         this.sendEvent("GameStart", "start", 1);
@@ -1001,7 +1001,7 @@ var Analytics = (function () {
         this.sendEvent("GameWin", "Moves", moves, level);
     };
     Analytics.prototype.logNewJelly = function (jellyId, level, time) {
-        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), 1, parseInt((time / 1000).toFixed()));
+        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), 1, parseInt((time / 60000).toFixed()));
         this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), 1, level);
     };
     return Analytics;
