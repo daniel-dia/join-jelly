@@ -4271,6 +4271,15 @@ var joinjelly;
 window.onload = function () {
     joinjelly.JoinJelly.init();
 };
+var joinjelly;
+(function (joinjelly) {
+    var Achievements = (function () {
+        function Achievements() {
+        }
+        return Achievements;
+    })();
+    joinjelly.Achievements = Achievements;
+})(joinjelly || (joinjelly = {}));
 var defaultWidth = 768 * 2;
 var defaultHeight = 1024 * 2;
 var fbAppId = "1416523228649363";
