@@ -70,10 +70,73 @@
     }
 
     export module Social {
-        export var Facebook: any;
-        export var GameCenter: any;
-        export var GooglePlayGames: any;
-        export var Interface: any;
+        export class Facebook extends Interface { //Not Completed
+
+            static api();
+            static getAuthResponse();
+            static getLoginStatus();
+            static getPermissions();
+            static getSocialInterface();
+            static init();
+            static login();
+            static logout();
+            static requestAdditionalPermissions();
+            static showFriendPicker();
+            static showShareDialog();
+            static subscribe();
+            static ui();
+            static unsubscribe();
+            static uploadPhoto();
+        }
+
+        export class GameCenter extends Interface {  //Not Completed
+
+            static getLocalPlayer()
+            static getMultiplayerInterface()
+            static getSocialInterface()
+            static loadAchievementDescriptions()
+            static loadAchievements()
+            static loadFriends()
+            static loadPlayers()
+            static loadScores()
+            static login()
+            static resetAchievements()
+            static showAchievements()
+            static showLeaderboards()
+            static submitAchievements()
+            static submitScore()
+
+        }
+
+        export class GooglePlayGames extends Interface {
+            static init(params);
+            static getSocialInterface(): Cocoon.Social.Interface;
+            /// static getMultiplayerInterface():Cocoon.Multiplayer.MultiplayerService;
+        }
+
+        export class Interface {
+            getLoggedInUser();
+            hasPublishPermissions(callback: () => void);
+            isLoggedIn();
+            login(callback: (error) => void);
+            logout(callback: (error) => void);
+            publishMessage(message: Cocoon.Social.Message, callback: (error) => void);
+            publishMessageWithDialog(message: Cocoon.Social.Message, callback: (error) => void);
+            requestAchievements(callback: (error) => void, userId: string);
+            requestAllAchievements(callback: (error) => void);
+            requestFriends(callback: (error) => void, userID: string);
+            requestPublishPermissions(callback: (error) => void);
+            requestScore(callback: (error) => void, params: Cocoon.Social.ScoreParams);
+            requestUser(callback: (error) => void, userID: string);
+            requestUserImage(callback: (error) => void, userID: string, imageSize: Cocoon.Social.ImageSize);
+            resetAchievements(callback: (error) => void);
+            setAchievementsMap();
+            setTemplates(leaderboardsTemplate: string, achievementsTemplate: string)
+            showAchievements(callback: (error) => void);
+            showLeaderboard(params: Cocoon.Social.ScoreParams, callback: (error) => void);
+            submitAchievements(achievementID: string, callback: (error) => void);
+            submitScore(score: number, callback, params: Cocoon.Social.ScoreParams);
+        }
 
         export class Achievement {
             achievementID: string // The id of the achievement info.
@@ -116,6 +179,7 @@
             WEEK,
             TODAY,
         }
+
         export enum ImageSize {
             THUMB,
             SMALL,
