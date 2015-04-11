@@ -24,17 +24,21 @@ module joinjelly.menus {
             if (window.innerWidth <= 384) assetscale = 0.25;
             if (assetscale != 1) imagePath = "assets/images_" + assetscale + "x/";
 
-            //if (!testMode) {
-            //    //load assets
-            //    if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows")
-            //        gameui.AssetsManager.loadAssets(audioManifest, audioPath);
-            //    else
-            //        createjs.Sound.registerManifest(audioManifest, audioPath);
-            //}
-
+          
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
             gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
             gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
+
+            //load audio
+            if (!testMode) {
+                //load assets
+                if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows")
+                    gameui.AssetsManager.loadAssets(audioManifest, audioPath);
+                else
+                    createjs.Sound.registerManifest(audioManifest, audioPath);
+            }
+
+
 
             // add update % function and complete action
             gameui.AssetsManager.onProgress = (progress: any) => { loadinBar.update(progress); };

@@ -1105,6 +1105,12 @@ var joinjelly;
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
+                if (!testMode) {
+                    if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows")
+                        gameui.AssetsManager.loadAssets(audioManifest, audioPath);
+                    else
+                        createjs.Sound.registerManifest(audioManifest, audioPath);
+                }
                 gameui.AssetsManager.onProgress = function (progress) {
                     loadinBar.update(progress);
                 };
