@@ -9,13 +9,14 @@ module joinjelly {
         public static gameScreen: gameui.GameScreen;
         public static analytics: Analytics;
         public static itemData: ItemsData;
-
+        public static gameServices: GameServices;
 
         public static init() {
 
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new ItemsData();
+            this.gameServices = new GameServices();
 
             AzureLeaderBoards.init();
 
@@ -98,7 +99,7 @@ module joinjelly {
         public static showPedia() {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };
-            this.gameScreen.switchScreen(new Jellypedia(this.userData, StringResources.jellys), null, transition);
+            this.gameScreen.switchScreen(new Jellypedia(this.userData, StringResources.jellies ), null, transition);
         }
 
         public static showSettings() {

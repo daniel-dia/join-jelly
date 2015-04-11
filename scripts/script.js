@@ -762,7 +762,7 @@ var StringResources = {
         msgItemRevive: "if you loose, use this to revive",
         msgBoardFill: "but be careful, \ndo not let the board fill, \nthis is the end for us.",
     },
-    jellys: {
+    jellies: {
         1: { name: "Little Jelly", description: "Small but essential" },
         2: { name: "Droplet", description: "Dripping everywhere" },
         4: { name: "Little Cake", description: "Incredible Lemon \nflavor" },
@@ -771,7 +771,7 @@ var StringResources = {
         32: { name: "Strawberry", description: "Bored from jellying" },
         64: { name: "Upsety", description: "'Don't touch me...'" },
         128: { name: "Sluggjelly", description: "The sluggish Jelly" },
-        256: { name: "Moti", description: "Iresistible desire to \neat with soy sauce" },
+        256: { name: "Moti", description: "Irresistible desire to \neat with soy sauce" },
         512: { name: "Big cheeks", description: "Reminds me of my\nbrother cheeks" },
         1024: { name: "Geleialien", description: "Came from another\nplanet to jam" },
         2048: { name: "Oil", description: "An oil droplet" },
@@ -858,7 +858,7 @@ var StringResources_pt = {
         msgItemRevive: "Se voce perder, use este para reviver",
         msgBoardFill: "Mas Tenha cuidado, se acabar \nos espaços no chão é o fim.",
     },
-    jellys: {
+    jellies: {
         1: { name: "Geleinha", description: "Pequena mas \nimportante" },
         2: { name: "Gotinha", description: "gotejando por\ntodo lado" },
         4: { name: "Bolinho", description: "Incrível sabor de\nLimão" },
@@ -867,7 +867,7 @@ var StringResources_pt = {
         32: { name: "Morango", description: "Entediada de tanto\ngelatinar" },
         64: { name: "Chatinha", description: "Não gosta de ser \ntocada" },
         128: { name: "Gelerda", description: "A geleia lerdinha" },
-        256: { name: "Moti", description: "Irresistivel vontade\nde comer com shoyu" },
+        256: { name: "Moti", description: "Irresistível vontade\nde comer com shoyu" },
         512: { name: "Xexão", description: "Lembra as bochechas \ndo meu irmão" },
         1024: { name: "Geleialien", description: "Veio de outro \nplaneta para geleiar" },
         2048: { name: "Petróleo", description: "Uma gotinha de \nóleo" },
@@ -1102,12 +1102,6 @@ var joinjelly;
                     assetscale = 0.25;
                 if (assetscale != 1)
                     imagePath = "assets/images_" + assetscale + "x/";
-                if (!testMode) {
-                    if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows")
-                        gameui.AssetsManager.loadAssets(audioManifest, audioPath);
-                    else
-                        createjs.Sound.registerManifest(audioManifest, audioPath);
-                }
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
@@ -2538,7 +2532,7 @@ var joinjelly;
                     }, 30);
                     this.highScoreText.text = StringResources.menus.highScore + ": " + best.toString();
                     this.jelly.setNumber(jelly);
-                    this.jellyText.text = StringResources.jellys[jelly].name;
+                    this.jellyText.text = StringResources.jellies[jelly].name;
                     if (this.jellyText.getBounds())
                         this.jellyText.regX = this.jellyText.getBounds().width / 2;
                     this.highScoreText.regX = this.highScoreText.getBounds().width;
@@ -3255,6 +3249,7 @@ var joinjelly;
                 this.gameFooter.mouseEnabled = false;
                 createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
+                joinjelly.JoinJelly.gameServices.submitScore(score);
                 setTimeout(function () {
                     if (win)
                         _this.gamestate = 5 /* win */;
@@ -3380,9 +3375,11 @@ var joinjelly;
                     this.animateItemFromTile(target, item);
                 this.userData.setLastJelly(newValue);
                 this.updateInterfaceInfos();
-                if (this.highJelly < newValue)
+                if (this.highJelly < newValue) {
                     joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time);
-                this.highJelly = newValue;
+                    joinjelly.JoinJelly.gameServices.submitJellyAchievent(newValue);
+                    this.highJelly = newValue;
+                }
                 if (this.matchNotify)
                     this.matchNotify();
                 if (newValue > joinjelly.JoinJelly.maxJelly)
@@ -4180,6 +4177,7 @@ var joinjelly;
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
+            this.gameServices = new joinjelly.GameServices();
             joinjelly.AzureLeaderBoards.init();
             var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
@@ -4252,7 +4250,7 @@ var joinjelly;
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
                 transition = { type: "left", time: 500 };
-            this.gameScreen.switchScreen(new joinjelly.Jellypedia(this.userData, StringResources.jellys), null, transition);
+            this.gameScreen.switchScreen(new joinjelly.Jellypedia(this.userData, StringResources.jellies), null, transition);
         };
         JoinJelly.showSettings = function () {
             var transition;
@@ -4271,20 +4269,31 @@ var joinjelly;
 window.onload = function () {
     joinjelly.JoinJelly.init();
 };
-var joinjelly;
-(function (joinjelly) {
-    var Achievements = (function () {
-        function Achievements() {
-        }
-        return Achievements;
-    })();
-    joinjelly.Achievements = Achievements;
-})(joinjelly || (joinjelly = {}));
 var defaultWidth = 768 * 2;
 var defaultHeight = 1024 * 2;
 var fbAppId = "1416523228649363";
 var gameWebsite = "www.joinjelly.com";
 var gameWebsiteIcon = "www.joinjelly.com/icon.png";
+var achievementMap = {
+    ACH_JELLY_4: 'CgkI49ztp64KEAIQBA',
+    ACH_JELLY_5: 'CgkI49ztp64KEAIQBQ',
+    ACH_JELLY_6: 'CgkI49ztp64KEAIQBg',
+    ACH_JELLY_7: 'CgkI49ztp64KEAIQBw',
+    ACH_JELLY_8: 'CgkI49ztp64KEAIQCA',
+    ACH_JELLY_9: 'CgkI49ztp64KEAIQCQ',
+    ACH_JELLY_10: 'CgkI49ztp64KEAIQCg',
+    ACH_JELLY_11: 'CgkI49ztp64KEAIQCw',
+    ACH_JELLY_12: 'CgkI49ztp64KEAIQDA',
+    ACH_JELLY_13: 'CgkI49ztp64KEAIQDQ',
+    ACH_JELLY_14: 'CgkI49ztp64KEAIQDg',
+    ACH_JELLY_15: 'CgkI49ztp64KEAIQDw',
+    ACH_JELLY_16: 'CgkI49ztp64KEAIQEA',
+    ACH_JELLY_17: 'CgkI49ztp64KEAIQEQ',
+};
+var constants = {
+    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
+    LEAD_LEADERBOARD: 'CgkI49ztp64KEAIQAg',
+};
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
@@ -4422,6 +4431,58 @@ var joinjelly;
             view.ItemsFooter = ItemsFooter;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var GameServices = (function () {
+        function GameServices() {
+            var _this = this;
+            var gp = Cocoon.Social.GooglePlayGames;
+            if (Cocoon.Device.getDeviceInfo() && Cocoon.Device.getDeviceInfo().os == "android")
+                gp.init({
+                    defaultLeaderboard: constants.LEAD_LEADERBOARD,
+                });
+            else
+                gp.init({
+                    clientId: constants.CLIENT_ID,
+                    defaultLeaderboard: constants.LEAD_LEADERBOARD,
+                });
+            this.socialService = gp.getSocialInterface();
+            this.socialService.setAchievementsMap(achievementMap);
+            setTimeout(function () {
+                if (!_this.socialService.isLoggedIn())
+                    _this.socialService.login(function (loggedIn, error) {
+                        if (error) {
+                            console.error("login error: " + error.message + " " + error.code);
+                        }
+                        else if (!loggedIn) {
+                            console.log("login cancelled");
+                        }
+                    });
+            }, 2000);
+        }
+        GameServices.prototype.submitScore = function (score) {
+            this.socialService.submitScore(score, function (error) {
+                if (error)
+                    console.error("score error: " + error.message);
+                else
+                    console.log("submited score: " + score);
+            });
+        };
+        GameServices.prototype.submitJellyAchievent = function (jellyValye) {
+            if (jellyValye < 8)
+                return;
+            var jellyNumber = Math.floor(Math.log(jellyValye) / Math.log(2)) + 1;
+            this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, function (error) {
+                if (error)
+                    console.error("submitAchievement error: " + error.message);
+                else
+                    console.log("submited Achievement: " + achievementId);
+            });
+        };
+        return GameServices;
+    })();
+    joinjelly.GameServices = GameServices;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {

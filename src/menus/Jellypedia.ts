@@ -10,7 +10,7 @@
             itensContainer.y = 400;
             var index = 0;
             for (var j = 1; j <= JoinJelly.maxJelly; j *= 2) {
-                if ( j <=  Math.max(1,userData.getLastJelly()))
+                if (   j <=  Math.max(1,userData.getLastJelly()))
                     var pi = new menus.view.JellyPediaItem(j, jellyInfos[j].name, jellyInfos[j].description);
                 else
                     var pi = new menus.view.JellyPediaItem(0, "?", "");

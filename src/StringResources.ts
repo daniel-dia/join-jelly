@@ -37,7 +37,7 @@
         msgBoardFill: "but be careful, \ndo not let the board fill, \nthis is the end for us.",
 
     },
-    jellys: {
+    jellies : {
         1: { name: "Little Jelly", description: "Small but essential" },
         2: { name: "Droplet", description: "Dripping everywhere" },
         4: { name: "Little Cake", description: "Incredible Lemon \nflavor" },
@@ -46,7 +46,7 @@
         32: { name: "Strawberry", description: "Bored from jellying" },
         64: { name: "Upsety", description: "'Don't touch me...'" },
         128: { name: "Sluggjelly", description: "The sluggish Jelly" },
-        256: { name: "Moti", description: "Iresistible desire to \neat with soy sauce" },
+        256: { name: "Moti", description: "Irresistible desire to \neat with soy sauce" },
         512: { name: "Big cheeks", description: "Reminds me of my\nbrother cheeks" },
         1024: { name: "Geleialien", description: "Came from another\nplanet to jam" },
         2048: { name: "Oil", description: "An oil droplet" },
@@ -138,7 +138,7 @@ var StringResources_pt = {
         msgBoardFill: "Mas Tenha cuidado, se acabar \nos espaços no chão é o fim.",
 
     },
-    jellys: {
+    jellies : {
         1: { name: "Geleinha", description: "Pequena mas \nimportante" },
         2: { name: "Gotinha", description: "gotejando por\ntodo lado" },
         4: { name: "Bolinho", description: "Incrível sabor de\nLimão" },
@@ -147,7 +147,7 @@ var StringResources_pt = {
         32: { name: "Morango", description: "Entediada de tanto\ngelatinar" },
         64: { name: "Chatinha", description: "Não gosta de ser \ntocada" },
         128: { name: "Gelerda", description: "A geleia lerdinha" },
-        256: { name: "Moti", description: "Irresistivel vontade\nde comer com shoyu" },
+        256: { name: "Moti", description: "Irresistível vontade\nde comer com shoyu" },
         512: { name: "Xexão", description: "Lembra as bochechas \ndo meu irmão" },
         1024: { name: "Geleialien", description: "Veio de outro \nplaneta para geleiar" },
         2048: { name: "Petróleo", description: "Uma gotinha de \nóleo" },
