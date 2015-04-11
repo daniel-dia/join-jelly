@@ -192,7 +192,7 @@
             setAchievementsMap(map:any);
             setTemplates(leaderboardsTemplate: string, achievementsTemplate: string)
             showAchievements(callback: (error) => void);
-            showLeaderboard(params: Cocoon.Social.ScoreParams, callback: (error) => void);
+            showLeaderboard(params?: Cocoon.Social.ScoreParams, callback?: (error) => void);
             submitAchievement(achievementID: string, callback: (error) => void);
             submitScore(score: number, callback?: (error) => void, params?: Cocoon.Social.ScoreParams);
         }

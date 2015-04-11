@@ -603,22 +603,12 @@
             this.userData.setLastJelly(newValue);
             this.updateInterfaceInfos();
 
-            if (this.highJelly < newValue) {
-
-                // log HighJelly Event
-                joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time)
-
-                // submit jelly to Game Services
-                JoinJelly.gameServices.submitJellyAchievent(newValue);
-
-                // set a new high jelly
-                this.highJelly = newValue;
-            }
-
-
             // notify match
             if (this.matchNotify) this.matchNotify()
-            
+
+            // save the High Jelly
+            this.highJellySave(newValue);
+
             // verify winGame
             if (newValue > JoinJelly.maxJelly)
                 this.winGame();
@@ -634,6 +624,20 @@
             if (!this.canMove()) this.step(0);
             
             return true;
+        }
+
+        private highJellySave(newValue) {
+            if (this.highJelly < newValue) {
+
+                // log HighJelly Event
+                joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time)
+
+                // submit jelly to Game Services
+                JoinJelly.gameServices.submitJellyAchievent(newValue);
+
+                // set a new high jelly
+                this.highJelly = newValue;
+            }
         }
 
         //give item to user
@@ -900,8 +904,12 @@
             var tile = selectedTiles[selected];
 
             //lock tile and change number
+            var newValue = tile.getNumber() * 2;
             tile.lock();
-            tile.setNumber(tile.getNumber() * 2);
+            tile.setNumber(newValue);
+
+            // save highJelly value
+            this.highJellySave(newValue);
 
             // cast Effect On Tile
             tile.jelly.playThunder();

@@ -33,6 +33,12 @@
                     });
             }, 2000);
         }
+        
+        // show native leaderboards
+        public showLeaderboard() {
+             
+            this.socialService.showLeaderboard();
+        }
 
         // submit a score
         public submitScore(score: number) {
@@ -46,9 +52,7 @@
 
         // submit an achievement
         public submitJellyAchievent(jellyValye: number) {
-            // dont submit for low values
-            if (jellyValye < 8) return;
-
+ 
             // normalize value to log2
             var jellyNumber = Math.floor(Math.log(jellyValye) / Math.log(2)) +1;
          

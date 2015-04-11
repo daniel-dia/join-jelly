@@ -83,14 +83,7 @@
             this.footer.addChild(settingsBt);
 
 
-            //add pedia button
-            var aboutBt = new gameui.ImageButton("BtJelly", () => {
-                JoinJelly.showPedia();
-            });
-            aboutBt.y = -150;
-            aboutBt.x = x-=space;
-            this.footer.addChild(aboutBt);
-
+      
             //add store bt
             var storeBt = new gameui.ImageButton("BtStore", () => {
                 JoinJelly.showStore(this);
@@ -99,8 +92,17 @@
             storeBt.x = x -= space;
             this.footer.addChild(storeBt);
 
+            //add pedia button
+            var aboutBt = new gameui.ImageButton("BtAchievements", () => {
+                JoinJelly.showPedia();
+            });
+            aboutBt.y = -150;
+            aboutBt.x = x -= space;
+            this.footer.addChild(aboutBt);
+
+
             //add leaderboards button
-            var leaderboardsBt = new gameui.ImageButton("BtLeaderBoards", () => { JoinJelly.showLeaderboards(); });
+            var leaderboardsBt = new gameui.ImageButton("BtLeaderBoards", () => { JoinJelly.gameServices.showLeaderboard(); });
             leaderboardsBt.y = -150;
             leaderboardsBt.x = x -= space;
             this.footer.addChild(leaderboardsBt);

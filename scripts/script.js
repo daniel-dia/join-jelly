@@ -1192,20 +1192,20 @@ var joinjelly;
             settingsBt.y = -150;
             settingsBt.x = x -= space;
             this.footer.addChild(settingsBt);
-            var aboutBt = new gameui.ImageButton("BtJelly", function () {
-                joinjelly.JoinJelly.showPedia();
-            });
-            aboutBt.y = -150;
-            aboutBt.x = x -= space;
-            this.footer.addChild(aboutBt);
             var storeBt = new gameui.ImageButton("BtStore", function () {
                 joinjelly.JoinJelly.showStore(_this);
             });
             storeBt.y = -150;
             storeBt.x = x -= space;
             this.footer.addChild(storeBt);
+            var aboutBt = new gameui.ImageButton("BtAchievements", function () {
+                joinjelly.JoinJelly.showPedia();
+            });
+            aboutBt.y = -150;
+            aboutBt.x = x -= space;
+            this.footer.addChild(aboutBt);
             var leaderboardsBt = new gameui.ImageButton("BtLeaderBoards", function () {
-                joinjelly.JoinJelly.showLeaderboards();
+                joinjelly.JoinJelly.gameServices.showLeaderboard();
             });
             leaderboardsBt.y = -150;
             leaderboardsBt.x = x -= space;
@@ -3381,13 +3381,9 @@ var joinjelly;
                     this.animateItemFromTile(target, item);
                 this.userData.setLastJelly(newValue);
                 this.updateInterfaceInfos();
-                if (this.highJelly < newValue) {
-                    joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time);
-                    joinjelly.JoinJelly.gameServices.submitJellyAchievent(newValue);
-                    this.highJelly = newValue;
-                }
                 if (this.matchNotify)
                     this.matchNotify();
+                this.highJellySave(newValue);
                 if (newValue > joinjelly.JoinJelly.maxJelly)
                     this.winGame();
                 else
@@ -3397,6 +3393,13 @@ var joinjelly;
                 if (!this.canMove())
                     this.step(0);
                 return true;
+            };
+            GamePlayScreen.prototype.highJellySave = function (newValue) {
+                if (this.highJelly < newValue) {
+                    joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time);
+                    joinjelly.JoinJelly.gameServices.submitJellyAchievent(newValue);
+                    this.highJelly = newValue;
+                }
             };
             GamePlayScreen.prototype.giveItemChance = function (items) {
                 var item = null;
@@ -3573,8 +3576,10 @@ var joinjelly;
                     return false;
                 var selected = Math.floor(Math.random() * selectedTiles.length);
                 var tile = selectedTiles[selected];
+                var newValue = tile.getNumber() * 2;
                 tile.lock();
-                tile.setNumber(tile.getNumber() * 2);
+                tile.setNumber(newValue);
+                this.highJellySave(newValue);
                 tile.jelly.playThunder();
                 setTimeout(function () {
                     tile.unlock();
@@ -4467,6 +4472,9 @@ var joinjelly;
                     });
             }, 2000);
         }
+        GameServices.prototype.showLeaderboard = function () {
+            this.socialService.showLeaderboard();
+        };
         GameServices.prototype.submitScore = function (score) {
             this.socialService.submitScore(score, function (error) {
                 if (error)
@@ -4476,8 +4484,6 @@ var joinjelly;
             });
         };
         GameServices.prototype.submitJellyAchievent = function (jellyValye) {
-            if (jellyValye < 8)
-                return;
             var jellyNumber = Math.floor(Math.log(jellyValye) / Math.log(2)) + 1;
             this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, function (error) {
                 if (error)
