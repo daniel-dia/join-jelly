@@ -416,6 +416,7 @@
     <Content Include="assets\sounds\sound_s2.mp3" />
     <Content Include="assets\sounds\sound_s3.mp3" />
     <Content Include="assets\style.css" />
+    <Content Include="JavaScript1.js" />
     <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\EaselJS Editor.js" />
     <Content Include="scripts\MobileServices.Web-1.2.5.min.js" />
@@ -432,7 +433,7 @@
     <TypeScriptCompile Include="gameui\WpAudioManager.ts" />
     <TypeScriptCompile Include="gameui\AudioManager.ts" />
     <Content Include="scripts\script.js" />
-    <TypeScriptCompile Include="src\Achievements.ts" />
+    <TypeScriptCompile Include="src\GameServices.ts" />
     <TypeScriptCompile Include="src\gameplay\view\CountDown.ts" />
     <TypeScriptCompile Include="src\menus\LeaderBoards.ts" />
     <TypeScriptCompile Include="src\LeaderBoards.ts" />

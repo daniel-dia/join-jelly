@@ -404,6 +404,9 @@
             this.gameFooter.mouseEnabled = false;
             createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
+            
+            // submit score to Game Services
+            JoinJelly.gameServices.submitScore(score);
 
             // shows finished game menu
             setTimeout(() => {
@@ -600,11 +603,18 @@
             this.userData.setLastJelly(newValue);
             this.updateInterfaceInfos();
 
-            // log HighJelly Event
-            if(this.highJelly < newValue)
+            if (this.highJelly < newValue) {
+
+                // log HighJelly Event
                 joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time)
 
-            this.highJelly = newValue;
+                // submit jelly to Game Services
+                JoinJelly.gameServices.submitJellyAchievent(newValue);
+
+                // set a new high jelly
+                this.highJelly = newValue;
+            }
+
 
             // notify match
             if (this.matchNotify) this.matchNotify()

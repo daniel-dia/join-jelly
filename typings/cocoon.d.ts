@@ -77,7 +77,7 @@
             static getLoginStatus();
             static getPermissions();
             static getSocialInterface();
-            static init();
+            static init(any);
             static login();
             static logout();
             static requestAdditionalPermissions();
@@ -89,40 +89,99 @@
             static uploadPhoto();
         }
 
-        export class GameCenter extends Interface {  //Not Completed
+        export class GameCenter  {  //Not Completed
 
-            static getLocalPlayer()
-            static getMultiplayerInterface()
-            static getSocialInterface()
-            static loadAchievementDescriptions()
-            static loadAchievements()
-            static loadFriends()
-            static loadPlayers()
-            static loadScores()
-            static login()
-            static resetAchievements()
-            static showAchievements()
-            static showLeaderboards()
-            static submitAchievements()
-            static submitScore()
+            static getLocalPlayer();
+            static getMultiplayerInterface();
+            static getSocialInterface();
+            static loadAchievementDescriptions(callback: (error) => void);
+            static loadAchievements(callback: (error) => void);
+            static loadFriends(callback: (error) => void);
+            static loadPlayers(playerIDs: string, callback: (error) => void);
+            static loadScores(callback: (error) => void, query: Cocoon.Social.GameCenter.Leaderboard);
+            static login();
+            static resetAchievements(callback: (error) => void);
+            static showAchievements(callback: (error) => void);
+            static showLeaderboards(callback: (error) => void, query: Cocoon.Social.GameCenter.Leaderboard);
+            static submitAchievements(achievements: Array<Cocoon.Social.GameCenter.Achievement>, callback: (error) => void);
+            static submitScore(score: Cocoon.Social.GameCenter.Score, callback: (error) => void);
 
         }
 
-        export class GooglePlayGames extends Interface {
-            static init(params);
+        export module GameCenter {
+            export interface Achievement {
+                identifier: string;
+                percentComplete: number;//Percentage of achievement complete (from 0 to 100).
+                lastReportedDate: number;
+            }
+            export interface AchievementDescription {
+                identifier: string;
+                title: string;
+                achievedDescription: string;
+                unachievedDescription: string;
+                maximumPoints: number;
+            }
+            export interface Leaderboard {
+
+                category: string;
+                playerIDs: Array<any>;
+                timeScope: Cocoon.Social.GameCenter.TimeScope;
+                playerScope: Cocoon.Social.GameCenter.PlayerScope;
+                rangeStart: number;
+                rangeLength: number;
+                scores: Array<any>;
+                localPlayerScore: Cocoon.Social.GameCenter.Score;
+                localizedTitle: string;
+
+
+
+            }
+            export interface LocalPlayer {
+                playerID: string;
+                alias: string;
+                isAuthenticated: boolean;
+
+            }
+            export interface Player {
+                playerID: string;
+                alias: string;
+                isFriend: boolean;
+            }
+            export interface Score {
+                userID: string
+                score: number
+                userName: string
+                imageURL: string
+                leaderboardID: string
+                rank: number
+
+            }
+            export enum TimeScope {
+                TODAY,
+                WEEK,
+                ALL_TIME
+            }
+            export enum PlayerScope {
+                GLOBAL,
+                FRIENDS
+            }
+        }
+
+        export class GooglePlayGames  {
+            static init(params?);
             static getSocialInterface(): Cocoon.Social.Interface;
-            /// static getMultiplayerInterface():Cocoon.Multiplayer.MultiplayerService;
+            static getMultiplayerInterface():any //Cocoon.Multiplayer.MultiplayerService;
         }
 
         export class Interface {
             getLoggedInUser();
             hasPublishPermissions(callback: () => void);
             isLoggedIn();
-            login(callback: (error) => void);
+            login(callback: (loggedIn: boolean, error) => void);
             logout(callback: (error) => void);
             publishMessage(message: Cocoon.Social.Message, callback: (error) => void);
             publishMessageWithDialog(message: Cocoon.Social.Message, callback: (error) => void);
-            requestAchievements(callback: (error) => void, userId: string);
+            requestAchievements(callback: (achievements:Array<Cocoon.Social.Achievement> , error) => void, userId?: string);
             requestAllAchievements(callback: (error) => void);
             requestFriends(callback: (error) => void, userID: string);
             requestPublishPermissions(callback: (error) => void);
@@ -130,12 +189,12 @@
             requestUser(callback: (error) => void, userID: string);
             requestUserImage(callback: (error) => void, userID: string, imageSize: Cocoon.Social.ImageSize);
             resetAchievements(callback: (error) => void);
-            setAchievementsMap();
+            setAchievementsMap(map:any);
             setTemplates(leaderboardsTemplate: string, achievementsTemplate: string)
             showAchievements(callback: (error) => void);
             showLeaderboard(params: Cocoon.Social.ScoreParams, callback: (error) => void);
-            submitAchievements(achievementID: string, callback: (error) => void);
-            submitScore(score: number, callback, params: Cocoon.Social.ScoreParams);
+            submitAchievement(achievementID: string, callback: (error) => void);
+            submitScore(score: number, callback?: (error) => void, params?: Cocoon.Social.ScoreParams);
         }
 
         export class Achievement {
@@ -179,7 +238,6 @@
             WEEK,
             TODAY,
         }
-
         export enum ImageSize {
             THUMB,
             SMALL,
