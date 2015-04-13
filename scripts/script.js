@@ -4285,7 +4285,10 @@ var defaultHeight = 1024 * 2;
 var fbAppId = "1416523228649363";
 var gameWebsite = "www.joinjelly.com";
 var gameWebsiteIcon = "www.joinjelly.com/icon.png";
-var achievementMap = {
+var contantsAndroid = {
+    ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',
+    ACH_JELLY_2: 'CgkI49ztp64KEAIQBQ',
+    ACH_JELLY_3: 'CgkI49ztp64KEAIQBg',
     ACH_JELLY_4: 'CgkI49ztp64KEAIQBA',
     ACH_JELLY_5: 'CgkI49ztp64KEAIQBQ',
     ACH_JELLY_6: 'CgkI49ztp64KEAIQBg',
@@ -4300,10 +4303,29 @@ var achievementMap = {
     ACH_JELLY_15: 'CgkI49ztp64KEAIQDw',
     ACH_JELLY_16: 'CgkI49ztp64KEAIQEA',
     ACH_JELLY_17: 'CgkI49ztp64KEAIQEQ',
-};
-var constants = {
     CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
     LEAD_LEADERBOARD: 'CgkI49ztp64KEAIQAg',
+};
+var constantsiOS = {
+    ACH_JELLY_1: 'jelly01',
+    ACH_JELLY_2: 'jelly02',
+    ACH_JELLY_3: 'jelly03',
+    ACH_JELLY_4: 'jelly04',
+    ACH_JELLY_5: 'jelly05',
+    ACH_JELLY_6: 'jelly06',
+    ACH_JELLY_7: 'jelly07',
+    ACH_JELLY_8: 'jelly08',
+    ACH_JELLY_9: 'jelly09',
+    ACH_JELLY_10: 'jelly10',
+    ACH_JELLY_11: 'jelly11',
+    ACH_JELLY_12: 'jelly12',
+    ACH_JELLY_13: 'jelly13',
+    ACH_JELLY_14: 'jelly14',
+    ACH_JELLY_15: 'jelly15',
+    ACH_JELLY_16: 'jelly16',
+    ACH_JELLY_17: 'jelly17',
+    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
+    LEAD_LEADERBOARD: 'leaderboards',
 };
 var joinjelly;
 (function (joinjelly) {
@@ -4449,32 +4471,37 @@ var joinjelly;
     var GameServices = (function () {
         function GameServices() {
             var _this = this;
-            var gp = Cocoon.Social.GooglePlayGames;
-            if (Cocoon.Device.getDeviceInfo() && Cocoon.Device.getDeviceInfo().os == "android")
+            var os = "web";
+            if (Cocoon.Device.getDeviceInfo())
+                os = Cocoon.Device.getDeviceInfo().os;
+            if (os == "ios") {
+                this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
+                this.socialService.setAchievementsMap(constantsiOS);
+            }
+            else {
+                var gp = Cocoon.Social.GooglePlayGames;
                 gp.init({
-                    defaultLeaderboard: constants.LEAD_LEADERBOARD,
+                    clientId: contantsAndroid.CLIENT_ID,
+                    defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD
                 });
-            else
-                gp.init({
-                    clientId: constants.CLIENT_ID,
-                    defaultLeaderboard: constants.LEAD_LEADERBOARD,
-                });
-            this.socialService = gp.getSocialInterface();
-            this.socialService.setAchievementsMap(achievementMap);
+                this.socialService = gp.getSocialInterface();
+                this.socialService.setAchievementsMap(contantsAndroid);
+            }
             setTimeout(function () {
                 if (!_this.socialService.isLoggedIn())
                     _this.socialService.login(function (loggedIn, error) {
-                        if (error) {
+                        if (error)
                             console.error("login error: " + error.message + " " + error.code);
-                        }
-                        else if (!loggedIn) {
+                        else if (!loggedIn)
                             console.log("login cancelled");
-                        }
                     });
-            }, 2000);
+            }, 1000);
         }
         GameServices.prototype.showLeaderboard = function () {
             this.socialService.showLeaderboard();
+        };
+        GameServices.prototype.showAchievements = function () {
+            this.socialService.showAchievements();
         };
         GameServices.prototype.submitScore = function (score) {
             this.socialService.submitScore(score, function (error) {
@@ -4484,13 +4511,13 @@ var joinjelly;
                     console.log("submited score: " + score);
             });
         };
-        GameServices.prototype.submitJellyAchievent = function (jellyValye) {
-            var jellyNumber = Math.floor(Math.log(jellyValye) / Math.log(2)) + 1;
+        GameServices.prototype.submitJellyAchievent = function (jellyValue) {
+            var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
             this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, function (error) {
                 if (error)
                     console.error("submitAchievement error: " + error.message);
                 else
-                    console.log("submited Achievement: " + achievementId);
+                    console.log("submited Achievement: jelly " + jellyNumber);
             });
         };
         return GameServices;
