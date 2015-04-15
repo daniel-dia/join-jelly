@@ -8,6 +8,10 @@
             var os = "web"
             if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
 
+
+            if (os == "windows") return;
+
+
             if (os == "ios") {
                 //initializes game services
                 this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
@@ -36,9 +40,7 @@
                 // set achievement Map
                 this.socialService.setAchievementsMap(contantsAndroid)
                 this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
-            } else if (os == "windows") {
-                return;
-            }
+            }  
 
             // login into game Services
             setTimeout(() => {

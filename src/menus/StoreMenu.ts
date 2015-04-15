@@ -145,6 +145,29 @@
             return this.productsListItems[productId];
         }
 
+        // animate footer item
+        private animateItem(productId: string) {
+            switch (productId) {
+                case "time5x":   this.gameFooter.bounceItem(Items.TIME  );break;
+                case "fast5x":   this.gameFooter.bounceItem(Items.FAST  );break;
+                case "clean5x":  this.gameFooter.bounceItem(Items.CLEAN );break;
+                case "revive5x": this.gameFooter.bounceItem(Items.REVIVE);break;
+                case "pack5x":
+                    this.gameFooter.bounceItem(Items.TIME);
+                    this.gameFooter.bounceItem(Items.FAST);
+                    this.gameFooter.bounceItem(Items.CLEAN);
+                    this.gameFooter.bounceItem(Items.REVIVE);
+                    break;
+                case "pack10x":
+                    this.gameFooter.bounceItem(Items.TIME);
+                    this.gameFooter.bounceItem(Items.FAST);
+                    this.gameFooter.bounceItem(Items.CLEAN);
+                    this.gameFooter.bounceItem(Items.REVIVE);
+                    break;
+                
+            }
+        }
+
         //#endregion 
 
         //#region market =====================================================================================
@@ -177,6 +200,7 @@
                     this.fullFillPurchase(purchaseInfo.productId);
                     this.updateFooter();
                     this.unlockUI();
+                    this.animateItem(purchaseInfo.productId);
 
                     if (productsData[purchaseInfo.productId].consumable) {
                         this.getProductListItem(purchaseInfo.productId).setPurchased(true);
@@ -245,23 +269,23 @@
         private fullFillPurchase(productId: string): boolean {
 
             switch (productId) {
-                case "time5x": JoinJelly.itemData.increaseItemAmmount("time", 5); break;
-                case "fast5x": JoinJelly.itemData.increaseItemAmmount("fast", 5); break;
-                case "clean5x": JoinJelly.itemData.increaseItemAmmount("clean", 5); break;
-                case "revive5x": JoinJelly.itemData.increaseItemAmmount("revive", 5); break;
+                case "time5x":   JoinJelly.itemData.increaseItemAmmount(Items.TIME  , 5); break;
+                case "fast5x":   JoinJelly.itemData.increaseItemAmmount(Items.FAST  , 5); break;
+                case "clean5x":  JoinJelly.itemData.increaseItemAmmount(Items.CLEAN , 5); break;
+                case "revive5x": JoinJelly.itemData.increaseItemAmmount(Items.REVIVE, 5); break;
                 case "pack5x":
-                    JoinJelly.itemData.increaseItemAmmount("time", 5);
-                    JoinJelly.itemData.increaseItemAmmount("clean", 5);
-                    JoinJelly.itemData.increaseItemAmmount("fast", 5);
-                    JoinJelly.itemData.increaseItemAmmount("revive", 5);
+                    JoinJelly.itemData.increaseItemAmmount(Items.TIME  , 5);
+                    JoinJelly.itemData.increaseItemAmmount(Items.FAST   , 5);
+                    JoinJelly.itemData.increaseItemAmmount(Items.CLEAN , 5);
+                    JoinJelly.itemData.increaseItemAmmount(Items.REVIVE, 5);
                     break;
                 case "pack10x":
-                    JoinJelly.itemData.increaseItemAmmount("clean", 10);
-                    JoinJelly.itemData.increaseItemAmmount("fast", 10);
-                    JoinJelly.itemData.increaseItemAmmount("time", 10);
-                    JoinJelly.itemData.increaseItemAmmount("revive", 10);
+                    JoinJelly.itemData.increaseItemAmmount(Items.TIME  , 10);
+                    JoinJelly.itemData.increaseItemAmmount(Items.FAST  , 10);
+                    JoinJelly.itemData.increaseItemAmmount(Items.CLEAN , 10);
+                    JoinJelly.itemData.increaseItemAmmount(Items.REVIVE, 10);
                     break;
-                case "lucky": JoinJelly.itemData.increaseItemAmmount("lucky", 1); break;
+                case "lucky": JoinJelly.itemData.increaseItemAmmount(Items.LUCKY, 1); break;
             }
 
             return true;

@@ -1575,6 +1575,34 @@ var joinjelly;
             StoreMenu.prototype.getProductListItem = function (productId) {
                 return this.productsListItems[productId];
             };
+            StoreMenu.prototype.animateItem = function (productId) {
+                switch (productId) {
+                    case "time5x":
+                        this.gameFooter.bounceItem(joinjelly.Items.TIME);
+                        break;
+                    case "fast5x":
+                        this.gameFooter.bounceItem(joinjelly.Items.FAST);
+                        break;
+                    case "clean5x":
+                        this.gameFooter.bounceItem(joinjelly.Items.CLEAN);
+                        break;
+                    case "revive5x":
+                        this.gameFooter.bounceItem(joinjelly.Items.REVIVE);
+                        break;
+                    case "pack5x":
+                        this.gameFooter.bounceItem(joinjelly.Items.TIME);
+                        this.gameFooter.bounceItem(joinjelly.Items.FAST);
+                        this.gameFooter.bounceItem(joinjelly.Items.CLEAN);
+                        this.gameFooter.bounceItem(joinjelly.Items.REVIVE);
+                        break;
+                    case "pack10x":
+                        this.gameFooter.bounceItem(joinjelly.Items.TIME);
+                        this.gameFooter.bounceItem(joinjelly.Items.FAST);
+                        this.gameFooter.bounceItem(joinjelly.Items.CLEAN);
+                        this.gameFooter.bounceItem(joinjelly.Items.REVIVE);
+                        break;
+                }
+            };
             StoreMenu.prototype.initializeStore = function () {
                 var _this = this;
                 Cocoon.Store.on("load", {
@@ -1597,6 +1625,7 @@ var joinjelly;
                         _this.fullFillPurchase(purchaseInfo.productId);
                         _this.updateFooter();
                         _this.unlockUI();
+                        _this.animateItem(purchaseInfo.productId);
                         if (productsData[purchaseInfo.productId].consumable) {
                             _this.getProductListItem(purchaseInfo.productId).setPurchased(true);
                             Cocoon.Store.consume(purchaseInfo.transactionId, purchaseInfo.productId);
@@ -1637,31 +1666,31 @@ var joinjelly;
             StoreMenu.prototype.fullFillPurchase = function (productId) {
                 switch (productId) {
                     case "time5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.TIME, 5);
                         break;
                     case "fast5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.FAST, 5);
                         break;
                     case "clean5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 5);
                         break;
                     case "revive5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 5);
                         break;
                     case "pack5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 5);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 5);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 5);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.TIME, 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.FAST, 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 5);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 5);
                         break;
                     case "pack10x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("clean", 10);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("fast", 10);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("time", 10);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 10);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.TIME, 10);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.FAST, 10);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 10);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 10);
                         break;
                     case "lucky":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount("lucky", 1);
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.LUCKY, 1);
                         break;
                 }
                 return true;
@@ -2330,8 +2359,9 @@ var joinjelly;
                     this.locked = false;
                     this.updateColor();
                 };
-                ItemButton.prototype.highLight = function () {
-                    createjs.Tween.get(this, { loop: true }).to({ rotation: -10, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: -10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: 0, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).wait(400);
+                ItemButton.prototype.highLight = function (loop) {
+                    if (loop === void 0) { loop = true; }
+                    createjs.Tween.get(this, { loop: loop }).to({ rotation: -10, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: -10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: 0, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).wait(400);
                 };
                 ItemButton.prototype.unHighlight = function () {
                     createjs.Tween.removeTweens(this);
@@ -4435,6 +4465,9 @@ var joinjelly;
                 ItemsFooter.prototype.hideMessage = function () {
                     this.gameMessage.fadeOut();
                 };
+                ItemsFooter.prototype.bounceItem = function (item) {
+                    this.getItemButton(item).highLight(false);
+                };
                 ItemsFooter.prototype.highlight = function (item) {
                     this.unHighlightAll();
                     this.getItemButton(item).highLight();
@@ -4474,6 +4507,8 @@ var joinjelly;
             var os = "web";
             if (Cocoon.Device.getDeviceInfo())
                 os = Cocoon.Device.getDeviceInfo().os;
+            if (os == "windows")
+                return;
             if (os == "ios") {
                 this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
                 this.socialService.setAchievementsMap(constantsiOS);
@@ -4493,9 +4528,6 @@ var joinjelly;
                 this.socialService = gp.getSocialInterface();
                 this.socialService.setAchievementsMap(contantsAndroid);
                 this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
-            }
-            else if (os == "windows") {
-                return;
             }
             setTimeout(function () {
                 if (!_this.socialService.isLoggedIn()) {

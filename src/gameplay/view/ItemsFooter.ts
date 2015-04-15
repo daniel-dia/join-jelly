@@ -107,6 +107,11 @@
         }
 
         // bounces an item
+        public bounceItem(item: string) {
+            this.getItemButton(item).highLight(false);
+        }
+
+        // bounces an item
         public highlight(item: string) {
             this.unHighlightAll();
             this.getItemButton(item).highLight();
