@@ -9,8 +9,7 @@
 
         constructor(productId: string, name: string, description: string, localizedPrice: string) {
             super();
-
-
+            
             var tContainer = new createjs.Container();
 
             // Add Background
