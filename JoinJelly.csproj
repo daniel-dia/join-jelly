@@ -27,6 +27,7 @@
     <Content Include="assets\images\bonus_bar.png" />
     <Content Include="assets\images\bonus_border.png" />
     <Content Include="assets\images\bonus_icon.png" />
+    <Content Include="assets\images\BtAchievements.png" />
     <Content Include="assets\images\BtBoard.png" />
     <Content Include="assets\images\BtEdit.png" />
     <Content Include="assets\images\BtHelp.png" />
@@ -147,6 +148,7 @@
     <Content Include="assets\images_0.25x\bonus_bar.png" />
     <Content Include="assets\images_0.25x\bonus_border.png" />
     <Content Include="assets\images_0.25x\bonus_icon.png" />
+    <Content Include="assets\images_0.25x\BtAchievements.png" />
     <Content Include="assets\images_0.25x\BtBoard.png" />
     <Content Include="assets\images_0.25x\BtEdit.png" />
     <Content Include="assets\images_0.25x\btHelp.png" />
@@ -171,7 +173,6 @@
     <Content Include="assets\images_0.25x\BtStore.png" />
     <Content Include="assets\images_0.25x\BtTextBg.png" />
     <Content Include="assets\images_0.25x\BtTutorial.png" />
-    <Content Include="assets\images_0.25x\Bt_LeaderBoards.png" />
     <Content Include="assets\images_0.25x\check.png" />
     <Content Include="assets\images_0.25x\ChubbyFont.png" />
     <Content Include="assets\images_0.25x\cleanEffect.png" />
@@ -271,6 +272,7 @@
     <Content Include="assets\images_0.5x\bonus_bar.png" />
     <Content Include="assets\images_0.5x\bonus_border.png" />
     <Content Include="assets\images_0.5x\bonus_icon.png" />
+    <Content Include="assets\images_0.5x\BtAchievements.png" />
     <Content Include="assets\images_0.5x\BtBoard.png" />
     <Content Include="assets\images_0.5x\BtEdit.png" />
     <Content Include="assets\images_0.5x\btHelp.png" />
@@ -295,7 +297,6 @@
     <Content Include="assets\images_0.5x\BtStore.png" />
     <Content Include="assets\images_0.5x\BtTextBg.png" />
     <Content Include="assets\images_0.5x\BtTutorial.png" />
-    <Content Include="assets\images_0.5x\Bt_LeaderBoards.png" />
     <Content Include="assets\images_0.5x\check.png" />
     <Content Include="assets\images_0.5x\ChubbyFont.png" />
     <Content Include="assets\images_0.5x\cleanEffect.png" />
@@ -423,6 +424,17 @@
     <Content Include="scripts\script.min.js">
       <DependentUpon>script.js</DependentUpon>
     </Content>
+    <Content Include="scripts\templates\achievements.html" />
+    <Content Include="scripts\templates\assets\css\main.css" />
+    <Content Include="scripts\templates\assets\css\page_achivements.css" />
+    <Content Include="scripts\templates\assets\css\page_leaderboards.css" />
+    <Content Include="scripts\templates\assets\css\style.css" />
+    <Content Include="scripts\templates\assets\images\achivement_locked.png" />
+    <Content Include="scripts\templates\assets\images\close.png" />
+    <Content Include="scripts\templates\assets\images\loading.gif" />
+    <Content Include="scripts\templates\assets\js\jquery-1.8.3.min.js" />
+    <Content Include="scripts\templates\assets\js\jquery.equalheights.js" />
+    <Content Include="scripts\templates\leaderboards.html" />
     <Content Include="test.html" />
     <Content Include="index.html" />
     <Content Include="scripts\BitmapScalePath.js" />

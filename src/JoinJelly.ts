@@ -35,10 +35,9 @@ module joinjelly {
 
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
 
-
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
-            // verify test
+            
 
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {

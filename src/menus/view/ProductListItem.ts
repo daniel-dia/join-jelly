@@ -51,7 +51,7 @@
             var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
             titleObj.y = 40;
             descriptionObj.y = 140;
-            titleObj.scaleX = titleObj.scaleY = 0.8;
+            titleObj.scaleX = titleObj.scaleY = 0.7;
             descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
             titleObj.x = descriptionObj.x = 400;
             tContainer.addChild(titleObj);

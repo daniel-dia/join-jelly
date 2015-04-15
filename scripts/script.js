@@ -4324,7 +4324,6 @@ var constantsiOS = {
     ACH_JELLY_15: 'jelly15',
     ACH_JELLY_16: 'jelly16',
     ACH_JELLY_17: 'jelly17',
-    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
     LEAD_LEADERBOARD: 'leaderboards',
 };
 var joinjelly;
@@ -4478,7 +4477,13 @@ var joinjelly;
                 this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
                 this.socialService.setAchievementsMap(constantsiOS);
             }
-            else {
+            else if (os == "andoird") {
+                var gp = Cocoon.Social.GooglePlayGames;
+                gp.init({ defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD });
+                this.socialService = gp.getSocialInterface();
+                this.socialService.setAchievementsMap(contantsAndroid);
+            }
+            else if (os == "web") {
                 var gp = Cocoon.Social.GooglePlayGames;
                 gp.init({
                     clientId: contantsAndroid.CLIENT_ID,
@@ -4486,24 +4491,35 @@ var joinjelly;
                 });
                 this.socialService = gp.getSocialInterface();
                 this.socialService.setAchievementsMap(contantsAndroid);
+                this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
+            }
+            else if (os == "windows") {
+                return;
             }
             setTimeout(function () {
-                if (!_this.socialService.isLoggedIn())
+                if (!_this.socialService.isLoggedIn()) {
                     _this.socialService.login(function (loggedIn, error) {
                         if (error)
                             console.error("login error: " + error.message + " " + error.code);
                         else if (!loggedIn)
                             console.log("login cancelled");
                     });
-            }, 1000);
+                }
+            }, 6000);
         }
         GameServices.prototype.showLeaderboard = function () {
+            if (!this.socialService)
+                return;
             this.socialService.showLeaderboard();
         };
         GameServices.prototype.showAchievements = function () {
+            if (!this.socialService)
+                return;
             this.socialService.showAchievements();
         };
         GameServices.prototype.submitScore = function (score) {
+            if (!this.socialService)
+                return;
             this.socialService.submitScore(score, function (error) {
                 if (error)
                     console.error("score error: " + error.message);
@@ -4512,6 +4528,8 @@ var joinjelly;
             });
         };
         GameServices.prototype.submitJellyAchievent = function (jellyValue) {
+            if (!this.socialService)
+                return;
             var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
             this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, function (error) {
                 if (error)
@@ -4794,7 +4812,7 @@ var joinjelly;
                     var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
                     titleObj.y = 40;
                     descriptionObj.y = 140;
-                    titleObj.scaleX = titleObj.scaleY = 0.8;
+                    titleObj.scaleX = titleObj.scaleY = 0.7;
                     descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
                     titleObj.x = descriptionObj.x = 400;
                     tContainer.addChild(titleObj);

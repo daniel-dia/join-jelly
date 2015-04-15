@@ -213,7 +213,7 @@
             linkText: string;// The text that will appear in the message link.
             linkCaption: string; // The text caption that will appear in the message link.
         }
-        export class Score {
+        export interface Score {
             userID: string; // The user id.
             score: number; // The score of the user.
             userName: string; // The name of the user.
@@ -221,16 +221,16 @@
             leaderboardID: number; // The id of the leaderboard the score belongs to.
 
         }
-        export class ScoreParams {
-            userID: string; // The user id. If no userID is specified the current logged in user is assumed.
-            leaderboardID: number; // The leaderboard ID. If no leaderboard is specified the default leaderboard is assumed.
-            friends: boolean; // If enabled the query will get only scores from friends in the social network.
-            timeScope: Cocoon.Social.TimeScope; // The time scope for the scores.
+        export interface ScoreParams {
+            userID?: string; // The user id. If no userID is specified the current logged in user is assumed.
+            leaderboardID?: number; // The leaderboard ID. If no leaderboard is specified the default leaderboard is assumed.
+            friends?: boolean; // If enabled the query will get only scores from friends in the social network.
+            timeScope?: Cocoon.Social.TimeScope; // The time scope for the scores.
         }
-        export class User {
+        export interface User {
             userID: string; //The id of the user.
-            userName: string; //The user name of the user.
-            userImage: string; //If the image URL is not provided by default, fetch it using requestUserImage method.
+            userName?: string; //The user name of the user.
+            userImage?: string; //If the image URL is not provided by default, fetch it using requestUserImage method.
         }
 
         export enum TimeScope {

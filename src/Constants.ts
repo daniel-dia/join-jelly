@@ -5,7 +5,6 @@ var fbAppId: string = "1416523228649363";
 var gameWebsite: string = "www.joinjelly.com";
 var gameWebsiteIcon: string = "www.joinjelly.com/icon.png";
 
-
 var contantsAndroid ={
     ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',
     ACH_JELLY_2: 'CgkI49ztp64KEAIQBQ',
@@ -45,8 +44,7 @@ var constantsiOS = {
     ACH_JELLY_14: 'jelly14',
     ACH_JELLY_15: 'jelly15',
     ACH_JELLY_16: 'jelly16',
-    ACH_JELLY_17: 'jelly17',
-    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
+    ACH_JELLY_17: 'jelly17', 
     LEAD_LEADERBOARD: 'leaderboards',
 }
 
