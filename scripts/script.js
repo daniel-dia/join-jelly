@@ -3197,6 +3197,7 @@ var joinjelly;
                 this.gamestate = 1 /* playing */;
                 this.step(500);
                 joinjelly.JoinJelly.analytics.logGameStart();
+                this.highJellySave(1);
             };
             GamePlayScreen.prototype.step = function (timeout) {
                 var _this = this;

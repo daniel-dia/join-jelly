@@ -307,6 +307,9 @@
             // log game start event
             JoinJelly.analytics.logGameStart();
 
+            // set first achievement (jelly 1)
+            this.highJellySave(1);
+
         }
 
         // time step for adding tiles.
@@ -618,6 +621,7 @@
             // update currentLevel
             this.updateCurrentLevel()
 
+            // saves level
             this.saveGame();
 
             // verifies if it can move, make it a little more faster
@@ -628,7 +632,7 @@
 
         private highJellySave(newValue) {
             if (this.highJelly < newValue) {
-
+                
                 // log HighJelly Event
                 joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time)
 
