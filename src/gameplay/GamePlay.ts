@@ -97,6 +97,7 @@
 
         }
 
+        // normalize a effect by screen size
         private normalizeEffect(fxObj) {
             fxObj.visible = false;
             fxObj.y = JoinJelly.gameScreen.headerPosition;
