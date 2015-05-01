@@ -2,8 +2,7 @@
 
 module joinjelly {
     export class JoinJelly {
-
-
+        
         public static maxJelly: number = 65536;
         public static userData: UserData;
         public static gameScreen: gameui.GameScreen;
@@ -64,6 +63,7 @@ module joinjelly {
             alert("beta");
         }
 
+
         public static showMainMenu() {
             var transition;
             if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };
@@ -87,6 +87,11 @@ module joinjelly {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new menus.StoreMenu(previousScreen), null, transition);
+        }
+
+
+        public static showIntro() {
+             this.gameScreen.switchScreen(new joinjelly.StoryScreen());
         }
 
         public static showLeaderboards() {

@@ -130,18 +130,20 @@ var gameui;
     })();
     gameui.AudiosManager = AudiosManager;
 })(gameui || (gameui = {}));
+var images;
 var gameui;
 (function (gameui) {
     var AssetsManager = (function () {
         function AssetsManager() {
         }
-        AssetsManager.loadAssets = function (manifest, path, spriteSheets, imagesArray) {
+        AssetsManager.loadAssets = function (manifest, path, spriteSheets) {
             var _this = this;
             if (path === void 0) { path = ""; }
             this.spriteSheets = spriteSheets ? spriteSheets : new Array();
-            this.imagesArray = imagesArray ? imagesArray : new Array();
             this.bitmapFontSpriteSheetDataArray = this.bitmapFontSpriteSheetDataArray ? this.bitmapFontSpriteSheetDataArray : new Array();
             this.assetsManifest = manifest;
+            if (!images)
+                images = new Array();
             createjs.Sound.alternateExtensions = ["mp3"];
             if (!this.loader) {
                 this.loader = new createjs.LoadQueue(false);
@@ -162,7 +164,7 @@ var gameui;
                 });
                 this.loader.addEventListener("fileload", function (evt) {
                     if (evt.item.type == "image")
-                        _this.imagesArray[evt.item.id] = evt.result;
+                        images[evt.item.id] = evt.result;
                     return true;
                 });
             }
@@ -172,17 +174,17 @@ var gameui;
             this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
         };
         AssetsManager.cleanAssets = function () {
-            if (this.imagesArray)
+            if (images)
                 ;
-            for (var i in this.imagesArray) {
-                var img = this.imagesArray[i];
+            for (var i in images) {
+                var img = images[i];
                 if (img.dispose)
                     img.dispose();
-                delete this.imagesArray[i];
+                delete images[i];
             }
         };
         AssetsManager.getImagesArray = function () {
-            return this.imagesArray;
+            return images;
         };
         AssetsManager.getBitmap = function (name) {
             if (this.spriteSheets)
@@ -495,9 +497,15 @@ var gameui;
             }
             else {
                 this.background.y = headerY;
-                this.background.x = -(width * scale - width) / 2;
+                if (false) {
+                    this.background.x = -(width * scale - width) / 2;
+                    this.background.scaleX = this.background.scaleY = scale;
+                }
+                else {
+                    this.background.x = 0;
+                    this.background.scaleY = scale;
+                }
             }
-            this.background.scaleX = this.background.scaleY = scale;
             var mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, -(heigth - defaultHeight) / 2, width, heigth));
             this.background.mask = mask;
             this.footer.mask = mask;
@@ -1154,7 +1162,7 @@ var joinjelly;
                 if (joinjelly.JoinJelly.userData.getHistory(histories.TUTORIAL))
                     joinjelly.JoinJelly.startLevel();
                 else
-                    joinjelly.JoinJelly.startTutorial();
+                    joinjelly.JoinJelly.showIntro();
             });
             button.y = 1168;
             button.x = 768;
@@ -1165,7 +1173,7 @@ var joinjelly;
             this.content.addChild(t);
         };
         MainScreen.prototype.createBackground = function () {
-            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
+            this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
         };
         MainScreen.prototype.createHeader = function () {
         };
@@ -1511,7 +1519,8 @@ var joinjelly;
                 this.content.addChild(restore);
             }
             StoreMenu.prototype.fillProducts = function (productList) {
-                this.productsListItems = {};
+                var dic = {};
+                this.productsListItems = dic;
                 this.showLoaded();
                 for (var p in productList)
                     this.addProduct(productList[p], p);
@@ -4282,6 +4291,9 @@ var joinjelly;
                 transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.menus.StoreMenu(previousScreen), null, transition);
         };
+        JoinJelly.showIntro = function () {
+            this.gameScreen.switchScreen(new joinjelly.StoryScreen());
+        };
         JoinJelly.showLeaderboards = function () {
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
@@ -4507,7 +4519,7 @@ var joinjelly;
             var os = "web";
             if (Cocoon.Device.getDeviceInfo())
                 os = Cocoon.Device.getDeviceInfo().os;
-            if (os == "windows")
+            if (os == "windows" || os == "web")
                 return;
             if (os == "ios") {
                 this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
@@ -4674,6 +4686,23 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
+    var StoryScreen = (function (_super) {
+        __extends(StoryScreen, _super);
+        function StoryScreen() {
+            _super.call(this);
+            var intro = new lib.Intro2();
+            this.content.addChild(intro);
+            intro.play();
+            setTimeout(function () {
+                joinjelly.JoinJelly.startTutorial();
+            }, 19000);
+        }
+        return StoryScreen;
+    })(gameui.ScreenState);
+    joinjelly.StoryScreen = StoryScreen;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
     var menus;
     (function (menus) {
         var view;
@@ -4829,8 +4858,7 @@ var joinjelly;
                         case "lucky":
                             iconId = "lucky";
                             break;
-                        default:
-                            iconId = "itemPack";
+                        default: iconId = "itemPack";
                     }
                     var icon = gameui.AssetsManager.getBitmap(iconId);
                     icon.regX = icon.getBounds().width / 2;

@@ -62,8 +62,8 @@
         
         // add all products in the list
         private fillProducts(productList: Array<Cocoon.Store.ProductInfo>) {
-            
-            this.productsListItems = <Array<view.ProductListItem>>{};
+            var dic ={};
+            this.productsListItems = <Array<view.ProductListItem>>dic;
             this.showLoaded();
 
             for (var p in productList) 

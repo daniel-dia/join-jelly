@@ -57,11 +57,19 @@ module gameui {
                 this.background.x = 0;
             } else {
                 this.background.y = headerY;
-                this.background.x = -(width*scale - width)/2;
+
+				if (false) {
+					this.background.x = -(width * scale - width) / 2;
+					this.background.scaleX = this.background.scaleY = scale;
+				} else {
+					this.background.x = 0;
+					this.background.scaleY = scale;
+				}
             }
 
-            this.background.scaleX = this.background.scaleY = scale;
-           
+			
+			 
+
             var mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, -(heigth - defaultHeight) / 2, width, heigth))
             this.background.mask = mask;
             this.footer.mask = mask;

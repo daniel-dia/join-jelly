@@ -9,7 +9,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.1</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -389,6 +389,7 @@
     <Content Include="assets\images_0.5x\tutorialFinger.png" />
     <Content Include="assets\images_0.5x\tutorialFingerDown.png" />
     <Content Include="assets\images_0.5x\unchecked.png" />
+    <Content Include="assets\Intro2.js" />
     <Content Include="assets\Manifest.js" />
     <Content Include="assets\resize.bat" />
     <Content Include="assets\sounds\end.mp3" />
@@ -420,6 +421,7 @@
     <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\EaselJS Editor.js" />
     <Content Include="scripts\MobileServices.Web-1.2.5.min.js" />
+    <Content Include="scripts\movieclip-0.8.0.min.js" />
     <Content Include="scripts\Plataform.js" />
     <Content Include="scripts\script.min.js">
       <DependentUpon>script.js</DependentUpon>
@@ -448,6 +450,7 @@
     <TypeScriptCompile Include="src\gameplay\view\CountDown.ts" />
     <TypeScriptCompile Include="src\menus\LeaderBoards.ts" />
     <TypeScriptCompile Include="src\LeaderBoards.ts" />
+    <TypeScriptCompile Include="src\menus\StoryScreen.ts" />
     <TypeScriptCompile Include="src\menus\view\LeaderBoardItem.ts" />
     <TypeScriptCompile Include="src\menus\view\LoadingBar.ts" />
     <TypeScriptCompile Include="src\menus\view\PlayerNameOption.ts" />

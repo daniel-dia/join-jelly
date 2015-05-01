@@ -1,13 +1,21 @@
 ﻿var imageManifest = [
+
+       { src: "e1_hanger.png", id: "e1_hanger" },
+	   { src: "e1_happy.png", id: "e1_happy" },
+	   { src: "e1_sad.png", id: "e1_sad" },
+	   { src: "movement.png", id: "movement" },
+	   { src: "movement2.png", id: "movement2" },
+	   { src: "movement_surprise.png", id: "movement_surprise" },
+
        { id: "j1024", src: "j1024.png" },
        { id: "j2048", src: "j2048.png" },
        { id: "j4096", src: "j4096.png" },
        { id: "j8192", src: "j8192.png" },
-             
+
        { id: "loadingBall", src: "loadingBall.png" },
        { id: "Background", src: "Background.jpg" },
        { id: "hex", src: "hex.png" },
-       { id: "backhome", src: "BackMain.jpg" },
+       { id: "BackMain", src: "BackMain.jpg" },
        { id: "powerTip", src: "powerTip.png" },
        { id: "bonus_bar", src: "bonus_bar.png" },
        { id: "bonus_border", src: "bonus_border.png" },
@@ -41,10 +49,12 @@
        { id: "n1", src: "n1.png" },
        { id: "n2", src: "n2.png" },
        { id: "n3", src: "n3.png" },
-                      
-       { id: "footer", src: "footer.png" }, 
+
+       { id: "footer", src: "footer.png" },
        { id: "j-1", src: "j-1.png" },
        { id: "e-1", src: "e-1.png" },
+       { id: "j_1", src: "j-1.png" },
+       { id: "e_1", src: "e-1.png" },
        { id: "j1", src: "j1.png" },
        { id: "j128", src: "j128.png" },
        { id: "j16", src: "j16.png" },
@@ -80,7 +90,7 @@
        { id: "BtBoard", src: "BtBoard.png" },
        { id: "BtOk", src: "BtOk.png" },
        { id: "BtShare", src: "BtShare.png" },
-       { id: "BtTextBg", src: "BtTextBg.png" }, 
+       { id: "BtTextBg", src: "BtTextBg.png" },
        { id: "BtMenu", src: "BtMenu.png" },
        { id: "BtPlusMini", src: "BtPlusMini.png" },
 
@@ -95,16 +105,16 @@
        { id: "title_join_2", src: "title_join_2.png" },
        { id: "title_join_3", src: "title_join_3.png" },
        { id: "title_join_4", src: "title_join_4.png" },
-                 
+
        { id: "title_jelly_1", src: "title_jelly_1.png" },
        { id: "title_jelly_2", src: "title_jelly_2.png" },
        { id: "title_jelly_3", src: "title_jelly_3.png" },
        { id: "title_jelly_4", src: "title_jelly_4.png" },
        { id: "title_jelly_5", src: "title_jelly_5.png" },
-            
+
        { id: "FlyBG", src: "FlyBG.png" },
        { id: "FlyGroup", src: "FlyGroup.png" },
-            
+
        { id: "footer", src: "footer.png" },
        { id: "itemclean", src: "itemClean.png" },
        { id: "itemevolve", src: "itemEvolve.png" },
@@ -163,7 +173,7 @@ var audioManifest = [
     { id: "Interface Sound-15", src: "Interface Sound-15.ogg" },
     { id: "evolve", src: "evolve.ogg" },
     { id: "end", src: "end.ogg" },
-                        
+
     { id: "musicIntro", src: "musicIntro.ogg" },
     { id: "music1", src: "music1.ogg" },
 ]

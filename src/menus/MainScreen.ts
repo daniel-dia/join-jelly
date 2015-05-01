@@ -36,7 +36,7 @@
                 if (JoinJelly.userData.getHistory(histories.TUTORIAL))
                     JoinJelly.startLevel();
                 else
-                    JoinJelly.startTutorial();
+                    JoinJelly.showIntro();
             });
             button.y = 1168;
             button.x = 768;
@@ -49,7 +49,7 @@
         }
 
         private createBackground() {
-            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
+            this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
         }
 
         private createHeader() {

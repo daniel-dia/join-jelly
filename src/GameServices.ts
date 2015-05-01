@@ -9,7 +9,7 @@
             if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
 
 
-            if (os == "windows") return;
+            if (os == "windows" || os=="web") return;
 
 
             if (os == "ios") {
