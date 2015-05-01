@@ -7,10 +7,9 @@
             // get device os info
             var os = "web"
             if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
-
-
+		 
             if (os == "windows" || os=="web") return;
-
+		 
 
             if (os == "ios") {
                 //initializes game services
@@ -20,7 +19,7 @@
 
             }
 
-            else if (os == "andoird") {
+            else if (os == "android") {
                 //initializes game services
                 var gp = Cocoon.Social.GooglePlayGames;
                 gp.init({ defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD });
@@ -42,20 +41,21 @@
                 this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
             }  
 
-            // login into game Services
-            setTimeout(() => {
-
-                if (!this.socialService.isLoggedIn()) {
-                    this.socialService.login((loggedIn, error) => {
-                        if (error) console.error("login error: " + error.message + " " + error.code);
-                        else if (!loggedIn) console.log("login cancelled");
-                    });
-                }
-            }, 6000);
+           // login into game Services
+           setTimeout(() => {
+               if (!this.socialService.isLoggedIn()) {
+                   this.socialService.login((loggedIn, error) => {
+                       if (error) console.error("login error: " + error.message + " " + error.code);
+                       else if (!loggedIn) console.log("login cancelled");
+                   });
+               }
+           }, 10000);
         }
 
         // show native leaderboards
         public showLeaderboard() {
+			
+
             if (!this.socialService) return;
             this.socialService.showLeaderboard();
         }

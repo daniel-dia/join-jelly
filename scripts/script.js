@@ -111,7 +111,7 @@ var gameui;
         AudiosManager.playMusic = function (name, volume) {
             if (volume === void 0) { volume = 1; }
             if (this.currentMusic) {
-                this.currentMusic.setVolume(volume);
+                this.currentMusic.setVolume(volume * this.getMusicVolume());
                 if (this.currentMusicName == name)
                     return;
                 this.currentMusic.stop();
@@ -4499,7 +4499,7 @@ var joinjelly;
                 this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
                 this.socialService.setAchievementsMap(constantsiOS);
             }
-            else if (os == "andoird") {
+            else if (os == "android") {
                 var gp = Cocoon.Social.GooglePlayGames;
                 gp.init({ defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD });
                 this.socialService = gp.getSocialInterface();
@@ -4524,7 +4524,7 @@ var joinjelly;
                             console.log("login cancelled");
                     });
                 }
-            }, 6000);
+            }, 10000);
         }
         GameServices.prototype.showLeaderboard = function () {
             if (!this.socialService)
