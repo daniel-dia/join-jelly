@@ -762,8 +762,8 @@ var StringResources = {
     tutorial: {
         msgheplme: "Help me to evolve\nJoin  2 identical jellies.",
         msgOnceMore: "Great! now I'm bigger, \nevolve me once more",
-        msgDirt: "Ow, a dirt appears \n Join two jelly near to destroy it.",
-        msgPlay: "Perfect!\nNow let's play this game.",
+        msgDirt: "Ow, a dirt appears \n Join a jelly here to destroy it.",
+        msgPlay: "Perfect!\nNow evolve me to the max!",
         msgItemClean: "You can always use items.\n this cleans the board",
         msgItemFast: "this one join some jellies",
         msgItemTime: "this one make time slower",
@@ -856,10 +856,10 @@ var StringResources_pt = {
         error: "Desculpe, algo deu errado.",
     },
     tutorial: {
-        msgheplme: "Me ajude a desenvolver\nJunte 2 geleias IGUAIS.",
+        msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
         msgOnceMore: "Legal! Estou maior, \nMe desenvolva novamente",
-        msgDirt: "Olha, sujeiras! Junte \numa geleia lá para limpar.",
-        msgPlay: "Perfeito!\nVamos jogar!.",
+        msgDirt: "Olha, sujeiras! Junte \numa geleia aqui para limpar.",
+        msgPlay: "Perfeito!\nMe evolua ao maximo!.",
         msgItemClean: "Sempre que precisar use items.\nEste limpa a bagunça",
         msgItemFast: "Esse junta \nalgumas geleias",
         msgItemTime: "Esse congela o tempo",
@@ -3835,22 +3835,31 @@ var joinjelly;
                         _this.tutorialWait(1500);
                         _this.board.getTileById(16).setNumber(1);
                         _this.board.getTileById(16).disable();
+                        _this.board.getTileById(19).setNumber(1);
+                        _this.board.getTileById(19).disable();
                     },
                     function () {
                         _this.board.getTileById(16).disable();
-                        _this.board.getTileById(18).setNumber(1);
+                        _this.board.getTileById(19).disable();
                         _this.showTutorialMessage(StringResources.tutorial.msgheplme);
-                        _this.board.getTileById(18).disable();
+                        _this.waitMessage();
+                    },
+                    function () {
+                        _this.board.getTileById(17).setNumber(-1);
+                        _this.board.getTileById(20).setNumber(-1);
+                        _this.board.getTileById(22).setNumber(-1);
+                        _this.board.getTileById(15).setNumber(-1);
+                        _this.showTutorialMessage(StringResources.tutorial.msgDirt);
                         _this.waitMessage();
                     },
                     function () {
                         _this.board.getTileById(16).disable();
-                        _this.board.getTileById(18).enable();
-                        _this.showTutorialMove(18, 16);
+                        _this.board.getTileById(19).enable();
+                        _this.showTutorialMove(19, 16);
                         _this.waitMatch();
                     },
                     function () {
-                        _this.board.getTileById(16).disable();
+                        _this.board.getTileById(18).disable();
                         _this.hideTutorialFinger();
                         _this.tutorialWait(700);
                     },
@@ -3876,43 +3885,26 @@ var joinjelly;
                         _this.tutorialWait(500);
                     },
                     function () {
-                        _this.board.getTileById(17).setNumber(-1);
-                        _this.board.getTileById(19).setNumber(-1);
-                        _this.board.getTileById(23).setNumber(-1);
-                        _this.board.getTileById(22).setNumber(-1);
-                        _this.board.getTileById(24).setNumber(-1);
-                        _this.board.getTileById(13).setNumber(-1);
-                        _this.board.getTileById(18).setNumber(1);
-                        _this.board.getTileById(20).setNumber(1);
-                        _this.board.getTileById(18).disable();
-                        _this.board.getTileById(16).disable();
-                        _this.showTutorialMessage(StringResources.tutorial.msgDirt);
+                        _this.hideTutorialFinger();
+                        _this.showTutorialMessage(StringResources.tutorial.msgPlay);
                         _this.waitMessage();
                     },
                     function () {
-                        _this.showTutorialMove(20, 18);
-                        _this.waitMatch();
-                    },
-                    function () {
-                        _this.tutorialWait(1000);
+                        _this.showTutorialMessage(StringResources.tutorial.msgBoardFill);
+                        _this.waitMessage();
                     },
                     function () {
                         _this.hideTutorialFinger();
                         _this.board.getTileById(0).setNumber(2);
-                        _this.board.getTileById(1).setNumber(1);
+                        _this.board.getTileById(1).setNumber(-1);
                         _this.board.getTileById(2).setNumber(2);
-                        _this.board.getTileById(3).setNumber(1);
+                        _this.board.getTileById(3).setNumber(-1);
                         _this.board.getTileById(4).setNumber(2);
-                        _this.board.getTileById(5).setNumber(1);
-                        _this.board.getTileById(6).setNumber(1);
-                        _this.board.getTileById(7).setNumber(1);
-                        _this.board.getTileById(8).setNumber(1);
-                        _this.board.getTileById(9).setNumber(1);
-                        _this.board.getTileById(10).setNumber(1);
-                        _this.board.getTileById(11).setNumber(1);
-                        _this.board.getTileById(12).setNumber(1);
-                        _this.board.getTileById(13).setNumber(1);
-                        _this.board.getTileById(14).setNumber(1);
+                        _this.board.getTileById(5).setNumber(-1);
+                        _this.board.getTileById(6).setNumber(-1);
+                        _this.board.getTileById(7).setNumber(-1);
+                        _this.board.getTileById(10).setNumber(-1);
+                        _this.board.getTileById(12).setNumber(-1);
                         _this.board.getTileById(0).disable();
                         _this.board.getTileById(1).disable();
                         _this.board.getTileById(2).disable();
@@ -3967,15 +3959,6 @@ var joinjelly;
                         _this.hideTutorialFinger();
                         _this.gameFooter.setItemAmmount(joinjelly.Items.FAST, 0);
                         _this.tutorialWait(1000);
-                    },
-                    function () {
-                        _this.hideTutorialFinger();
-                        _this.showTutorialMessage(StringResources.tutorial.msgPlay);
-                        _this.waitMessage();
-                    },
-                    function () {
-                        _this.showTutorialMessage(StringResources.tutorial.msgBoardFill);
-                        _this.waitMessage();
                     },
                     function () {
                         joinjelly.JoinJelly.userData.history(histories.TUTORIAL);

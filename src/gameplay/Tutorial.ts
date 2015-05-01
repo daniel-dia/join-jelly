@@ -58,23 +58,33 @@
                     this.tutorialWait(1500);
                     this.board.getTileById(16).setNumber(1);
                     this.board.getTileById(16).disable();
+					this.board.getTileById(19).setNumber(1);
+                    this.board.getTileById(19).disable();
                 },
 
                 () => {
                     this.board.getTileById(16).disable();
-                    this.board.getTileById(18).setNumber(1);
+					this.board.getTileById(19).disable();
                     this.showTutorialMessage(StringResources.tutorial.msgheplme);
-                    this.board.getTileById(18).disable();
+                    this.waitMessage();
+                },
+				() => {
+                    this.board.getTileById(17).setNumber(-1);
+                    this.board.getTileById(20).setNumber(-1);
+                    this.board.getTileById(22).setNumber(-1);
+                    this.board.getTileById(15).setNumber(-1);
+                    this.showTutorialMessage(StringResources.tutorial.msgDirt);
                     this.waitMessage();
                 },
                 () => {
                     this.board.getTileById(16).disable();
-                    this.board.getTileById(18).enable();
-                    this.showTutorialMove(18, 16)
+                    this.board.getTileById(19).enable();
+                    this.showTutorialMove(19, 16)
                     this.waitMatch();
                 },
+
                 () => {
-                    this.board.getTileById(16).disable();
+                    this.board.getTileById(18).disable();
                     this.hideTutorialFinger();
                   
                     this.tutorialWait(700);
@@ -100,50 +110,29 @@
                     this.board.getTileById(16).disable();
                     this.tutorialWait(500);
                 },
-                () => {
-                    this.board.getTileById(17).setNumber(-1);
-                    this.board.getTileById(19).setNumber(-1);
-                    this.board.getTileById(23).setNumber(-1);
-                    this.board.getTileById(22).setNumber(-1);
-                    this.board.getTileById(24).setNumber(-1);
-                    this.board.getTileById(13).setNumber(-1);
-                    this.board.getTileById(18).setNumber(1);
-                    this.board.getTileById(20).setNumber(1);
-                    this.board.getTileById(18).disable();
-                    this.board.getTileById(16).disable();
-                    this.showTutorialMessage(StringResources.tutorial.msgDirt);
+				() => {
+                    this.hideTutorialFinger();
+                    this.showTutorialMessage(StringResources.tutorial.msgPlay);
                     this.waitMessage();
                 },
-
                 () => {
-
-                    this.showTutorialMove(20, 18)
-                    this.waitMatch();
-                },
-
-                () => {
-                    this.tutorialWait(1000);
-
+                    this.showTutorialMessage(StringResources.tutorial.msgBoardFill);
+                    this.waitMessage();
                 },
                 () => {
 
                     this.hideTutorialFinger();
 
-                    this.board.getTileById(0).setNumber(2);
-                    this.board.getTileById(1).setNumber(1);
-                    this.board.getTileById(2).setNumber(2);
-                    this.board.getTileById(3).setNumber(1);
-                    this.board.getTileById(4).setNumber(2);  
-                    this.board.getTileById(5).setNumber(1);
-                    this.board.getTileById(6).setNumber(1);
-                    this.board.getTileById(7).setNumber(1);
-                    this.board.getTileById(8).setNumber(1);
-                    this.board.getTileById(9).setNumber(1);  
-                    this.board.getTileById(10).setNumber(1);
-                    this.board.getTileById(11).setNumber(1);
-                    this.board.getTileById(12).setNumber(1);
-                    this.board.getTileById(13).setNumber(1);
-                    this.board.getTileById(14).setNumber(1);  
+                    this.board.getTileById(0). setNumber(2);
+                    this.board.getTileById(1). setNumber(-1);
+                    this.board.getTileById(2). setNumber(2);
+                    this.board.getTileById(3). setNumber(-1);
+                    this.board.getTileById(4). setNumber(2);  
+                    this.board.getTileById(5). setNumber(-1);
+                    this.board.getTileById(6). setNumber(-1);
+                    this.board.getTileById(7). setNumber(-1);
+                    this.board.getTileById(10).setNumber(-1);
+                    this.board.getTileById(12).setNumber(-1); 
 
                     this.board.getTileById(0). disable();
                     this.board.getTileById(1). disable();
@@ -204,15 +193,7 @@
                     this.gameFooter.setItemAmmount(Items.FAST, 0)
                     this.tutorialWait(1000);
                 },
-                () => {
-                    this.hideTutorialFinger();
-                    this.showTutorialMessage(StringResources.tutorial.msgPlay);
-                    this.waitMessage();
-                },
-                () => {
-                    this.showTutorialMessage(StringResources.tutorial.msgBoardFill);
-                    this.waitMessage();
-                },
+               
                 () => {
                     JoinJelly.userData.history(histories.TUTORIAL);
                     JoinJelly.startLevel();
