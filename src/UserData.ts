@@ -156,7 +156,7 @@
 }
 
 class histories {
-    static TUTORIAL = "tutorial";
+    static TUTORIAL = "tutorial_intro";
     static REVIVE = "revive";
     static EVOLVE = "evolve";
     static FIRSTPLAY = "firstplay";

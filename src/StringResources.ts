@@ -28,7 +28,7 @@
     tutorial: {
         msgheplme: "Help me to evolve\nJoin  2 identical jellies.",
         msgOnceMore: "Great! now I'm bigger, \nevolve me once more",
-        msgDirt: "Ow, a dirt appears \n Join a jelly here to destroy it.",
+        msgDirt: "Oh no, a dirt appears \n Join a jelly here to destroy it.",
         msgPlay: "Perfect!\nNow evolve me to the max!",
         msgItemClean: "You can always use items.\n this cleans the board",
         msgItemFast: "this one join some jellies",
@@ -129,7 +129,7 @@ var StringResources_pt = {
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
         msgOnceMore: "Legal! Estou maior, \nMe desenvolva novamente",
-        msgDirt: "Olha, sujeiras! Junte \numa geleia aqui para limpar.",
+        msgDirt: "Oh não, sujeira! Junte \numa geleia aqui para limpar.",
         msgPlay: "Perfeito!\nMe evolua ao maximo!.",
         msgItemClean: "Sempre que precisar use items.\nEste limpa a bagunça",
         msgItemFast: "Esse junta \nalgumas geleias",

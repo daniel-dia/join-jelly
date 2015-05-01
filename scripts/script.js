@@ -762,7 +762,7 @@ var StringResources = {
     tutorial: {
         msgheplme: "Help me to evolve\nJoin  2 identical jellies.",
         msgOnceMore: "Great! now I'm bigger, \nevolve me once more",
-        msgDirt: "Ow, a dirt appears \n Join a jelly here to destroy it.",
+        msgDirt: "Oh no, a dirt appears \n Join a jelly here to destroy it.",
         msgPlay: "Perfect!\nNow evolve me to the max!",
         msgItemClean: "You can always use items.\n this cleans the board",
         msgItemFast: "this one join some jellies",
@@ -858,7 +858,7 @@ var StringResources_pt = {
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
         msgOnceMore: "Legal! Estou maior, \nMe desenvolva novamente",
-        msgDirt: "Olha, sujeiras! Junte \numa geleia aqui para limpar.",
+        msgDirt: "Oh não, sujeira! Junte \numa geleia aqui para limpar.",
         msgPlay: "Perfeito!\nMe evolua ao maximo!.",
         msgItemClean: "Sempre que precisar use items.\nEste limpa a bagunça",
         msgItemFast: "Esse junta \nalgumas geleias",
@@ -1724,11 +1724,8 @@ var joinjelly;
                 this.scrollableContent.addChild(soundOptions);
                 this.scrollableContent.x = defaultWidth / 2;
                 soundOptions.y = y += space;
-                var playerNameTitle = new menus.view.PlayerNameOptions();
-                this.scrollableContent.addChild(playerNameTitle);
-                playerNameTitle.y = y += space + 80;
                 var tutorial = new gameui.BitmapTextButton(StringResources.menus.tutorial, "debussy", "BtTextBg", function () {
-                    joinjelly.JoinJelly.startTutorial();
+                    joinjelly.JoinJelly.showIntro();
                 });
                 tutorial.y = y += space;
                 this.scrollableContent.addChild(tutorial);
@@ -3839,12 +3836,6 @@ var joinjelly;
                         _this.board.getTileById(19).disable();
                     },
                     function () {
-                        _this.board.getTileById(16).disable();
-                        _this.board.getTileById(19).disable();
-                        _this.showTutorialMessage(StringResources.tutorial.msgheplme);
-                        _this.waitMessage();
-                    },
-                    function () {
                         _this.board.getTileById(17).setNumber(-1);
                         _this.board.getTileById(20).setNumber(-1);
                         _this.board.getTileById(22).setNumber(-1);
@@ -4194,7 +4185,7 @@ var UserData = (function () {
 var histories = (function () {
     function histories() {
     }
-    histories.TUTORIAL = "tutorial";
+    histories.TUTORIAL = "tutorial_intro";
     histories.REVIVE = "revive";
     histories.EVOLVE = "evolve";
     histories.FIRSTPLAY = "firstplay";

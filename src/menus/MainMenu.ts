@@ -16,13 +16,15 @@
             this.scrollableContent.x = defaultWidth / 2;
             soundOptions.y = y += space ;
 
-            // add Player name
-            var playerNameTitle = new view.PlayerNameOptions();
-            this.scrollableContent.addChild(playerNameTitle);
-            playerNameTitle.y = y += space+80;
+            //// add Player name
+            //var playerNameTitle = new view.PlayerNameOptions();
+            //this.scrollableContent.addChild(playerNameTitle);
+            //playerNameTitle.y = y += space+80;
         
             // add Tutorial button
-            var tutorial = new gameui.BitmapTextButton(StringResources.menus.tutorial, "debussy", "BtTextBg", () => { JoinJelly.startTutorial(); })
+            var tutorial = new gameui.BitmapTextButton(StringResources.menus.tutorial, "debussy", "BtTextBg",() => {
+				JoinJelly.showIntro();
+			})
             tutorial.y = y += space;
             this.scrollableContent.addChild(tutorial);
 
@@ -37,8 +39,6 @@
                             JoinJelly.showMainMenu()
                         } else {}
                     });
-
-
             });
             reset.y = y += space;
             this.scrollableContent.addChild(reset);

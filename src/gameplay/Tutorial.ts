@@ -48,6 +48,21 @@
             this.currentTutorialStep = -1;
         }
 
+/*
+			Board Positions.
+
+			0		2		4
+				1		3	
+			5		7		9
+				6		8	
+			10		12		14
+				11		13	
+			15		17		19
+				16		18	
+			20		22		24
+				21		23	
+*/
+
         private executeTutorialStep() {
 
             this.currentTutorialStep++;
@@ -62,12 +77,12 @@
                     this.board.getTileById(19).disable();
                 },
 
-                () => {
-                    this.board.getTileById(16).disable();
-					this.board.getTileById(19).disable();
-                    this.showTutorialMessage(StringResources.tutorial.msgheplme);
-                    this.waitMessage();
-                },
+     //           () => {
+     //               this.board.getTileById(16).disable();
+					//this.board.getTileById(19).disable();
+     //               this.showTutorialMessage(StringResources.tutorial.msgheplme);
+     //               this.waitMessage();
+     //           },
 				() => {
                     this.board.getTileById(17).setNumber(-1);
                     this.board.getTileById(20).setNumber(-1);
