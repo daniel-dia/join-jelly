@@ -75,7 +75,7 @@
             if (eyeImg.getBounds())
                 eye.regX = eyeImg.getBounds().width / 2;
 
-            eye.y = Math.min(-50, -eye.getBounds().height);
+            eye.y = Math.min(-100, -eye.getBounds().height);
             this.imageContainer.addChild(eye)
             this.eyeImg = eyeImg;
         }
