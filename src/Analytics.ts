@@ -118,8 +118,8 @@ class Analytics {
     }
 
     public logNewJelly(jellyId: number, level: number, time: number) {
-        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), this.parseTime(time));
-        this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), level);
+        this.sendEvent("NewJelly:Time",  this.normalizeNumber(jellyId), this.parseTime(time));
+        this.sendEvent("NewJelly:Level", this.normalizeNumber(jellyId), level);
     }
 
     //# end region 

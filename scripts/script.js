@@ -1018,8 +1018,8 @@ var Analytics = (function () {
         this.sendEvent("GameWin", "Level", level);
     };
     Analytics.prototype.logNewJelly = function (jellyId, level, time) {
-        this.sendEvent("NewJelly", "Time:" + this.normalizeNumber(jellyId), this.parseTime(time));
-        this.sendEvent("NewJelly", "Level:" + this.normalizeNumber(jellyId), level);
+        this.sendEvent("NewJelly:Time", this.normalizeNumber(jellyId), this.parseTime(time));
+        this.sendEvent("NewJelly:Level", this.normalizeNumber(jellyId), level);
     };
     return Analytics;
 })();
