@@ -66,7 +66,7 @@ module gameui{
             window.onresize = () => { this.resizeGameScreen(window.innerWidth, window.innerHeight); };
         }
 
-        //switch current screen, optionaly with a pre defined transition
+        // switch current screen, optionaly with a pre defined transition
         public switchScreen(newScreen: ScreenState, parameters?: any, transition?: Transition) {
 
             //save oldscreen
@@ -157,7 +157,7 @@ module gameui{
             this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth,this.currentHeight);
         }
 
-        //resize GameScreen to a diferent scale
+        // resize GameScreen to a diferent scale
         public resizeGameScreen(deviceWidth: number, deviceHeight: number, updateCSS: boolean= true) {
 
             
@@ -177,8 +177,17 @@ module gameui{
 
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
         }
+		
+		// send hw back button event
+		public sendBackButtonEvent(): boolean {
+			if (this.currentScreen || this.currentScreen.onback) {
+				this.currentScreen.onback();
+				return false;
+			}
+			else return true
+		}
 
-        //updates screen viewer scale
+        // updates screen viewer scale
         private updateViewerScale(realWidth: number, realHeight: number, defaultWidth: number, defaultHeight: number) {
 
             var scale = realWidth / defaultWidth;
@@ -198,7 +207,7 @@ module gameui{
             if (this.currentScreen) this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth,this.currentHeight);
         }
 
-        //deletes old screen
+        // deletes old screen
         private removeOldScreen(oldScreen: ScreenState) {
             if (oldScreen != null) {
                 oldScreen.desactivate();
@@ -206,6 +215,8 @@ module gameui{
                 oldScreen = null;
             }
         }
+
+
     }
 }
 

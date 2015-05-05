@@ -276,4 +276,30 @@
         }
 
     }
+
+	export module App {
+		function exit();
+		function exitCallback(callback: () => boolean);
+		function forward(code: string);
+		function forwardAsync(code: string,callback: () => void)
+		function hideTheWebView()
+		function load(path: string, storageType: STORAGETYPE)
+		function loadInTheWebView(path: string, callback: any, storageType: STORAGETYPE)
+		function openURL(url:string)
+		function pause()
+		function reload()
+		function reloadWebView()
+		function resume()
+		function showTheWebView(x: number, y: number, width: number, height: number)
+		function on(event: string, callback: () => void);
+		var StorageType: STORAGETYPE;
+		enum STORAGETYPE {
+			PORTRAIT,
+			INTERNAL_STORAGE,
+			EXTERNAL_STORAGE,
+			TEMPORARY_STORAGE,
+		}
+	}
+
+	
 }
