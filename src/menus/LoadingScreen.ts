@@ -22,7 +22,7 @@ module joinjelly.menus {
             assetscale = 1;
             if (window.innerWidth <= 1024) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;
-            if (assetscale != 1) imagePath = "assets/images_" + assetscale + "x/";
+            imagePath = "assets/images_" + assetscale + "x/";
 
           
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);

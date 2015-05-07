@@ -332,6 +332,14 @@ var gameui;
             this.stage.canvas.height = deviceHeight;
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
         };
+        GameScreen.prototype.sendBackButtonEvent = function () {
+            if (this.currentScreen && this.currentScreen.onback) {
+                this.currentScreen.onback();
+                return false;
+            }
+            else
+                return true;
+        };
         GameScreen.prototype.updateViewerScale = function (realWidth, realHeight, defaultWidth, defaultHeight) {
             var scale = realWidth / defaultWidth;
             this.currentHeight = realHeight / scale;
@@ -511,9 +519,6 @@ var gameui;
             this.footer.mask = mask;
             this.header.mask = mask;
             this.content.mask = mask;
-        };
-        ScreenState.prototype.back = function () {
-            exitApp();
         };
         return ScreenState;
     })();
@@ -1038,11 +1043,18 @@ var joinjelly;
     var ScrollablePage = (function (_super) {
         __extends(ScrollablePage, _super);
         function ScrollablePage(title) {
+            var _this = this;
             _super.call(this);
             this.maxScroll = 1700;
             this.addBackground(title);
             this.addScrollableArea();
             this.addButton();
+            this.onback = function () {
+                if (_this.okButtonAction)
+                    _this.okButtonAction();
+                else
+                    joinjelly.JoinJelly.showMainMenu();
+            };
         }
         ScrollablePage.prototype.addBackground = function (title) {
             this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
@@ -1117,8 +1129,7 @@ var joinjelly;
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
-                if (assetscale != 1)
-                    imagePath = "assets/images_" + assetscale + "x/";
+                imagePath = "assets/images_" + assetscale + "x/";
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
@@ -4225,6 +4236,9 @@ var joinjelly;
                 testMode = true;
             }
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
+            Cocoon.App.exitCallback(function () {
+                return _this.gameScreen.sendBackButtonEvent();
+            });
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             loadingScreen.loaded = function () {

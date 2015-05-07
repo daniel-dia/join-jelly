@@ -10,7 +10,14 @@
             this.addBackground(title);
             this.addScrollableArea();
             this.addButton();
- 
+
+
+			this.onback = () => {
+				if (this.okButtonAction)
+					this.okButtonAction();
+				else
+					joinjelly.JoinJelly.showMainMenu()
+			}
         }
 
         private addBackground(title:string) {

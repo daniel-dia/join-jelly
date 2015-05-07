@@ -33,7 +33,10 @@ module joinjelly {
             }
 
             this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
-			Cocoon.App.exitCallback(() => { return this.gameScreen.sendBackButtonEvent() })
+			Cocoon.App.exitCallback(() => {
+				
+				return this.gameScreen.sendBackButtonEvent()
+			})
 
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);

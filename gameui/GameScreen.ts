@@ -180,7 +180,7 @@ module gameui{
 		
 		// send hw back button event
 		public sendBackButtonEvent(): boolean {
-			if (this.currentScreen || this.currentScreen.onback) {
+			if (this.currentScreen && this.currentScreen.onback) {
 				this.currentScreen.onback();
 				return false;
 			}

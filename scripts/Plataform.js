@@ -4,6 +4,5 @@
         if (cs instanceof joinjelly.gameplay.GamePlayScreen)
             (cs).pauseGame();
     }
-
-
 }
+
