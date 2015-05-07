@@ -1057,7 +1057,7 @@ var joinjelly;
             };
         }
         ScrollablePage.prototype.addBackground = function (title) {
-            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
+            this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
             var bg = gameui.AssetsManager.getBitmap('BigBG');
             bg.mouseEnabled = true;
             this.content.addChild(bg);

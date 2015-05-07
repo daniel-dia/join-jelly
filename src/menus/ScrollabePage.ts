@@ -22,7 +22,7 @@
 
         private addBackground(title:string) {
             // add Background
-            this.background.addChild(gameui.AssetsManager.getBitmap("backhome"));
+            this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
             var bg = gameui.AssetsManager.getBitmap('BigBG');
             bg.mouseEnabled = true;
             this.content.addChild(bg);
