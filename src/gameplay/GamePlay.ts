@@ -418,8 +418,7 @@
             createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
             
-            // submit score to Game Services
-            JoinJelly.gameServices.submitScore(score);
+
 
             // shows finished game menu
             setTimeout(() => {
@@ -440,18 +439,11 @@
                 createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
 
                 // save high score
-                if (score > JoinJelly.userData.getHighScore()) {
-
-                    if (JoinJelly.userData.getPlayerName() == "")
-                        JoinJelly.userData.promptPlayerName(() => {
-                            AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
-                            JoinJelly.userData.setScore(score);
-                        });
-                    else {
-                        AzureLeaderBoards.setScore(score, JoinJelly.userData.getPlayerName());
-                        JoinJelly.userData.setScore(score);
-                    }
-                }
+                JoinJelly.userData.setScore(Math.max(score , JoinJelly.userData.getHighScore()));
+				
+				// submit score to Game Services
+				JoinJelly.gameServices.submitScore(Math.max(score, JoinJelly.userData.getHighScore()));
+                
 
             }, 1200);
             this.finishMenu.setValues(score, highScore, highJelly, message);

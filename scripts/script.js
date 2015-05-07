@@ -3323,7 +3323,6 @@ var joinjelly;
                 this.gameFooter.mouseEnabled = false;
                 createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
-                joinjelly.JoinJelly.gameServices.submitScore(score);
                 setTimeout(function () {
                     if (win)
                         _this.gamestate = 5 /* win */;
@@ -3336,17 +3335,8 @@ var joinjelly;
                     _this.gameFooter.highlight(joinjelly.Items.REVIVE);
                     _this.updateFooter();
                     createjs.Tween.get(_this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
-                    if (score > joinjelly.JoinJelly.userData.getHighScore()) {
-                        if (joinjelly.JoinJelly.userData.getPlayerName() == "")
-                            joinjelly.JoinJelly.userData.promptPlayerName(function () {
-                                joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
-                                joinjelly.JoinJelly.userData.setScore(score);
-                            });
-                        else {
-                            joinjelly.AzureLeaderBoards.setScore(score, joinjelly.JoinJelly.userData.getPlayerName());
-                            joinjelly.JoinJelly.userData.setScore(score);
-                        }
-                    }
+                    joinjelly.JoinJelly.userData.setScore(Math.max(score, joinjelly.JoinJelly.userData.getHighScore()));
+                    joinjelly.JoinJelly.gameServices.submitScore(Math.max(score, joinjelly.JoinJelly.userData.getHighScore()));
                 }, 1200);
                 this.finishMenu.setValues(score, highScore, highJelly, message);
                 if (win)
