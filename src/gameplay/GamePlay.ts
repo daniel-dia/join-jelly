@@ -377,7 +377,7 @@
                 this.gameHeader.mouseEnabled = true;
                 this.content.mouseEnabled = true;
 				this.gameFooter.unlockAll();
-            }, 3000);
+            }, 3200);
 
             //show a 3 seconds countdown to resume game
             this.countDown.countDown(3);

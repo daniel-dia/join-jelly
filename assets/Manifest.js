@@ -169,6 +169,8 @@ var audioManifest = [
     { id: "Interface Sound-08", src: "Interface Sound-08.ogg" },
     { id: "Interface Sound-09", src: "Interface Sound-09.ogg" },
     { id: "Interface Sound-11", src: "Interface Sound-11.ogg" },
+    { id: "Interface Sound-12", src: "Interface Sound-12.ogg" },
+    { id: "Interface Sound-13", src: "Interface Sound-13.ogg" },
     { id: "Interface Sound-14", src: "Interface Sound-14.ogg" },
     { id: "Interface Sound-15", src: "Interface Sound-15.ogg" },
     { id: "evolve", src: "evolve.ogg" },

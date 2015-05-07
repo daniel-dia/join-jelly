@@ -3300,7 +3300,7 @@ var joinjelly;
                     _this.gameHeader.mouseEnabled = true;
                     _this.content.mouseEnabled = true;
                     _this.gameFooter.unlockAll();
-                }, 3000);
+                }, 3200);
                 this.countDown.countDown(3);
             };
             GamePlayScreen.prototype.winGame = function () {
@@ -4384,13 +4384,18 @@ var joinjelly;
                     var ns = [];
                     var time = 1000;
                     var transition = 200;
+                    setTimeout(function () {
+                        gameui.AudiosManager.playSound("Interface Sound-12");
+                    }, time * total + transition);
                     for (var n = total; n > 0; n--) {
                         ns[n] = gameui.AssetsManager.getBitmap("n" + n);
                         this.addChild(ns[n]);
                         ns[n].regX = ns[n].getBounds().width / 2;
                         ns[n].regY = ns[n].getBounds().height / 2;
                         ns[n].mouseEnabled = false;
-                        createjs.Tween.get(ns[n]).to({ scaleX: 2, scaleY: 2, alpha: 0 }).wait((total - n) * time).to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut).wait(time - transition).to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn).call(function (obj) {
+                        createjs.Tween.get(ns[n]).to({ scaleX: 2, scaleY: 2, alpha: 0 }).wait((total - n) * time).to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut).call(function () {
+                            gameui.AudiosManager.playSound("Interface Sound-13");
+                        }).wait(time - transition).to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn).call(function (obj) {
                             _this.removeChild(obj);
                         });
                     }
