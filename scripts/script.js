@@ -3206,6 +3206,12 @@ var joinjelly;
                         joinjelly.JoinJelly.startLevel();
                     }, 200);
                 });
+                this.onback = function () {
+                    if (_this.gamestate == 2 /* paused */)
+                        _this.continueGame();
+                    else if (_this.gamestate == 1 /* playing */)
+                        _this.pauseGame();
+                };
             };
             GamePlayScreen.prototype.redim = function (headerY, footerY, width, heigth) {
                 _super.prototype.redim.call(this, headerY, footerY, width, heigth);
@@ -3273,22 +3279,27 @@ var joinjelly;
                 this.updateCurrentLevel();
             };
             GamePlayScreen.prototype.pauseGame = function () {
+                if (this.gamestate == 4 /* standBy */)
+                    return;
                 if (this.gamestate == 3 /* ended */)
                     return;
                 this.pauseMenu.show();
                 this.gamestate = 2 /* paused */;
                 this.board.lock();
+                this.gameFooter.lockAll();
                 this.gameHeader.mouseEnabled = false;
                 this.content.mouseEnabled = false;
             };
             GamePlayScreen.prototype.continueGame = function () {
                 var _this = this;
                 this.pauseMenu.hide();
+                this.gamestate = 4 /* standBy */;
                 setTimeout(function () {
                     _this.gamestate = 1 /* playing */;
                     _this.board.unlock();
                     _this.gameHeader.mouseEnabled = true;
                     _this.content.mouseEnabled = true;
+                    _this.gameFooter.unlockAll();
                 }, 3000);
                 this.countDown.countDown(3);
             };

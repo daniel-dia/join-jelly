@@ -217,6 +217,12 @@
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 
+			this.onback = () => {
+				if (this.gamestate == GameState.paused)
+					this.continueGame();
+				else if (this.gamestate == GameState.playing)
+					this.pauseGame();
+			}
         }
 
         // redim screen
@@ -348,10 +354,12 @@
 
         // pause game
         public pauseGame() {
+			if (this.gamestate == GameState.standBy) return;
             if (this.gamestate == GameState.ended) return;
             this.pauseMenu.show();
             this.gamestate = GameState.paused;
             this.board.lock();
+			this.gameFooter.lockAll();
             this.gameHeader.mouseEnabled = false;
             this.content.mouseEnabled = false;
         }
@@ -360,6 +368,7 @@
         private continueGame() {
             //hide menus
             this.pauseMenu.hide();
+			this.gamestate = GameState.standBy;
 
             //wait 3 seconds to unpause
             setTimeout(() => {
@@ -367,7 +376,7 @@
                 this.board.unlock();
                 this.gameHeader.mouseEnabled = true;
                 this.content.mouseEnabled = true;
-
+				this.gameFooter.unlockAll();
             }, 3000);
 
             //show a 3 seconds countdown to resume game
