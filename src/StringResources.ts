@@ -94,7 +94,7 @@
     },
 
     social: {
-        shareDescription: "",
+        shareDescription: "I Love this game!",
         shareTitle: "JoinJelly",
         shareCaption: "",
     }
@@ -201,7 +201,7 @@ var StringResources_pt = {
     credit: {
     },
     social: {
-        shareDescription: "",
+        shareDescription: "Muito bom esse jogo!",
         shareTitle: "JoinJelly",
         shareCaption: "",
     }

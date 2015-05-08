@@ -7,7 +7,6 @@
         private scoreText: createjs.BitmapText;
         private highScoreText: createjs.BitmapText;
         
-
         constructor() {
             super(StringResources.menus.gameOver.toUpperCase(),1250);
             this.addButtons();

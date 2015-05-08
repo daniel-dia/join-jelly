@@ -143,7 +143,7 @@
             this.footer.addChild(this.gameFooter);
             this.updateFooter();
 
-            this.gameFooter.addEventListener("useitem", (e: createjs.Event) => { this.useItem(e.item) });
+            this.gameFooter.addEventListener("useitem",(e: createjs.Event) => { this.useItem(e.item) });
     
             // creates pause menu
             this.pauseMenu = new view.PauseMenu();
@@ -165,7 +165,7 @@
             this.countDown.y = defaultHeight / 2;
 
             // creates a toggle button
-            var tbt = new gameui.ImageButton("BtBoard", () => {
+            var tbt = new gameui.ImageButton("BtBoard",() => {
                 this.finishMenu.show();
                 tbt.fadeOut();
 
@@ -176,18 +176,40 @@
             this.showBoardButton = tbt;
 
             //add eventListener
-            this.finishMenu.addEventListener("ok", () => {
+            this.finishMenu.addEventListener("ok",() => {
                 JoinJelly.showMainMenu();
             });
 
-            this.finishMenu.addEventListener("board", () => {
+            this.finishMenu.addEventListener("board",() => {
                 this.finishMenu.hide();
                 tbt.fadeIn();
             });
 
-            this.finishMenu.addEventListener("share", () => {
-                
-            });
+            this.finishMenu.addEventListener("share",() => {
+				alert("share");
+				var fb = Cocoon.Social.Facebook;
+				fb.init({ appId: fbAppId });
+				var socialService = fb.getSocialInterface();
+                alert("share");
+
+				var message = new Cocoon.Social.Message(
+					StringResources.social.shareDescription,
+					gameWebsiteIcon,
+					gameWebsite,
+					StringResources.social.shareTitle + " - " + this.score + " " + StringResources.menus.score,
+					StringResources.social.shareCaption);
+
+
+				var that = this;
+				socialService.publishMessageWithDialog(message, function (error) {
+					console.log("shared " + JSON.stringify(error))
+					var sucess = true;
+					if (error) sucess = false;
+					if (sucess) alert("K");
+
+				});
+			});
+			
 
             this.gameHeader.addEventListener("pause", () => {
                 this.pauseGame();

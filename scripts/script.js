@@ -830,7 +830,7 @@ var StringResources = {
     },
     credit: {},
     social: {
-        shareDescription: "",
+        shareDescription: "I Love this game!",
         shareTitle: "JoinJelly",
         shareCaption: "",
     }
@@ -932,7 +932,7 @@ var StringResources_pt = {
     },
     credit: {},
     social: {
-        shareDescription: "",
+        shareDescription: "Muito bom esse jogo!",
         shareTitle: "JoinJelly",
         shareCaption: "",
     }
@@ -3179,6 +3179,21 @@ var joinjelly;
                     tbt.fadeIn();
                 });
                 this.finishMenu.addEventListener("share", function () {
+                    alert("share");
+                    var fb = Cocoon.Social.Facebook;
+                    fb.init({ appId: fbAppId });
+                    var socialService = fb.getSocialInterface();
+                    alert("share");
+                    var message = new Cocoon.Social.Message(StringResources.social.shareDescription, gameWebsiteIcon, gameWebsite, StringResources.social.shareTitle + " - " + _this.score + " " + StringResources.menus.score, StringResources.social.shareCaption);
+                    var that = _this;
+                    socialService.publishMessageWithDialog(message, function (error) {
+                        console.log("shared " + JSON.stringify(error));
+                        var sucess = true;
+                        if (error)
+                            sucess = false;
+                        if (sucess)
+                            alert("K");
+                    });
                 });
                 this.gameHeader.addEventListener("pause", function () {
                     _this.pauseGame();

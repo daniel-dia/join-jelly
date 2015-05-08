@@ -70,45 +70,51 @@
     }
 
     export module Social {
-        export class Facebook extends Interface { //Not Completed
+        export module Facebook { //Not Completed
 
-            static api();
-            static getAuthResponse();
-            static getLoginStatus();
-            static getPermissions();
-            static getSocialInterface();
-            static init(any);
-            static login();
-            static logout();
-            static requestAdditionalPermissions();
-            static showFriendPicker();
-            static showShareDialog();
-            static subscribe();
-            static ui();
-            static unsubscribe();
-            static uploadPhoto();
-        }
+            function api(path, method, params, cb);
+            function getAuthResponse();
+            function getLoginStatus(callback, force);
+            function getPermissions(callback);
+            function getSocialInterface();
+            function init(options?);
+            function login(options);
+            function logout(callback);
+            function requestAdditionalPermissions(permissionsType, permissions, callback);
+            function showFriendPicker(callback);
+            function showShareDialog(parameters:fbMessage, callback);
+            function subscribe(name, callback);
+            function ui(params, cb);
+            function unsubscribe(name, callback);
+            function uploadPhoto(file, callback);
+ 
+			interface fbMessage {
+				description: string;
+				caption: string;
+				name: string;
+				link: string;
+				picture: string
+			}
+		}
 
-        export class GameCenter  {  //Not Completed
+        export module GameCenter  {  //Not Completed
 
-            static getLocalPlayer();
-            static getMultiplayerInterface();
-            static getSocialInterface();
-            static loadAchievementDescriptions(callback: (error) => void);
-            static loadAchievements(callback: (error) => void);
-            static loadFriends(callback: (error) => void);
-            static loadPlayers(playerIDs: string, callback: (error) => void);
-            static loadScores(callback: (error) => void, query: Cocoon.Social.GameCenter.Leaderboard);
-            static login();
-            static resetAchievements(callback: (error) => void);
-            static showAchievements(callback: (error) => void);
-            static showLeaderboards(callback: (error) => void, query: Cocoon.Social.GameCenter.Leaderboard);
-            static submitAchievements(achievements: Array<Cocoon.Social.GameCenter.Achievement>, callback: (error) => void);
-            static submitScore(score: Cocoon.Social.GameCenter.Score, callback: (error) => void);
+            function getLocalPlayer();
+            function getMultiplayerInterface();
+            function getSocialInterface();
+            function loadAchievementDescriptions(callback: (error) => void);
+            function loadAchievements(callback: (error) => void);
+            function loadFriends(callback: (error) => void);
+            function loadPlayers(playerIDs: string, callback: (error) => void);
+            function loadScores(callback: (error) => void, query: Cocoon.Social.GameCenter.Leaderboard);
+            function login();
+            function resetAchievements(callback: (error) => void);
+            function showAchievements(callback: (error) => void);
+            function showLeaderboards(callback: (error) => void, query: Cocoon.Social.GameCenter.Leaderboard);
+            function submitAchievements(achievements: Array<Cocoon.Social.GameCenter.Achievement>, callback: (error) => void);
+            function submitScore(score: Cocoon.Social.GameCenter.Score, callback: (error) => void);
 
-        }
-
-        export module GameCenter {
+ 
             export interface Achievement {
                 identifier: string;
                 percentComplete: number;//Percentage of achievement complete (from 0 to 100).
@@ -232,7 +238,6 @@
             userName?: string; //The user name of the user.
             userImage?: string; //If the image URL is not provided by default, fetch it using requestUserImage method.
         }
-
         export enum TimeScope {
             ALL_TIME,
             WEEK,
