@@ -14,15 +14,16 @@
             this.addLastJelly();
         }
 
-        //creates buttons controls
+        // creates buttons controls
         private addButtons() {
 
             //add continue button;
-            var ok = new gameui.ImageButton("BtOk", (() => {
+            var ok = new gameui.ImageButton("BtHome", (() => {
                 this.dispatchEvent("ok")
             }));
-            ok.set({ x: 771, y: 1810 });
-            this.addChild(ok);
+			ok.set({ x: 771, y: 1810 });
+			ok.scaleY = ok.scaleX = 1.3;
+			this.addChild(ok);
 
             //add share button;
             var board = new gameui.ImageButton("BtBoard", (() => {
@@ -79,7 +80,6 @@
         private addLastJelly(): createjs.DisplayObject {
 
             var container = new createjs.Container();
-
             this.addChild(container);
 
             //add background
@@ -113,7 +113,7 @@
             return container;
         }
 
-        //set values
+        // set values
         public setValues(score: number, best: number, jelly?: number, title?:string) {
             if (best > JoinJelly.maxJelly) best = JoinJelly.maxJelly;
             if (title)

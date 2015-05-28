@@ -2517,10 +2517,11 @@ var joinjelly;
                 }
                 FinishMenu.prototype.addButtons = function () {
                     var _this = this;
-                    var ok = new gameui.ImageButton("BtOk", (function () {
+                    var ok = new gameui.ImageButton("BtHome", (function () {
                         _this.dispatchEvent("ok");
                     }));
                     ok.set({ x: 771, y: 1810 });
+                    ok.scaleY = ok.scaleX = 1.3;
                     this.addChild(ok);
                     var board = new gameui.ImageButton("BtBoard", (function () {
                         _this.dispatchEvent("board");
