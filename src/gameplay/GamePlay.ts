@@ -789,6 +789,7 @@
             if (this.gamestate == GameState.ended) return;
 
             this.step(4000);
+			this.gameFooter.lockItem(Items.TIME);
 
             //cast effects
             this.freezeEffect.alpha = 0;
@@ -796,6 +797,7 @@
             createjs.Tween.removeTweens(this.freezeEffect);
             createjs.Tween.get(this.freezeEffect).to({ alpha: 1 }, 1000).to({ alpha: 0 }, 4000).call(() => {
                 this.freezeEffect.visible = false
+				this.gameFooter.unlockItem(Items.TIME);
             });
 
             gameui.AudiosManager.playSound("sounditemtime");

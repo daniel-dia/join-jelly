@@ -3559,11 +3559,13 @@ var joinjelly;
                 if (this.gamestate == 3 /* ended */)
                     return;
                 this.step(4000);
+                this.gameFooter.lockItem(joinjelly.Items.TIME);
                 this.freezeEffect.alpha = 0;
                 this.freezeEffect.visible = true;
                 createjs.Tween.removeTweens(this.freezeEffect);
                 createjs.Tween.get(this.freezeEffect).to({ alpha: 1 }, 1000).to({ alpha: 0 }, 4000).call(function () {
                     _this.freezeEffect.visible = false;
+                    _this.gameFooter.unlockItem(joinjelly.Items.TIME);
                 });
                 gameui.AudiosManager.playSound("sounditemtime");
                 return true;
