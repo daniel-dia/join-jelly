@@ -3082,7 +3082,7 @@ var joinjelly;
                 this.timeByLevel = 20000;
                 this.initialInterval = 800;
                 this.finalInterval = 300;
-                this.easeInterval = 0.98;
+                this.easeInterval = 0.99;
                 this.userData = userData;
                 this.score = 0;
                 this.createBackground();
@@ -3777,8 +3777,8 @@ var joinjelly;
             function ExplodeBricks() {
                 _super.apply(this, arguments);
                 this.initialDirtyProbability = 0.1;
-                this.finalDirtyProbability = 0.6;
-                this.easeDirtyProbability = 0.98;
+                this.finalDirtyProbability = 0.5;
+                this.easeDirtyProbability = 0.99;
             }
             ExplodeBricks.prototype.addRandomTileOnBoard = function () {
                 var _this = this;

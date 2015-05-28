@@ -33,7 +33,7 @@
 
         private initialInterval: number = 800;
         private finalInterval: number = 300;
-        private easeInterval: number = 0.98;
+        private easeInterval: number = 0.99;
         
         // effect 
         private freezeEffect: createjs.DisplayObject;
@@ -71,8 +71,6 @@
             }
 
             JoinJelly.userData.history("firstPlay")
-
-        
         }
 
         // create game effects
@@ -168,9 +166,9 @@
             var tbt = new gameui.ImageButton("BtBoard",() => {
                 this.finishMenu.show();
                 tbt.fadeOut();
-
-                gameui.AudiosManager.playSound("Interface Sound-06");
+				gameui.AudiosManager.playSound("Interface Sound-06");
             });
+
             tbt.set({ x: 150, y: -150, visible: false });
             this.footer.addChild(tbt);
             this.showBoardButton = tbt;

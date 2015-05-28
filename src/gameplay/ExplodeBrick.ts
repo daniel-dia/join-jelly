@@ -3,8 +3,8 @@
     export class ExplodeBricks extends GamePlayScreen {
 
         private initialDirtyProbability: number = 0.1;
-        private finalDirtyProbability: number = 0.6;
-        private easeDirtyProbability: number = 0.98;
+        private finalDirtyProbability: number = 0.5;
+        private easeDirtyProbability: number = 0.99;
 
         // add a random tile with value 1 on board
         protected addRandomTileOnBoard() {
