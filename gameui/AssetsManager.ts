@@ -27,16 +27,14 @@ module gameui {
 
 
             if (!images) images = new Array();
-
-            //install sound plug-in for sounds format
-            createjs.Sound.alternateExtensions = ["mp3"];
-          
-
+		
             if (!this.loader) {
                 //creates a preload queue
                 this.loader = new createjs.LoadQueue(false);
 
+				//install sound plug-in for sounds format
                 this.loader.installPlugin(createjs.Sound);
+				createjs.Sound.alternateExtensions = ["mp3"];
 
                 
                 // Adds callbacks

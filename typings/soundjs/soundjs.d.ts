@@ -85,6 +85,7 @@ declare module createjs {
         static loadComplete(src: string): boolean;
         static play(src: string, interrupt?: any, delay?: number, offset?: number, loop?: number, volume?: number, pan?: number): SoundInstance;
         static registerManifest(manifest: any[], basePath: string): Object;
+        static registerSounds(manifest: any[], basePath: string): Object;
         static registerPlugins(plugins: any[]): boolean;
         static registerSound(src: string, id?: string, data?: number, preload?: boolean, basePath?: string): Object;
         static registerSound(src: string, id?: string, data?: Object, preload?: boolean, basePath?: string): Object;

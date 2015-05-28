@@ -144,10 +144,10 @@ var gameui;
             this.assetsManifest = manifest;
             if (!images)
                 images = new Array();
-            createjs.Sound.alternateExtensions = ["mp3"];
             if (!this.loader) {
                 this.loader = new createjs.LoadQueue(false);
                 this.loader.installPlugin(createjs.Sound);
+                createjs.Sound.alternateExtensions = ["mp3"];
                 this.loader.addEventListener("filestart", function (evt) {
                     console.log("loading " + evt.item.src);
                 });
@@ -1122,6 +1122,7 @@ var joinjelly;
             function Loading() {
                 var _this = this;
                 _super.call(this);
+                this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
                 var audioPath = "assets/sounds/";
                 var imagePath = "assets/images/";
                 assetscale = 1;
@@ -1130,15 +1131,13 @@ var joinjelly;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
                 imagePath = "assets/images_" + assetscale + "x/";
+                if (!testMode) {
+                    createjs.Sound.alternateExtensions = ["mp3"];
+                    createjs.Sound.registerSounds(audioManifest, audioPath);
+                }
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
-                if (!testMode) {
-                    if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows")
-                        gameui.AssetsManager.loadAssets(audioManifest, audioPath);
-                    else
-                        createjs.Sound.registerManifest(audioManifest, audioPath);
-                }
                 gameui.AssetsManager.onProgress = function (progress) {
                     loadinBar.update(progress);
                 };
@@ -3353,7 +3352,7 @@ var joinjelly;
                     joinjelly.JoinJelly.userData.setScore(Math.max(score, joinjelly.JoinJelly.userData.getHighScore()));
                     joinjelly.JoinJelly.gameServices.submitScore(Math.max(score, joinjelly.JoinJelly.userData.getHighScore()));
                 }, 1200);
-                this.finishMenu.setValues(score, highScore, highJelly, message);
+                this.finishMenu.setValues(score, Math.max(highScore, score), highJelly, message);
                 if (win)
                     joinjelly.JoinJelly.analytics.logWinGame(this.level, highJelly, this.matches, Date.now() - this.time);
                 else

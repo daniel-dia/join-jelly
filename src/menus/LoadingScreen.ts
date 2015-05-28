@@ -14,7 +14,10 @@ module joinjelly.menus {
         constructor() {
             super();
 
-            // set path
+			this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
+       
+
+            // set path 
             var audioPath = "assets/sounds/";
             var imagePath = "assets/images/";
 
@@ -25,27 +28,20 @@ module joinjelly.menus {
             imagePath = "assets/images_" + assetscale + "x/";
 
           
+			//load audio
+            if (!testMode) {
+				createjs.Sound.alternateExtensions = ["mp3"];
+				createjs.Sound.registerSounds(audioManifest, audioPath);
+            }
+			
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
             gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
             gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
-
-            //load audio
-            if (!testMode) {
-                //load assets
-                if (!Cocoon.Device.getDeviceInfo() || Cocoon.Device.getDeviceInfo().os == "windows")
-                    gameui.AssetsManager.loadAssets(audioManifest, audioPath);
-                else
-                    createjs.Sound.registerManifest(audioManifest, audioPath);
-            }
-
-
-
+			   
             // add update % function and complete action
             gameui.AssetsManager.onProgress = (progress: any) => { loadinBar.update(progress); };
             gameui.AssetsManager.onComplete = () => { if (this.loaded) this.loaded(); };
-
-     
-
+			
             // set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";
 

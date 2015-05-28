@@ -556,7 +556,9 @@
     <Content Include="assets\sounds\Interface Sound-10.ogg" />
     <Content Include="assets\sounds\Interface Sound-11.mp3" />
     <Content Include="assets\sounds\Interface Sound-11.ogg" />
+    <Content Include="assets\sounds\Interface Sound-12.mp3" />
     <Content Include="assets\sounds\Interface Sound-12.ogg" />
+    <Content Include="assets\sounds\Interface Sound-13.mp3" />
     <Content Include="assets\sounds\Interface Sound-13.ogg" />
     <Content Include="assets\sounds\Interface Sound-14.mp3" />
     <Content Include="assets\sounds\Interface Sound-14.ogg" />

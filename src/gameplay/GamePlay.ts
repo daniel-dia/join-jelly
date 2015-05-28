@@ -439,9 +439,7 @@
             this.gameFooter.mouseEnabled = false;
             createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
-            
-
-
+        
             // shows finished game menu
             setTimeout(() => {
                 if(win)
@@ -468,7 +466,7 @@
                 
 
             }, 1200);
-            this.finishMenu.setValues(score, highScore, highJelly, message);
+            this.finishMenu.setValues(score, Math.max(highScore,score), highJelly, message);
 
             // log event
             if (win)
@@ -478,9 +476,7 @@
 
             // play end soud
             gameui.AudiosManager.playSound("end");
-
-            
-
+			
             // play end game effect
             this.board.endGameEffect();
         }
