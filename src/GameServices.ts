@@ -60,6 +60,7 @@
             this.socialService.showLeaderboard();
         }
 
+		// show a achievement.
         public showAchievements() {
             if (!this.socialService) return;
             this.socialService.showAchievements();
