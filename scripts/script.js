@@ -758,6 +758,8 @@ var StringResources = {
         restoreWarning: "It will restore your purchases from store, Continue?",
         resetWarning: "Are you sure. All you progress will be lost",
         about: "About",
+        aboutText: "Develop by",
+        aboutURL: "www.dia-studio.com",
         tutorial: "Tutorial",
         shop: "shop",
         playerName: "Player Name",
@@ -854,6 +856,8 @@ var StringResources_pt = {
         restoreWarning: "Isso vai recuperar suas compras da loja, quer continuar?",
         resetWarning: "Você tem certeza? tudo que voce consquistou será perdido.",
         about: "Sobre",
+        aboutText: "Desenvolvido por",
+        aboutURL: "www.dia-studio.com",
         tutorial: "Tutorial",
         shop: "Compras",
         playerName: "Nome do Jogador",
@@ -1210,11 +1214,11 @@ var joinjelly;
             }
             var x = defaultWidth + 100;
             var space = 250;
-            var settingsBt = new gameui.ImageButton("BtInfo", function () {
+            var settingsBt = new gameui.ImageButton("DIAStudioIco", function () {
                 joinjelly.JoinJelly.showAbout();
             });
-            settingsBt.y = 150;
-            settingsBt.x = x - space;
+            settingsBt.y = 165 / 2;
+            settingsBt.x = defaultWidth - 165 / 2;
             this.header.addChild(settingsBt);
             var settingsBt = new gameui.ImageButton("BtMenu", function () {
                 joinjelly.JoinJelly.showSettings();
@@ -1777,11 +1781,34 @@ var joinjelly;
     var About = (function (_super) {
         __extends(About, _super);
         function About() {
-            _super.call(this, StringResources.menus.about);
+            _super.call(this);
             this.maxScroll = 1700;
+            this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
+            var text = gameui.AssetsManager.getBitmapText(StringResources.menus.aboutText, "debussyBig");
+            text.regX = text.getBounds().width / 2;
+            this.content.addChild(text);
+            text.x = defaultWidth / 2;
+            text.y = defaultHeight / 2 - 500;
+            var text = gameui.AssetsManager.getBitmapText(StringResources.menus.aboutURL, "debussy");
+            text.regX = text.getBounds().width / 2;
+            this.content.addChild(text);
+            text.x = defaultWidth / 2;
+            text.y = defaultHeight / 2 + 400;
+            var logo = new gameui.ImageButton("DIAStudioLogo", function () {
+                Cocoon.App.openURL("http://" + StringResources.menus.aboutURL);
+            });
+            logo.x = defaultWidth / 2;
+            logo.y = defaultHeight / 2;
+            this.content.addChild(logo);
+            var okButton = new gameui.ImageButton("BtOk", function () {
+                joinjelly.JoinJelly.showMainMenu();
+            });
+            okButton.x = defaultWidth / 2;
+            okButton.y = defaultHeight - 200;
+            this.content.addChild(okButton);
         }
         return About;
-    })(joinjelly.ScrollablePage);
+    })(gameui.ScreenState);
     joinjelly.About = About;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;

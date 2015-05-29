@@ -1,6 +1,9 @@
 ﻿var imageManifest = [
 
-       { src: "e1_hanger.png", id: "e1_hanger" },
+       { src: "DIAStudioLogo.png", id: "DIAStudioLogo" },
+	   { src: "DIAStudioIco.png", id: "DIAStudioIco" },
+
+	  { src: "e1_hanger.png", id: "e1_hanger" },
 	   { src: "e1_happy.png", id: "e1_happy" },
 	   { src: "e1_sad.png", id: "e1_sad" },
 	   { src: "movement.png", id: "movement" },

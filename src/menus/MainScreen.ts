@@ -74,9 +74,9 @@
             var space = 250;
 
             //add About button
-            var settingsBt = new gameui.ImageButton("BtInfo", () => { JoinJelly.showAbout(); });
-            settingsBt.y = 150;
-            settingsBt.x = x - space;
+            var settingsBt = new gameui.ImageButton("DIAStudioIco", () => { JoinJelly.showAbout(); });
+            settingsBt.y = 165 / 2;
+            settingsBt.x = defaultWidth - 165/2;
             this.header.addChild(settingsBt);
 
             //add Menu button
