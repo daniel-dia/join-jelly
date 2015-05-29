@@ -1199,10 +1199,13 @@ var joinjelly;
         MainScreen.prototype.createFooter = function () {
             var _this = this;
             if (this.userData) {
-                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore + " " + this.userData.getHighScore(), "debussy");
-                this.scoreText.x = 50;
-                this.scoreText.y = -100;
-                this.scoreText.scaleX = this.scoreText.scaleY = 0.8;
+                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore, "debussy");
+                this.scoreText.x = 70;
+                this.scoreText.y = -250;
+                this.footer.addChild(this.scoreText);
+                this.scoreText = gameui.AssetsManager.getBitmapText(this.userData.getHighScore().toString(), "debussyBig");
+                this.scoreText.x = 70;
+                this.scoreText.y = -170;
                 this.footer.addChild(this.scoreText);
             }
             var x = defaultWidth + 100;
@@ -2520,7 +2523,7 @@ var joinjelly;
                     var ok = new gameui.ImageButton("BtHome", (function () {
                         _this.dispatchEvent("ok");
                     }));
-                    ok.set({ x: 771, y: 1810 });
+                    ok.set({ x: 200, y: 700 });
                     ok.scaleY = ok.scaleX = 1.3;
                     this.addChild(ok);
                     var board = new gameui.ImageButton("BtBoard", (function () {

@@ -21,7 +21,7 @@
             var ok = new gameui.ImageButton("BtHome", (() => {
                 this.dispatchEvent("ok")
             }));
-			ok.set({ x: 771, y: 1810 });
+			ok.set({ x: 200, y: 700 });
 			ok.scaleY = ok.scaleX = 1.3;
 			this.addChild(ok);
 
