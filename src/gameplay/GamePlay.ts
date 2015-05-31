@@ -31,7 +31,7 @@
         private timeByLevel: number = 20000;
         private timeoutInterval: number;
 
-        private initialInterval: number = 800;
+        private initialInterval: number = 200;
         private finalInterval: number = 300;
         private easeInterval: number = 0.99;
         
@@ -43,7 +43,7 @@
 
         //#region =================================== initialization ================================================
 
-        constructor(userData: UserData,saveGame?:SaveGame) {
+        constructor(userData: UserData) {
             super();
 
             this.userData = userData;
@@ -59,7 +59,7 @@
             this.start();
             
             // try to load a saved Game
-            if (saveGame) this.loadGame();
+            this.loadGame();
 
             //if is first time then give some items.
             if(JoinJelly.userData.getHistory("firstPlay")) {
@@ -173,7 +173,15 @@
             this.footer.addChild(tbt);
             this.showBoardButton = tbt;
 
-            //add eventListener
+			//add eventListener
+
+			this.finishMenu.addEventListener("restart",() => {
+                this.pauseMenu.hide();
+                this.userData.deleteSaveGame();
+                setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
+            });
+
+
             this.finishMenu.addEventListener("ok",() => {
                 JoinJelly.showMainMenu();
             });
@@ -228,7 +236,6 @@
             this.pauseMenu.addEventListener("home", () => {
                 this.pauseMenu.hide();
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
-                this.userData.deleteSaveGame();
             });
 
             this.pauseMenu.addEventListener("restart", () => {
@@ -417,7 +424,6 @@
 
             this.view.setChildIndex(this.footer,this.view.getNumChildren()-1);
 
-            this.userData.deleteSaveGame();
             this.gamestate = GameState.standBy;
 
             var score = this.score;
@@ -536,8 +542,8 @@
 
             var empty = this.board.getEmptyTiles();
             var locked = this.board.getLockedTiles();
-
-            if (empty.length == 0 && locked.length == 0)
+			// TODO add timeout
+            if (empty.length == 0 && locked.length == 0 )
                 return true;
 
             return false;
@@ -1046,7 +1052,10 @@
             this.updateFooter();
             this.updateInterfaceInfos();
 
-            this.pauseGame();
+			if (this.verifyGameLoose())
+				this.endGame();
+			else
+				this.continueGame();
         }
 
         // #endregion

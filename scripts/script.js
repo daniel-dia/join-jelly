@@ -1428,7 +1428,7 @@ var joinjelly;
                 };
                 FlyOutMenu.prototype.addTitle = function (title) {
                     this.title = gameui.AssetsManager.getBitmapText("", "debussyBig");
-                    this.title.set({ x: defaultWidth / 2, y: 580 });
+                    this.title.set({ x: defaultWidth / 2, y: 620 });
                     this.addChild(this.title);
                     this.setTitle(title);
                 };
@@ -2547,22 +2547,26 @@ var joinjelly;
                 }
                 FinishMenu.prototype.addButtons = function () {
                     var _this = this;
-                    var ok = new gameui.ImageButton("BtHome", (function () {
-                        _this.dispatchEvent("ok");
-                    }));
-                    ok.set({ x: 200, y: 700 });
-                    ok.scaleY = ok.scaleX = 1.3;
-                    this.addChild(ok);
                     var board = new gameui.ImageButton("BtBoard", (function () {
                         _this.dispatchEvent("board");
                     }));
-                    board.set({ x: 353, y: 1780 });
+                    board.set({ x: defaultWidth / 2, y: 1780 });
                     this.addChild(board);
                     var share = new gameui.ImageButton("BtShare", (function () {
                         _this.dispatchEvent("share");
                     }));
-                    share.set({ x: 1190, y: 1780 });
+                    share.set({ x: 1190, y: 1580 });
                     this.addChild(share);
+                    var home = new gameui.ImageButton("BtHome", (function () {
+                        _this.dispatchEvent("ok");
+                    }));
+                    home.set({ x: 353, y: 1780 });
+                    this.addChild(home);
+                    var restart = new gameui.ImageButton("BtRestart", (function () {
+                        _this.dispatchEvent("restart");
+                    }));
+                    restart.set({ x: 1190, y: 1780 });
+                    this.addChild(restart);
                 };
                 FinishMenu.prototype.addPoints = function () {
                     var container = new createjs.Container();
@@ -2573,7 +2577,7 @@ var joinjelly;
                     tx.set({ x: 288, y: 442 });
                     tx.scaleX = tx.scaleY = 0.7;
                     var tx = gameui.AssetsManager.getBitmapText("", "debussyBig");
-                    tx.set({ x: defaultWidth / 2, y: 587 });
+                    tx.set({ x: defaultWidth / 2, y: 630 });
                     container.addChild(tx);
                     this.scoreText = tx;
                     var tx = gameui.AssetsManager.getBitmapText("", "debussy");
@@ -3105,13 +3109,13 @@ var joinjelly;
     (function (gameplay) {
         var GamePlayScreen = (function (_super) {
             __extends(GamePlayScreen, _super);
-            function GamePlayScreen(userData, saveGame) {
+            function GamePlayScreen(userData) {
                 _super.call(this);
                 this.matches = 0;
                 this.boardSize = 5;
                 this.itemProbability = 0.005;
                 this.timeByLevel = 20000;
-                this.initialInterval = 800;
+                this.initialInterval = 200;
                 this.finalInterval = 300;
                 this.easeInterval = 0.99;
                 this.userData = userData;
@@ -3121,8 +3125,7 @@ var joinjelly;
                 this.createGUI();
                 this.createEffects();
                 this.start();
-                if (saveGame)
-                    this.loadGame();
+                this.loadGame();
                 if (joinjelly.JoinJelly.userData.getHistory("firstPlay")) {
                     joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.REVIVE, 1);
                     joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.TIME, 2);
@@ -3201,6 +3204,13 @@ var joinjelly;
                 tbt.set({ x: 150, y: -150, visible: false });
                 this.footer.addChild(tbt);
                 this.showBoardButton = tbt;
+                this.finishMenu.addEventListener("restart", function () {
+                    _this.pauseMenu.hide();
+                    _this.userData.deleteSaveGame();
+                    setTimeout(function () {
+                        joinjelly.JoinJelly.startLevel();
+                    }, 200);
+                });
                 this.finishMenu.addEventListener("ok", function () {
                     joinjelly.JoinJelly.showMainMenu();
                 });
@@ -3242,7 +3252,6 @@ var joinjelly;
                     setTimeout(function () {
                         joinjelly.JoinJelly.showMainMenu();
                     }, 200);
-                    _this.userData.deleteSaveGame();
                 });
                 this.pauseMenu.addEventListener("restart", function () {
                     _this.pauseMenu.hide();
@@ -3355,7 +3364,6 @@ var joinjelly;
             GamePlayScreen.prototype.endGame = function (message, win) {
                 var _this = this;
                 this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
-                this.userData.deleteSaveGame();
                 this.gamestate = 4 /* standBy */;
                 var score = this.score;
                 var highScore = joinjelly.JoinJelly.userData.getHighScore();
@@ -3768,7 +3776,10 @@ var joinjelly;
                 this.updateCurrentLevel();
                 this.updateFooter();
                 this.updateInterfaceInfos();
-                this.pauseGame();
+                if (this.verifyGameLoose())
+                    this.endGame();
+                else
+                    this.continueGame();
             };
             GamePlayScreen.prototype.selfPeformanceTest = function (fast) {
                 var _this = this;
@@ -4296,7 +4307,7 @@ var joinjelly;
                 else {
                     var loadedGame = _this.userData.loadGame();
                     if (loadedGame)
-                        joinjelly.JoinJelly.startLevel(loadedGame);
+                        joinjelly.JoinJelly.startLevel();
                     else
                         JoinJelly.showMainMenu();
                 }
@@ -4307,9 +4318,6 @@ var joinjelly;
             this.gameScreen.switchScreen(gs);
             gs.selfPeformanceTest(false);
         };
-        JoinJelly.showAboutScreen = function () {
-            alert("beta");
-        };
         JoinJelly.showMainMenu = function () {
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.gameplay.GamePlayScreen)
@@ -4318,11 +4326,14 @@ var joinjelly;
                 transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         };
-        JoinJelly.startLevel = function (loadedGame) {
+        JoinJelly.startLevel = function () {
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
                 transition = { type: "bottom", time: 500 };
-            this.gameScreen.switchScreen(new joinjelly.gameplay.ExplodeBricks(this.userData, loadedGame), null, transition);
+            this.gameScreen.switchScreen(new joinjelly.gameplay.ExplodeBricks(this.userData), null, transition);
+        };
+        JoinJelly.startLevelDirectaly = function () {
+            this.gameScreen.switchScreen(new joinjelly.gameplay.ExplodeBricks(this.userData));
         };
         JoinJelly.startTutorial = function () {
             var transition;

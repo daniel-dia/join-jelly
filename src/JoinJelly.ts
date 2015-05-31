@@ -49,7 +49,7 @@ module joinjelly {
                 } else {
                     var loadedGame = this.userData.loadGame();
                     if (loadedGame)
-                        joinjelly.JoinJelly.startLevel(loadedGame);
+                        joinjelly.JoinJelly.startLevel();
                     else
                         JoinJelly.showMainMenu();
                 }
@@ -62,23 +62,21 @@ module joinjelly {
             gs.selfPeformanceTest(false);
         }
 
-        public static showAboutScreen() {
-            //not Implemented
-            alert("beta");
-        }
-
-
-        public static showMainMenu() {
+		public static showMainMenu() {
             var transition;
             if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };
             if (this.gameScreen.currentScreen instanceof Jellypedia) transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         }
 
-        public static startLevel(loadedGame?:SaveGame) {
+        public static startLevel() {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "bottom", time: 500 };
-            this.gameScreen.switchScreen(new gameplay.ExplodeBricks(this.userData,loadedGame), null, transition);
+            this.gameScreen.switchScreen(new gameplay.ExplodeBricks(this.userData), null, transition);
+        }
+
+		public static startLevelDirectaly() {
+            this.gameScreen.switchScreen(new gameplay.ExplodeBricks(this.userData));
         }
 
         public static startTutorial() {

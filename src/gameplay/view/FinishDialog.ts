@@ -17,27 +17,33 @@
         // creates buttons controls
         private addButtons() {
 
-            //add continue button;
-            var ok = new gameui.ImageButton("BtHome", (() => {
-                this.dispatchEvent("ok")
-            }));
-			ok.set({ x: 200, y: 700 });
-			ok.scaleY = ok.scaleX = 1.3;
-			this.addChild(ok);
-
-            //add share button;
+			//add share button;
             var board = new gameui.ImageButton("BtBoard", (() => {
                 this.dispatchEvent("board")
             }));
-            board.set({ x: 353, y: 1780 });
+            board.set({ x: defaultWidth/2, y: 1780 });
             this.addChild(board);
 
             //add showBoard button
             var share = new gameui.ImageButton("BtShare", (() => {
                 this.dispatchEvent("share")
             }));
-            share.set({ x: 1190, y: 1780 });
+            share.set({ x: 1190, y: 1580 });
             this.addChild(share);
+
+			//add home button;
+            var home = new gameui.ImageButton("BtHome",(() => {
+                this.dispatchEvent("ok")
+            }));
+            home.set({ x: 353, y: 1780 });
+            this.addChild(home);
+
+            //add showBoard button
+            var restart = new gameui.ImageButton("BtRestart",(() => {
+                this.dispatchEvent("restart")
+            }));
+            restart.set({ x: 1190, y: 1780 });
+            this.addChild(restart);
         }
 
         // create points control
@@ -58,7 +64,7 @@
             
             //create "points" text
             var tx = gameui.AssetsManager.getBitmapText("", "debussyBig")
-            tx.set({ x: defaultWidth/2, y: 587});
+            tx.set({ x: defaultWidth/2, y: 630});
             container.addChild(tx);
             this.scoreText = tx;            
 
