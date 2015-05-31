@@ -671,7 +671,6 @@
     <TypeScriptCompile Include="src\menus\view\ProductListItem.ts" />
     <TypeScriptCompile Include="src\InAppPurchases.ts" />
     <TypeScriptCompile Include="src\StringResources.ts" />
-    <TypeScriptCompile Include="src\gameplay\ExplodeBrick.ts" />
     <TypeScriptCompile Include="src\gameplay\Tutorial.ts" />
     <TypeScriptCompile Include="src\gameplay\Board.ts" />
     <TypeScriptCompile Include="src\gameplay\view\TutorialMessage.ts" />

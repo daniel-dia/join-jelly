@@ -1,6 +1,6 @@
 ﻿module joinjelly.gameplay {
 
-    export class Tutorial extends ExplodeBricks {
+    export class Tutorial extends GamePlayScreen {
 
         // tutoral current step
         private currentTutorialStep = 0;

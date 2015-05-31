@@ -31,10 +31,14 @@
         private timeByLevel: number = 20000;
         private timeoutInterval: number;
 
-        private initialInterval: number = 200;
+        private initialInterval: number = 800;
         private finalInterval: number = 300;
         private easeInterval: number = 0.99;
-        
+
+        private initialDirtyProbability: number = 0.1;
+        private finalDirtyProbability: number = 0.5;
+        private easeDirtyProbability: number = 0.99;
+
         // effect 
         private freezeEffect: createjs.DisplayObject;
         private evolveEffect: createjs.DisplayObject;
@@ -367,7 +371,7 @@
         protected gameInteraction() {
 
             // add a new tile  on board
-            this.addRandomTileOnBoard();
+            this.addRandomJellyOnBoard(1);
 
             // updates interafce information
             this.updateInterfaceInfos();
@@ -500,6 +504,7 @@
         // give bonus when level up
         protected levelUpBonus() {
             this.useEvolve();
+			this.cleanAllDirty();
         }
 
         // calculate current level by moves. once level calculation is a iterative processe, this method uses a iterative calculation
@@ -548,25 +553,69 @@
 
             return false;
         }
+		
+		// add a random jelly with value 1 on board
+		private addRandomJellyOnBoard(JellyValue: number) {
+			
+			// select a random value to add for higher levels.
+			for (var i = 10; i < this.level; i += 10)
+                if (Math.random() > 0.9) JellyValue *= 2;
+			if (JellyValue > JoinJelly.maxJelly) JellyValue = JoinJelly.maxJelly;
+
+
+			this.addRandomTileOnBoard(JellyValue);
+			this.addRandomDirtyOnBoard();
+
+			this.saveGame();
+		}
+
+		// randomly adda a dirty to the board
+		private addRandomDirtyOnBoard() {
+            if (this.getDirtyProbabilityByLevel(this.level, this.initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
+                setTimeout(() => { this.addRandomTileOnBoard(-1); }, 500);
+		}
 
         // add a random tile with value 1 on board
-        protected addRandomTileOnBoard(value: number= 1) {
+        private addRandomTileOnBoard(value: number) {
 
             var empty = this.board.getEmptyTiles();
 
-            // select a random value to add.
-            if (value > 0)
-                for(var i = 10; i < this.level; i +=10)
-                    if (Math.random() > 0.9) value *= 2;
-            
-
-            // if there is no more empty tiles, ends the game
+			// if there is no more empty tiles, ends the game
             if (empty.length > 0) {
                 var i = Math.floor(Math.random() * empty.length);
                 var tile = empty[i];
                 tile.setNumber(value);
-                this.saveGame();
             }
+        }
+		
+		// clean all dirty in the board
+        public cleanAllDirty() {
+            var tiles = this.board.getAllTiles();
+            for (var t in tiles) {
+                if (tiles[t].getNumber() < 0)
+                    tiles[t].setNumber(0);
+            }
+        }
+
+		// cleand neighbor dirty
+		private cleanNearDirtY(target: Tile) {
+            var neighborTiles = this.board.getNeighborTiles(target);
+
+			for (var t in neighborTiles) {
+				var tile = neighborTiles[t];
+
+				if (tile && tile.getNumber() < 0) {
+					var posx = target.x + (tile.x - target.x) * 1.5;
+					var posy = target.y + (tile.y - target.y) * 1.5;
+					this.board.fadeTileToPos(tile, posx, posy, 500);
+					tile.setNumber(0);
+				}
+			}
+		}
+
+        // calculate time interval for a level.
+        protected getDirtyProbabilityByLevel(level: number, initialDirtyProbability: number, finalDirtyProbability: number, easeDirtyProbability: number): number {
+            return initialDirtyProbability * Math.pow(easeDirtyProbability, level) + finalDirtyProbability * (1 - Math.pow(easeDirtyProbability, level));
         }
 
         //called when a tile is dragged
@@ -651,9 +700,12 @@
             // verifies if it can move, make it a little more faster
             if (!this.canMove()) this.step(0);
             
+			// clean near Dirties
+			 
             return true;
         }
 
+		// saves the high valueable jelly to the score
         private highJellySave(newValue) {
             if (this.highJelly < newValue) {
                 
@@ -892,6 +944,7 @@
             return true;
         }
 
+		// evolve one random jelly (TODO tirar daqui)
         protected useEvolve() {
             // evolve some random tile, except maximun tile
             if (this.gamestate == GameState.ended) return;

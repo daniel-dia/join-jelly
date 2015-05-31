@@ -3115,9 +3115,12 @@ var joinjelly;
                 this.boardSize = 5;
                 this.itemProbability = 0.005;
                 this.timeByLevel = 20000;
-                this.initialInterval = 200;
+                this.initialInterval = 800;
                 this.finalInterval = 300;
                 this.easeInterval = 0.99;
+                this.initialDirtyProbability = 0.1;
+                this.finalDirtyProbability = 0.5;
+                this.easeDirtyProbability = 0.99;
                 this.userData = userData;
                 this.score = 0;
                 this.createBackground();
@@ -3326,7 +3329,7 @@ var joinjelly;
                 }, timeout);
             };
             GamePlayScreen.prototype.gameInteraction = function () {
-                this.addRandomTileOnBoard();
+                this.addRandomJellyOnBoard(1);
                 this.updateInterfaceInfos();
                 if (this.verifyGameLoose())
                     this.endGame();
@@ -3411,6 +3414,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.levelUpBonus = function () {
                 this.useEvolve();
+                this.cleanAllDirty();
             };
             GamePlayScreen.prototype.getLevelByMoves = function (moves) {
                 var totalMoves = 0;
@@ -3442,19 +3446,53 @@ var joinjelly;
                     return true;
                 return false;
             };
+            GamePlayScreen.prototype.addRandomJellyOnBoard = function (JellyValue) {
+                for (var i = 10; i < this.level; i += 10)
+                    if (Math.random() > 0.9)
+                        JellyValue *= 2;
+                if (JellyValue > joinjelly.JoinJelly.maxJelly)
+                    JellyValue = joinjelly.JoinJelly.maxJelly;
+                this.addRandomTileOnBoard(JellyValue);
+                this.addRandomDirtyOnBoard();
+                this.saveGame();
+            };
+            GamePlayScreen.prototype.addRandomDirtyOnBoard = function () {
+                var _this = this;
+                if (this.getDirtyProbabilityByLevel(this.level, this.initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
+                    setTimeout(function () {
+                        _this.addRandomTileOnBoard(-1);
+                    }, 500);
+            };
             GamePlayScreen.prototype.addRandomTileOnBoard = function (value) {
                 if (value === void 0) { value = 1; }
                 var empty = this.board.getEmptyTiles();
-                if (value > 0)
-                    for (var i = 10; i < this.level; i += 10)
-                        if (Math.random() > 0.9)
-                            value *= 2;
                 if (empty.length > 0) {
                     var i = Math.floor(Math.random() * empty.length);
                     var tile = empty[i];
                     tile.setNumber(value);
-                    this.saveGame();
                 }
+            };
+            GamePlayScreen.prototype.cleanAllDirty = function () {
+                var tiles = this.board.getAllTiles();
+                for (var t in tiles) {
+                    if (tiles[t].getNumber() < 0)
+                        tiles[t].setNumber(0);
+                }
+            };
+            GamePlayScreen.prototype.cleanNearDirtY = function (target) {
+                var neighborTiles = this.board.getNeighborTiles(target);
+                for (var t in neighborTiles) {
+                    var tile = neighborTiles[t];
+                    if (tile && tile.getNumber() < 0) {
+                        var posx = target.x + (tile.x - target.x) * 1.5;
+                        var posy = target.y + (tile.y - target.y) * 1.5;
+                        this.board.fadeTileToPos(tile, posx, posy, 500);
+                        tile.setNumber(0);
+                    }
+                }
+            };
+            GamePlayScreen.prototype.getDirtyProbabilityByLevel = function (level, initialDirtyProbability, finalDirtyProbability, easeDirtyProbability) {
+                return initialDirtyProbability * Math.pow(easeDirtyProbability, level) + finalDirtyProbability * (1 - Math.pow(easeDirtyProbability, level));
             };
             GamePlayScreen.prototype.dragged = function (origin, target) {
                 this.match(origin, target);
@@ -3814,61 +3852,6 @@ var joinjelly;
 (function (joinjelly) {
     var gameplay;
     (function (gameplay) {
-        var ExplodeBricks = (function (_super) {
-            __extends(ExplodeBricks, _super);
-            function ExplodeBricks() {
-                _super.apply(this, arguments);
-                this.initialDirtyProbability = 0.1;
-                this.finalDirtyProbability = 0.5;
-                this.easeDirtyProbability = 0.99;
-            }
-            ExplodeBricks.prototype.addRandomTileOnBoard = function () {
-                var _this = this;
-                _super.prototype.addRandomTileOnBoard.call(this);
-                if (this.getDirtyProbabilityByLevel(this.level, this.initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
-                    setTimeout(function () {
-                        _super.prototype.addRandomTileOnBoard.call(_this, -1);
-                    }, 500);
-            };
-            ExplodeBricks.prototype.match = function (origin, target) {
-                var match = _super.prototype.match.call(this, origin, target);
-                if (match) {
-                    var neighborTiles = this.board.getNeighborTiles(target);
-                    for (var t in neighborTiles) {
-                        var tile = neighborTiles[t];
-                        if (tile && tile.getNumber() < 0) {
-                            var posx = target.x + (tile.x - target.x) * 1.5;
-                            var posy = target.y + (tile.y - target.y) * 1.5;
-                            this.board.fadeTileToPos(tile, posx, posy, 500);
-                            tile.setNumber(0);
-                        }
-                    }
-                }
-                return match;
-            };
-            ExplodeBricks.prototype.levelUpBonus = function () {
-                _super.prototype.levelUpBonus.call(this);
-                this.cleanDirty();
-            };
-            ExplodeBricks.prototype.cleanDirty = function () {
-                var tiles = this.board.getAllTiles();
-                for (var t in tiles) {
-                    if (tiles[t].getNumber() < 0)
-                        tiles[t].setNumber(0);
-                }
-            };
-            ExplodeBricks.prototype.getDirtyProbabilityByLevel = function (level, initialDirtyProbability, finalDirtyProbability, easeDirtyProbability) {
-                return initialDirtyProbability * Math.pow(easeDirtyProbability, level) + finalDirtyProbability * (1 - Math.pow(easeDirtyProbability, level));
-            };
-            return ExplodeBricks;
-        })(gameplay.GamePlayScreen);
-        gameplay.ExplodeBricks = ExplodeBricks;
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
         var Tutorial = (function (_super) {
             __extends(Tutorial, _super);
             function Tutorial() {
@@ -4114,7 +4097,7 @@ var joinjelly;
             Tutorial.prototype.saveGame = function () {
             };
             return Tutorial;
-        })(gameplay.ExplodeBricks);
+        })(gameplay.GamePlayScreen);
         gameplay.Tutorial = Tutorial;
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
@@ -4314,7 +4297,7 @@ var joinjelly;
             };
         };
         JoinJelly.startTest = function () {
-            var gs = new joinjelly.gameplay.ExplodeBricks(this.userData);
+            var gs = new joinjelly.gameplay.GamePlayScreen(this.userData);
             this.gameScreen.switchScreen(gs);
             gs.selfPeformanceTest(false);
         };
@@ -4330,10 +4313,10 @@ var joinjelly;
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
                 transition = { type: "bottom", time: 500 };
-            this.gameScreen.switchScreen(new joinjelly.gameplay.ExplodeBricks(this.userData), null, transition);
+            this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData), null, transition);
         };
         JoinJelly.startLevelDirectaly = function () {
-            this.gameScreen.switchScreen(new joinjelly.gameplay.ExplodeBricks(this.userData));
+            this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData));
         };
         JoinJelly.startTutorial = function () {
             var transition;
