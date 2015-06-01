@@ -9,9 +9,9 @@
         
         constructor() {
             super(StringResources.menus.gameOver.toUpperCase(),1250);
-            this.addButtons();
-            this.addPoints();
+			this.addPoints();
             this.addLastJelly();
+			this.addButtons();
         }
 
         // creates buttons controls
@@ -28,7 +28,7 @@
             var share = new gameui.ImageButton("BtShare", (() => {
                 this.dispatchEvent("share")
             }));
-            share.set({ x: 1190, y: 1580 });
+            share.set({ x: 1240, y: 1020 });
             this.addChild(share);
 
 			//add home button;
@@ -51,28 +51,22 @@
 
             var container = new createjs.Container();
             
-            //creates points Bg
+            // creates points Bg
             var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
             bg.set({ x: defaultWidth/2, y: 565,regX:1056/2});
             container .addChild(bg);
 
-            //create points object
-            var tx = gameui.AssetsManager.getBitmapText("Score", "debussy")
-            tx.set({ x: 288, y: 442 });
-            tx.scaleX = tx.scaleY = 0.7;
-            //container.addChild(tx);
-            
-            //create "points" text
+			// create "points" text
             var tx = gameui.AssetsManager.getBitmapText("", "debussyBig")
             tx.set({ x: defaultWidth/2, y: 630});
             container.addChild(tx);
             this.scoreText = tx;            
 
-            //create HighScore text
+            // create HighScore text
             var tx = gameui.AssetsManager.getBitmapText("", "debussy")
-            tx.set({ x: 1240, y: 775 });
-            container.addChild(tx);
-            tx.scaleX = tx.scaleY = 0.7;
+            tx.set({ x: 300, y: 775 });
+            tx.scaleX = tx.scaleY = 0.8;
+			container.addChild(tx);
             this.highScoreText = tx;
 
             container.y += 260;
@@ -111,7 +105,7 @@
             //add "LastJelly" name Text
             var tx = gameui.AssetsManager.getBitmapText("1", "debussy")
             tx.set({ x: defaultWidth / 2, y: 1358 });
-            tx.scaleX = tx.scaleY = 0.7;
+            tx.scaleX = tx.scaleY = 0.9;
             this.jellyText = tx;
             container.addChild(tx);
             
@@ -141,8 +135,7 @@
 
             this.jellyText.text = StringResources.jellies [jelly].name;
             if (this.jellyText.getBounds())
-                this.jellyText.regX = this.jellyText.getBounds().width / 2;
-            this.highScoreText.regX = this.highScoreText.getBounds().width;
+                this.jellyText.regX = this.jellyText.getBounds().width / 2; 
 
         }
     }
