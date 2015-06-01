@@ -26,16 +26,12 @@
 
 			// add icon
 			var logo = new gameui.ImageButton("DIAStudioLogo",() => {
-								Cocoon.App.openURL("http://" + StringResources.menus.aboutURL);
+				Cocoon.App.openURL("http://" + StringResources.menus.aboutURL);
 			});
 
-			  
 			logo.x = defaultWidth / 2;
 			logo.y = defaultHeight / 2;
 			this.content.addChild(logo); 
-
-			// add ok Button
-
 			// add ok button
             var okButton = new gameui.ImageButton("BtOk",() => {
               
@@ -44,8 +40,6 @@
             okButton.x = defaultWidth /2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
-
-			
         }
     }
 }
