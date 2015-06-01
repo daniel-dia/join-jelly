@@ -45,8 +45,7 @@
 /// <reference path="src/gameplay/view/TutorialMessage.ts" />
 /// <reference path="src/gameplay/Board.ts" />
 /// <reference path="src/gameplay/Tile.ts" />
-/// <reference path="src/gameplay/GamePlay.ts" />
-/// <reference path="src/gameplay/ExplodeBrick.ts" />
+/// <reference path="src/gameplay/GamePlay.ts" /> 
 /// <reference path="src/gameplay/Tutorial.ts" />
 
 /// <reference path="src/Message.ts" />

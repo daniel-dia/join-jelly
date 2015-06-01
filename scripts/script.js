@@ -294,7 +294,7 @@ var gameui;
                     oldScreen.view.mouseEnabled = false;
                     newScreen.view.set({ alpha: alpha, x: -x, y: -y });
                     oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
-                    createjs.Tween.get(oldScreen.view).to({ alpha: alpha, x: x, y: y }, transition.time, createjs.Ease.quadInOut);
+                    createjs.Tween.get(oldScreen.view).to({ alpha: 1, x: x, y: y }, transition.time, createjs.Ease.quadInOut);
                     createjs.Tween.get(newScreen.view).to({ alpha: 1, x: 0, y: 0 }, transition.time, createjs.Ease.quadInOut).call(function () {
                         oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
                         newScreen.view.set({ 1: alpha, x: 0, y: 0 });
@@ -3464,7 +3464,6 @@ var joinjelly;
                     }, 500);
             };
             GamePlayScreen.prototype.addRandomTileOnBoard = function (value) {
-                if (value === void 0) { value = 1; }
                 var empty = this.board.getEmptyTiles();
                 if (empty.length > 0) {
                     var i = Math.floor(Math.random() * empty.length);

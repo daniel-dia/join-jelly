@@ -131,8 +131,7 @@
     // #endregion
 
     //#region history
-
-
+	
     public history(value: string) {
         var hist = UserData.loadValue("history", {});
         hist[value] = true;

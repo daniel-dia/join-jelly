@@ -120,7 +120,7 @@ module gameui{
                     oldScreen.view.set({ 1: alpha, x: 0, y: 0 })
 
                     //fade old screen out
-                    createjs.Tween.get(oldScreen.view).to({ alpha: alpha, x: x, y: y }, transition.time,createjs.Ease.quadInOut);
+                    createjs.Tween.get(oldScreen.view).to({ alpha: 1, x: x, y: y }, transition.time,createjs.Ease.quadInOut);
                     createjs.Tween.get(newScreen.view).to({ alpha: 1, x: 0, y: 0 }, transition.time, createjs.Ease.quadInOut).call(() => {
                        
                         oldScreen.view.set({ 1: alpha, x: 0, y: 0 })
