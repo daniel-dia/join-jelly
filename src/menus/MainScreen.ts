@@ -16,8 +16,8 @@
             this.userData = userData;
             this.createContent();
             this.createBackground();
-            this.createHeader();
-            this.createFooter();
+
+            this.createButtons();
             this.createTitle();
 
             gameui.AudiosManager.playMusic("musicIntro");
@@ -51,12 +51,8 @@
         private createBackground() {
             this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
         }
-
-        private createHeader() {
-
-        }
-
-        private createFooter() {
+ 
+        private createButtons() {
 
             if (this.userData) {
                 this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore , "debussy");

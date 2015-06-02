@@ -80,9 +80,7 @@ module joinjelly {
         }
 
         public static startTutorial() {
-            var transition;
-            if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "bottom", time: 500 };
-            this.gameScreen.switchScreen(new gameplay.Tutorial(this.userData), null, transition);
+			this.gameScreen.switchScreen(new gameplay.Tutorial());
         }
 
         public static showStore(previousScreen: gameui.ScreenState) {
@@ -90,8 +88,7 @@ module joinjelly {
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new menus.StoreMenu(previousScreen), null, transition);
         }
-
-
+		
         public static showIntro() {
              this.gameScreen.switchScreen(new joinjelly.StoryScreen());
         }
@@ -113,6 +110,7 @@ module joinjelly {
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };
             this.gameScreen.switchScreen(new menus.MainMenu(), null, transition);
         }
+
         public static showAbout() {
             this.gameScreen.switchScreen(new About());
         }

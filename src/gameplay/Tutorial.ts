@@ -2,6 +2,23 @@
 
     export class Tutorial extends GamePlayScreen {
 
+		
+		/*
+			Board Positions.
+
+			0		2		4
+				1		3	
+			5		7		9
+				6		8	
+			10		12		14
+				11		13	
+			15		17		19
+				16		18	
+			20		22		24
+				21		23	
+		*/
+
+
         // tutoral current step
         private currentTutorialStep = 0;
 
@@ -10,13 +27,18 @@
         private tutorialItemFinger: view.TutorialMove;
         private messageNotify: () => void;
 
+		constructor(){
+			super(null);
+			
+		}
+
         // #region tutorial ====================================================================================================
 
         protected createGUI() {
 
             super.createGUI();
             this.tutorialJellyFinger = new view.TutorialMove();
-            this.tutorialItemFinger = new view.TutorialMove();
+            this.tutorialItemFinger  = new view.TutorialMove();
             this.gameMessage.addEventListener("closed", () => { if(this.messageNotify)this.messageNotify();});
 
             this.tutorialItemFinger.rotation = -45;
@@ -47,21 +69,6 @@
         private resetTutorialStep() {
             this.currentTutorialStep = -1;
         }
-
-/*
-			Board Positions.
-
-			0		2		4
-				1		3	
-			5		7		9
-				6		8	
-			10		12		14
-				11		13	
-			15		17		19
-				16		18	
-			20		22		24
-				21		23	
-*/
 
         private executeTutorialStep() {
 
@@ -301,11 +308,8 @@
             }
         }
 
-        // #endregion 
-        
-        // update footer
         protected updateFooter() {}
-        // override savegame
-        public saveGame() {}
+       
+		public saveGame() {}
     }
 }

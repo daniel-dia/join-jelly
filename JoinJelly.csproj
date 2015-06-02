@@ -539,6 +539,7 @@
     <Content Include="assets\images_1x\tutorialFingerDown.png" />
     <Content Include="assets\images_1x\unchecked.png" />
     <Content Include="assets\Intro2.js" />
+    <Content Include="assets\Intro3.js" />
     <Content Include="assets\Manifest.js" />
     <Content Include="assets\resize.bat" />
     <Content Include="assets\sounds\end.mp3" />

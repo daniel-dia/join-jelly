@@ -5,14 +5,18 @@ module joinjelly {
 
         constructor() {
             super();
-			var intro: createjs.MovieClip = <createjs.MovieClip>new lib.Intro2();
+			var intro: createjs.MovieClip = <createjs.MovieClip>new lib.Intro3();
 
             this.content.addChild(intro);
 			intro.play();
-
-			setTimeout(() => {
+			intro.loop = false;
+			intro.addEventListener("click",() => {
 				JoinJelly.startTutorial();
-			}, 19000);
+			});
+
+			intro.addEventListener("complete",() => {
+				JoinJelly.startTutorial();
+			})
         }
     }
 }

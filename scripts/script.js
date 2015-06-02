@@ -1171,8 +1171,7 @@ var joinjelly;
             this.userData = userData;
             this.createContent();
             this.createBackground();
-            this.createHeader();
-            this.createFooter();
+            this.createButtons();
             this.createTitle();
             gameui.AudiosManager.playMusic("musicIntro");
         }
@@ -1198,9 +1197,7 @@ var joinjelly;
         MainScreen.prototype.createBackground = function () {
             this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
         };
-        MainScreen.prototype.createHeader = function () {
-        };
-        MainScreen.prototype.createFooter = function () {
+        MainScreen.prototype.createButtons = function () {
             var _this = this;
             if (this.userData) {
                 this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore, "debussy");
@@ -3529,7 +3526,8 @@ var joinjelly;
                 var item = this.giveItemChance([joinjelly.Items.CLEAN, joinjelly.Items.REVIVE, joinjelly.Items.TIME, joinjelly.Items.FAST]);
                 if (item)
                     this.animateItemFromTile(target, item);
-                this.userData.setLastJelly(newValue);
+                if (this.userData)
+                    this.userData.setLastJelly(newValue);
                 this.updateInterfaceInfos();
                 if (this.matchNotify)
                     this.matchNotify();
@@ -3805,6 +3803,8 @@ var joinjelly;
                 this.userData.saveGame(sg);
             };
             GamePlayScreen.prototype.loadGame = function () {
+                if (!this.userData)
+                    return;
                 var saveGame = this.userData.loadGame();
                 if (!saveGame || saveGame == null)
                     return;
@@ -3856,7 +3856,7 @@ var joinjelly;
         var Tutorial = (function (_super) {
             __extends(Tutorial, _super);
             function Tutorial() {
-                _super.apply(this, arguments);
+                _super.call(this, null);
                 this.currentTutorialStep = 0;
             }
             Tutorial.prototype.createGUI = function () {
@@ -4320,10 +4320,7 @@ var joinjelly;
             this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData));
         };
         JoinJelly.startTutorial = function () {
-            var transition;
-            if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
-                transition = { type: "bottom", time: 500 };
-            this.gameScreen.switchScreen(new joinjelly.gameplay.Tutorial(this.userData), null, transition);
+            this.gameScreen.switchScreen(new joinjelly.gameplay.Tutorial());
         };
         JoinJelly.showStore = function (previousScreen) {
             var transition;
@@ -4735,12 +4732,16 @@ var joinjelly;
         __extends(StoryScreen, _super);
         function StoryScreen() {
             _super.call(this);
-            var intro = new lib.Intro2();
+            var intro = new lib.Intro3();
             this.content.addChild(intro);
             intro.play();
-            setTimeout(function () {
+            intro.loop = false;
+            intro.addEventListener("click", function () {
                 joinjelly.JoinJelly.startTutorial();
-            }, 19000);
+            });
+            intro.addEventListener("complete", function () {
+                joinjelly.JoinJelly.startTutorial();
+            });
         }
         return StoryScreen;
     })(gameui.ScreenState);

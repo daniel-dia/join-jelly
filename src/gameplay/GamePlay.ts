@@ -676,7 +676,9 @@
             if (item) this.animateItemFromTile(target, item);
      
             // update score
-            this.userData.setLastJelly(newValue);
+			if (this.userData)
+				this.userData.setLastJelly(newValue);
+
             this.updateInterfaceInfos();
 
             // notify match
@@ -1093,6 +1095,9 @@
         }
 
         public loadGame() {
+
+			if (!this.userData) return;
+
             var saveGame = this.userData.loadGame();
             if (!saveGame || saveGame == null) return;
 
