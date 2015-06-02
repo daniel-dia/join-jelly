@@ -228,7 +228,8 @@
 
             return tiles;
         }
-        public getLockedTiles(): Array<Tile> {
+
+		public getLockedNotDraggingTiles(): Array<Tile> {
 
             //get next jelly
             var total = this.boardHeight * this.boardWidth;
@@ -236,11 +237,12 @@
 
             //get all empty tiles
             for (var t = 0; t < total; t++)
-                if (!this.tiles[t].isUnlocked())
+                if (!this.tiles[t].isUnlocked() && !this.tiles[t].isDragging)
                     tiles.push(this.tiles[t]);
 
             return tiles;
         }
+
         public getAllTiles(): Array<Tile> {
             return this.tiles;
         }

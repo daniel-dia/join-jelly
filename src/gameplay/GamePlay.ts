@@ -370,16 +370,16 @@
         // executes a game interaction
         protected gameInteraction() {
 
+			// verifies if game is loosed after 500ms again. if them both than loose game
+            if (this.verifyGameLoose()) this.endGame();
+
             // add a new tile  on board
             this.addRandomJellyOnBoard(1);
 
             // updates interafce information
             this.updateInterfaceInfos();
 
-            // verifies if game is loosed after 500ms again. if them both than loose game
-            if (this.verifyGameLoose()) this.endGame();
-
-            // update currentLevel
+			// update currentLevel
             this.updateCurrentLevel();
         }
 
@@ -545,9 +545,9 @@
         // Verifies if game is over
         private verifyGameLoose(): boolean {
 
-            var empty = this.board.getEmptyTiles();
-            var locked = this.board.getLockedTiles();
-			// TODO add timeout
+            var empty  = this.board.getEmptyTiles();
+            var locked = this.board.getLockedNotDraggingTiles();
+		 
             if (empty.length == 0 && locked.length == 0 )
                 return true;
 

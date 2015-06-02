@@ -7,12 +7,13 @@
         public posy: number;
         private locked: boolean;
         private enabled: boolean;
+		private dragging: boolean;
 
         private value: number;
 
         public jelly: view.Jelly;
 
-        // contructr
+        // contructor
         constructor(posx: number, posy: number, tileSize: number) {
 
             super();
@@ -40,20 +41,23 @@
         public release() {
             this.jelly.executeAimationRelease();
             this.unlock();
+			this.dragging = false;
         }
 
         public drag() {
             this.jelly.executeAnimationHold();
+			this.dragging = true;
         }
 
         public isUnlocked(): boolean { return !this.locked; }
 
-        public lock() { 
-            this.locked = true;
-         }
+		public isDragging(): boolean { return this.dragging; }
+
+        public lock() { this.locked = true; }
 
         public unlock() {
             this.locked = false;
+			this.dragging = false;
             this.jelly.setNumber(this.value);
         } 
 

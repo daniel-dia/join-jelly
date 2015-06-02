@@ -2887,11 +2887,11 @@ var joinjelly;
                         tiles.push(this.tiles[t]);
                 return tiles;
             };
-            Board.prototype.getLockedTiles = function () {
+            Board.prototype.getLockedNotDraggingTiles = function () {
                 var total = this.boardHeight * this.boardWidth;
                 var tiles = [];
                 for (var t = 0; t < total; t++)
-                    if (!this.tiles[t].isUnlocked())
+                    if (!this.tiles[t].isUnlocked() && !this.tiles[t].isDragging)
                         tiles.push(this.tiles[t]);
                 return tiles;
             };
@@ -3054,18 +3054,24 @@ var joinjelly;
             Tile.prototype.release = function () {
                 this.jelly.executeAimationRelease();
                 this.unlock();
+                this.dragging = false;
             };
             Tile.prototype.drag = function () {
                 this.jelly.executeAnimationHold();
+                this.dragging = true;
             };
             Tile.prototype.isUnlocked = function () {
                 return !this.locked;
+            };
+            Tile.prototype.isDragging = function () {
+                return this.dragging;
             };
             Tile.prototype.lock = function () {
                 this.locked = true;
             };
             Tile.prototype.unlock = function () {
                 this.locked = false;
+                this.dragging = false;
                 this.jelly.setNumber(this.value);
             };
             Tile.prototype.enable = function () {
@@ -3325,10 +3331,10 @@ var joinjelly;
                 }, timeout);
             };
             GamePlayScreen.prototype.gameInteraction = function () {
-                this.addRandomJellyOnBoard(1);
-                this.updateInterfaceInfos();
                 if (this.verifyGameLoose())
                     this.endGame();
+                this.addRandomJellyOnBoard(1);
+                this.updateInterfaceInfos();
                 this.updateCurrentLevel();
             };
             GamePlayScreen.prototype.pauseGame = function () {
@@ -3437,7 +3443,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.verifyGameLoose = function () {
                 var empty = this.board.getEmptyTiles();
-                var locked = this.board.getLockedTiles();
+                var locked = this.board.getLockedNotDraggingTiles();
                 if (empty.length == 0 && locked.length == 0)
                     return true;
                 return false;
