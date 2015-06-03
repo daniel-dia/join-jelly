@@ -13,7 +13,7 @@
         private matches: number = 0;
         private userData: UserData;
 
-        //interface
+        // interface
         protected board: Board;
         protected gameHeader: view.GameHeader;
         protected gameFooter: view.ItemsFooter;
@@ -45,21 +45,23 @@
         private reviveEffect: createjs.DisplayObject;
         private cleanEffect: createjs.DisplayObject;
 
-        //#region =================================== initialization ================================================
+        // #region =================================== initialization ================================================
 
         constructor(userData: UserData) {
             super();
 
             this.userData = userData;
 
+			// set score to zero
             this.score = 0;
 
+			// create all objects
             this.createBackground();
             this.createBoard();
             this.createGUI();
-
-            this.createEffects();
-                    
+			this.createEffects();
+            
+			// start game        
             this.start();
             
             // try to load a saved Game
@@ -268,7 +270,7 @@
             this.board.scaleX = this.board.scaleY = 1 - (0.2 - relativeScale * 0.2);
         }
 
-        //acivate the screen
+        // acivate the screen
         activate(parameters?: any) {
             super.activate(parameters);
             this.gameHeader.alpha = 0;
@@ -280,9 +282,9 @@
             this.updateFooter();
         }
 
-        //#endregion
+        //# endregion
 
-        // #region =================================== interface =====================================================
+        //# region =================================== interface =====================================================
 
         // update GUI iformaion
         private updateInterfaceInfos() {
@@ -597,28 +599,12 @@
             }
         }
 
-		// cleand neighbor dirty
-		private cleanNearDirtY(target: Tile) {
-            var neighborTiles = this.board.getNeighborTiles(target);
-
-			for (var t in neighborTiles) {
-				var tile = neighborTiles[t];
-
-				if (tile && tile.getNumber() < 0) {
-					var posx = target.x + (tile.x - target.x) * 1.5;
-					var posy = target.y + (tile.y - target.y) * 1.5;
-					this.board.fadeTileToPos(tile, posx, posy, 500);
-					tile.setNumber(0);
-				}
-			}
-		}
-
         // calculate time interval for a level.
         protected getDirtyProbabilityByLevel(level: number, initialDirtyProbability: number, finalDirtyProbability: number, easeDirtyProbability: number): number {
             return initialDirtyProbability * Math.pow(easeDirtyProbability, level) + finalDirtyProbability * (1 - Math.pow(easeDirtyProbability, level));
         }
 
-        //called when a tile is dragged
+        // called when a tile is dragged
         private dragged(origin: Tile, target: Tile) {
 
             //try to match the tiles
@@ -652,15 +638,16 @@
         // verifies if a tile can pair another, and make it happens
         protected match(origin: Tile, target: Tile): boolean {
 
-            //calculate new value
+            // calculate new value
             var newValue = target.getNumber() + origin.getNumber();
 
-            //check if match is correct
+            // check if match is correct
             if (!this.canMatch(origin, target)) return false;
 
+			// adds match count
             this.matches++;
             
-            //animate the mach
+            // animate the mach
             this.board.match(origin, target);
 
             // increase score
@@ -668,7 +655,7 @@
             this.score += sum;
             this.animateScoreFromTile(target, sum); // animate a score number
             
-            //reset the previous tile
+            // reset the previous tile
             origin.setNumber(0);
 
             // chance to win a item
@@ -679,6 +666,7 @@
 			if (this.userData)
 				this.userData.setLastJelly(newValue);
 
+			// updates all interfaces infos
             this.updateInterfaceInfos();
 
             // notify match
@@ -703,9 +691,26 @@
             if (!this.canMove()) this.step(0);
             
 			// clean near Dirties
-			 
+			this.cleanNearDirty(target);
+
             return true;
         }
+
+		// cleand neighbor dirty
+		private cleanNearDirty(target: Tile) {
+            var neighborTiles = this.board.getNeighborTiles(target);
+
+			for (var t in neighborTiles) {
+				var tile = neighborTiles[t];
+
+				if (tile && tile.getNumber() < 0) {
+					var posx = target.x + (tile.x - target.x) * 1.5;
+					var posy = target.y + (tile.y - target.y) * 1.5;
+					this.board.fadeTileToPos(tile, posx, posy, 500);
+					tile.setNumber(0);
+				}
+			}
+		}
 
 		// saves the high valueable jelly to the score
         private highJellySave(newValue) {
@@ -722,7 +727,7 @@
             }
         }
 
-        //give item to user
+        // give item to user
         protected giveItemChance(items: Array<string>): string {
 
             var item = null;
@@ -794,9 +799,7 @@
             
             this.content.addChild(textDO);
         }
-
-
-
+		
         // #endregion
 
         // #region =================================== Items =========================================================

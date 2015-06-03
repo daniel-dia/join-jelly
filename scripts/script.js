@@ -3477,18 +3477,6 @@ var joinjelly;
                         tiles[t].setNumber(0);
                 }
             };
-            GamePlayScreen.prototype.cleanNearDirtY = function (target) {
-                var neighborTiles = this.board.getNeighborTiles(target);
-                for (var t in neighborTiles) {
-                    var tile = neighborTiles[t];
-                    if (tile && tile.getNumber() < 0) {
-                        var posx = target.x + (tile.x - target.x) * 1.5;
-                        var posy = target.y + (tile.y - target.y) * 1.5;
-                        this.board.fadeTileToPos(tile, posx, posy, 500);
-                        tile.setNumber(0);
-                    }
-                }
-            };
             GamePlayScreen.prototype.getDirtyProbabilityByLevel = function (level, initialDirtyProbability, finalDirtyProbability, easeDirtyProbability) {
                 return initialDirtyProbability * Math.pow(easeDirtyProbability, level) + finalDirtyProbability * (1 - Math.pow(easeDirtyProbability, level));
             };
@@ -3540,7 +3528,20 @@ var joinjelly;
                 this.saveGame();
                 if (!this.canMove())
                     this.step(0);
+                this.cleanNearDirty(target);
                 return true;
+            };
+            GamePlayScreen.prototype.cleanNearDirty = function (target) {
+                var neighborTiles = this.board.getNeighborTiles(target);
+                for (var t in neighborTiles) {
+                    var tile = neighborTiles[t];
+                    if (tile && tile.getNumber() < 0) {
+                        var posx = target.x + (tile.x - target.x) * 1.5;
+                        var posy = target.y + (tile.y - target.y) * 1.5;
+                        this.board.fadeTileToPos(tile, posx, posy, 500);
+                        tile.setNumber(0);
+                    }
+                }
             };
             GamePlayScreen.prototype.highJellySave = function (newValue) {
                 if (this.highJelly < newValue) {
