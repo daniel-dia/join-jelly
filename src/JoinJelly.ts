@@ -10,17 +10,14 @@ module joinjelly {
         public static itemData: ItemsData;
         public static gameServices: GameServices;
 
-        public static init() {
+        public static init(canvasName:string) {
 
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new ItemsData();
             this.gameServices = new GameServices();
 
-            AzureLeaderBoards.init();
-
-
-            //define language
+            // define language
             var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt": StringResources = StringResources_pt; break;
@@ -32,9 +29,8 @@ module joinjelly {
                 testMode = true;
             }
 
-            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
+            this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
 			Cocoon.App.exitCallback(() => {
-				
 				return this.gameScreen.sendBackButtonEvent()
 			})
 
@@ -55,7 +51,7 @@ module joinjelly {
                 }
             }
         }
-
+		
         public static startTest() {
             var gs = new gameplay.GamePlayScreen(this.userData);
             this.gameScreen.switchScreen(gs);
@@ -119,7 +115,3 @@ module joinjelly {
     }
 }
 
-
-window.onload = function () {
-    joinjelly.JoinJelly.init();
-}

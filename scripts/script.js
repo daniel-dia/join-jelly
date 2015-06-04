@@ -2186,13 +2186,15 @@ var joinjelly;
         (function (view) {
             var Jelly = (function (_super) {
                 __extends(Jelly, _super);
-                function Jelly() {
+                function Jelly(value) {
                     _super.call(this);
                     this.effect = new joinjelly.view.Effect();
                     this.addChild(this.effect);
                     this.effect.scaleX = this.effect.scaleY = 1.2;
                     this.effect.x = 0;
                     this.effect.y = -100;
+                    if (value)
+                        this.setNumber(value);
                 }
                 Jelly.prototype.getAssetIdByValue = function (value) {
                     if (value < 0)
@@ -4266,13 +4268,12 @@ var joinjelly;
     var JoinJelly = (function () {
         function JoinJelly() {
         }
-        JoinJelly.init = function () {
+        JoinJelly.init = function (canvasName) {
             var _this = this;
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
             this.gameServices = new joinjelly.GameServices();
-            joinjelly.AzureLeaderBoards.init();
             var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt":
@@ -4284,7 +4285,7 @@ var joinjelly;
                 fps = 10;
                 testMode = true;
             }
-            this.gameScreen = new gameui.GameScreen("gameCanvas", defaultWidth, defaultHeight, fps);
+            this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
             Cocoon.App.exitCallback(function () {
                 return _this.gameScreen.sendBackButtonEvent();
             });
@@ -4367,9 +4368,6 @@ var joinjelly;
     })();
     joinjelly.JoinJelly = JoinJelly;
 })(joinjelly || (joinjelly = {}));
-window.onload = function () {
-    joinjelly.JoinJelly.init();
-};
 var defaultWidth = 768 * 2;
 var defaultHeight = 1024 * 2;
 var fbAppId = "1416523228649363";

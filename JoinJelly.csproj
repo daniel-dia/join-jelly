@@ -617,6 +617,8 @@
     <Content Include="scripts\templates\assets\js\jquery-1.8.3.min.js" />
     <Content Include="scripts\templates\assets\js\jquery.equalheights.js" />
     <Content Include="scripts\templates\leaderboards.html" />
+    <Content Include="Vídeo_geleias.html" />
+    <Content Include="Vídeo_Titulo.html" />
     <Content Include="test.html" />
     <Content Include="index.html" />
     <Content Include="scripts\BitmapScalePath.js" />

@@ -29,7 +29,7 @@
 
         // #region initialization =========================================
 
-        constructor() {
+        constructor(value?:number) {
             super();
  
             this.effect = new joinjelly.view.Effect();
@@ -38,6 +38,8 @@
             this.effect.x = 0
             this.effect.y = -100; 
          //   this.setChildIndex(this.effect, 0);
+
+			if(value)this.setNumber(value)
         }
 
         private getAssetIdByValue(value:number):string {

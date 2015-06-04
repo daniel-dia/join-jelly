@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Join Jelly</title>
+
+	<style>
+		body {
+			background: red;
+		}
+
+	</style>
+	<script src="scripts/createjs-2014.12.12.min.js"></script>
+	<script src="scripts/movieclip-0.8.0.min.js"></script>
+
+	<!-- Assets -->
+	<script src="assets/Manifest.js"></script>
+	<script src="assets/Debussy.js"></script>
+	<script src="assets/DebussyBig.js"></script>
+	<script src="assets/Intro3.js"></script>
+
+	<!-- tools -->
+	<script src="scripts/BitmapScalePath.js"></script>
+	<script src="scripts/fontConverter.js"></script>
+
+	<!-- Script -->
+	<script src="scripts/script.js"></script>
+
+	<script>
+		window.onload = function () {
+			var c = new createjs.Stage("gameCanvas");
+			
+			createjs.Ticker.setFPS(60);
+			createjs.Ticker.addEventListener("tick", function () { c.update(); });
+
+			var l = new joinjelly.menus.Loading();
+			l.loaded = function () {
+				var j = new joinjelly.gameplay.view.Jelly(1);
+				j.set({x:250, y:500})
+				c.addChild(j);
+
+				var j = new joinjelly.gameplay.view.Jelly(2);
+				j.set({ x: 700, y: 500 })
+				c.addChild(j);
+
+				var j = new joinjelly.gameplay.view.Jelly(4);
+				j.set({ x: 1200, y: 500 })
+				c.addChild(j);
+
+				var j = new joinjelly.gameplay.view.Jelly(8);
+				j.set({ x: 1700, y: 500 })
+				c.addChild(j);
+
+			};
+		}
+	</script>
+
+</head>
+<body>
+	<canvas id="gameCanvas" screencanvas="true" width="1920" height="1080"></canvas>
+</body>
+</html>
