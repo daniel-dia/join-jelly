@@ -11,10 +11,12 @@ module joinjelly {
 			intro.play();
 			intro.loop = false;
 			intro.addEventListener("click",() => {
+				intro.stop();
 				JoinJelly.startTutorial();
 			});
 
 			intro.addEventListener("complete",() => {
+				intro.stop();
 				JoinJelly.startTutorial();
 			})
         }

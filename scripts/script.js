@@ -3546,7 +3546,12 @@ var joinjelly;
             GamePlayScreen.prototype.highJellySave = function (newValue) {
                 if (this.highJelly < newValue) {
                     joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time);
-                    joinjelly.JoinJelly.gameServices.submitJellyAchievent(newValue);
+                    try {
+                        joinjelly.JoinJelly.gameServices.submitJellyAchievent(newValue);
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
                     this.highJelly = newValue;
                 }
             };
@@ -4738,9 +4743,11 @@ var joinjelly;
             intro.play();
             intro.loop = false;
             intro.addEventListener("click", function () {
+                intro.stop();
                 joinjelly.JoinJelly.startTutorial();
             });
             intro.addEventListener("complete", function () {
+                intro.stop();
                 joinjelly.JoinJelly.startTutorial();
             });
         }

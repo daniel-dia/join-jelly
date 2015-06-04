@@ -719,9 +719,10 @@
                 // log HighJelly Event
                 joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time)
 
-                // submit jelly to Game Services
-                JoinJelly.gameServices.submitJellyAchievent(newValue);
-
+				try {
+					// submit jelly to Game Services
+					JoinJelly.gameServices.submitJellyAchievent(newValue);
+				} catch (e) { console.log(e) }
                 // set a new high jelly
                 this.highJelly = newValue;
             }
