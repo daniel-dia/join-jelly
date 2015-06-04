@@ -4,12 +4,12 @@
 
         private barMask;
 
-        constructor(path: string) {
+        constructor(imagePath: string) {
             super();
 
-            var bg = gameui.AssetsManager.getBitmap(path + "bonus_border.png");
+            var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
             var text = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
-            var bar = gameui.AssetsManager.getBitmap(path + "bonus_bar.png");
+            var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
 
             this.addChild(bg)
             this.addChild(text)

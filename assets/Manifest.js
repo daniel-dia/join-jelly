@@ -1,9 +1,16 @@
 ﻿var imageManifest = [
 
+       { id: "bonus_bar", src: "bonus_bar.png" },
+       { id: "bonus_border", src: "bonus_border.png" },
+	   { id: "BackMain", src: "BackMain.jpg" },
+
+       { id: "debussy", src: "debussy.png" },
+       { id: "debussyBig", src: "debussyBig.png" },
+
        { src: "DIAStudioLogo.png", id: "DIAStudioLogo" },
 	   { src: "DIAStudioIco.png", id: "DIAStudioIco" },
 
-	  { src: "e1_hanger.png", id: "e1_hanger" },
+	   { src: "e1_hanger.png", id: "e1_hanger" },
 	   { src: "e1_happy.png", id: "e1_happy" },
 	   { src: "e1_sad.png", id: "e1_sad" },
 	   { src: "movement.png", id: "movement" },
@@ -17,14 +24,10 @@
 
        { id: "loadingBall", src: "loadingBall.png" },
        { id: "Background", src: "Background.jpg" },
+	   
        { id: "hex", src: "hex.png" },
-       { id: "BackMain", src: "BackMain.jpg" },
        { id: "powerTip", src: "powerTip.png" },
-       { id: "bonus_bar", src: "bonus_bar.png" },
-       { id: "bonus_border", src: "bonus_border.png" },
        { id: "bonus_icon", src: "bonus_icon.png" },
-       { id: "debussy", src: "debussy.png" },
-       { id: "debussyBig", src: "debussyBig.png" },
        { id: "e1", src: "e1.png" },
        { id: "e128", src: "e128.png" },
        { id: "e16", src: "e16.png" },

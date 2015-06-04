@@ -49,7 +49,7 @@ module joinjelly {
                 } else {
                     var loadedGame = this.userData.loadGame();
                     if (loadedGame)
-                        joinjelly.JoinJelly.startLevel();
+                        JoinJelly.startLevel();
                     else
                         JoinJelly.showMainMenu();
                 }
@@ -64,14 +64,16 @@ module joinjelly {
 
 		public static showMainMenu() {
             var transition;
-            if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };
-            if (this.gameScreen.currentScreen instanceof Jellypedia) transition = { type: "right", time: 500 };
+            if    (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };
+            if   (this.gameScreen.currentScreen instanceof Jellypedia) transition = { type: "right", time: 500 };
+			else  transition = { type: "fade", time: 600 };
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         }
 
         public static startLevel() {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "bottom", time: 500 };
+			else transition = { type: "fade", time: 600 };
             this.gameScreen.switchScreen(new gameplay.GamePlayScreen(this.userData), null, transition);
         }
 

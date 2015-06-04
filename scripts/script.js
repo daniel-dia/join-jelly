@@ -1126,7 +1126,6 @@ var joinjelly;
             function Loading() {
                 var _this = this;
                 _super.call(this);
-                this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
                 var audioPath = "assets/sounds/";
                 var imagePath = "assets/images/";
                 assetscale = 1;
@@ -1149,6 +1148,7 @@ var joinjelly;
                     if (_this.loaded)
                         _this.loaded();
                 };
+                this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 var loadinBar = new menus.view.LoadingBar(imagePath);
                 this.content.addChild(loadinBar);
@@ -4297,7 +4297,7 @@ var joinjelly;
                 else {
                     var loadedGame = _this.userData.loadGame();
                     if (loadedGame)
-                        joinjelly.JoinJelly.startLevel();
+                        JoinJelly.startLevel();
                     else
                         JoinJelly.showMainMenu();
                 }
@@ -4314,12 +4314,16 @@ var joinjelly;
                 transition = { type: "top", time: 500 };
             if (this.gameScreen.currentScreen instanceof joinjelly.Jellypedia)
                 transition = { type: "right", time: 500 };
+            else
+                transition = { type: "fade", time: 600 };
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         };
         JoinJelly.startLevel = function () {
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
                 transition = { type: "bottom", time: 500 };
+            else
+                transition = { type: "fade", time: 600 };
             this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData), null, transition);
         };
         JoinJelly.startLevelDirectaly = function () {
@@ -4816,11 +4820,11 @@ var joinjelly;
         (function (view) {
             var LoadingBar = (function (_super) {
                 __extends(LoadingBar, _super);
-                function LoadingBar(path) {
+                function LoadingBar(imagePath) {
                     _super.call(this);
-                    var bg = gameui.AssetsManager.getBitmap(path + "bonus_border.png");
+                    var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
                     var text = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
-                    var bar = gameui.AssetsManager.getBitmap(path + "bonus_bar.png");
+                    var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
                     this.addChild(bg);
                     this.addChild(text);
                     this.addChild(bar);

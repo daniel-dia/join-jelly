@@ -14,8 +14,7 @@ module joinjelly.menus {
         constructor() {
             super();
 
-			this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
-       
+			
 
             // set path 
             var audioPath = "assets/sounds/";
@@ -42,6 +41,10 @@ module joinjelly.menus {
             gameui.AssetsManager.onProgress = (progress: any) => { loadinBar.update(progress); };
             gameui.AssetsManager.onComplete = () => { if (this.loaded) this.loaded(); };
 			
+			// Adds Background
+			this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
+       
+
             // set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";
 
