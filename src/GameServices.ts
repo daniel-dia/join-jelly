@@ -42,39 +42,43 @@
             }  
 
            // login into game Services
-           setTimeout(() => {
-               if (!this.socialService.isLoggedIn()) {
-                   this.socialService.login((loggedIn, error) => {
-                       if (error) console.error("login error: " + error.message + " " + error.code);
-                       else if (!loggedIn) console.log("login cancelled");
-                   });
-               }
-           }, 10000);
+			setTimeout(() => {
+				if (this.socialService && !this.socialService.isLoggedIn()) {
+					this.socialService.login((loggedIn, error) => {
+						if (error) console.error("login error: " + error.message + " " + error.code);
+						else if (!loggedIn) console.log("login cancelled");
+					});
+				}
+			}, 1000);
         }
 
         // show native leaderboards
         public showLeaderboard() {
-			
-
-            if (!this.socialService) return;
-            this.socialService.showLeaderboard();
-        }
+			if (!this.socialService) return;
+			try {
+				this.socialService.showLeaderboard();
+			} catch (e) { }
+		}
 
 		// show a achievement.
         public showAchievements() {
-            if (!this.socialService) return;
-            this.socialService.showAchievements();
-        }
+			if (!this.socialService) return;
+			try {
+				this.socialService.showAchievements();
+			} catch (e) { }
+		}
 
         // submit a score
         public submitScore(score: number) {
             if (!this.socialService) return;
-            this.socialService.submitScore(score, (error) => {
-                if (error)
-                    console.error("score error: " + error.message);
-                else
-                    console.log("submited score: " + score);
-            });
+			try {
+				this.socialService.submitScore(score, (error) => {
+					if (error)
+						console.error("score error: " + error.message);
+					else
+						console.log("submited score: " + score);
+				});
+			} catch(e) { }
         }
 
         // submit an achievement
@@ -82,16 +86,14 @@
 
             if (!this.socialService) return;
 
-            // normalize value to log2
+            // normalize value to log2 and submit
             var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
-
-            //submit
-            this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, (error) => {
-                if (error)
-                    console.error("submitAchievement error: " + error.message);
-                else
-                    console.log("submited Achievement: jelly " + jellyNumber);
-            });
+			try {
+				this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber,(error) => {
+					if (error) console.error("submitAchievement error: " + error.message);
+					else console.log("submited Achievement: jelly " + jellyNumber);
+				});
+			} catch(e){ }
         }
     }
 }

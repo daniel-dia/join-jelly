@@ -4590,7 +4590,7 @@ var joinjelly;
                 this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
             }
             setTimeout(function () {
-                if (!_this.socialService.isLoggedIn()) {
+                if (_this.socialService && !_this.socialService.isLoggedIn()) {
                     _this.socialService.login(function (loggedIn, error) {
                         if (error)
                             console.error("login error: " + error.message + " " + error.code);
@@ -4598,38 +4598,54 @@ var joinjelly;
                             console.log("login cancelled");
                     });
                 }
-            }, 10000);
+            }, 1000);
         }
         GameServices.prototype.showLeaderboard = function () {
             if (!this.socialService)
                 return;
-            this.socialService.showLeaderboard();
+            try {
+                this.socialService.showLeaderboard();
+            }
+            catch (e) {
+            }
         };
         GameServices.prototype.showAchievements = function () {
             if (!this.socialService)
                 return;
-            this.socialService.showAchievements();
+            try {
+                this.socialService.showAchievements();
+            }
+            catch (e) {
+            }
         };
         GameServices.prototype.submitScore = function (score) {
             if (!this.socialService)
                 return;
-            this.socialService.submitScore(score, function (error) {
-                if (error)
-                    console.error("score error: " + error.message);
-                else
-                    console.log("submited score: " + score);
-            });
+            try {
+                this.socialService.submitScore(score, function (error) {
+                    if (error)
+                        console.error("score error: " + error.message);
+                    else
+                        console.log("submited score: " + score);
+                });
+            }
+            catch (e) {
+            }
         };
         GameServices.prototype.submitJellyAchievent = function (jellyValue) {
             if (!this.socialService)
                 return;
             var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
-            this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, function (error) {
-                if (error)
-                    console.error("submitAchievement error: " + error.message);
-                else
-                    console.log("submited Achievement: jelly " + jellyNumber);
-            });
+            try {
+                this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, function (error) {
+                    if (error)
+                        console.error("submitAchievement error: " + error.message);
+                    else
+                        console.log("submited Achievement: jelly " + jellyNumber);
+                });
+            }
+            catch (e) {
+            }
         };
         return GameServices;
     })();
