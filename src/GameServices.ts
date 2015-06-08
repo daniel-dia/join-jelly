@@ -4,6 +4,8 @@
         private socialService: Cocoon.Social.Interface;
         constructor() {
 
+			if (!navigator.onLine) return;
+
             // get device os info
             var os = "web"
             if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
@@ -54,6 +56,7 @@
 
         // show native leaderboards
         public showLeaderboard() {
+			if (!navigator.onLine) return;
 			if (!this.socialService) return;
 			try {
 				this.socialService.showLeaderboard();
@@ -62,6 +65,7 @@
 
 		// show a achievement.
         public showAchievements() {
+			if (!navigator.onLine) return;
 			if (!this.socialService) return;
 			try {
 				this.socialService.showAchievements();
@@ -70,6 +74,7 @@
 
         // submit a score
         public submitScore(score: number) {
+			if (!navigator.onLine) return;
             if (!this.socialService) return;
 			try {
 				this.socialService.submitScore(score, (error) => {
@@ -83,7 +88,7 @@
 
         // submit an achievement
         public submitJellyAchievent(jellyValue: number) {
-
+			if (!navigator.onLine) return;
             if (!this.socialService) return;
 
             // normalize value to log2 and submit

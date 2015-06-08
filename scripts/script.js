@@ -4566,6 +4566,8 @@ var joinjelly;
     var GameServices = (function () {
         function GameServices() {
             var _this = this;
+            if (!navigator.onLine)
+                return;
             var os = "web";
             if (Cocoon.Device.getDeviceInfo())
                 os = Cocoon.Device.getDeviceInfo().os;
@@ -4603,6 +4605,8 @@ var joinjelly;
             }, 1000);
         }
         GameServices.prototype.showLeaderboard = function () {
+            if (!navigator.onLine)
+                return;
             if (!this.socialService)
                 return;
             try {
@@ -4612,6 +4616,8 @@ var joinjelly;
             }
         };
         GameServices.prototype.showAchievements = function () {
+            if (!navigator.onLine)
+                return;
             if (!this.socialService)
                 return;
             try {
@@ -4621,6 +4627,8 @@ var joinjelly;
             }
         };
         GameServices.prototype.submitScore = function (score) {
+            if (!navigator.onLine)
+                return;
             if (!this.socialService)
                 return;
             try {
@@ -4635,6 +4643,8 @@ var joinjelly;
             }
         };
         GameServices.prototype.submitJellyAchievent = function (jellyValue) {
+            if (!navigator.onLine)
+                return;
             if (!this.socialService)
                 return;
             var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
