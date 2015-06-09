@@ -45,7 +45,8 @@
 
             // Add Texts
             if(description)
-            description = description.replace("  ", "\n");
+			description = description.replace("  ", "\n");
+            description = description.replace(";", "\n");
             var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
             var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
             titleObj.y = 40;

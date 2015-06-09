@@ -868,8 +868,8 @@ var StringResources_pt = {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
         msgOnceMore: "Legal! Estou maior, \nMe desenvolva novamente",
         msgDirt: "Oh não, sujeira! Junte \numa geleia aqui para limpar.",
-        msgPlay: "Perfeito!\nMe evolua ao maximo!.",
-        msgItemClean: "Sempre que precisar use items.\nEste limpa a bagunça",
+        msgPlay: "Perfeito!\nMe evolua ao maximo!",
+        msgItemClean: "Sempre que precisar use \nitems. Este limpa a bagunça",
         msgItemFast: "Esse junta \nalgumas geleias",
         msgItemTime: "Esse congela o tempo",
         msgItemRevive: "Se voce perder, use este para reviver",
@@ -4951,6 +4951,7 @@ var joinjelly;
                     tContainer.addChild(icon);
                     if (description)
                         description = description.replace("  ", "\n");
+                    description = description.replace(";", "\n");
                     var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
                     var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
                     titleObj.y = 40;
