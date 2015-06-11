@@ -357,7 +357,7 @@
         // executes a game interaction
         protected gameInteraction() {
 
-			// verifies if game is loosed after 500ms again. if them both than loose game
+			// verifies if game is loosed
             if (this.verifyGameLoose()) this.endGame();
 
             // add a new tile  on board
