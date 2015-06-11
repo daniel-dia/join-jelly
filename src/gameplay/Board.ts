@@ -237,7 +237,7 @@
 
             //get all empty tiles
             for (var t = 0; t < total; t++)
-                if (!this.tiles[t].isUnlocked() && !this.tiles[t].isDragging)
+                if (!this.tiles[t].isUnlocked() && !this.tiles[t].isDragging())
                     tiles.push(this.tiles[t]);
 
             return tiles;
