@@ -349,7 +349,7 @@
 
                 // set timeout to another iteraction if game is not over
                 if (this.gamestate != GameState.ended)
-                    this.step(this.getTimeInterval(this.level, initialInterval, this.finalInterval, this.easeInterval));
+                    this.step(this.getTimeInterval(this.level, initialInterval, finalInterval, easeInterval));
             }, timeout);
 
         }
@@ -501,7 +501,7 @@
 
             // calculate moves ammount for each level, once it reches more than current moves, it returns the calculated level
             while (totalMoves < moves) {
-                var interval = this.getTimeInterval(level, initialInterval, finalInterval, this.easeInterval);
+                var interval = this.getTimeInterval(level, initialInterval, finalInterval, easeInterval);
                 var levelMoves = timeByLevel / interval;
                 totalMoves += levelMoves;
                 level++
@@ -516,7 +516,7 @@
 
             // calculate moves ammount for each level, once it reches more than current moves, it returns the calculated level
             for (var calculatedLevel = 0; calculatedLevel < level; calculatedLevel++) {
-                var interval = this.getTimeInterval(calculatedLevel, initialInterval, this.finalInterval, this.easeInterval);
+                var interval = this.getTimeInterval(calculatedLevel, initialInterval, finalInterval, easeInterval);
                 var levelMoves = timeByLevel / interval;
                 totalMoves += levelMoves;
             }
@@ -558,7 +558,7 @@
 
 		// randomly adda a dirty to the board
 		private addRandomDirtyOnBoard() {
-            if (this.getDirtyProbabilityByLevel(this.level, initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
+            if (this.getDirtyProbabilityByLevel(this.level, initialDirtyProbability, finalDirtyProbability, easeDirtyProbability) > Math.random())
                 setTimeout(() => { this.addRandomTileOnBoard(-1); }, 500);
 		}
 
@@ -780,7 +780,6 @@
             textDO.alpha = 0;
             createjs.Tween.get(textDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi-170, alpha: 1 }, 400, createjs.Ease.quadOut).to({alpha:0},400).call(() => {
                 this.content.removeChild(textDO);
-                delete textDO;
             });
             
             this.content.addChild(textDO);
