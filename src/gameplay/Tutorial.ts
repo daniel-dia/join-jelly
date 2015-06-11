@@ -52,9 +52,10 @@
             this.gameFooter.setItemAmmount(Items.TIME,  1);
 
             this.gameFooter.lockAll();
-        }
+        } 
 
         public start() {
+            this.gameHeader.getChildByName("pauseButton").visible = false;
 
             super.start();
             this.resetTutorialStep();

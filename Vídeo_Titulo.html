@@ -1,48 +1,86 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Join Jelly</title>
+    <title>Join Jelly</title>
 
-	<style>
-		body {
-			background: red;
-		}
+    <style>
+        img,canvas {
+            display: none;
+        }
+    </style>
+    <script src="scripts/createjs-2014.12.12.min.js"></script>
+    <script src="scripts/movieclip-0.8.0.min.js"></script>
 
-	</style>
-	<script src="scripts/createjs-2014.12.12.min.js"></script>
-	<script src="scripts/movieclip-0.8.0.min.js"></script>
+    <!-- Assets -->
+    <script src="assets/Manifest.js"></script>
+    <script src="assets/Debussy.js"></script>
+    <script src="assets/DebussyBig.js"></script>
+    <script src="assets/Intro3.js"></script>
 
-	<!-- Assets -->
-	<script src="assets/Manifest.js"></script>
-	<script src="assets/Debussy.js"></script>
-	<script src="assets/DebussyBig.js"></script>
-	<script src="assets/Intro3.js"></script>
+    <!-- tools -->
+    <script src="scripts/BitmapScalePath.js"></script>
+    <script src="scripts/fontConverter.js"></script>
 
-	<!-- tools -->
-	<script src="scripts/BitmapScalePath.js"></script>
-	<script src="scripts/fontConverter.js"></script>
+    <!-- Script -->
+    <script src="scripts/script.js"></script>
+    <script src="scripts/cti.js"></script>
+    <script src="https://cdn.rawgit.com/eligrey/Blob.js/master/Blob.js"></script>
+    <script src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js" ></script>
+    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/master/FileSaver.js" ></script>
+    <script>
+        var canvas
 
-	<!-- Script -->
-	<script src="scripts/script.js"></script>
+        createjs.Tween.prototype.wait = function (duration, passive) {
+            duration *= 3;
+            if (duration == null || duration <= 0) { return this; }
+            var o = this._cloneProps(this._curQueueProps);
+            return this._addStep({ d: duration, p0: o, e: this._linearEase, p1: o, v: passive });
 
-	<script>
-		window.onload = function () {
-			var c = new createjs.Stage("gameCanvas");
-			
-			createjs.Ticker.setFPS(60);
-			createjs.Ticker.addEventListener("tick", function () { c.update(); });
 
-			var l = new joinjelly.menus.Loading();
-			l.loaded = function () {
-				var title = new joinjelly.menus.view.GameTitle()
-				c.addChild(title);
-				title.x = 200;
-			};
-		}
-	</script>
+        }
+        createjs.Tween.prototype.to = function (props, duration, ease) {
+            duration *= 3;
+            if (isNaN(duration) || duration < 0) { duration = 0; }
+            return this._addStep({ d: duration || 0, p0: this._cloneProps(this._curQueueProps), e: ease, p1: this._cloneProps(this._appendQueueProps(props)) });
+        }
+        window.onload = function () {
+            canvas = document.getElementById("gameCanvas");
+            var c = new createjs.Stage("gameCanvas");
 
+            createjs.Ticker.setFPS(10);
+
+            var l = new joinjelly.menus.Loading();
+
+            l.loaded = function () {
+                var title = new joinjelly.menus.view.GameTitle()
+                c.addChild(title);
+                title.x = 200;
+                var index = 0;
+                var timeout = 1800;
+                var images = [];
+                createjs.Ticker.addEventListener("tick", function () {
+                    if (timeout > 0) {
+                        c.update();
+                        timeout--;
+                        saveImage(canvas, "TITLE_" + index++);
+                        document.title = timeout + " " + createjs.Ticker.getMeasuredFPS();
+                    }
+ 
+                });
+
+            };
+        }
+
+
+    </script>
+    <script>
+        function saveImage(canvas, fn) {
+            canvas.toBlob(function (blob) {saveAs(blob, fn + ".png");}, "image/png");
+        }
+
+    </script>
 </head>
 <body>
-	<canvas id="gameCanvas" screencanvas="true" width="1920" height="1080"></canvas>
+    <canvas id="gameCanvas" screencanvas="true" width="1920" height="880"></canvas>
 </body>
 </html>

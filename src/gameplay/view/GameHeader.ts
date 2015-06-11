@@ -25,6 +25,7 @@
                 this.dispatchEvent("pause");
             });
 
+            pauseButton.name = "pauseButton";
             pauseButton.x = 157;
             pauseButton.y = 215;
             this.addChild(pauseButton);

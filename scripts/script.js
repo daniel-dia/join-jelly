@@ -2091,6 +2091,7 @@ var joinjelly;
                     var pauseButton = new gameui.ImageButton("BtPause", function () {
                         _this.dispatchEvent("pause");
                     });
+                    pauseButton.name = "pauseButton";
                     pauseButton.x = 157;
                     pauseButton.y = 215;
                     this.addChild(pauseButton);
@@ -3886,6 +3887,7 @@ var joinjelly;
                 this.gameFooter.lockAll();
             };
             Tutorial.prototype.start = function () {
+                this.gameHeader.getChildByName("pauseButton").visible = false;
                 _super.prototype.start.call(this);
                 this.resetTutorialStep();
                 this.executeTutorialStep();
