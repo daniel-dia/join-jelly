@@ -18,7 +18,7 @@
             super();
             this.addObjects();
         }
-        
+
         private addObjects() {
            
             //add pause button
@@ -34,11 +34,11 @@
             //add levelBar
             var levelBarBorder = gameui.AssetsManager.getBitmap("bonus_border");
             this.addChild(levelBarBorder);
-            levelBarBorder.x = 309  ;
+            levelBarBorder.x = 309;
             levelBarBorder.y = 122;
 
-    
-            
+
+
             var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
             levelBar.x = 372;
             levelBar.y = 207;
@@ -46,8 +46,8 @@
             levelBar.mask.x = 372;
             levelBar.mask.y = 207;
             this.levelBar = levelBar;
-            this.addChild(levelBar); 
-            
+            this.addChild(levelBar);
+
             var levelTip = gameui.AssetsManager.getBitmap("powerTip");
             levelTip.x = 372;
             levelTip.y = 207;
@@ -66,7 +66,7 @@
             this.levelIcon = levelIcon;
             this.addChild(levelIcon);
             levelIcon.addEventListener("click", () => { this.levelUpEffect() });
-            
+
             this.effect = new joinjelly.view.Effect();
             this.addChild(this.effect);
             this.effect.x = 1288 + 213 / 2
@@ -74,8 +74,8 @@
 
             //add scores text
             var score = gameui.AssetsManager.getBitmapText(StringResources.menus.score, "debussy")
-            score.x = 323+50;
-            score.y = 124 -80+80;
+            score.x = 323 + 50;
+            score.y = 124 - 80 + 80;
             score.scaleX = score.scaleY = 0.85;
             this.scoreText = score;
             this.addChild(score);
@@ -83,11 +83,11 @@
             //add scores text
             var level = gameui.AssetsManager.getBitmapText(StringResources.menus.level, "debussyBig")
             level.x = 1000;
-            level.y = 242 -165;
+            level.y = 242 - 165;
             this.levelText = level;
             this.addChild(level);
 
-            
+
         }
 
         public hidePauseButton() {
@@ -109,30 +109,30 @@
         }
 
         // updates level ad score status
-        public updateStatus(score: number,level:number,percent?:number,emptyPercent?:number, alarm?:boolean) {
-            this.scoreText.text =StringResources.menus.score.toUpperCase() + " " + score.toString();
+        public updateStatus(score: number, level: number, percent?: number, emptyPercent?: number, alarm?: boolean) {
+            this.scoreText.text = StringResources.menus.score.toUpperCase() + " " + score.toString();
             this.levelText.text = "Lv. " + level.toString();
 
             var value = 1;
 
            
-              //updates percent
-            if (percent!=undefined)
+            //updates percent
+            if (percent != undefined)
                 if (score != this.lastScore) {
                     value = percent / 100;
                     createjs.Tween.removeTweens(this.levelBar.mask);
                     createjs.Tween.get(this.levelBar.mask).to({ scaleX: value }, 1000, createjs.Ease.elasticOut)
 
                     createjs.Tween.removeTweens(this.levelTip);
-                    createjs.Tween.get(this.levelTip).to({ x: value * 940 + this.levelBar.x, y: this.levelBar.y +24 }, 1000, createjs.Ease.elasticOut)
-                    createjs.Tween.get(this.levelTip).to({ scaleX: 2, scaleY: 2 }).to({ scaleX:1, scaleY:1 }, 1000, createjs.Ease.elasticOut)
+                    createjs.Tween.get(this.levelTip).to({ x: value * 940 + this.levelBar.x, y: this.levelBar.y + 24 }, 1000, createjs.Ease.elasticOut)
+                    createjs.Tween.get(this.levelTip).to({ scaleX: 2, scaleY: 2 }).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut)
 
                 }
 
             // if level changes. do some animations
             if (this.lastLevel != level)
                 this.levelUpEffect();
-                                   
+
             this.lastLevel = level;
             this.lastScore = score;
         }

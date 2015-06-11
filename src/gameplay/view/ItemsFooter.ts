@@ -3,7 +3,7 @@
 
         private itemsButtons: Array<ItemButton>
         private lucky: createjs.DisplayObject;
-        private itemSize:number = 270;
+        private itemSize: number = 270;
         private gameMessage: view.TutoralMessage;
 
         constructor(items?: Array<string>) {
@@ -58,7 +58,7 @@
             lucky.y = -210;
             lucky.x = (defaultWidth - 250)
             lucky.scaleX = lucky.scaleY = 0.5;
-            this.lucky = lucky; 
+            this.lucky = lucky;
 
             this.gameMessage = new view.TutoralMessage();
             this.addChild(this.gameMessage);
@@ -86,7 +86,7 @@
 
         // set item ammount
         public setItemAmmount(item: string, ammount: number) {
-            if(this.itemsButtons[item])
+            if (this.itemsButtons[item])
                 this.itemsButtons[item].setAmmount(ammount);
 
             if (item == "lucky")
@@ -95,9 +95,9 @@
         }
 
         // show item message
-        public showMessage(itemId:string, message:string) { 
+        public showMessage(itemId: string, message: string) {
             this.gameMessage.x = this.getItemButton(itemId).x;
-            this.gameMessage.y = this.getItemButton(itemId).y-120;
+            this.gameMessage.y = this.getItemButton(itemId).y - 120;
             this.gameMessage.show(message);
         }
 
@@ -124,9 +124,9 @@
         }
 
         // lock an item
-        public lockItem(itemId:string) {
+        public lockItem(itemId: string) {
             var b = this.getItemButton(itemId);
-            if(b)b.lock();
+            if (b) b.lock();
         }
 
         //unlock an item

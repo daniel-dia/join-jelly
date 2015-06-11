@@ -14,7 +14,7 @@
         }
 
         private addSoundOptions() {
-           
+
             var f = gameui.AssetsManager.getBitmap("FlyGroup");
             f.y = - 130;
             f.regX = f.getBounds().width / 2;

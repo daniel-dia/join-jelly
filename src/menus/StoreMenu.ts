@@ -49,30 +49,30 @@
                     title: StringResources.menus.restore,
                     message: StringResources.menus.restoreWarning
                 }, function (accepted) {
-                        if (accepted) 
-                          Cocoon.Store.restore();
-                });
+                        if (accepted)
+                            Cocoon.Store.restore();
+                    });
             });
-            restore.x = defaultWidth *1/ 3;
+            restore.x = defaultWidth * 1 / 3;
             restore.y = defaultHeight - 200;
             this.content.addChild(restore);
-         }
+        }
 
         //#region Interface =====================================================================================
         
         // add all products in the list
         private fillProducts(productList: Array<Cocoon.Store.ProductInfo>) {
-            var dic ={};
+            var dic = {};
             this.productsListItems = <Array<view.ProductListItem>>dic;
             this.showLoaded();
 
-            for (var p in productList) 
-                this.addProduct(productList[p],p);
-           
+            for (var p in productList)
+                this.addProduct(productList[p], p);
+
         }
 
         // add a single product in the list
-        private addProduct(product: Cocoon.Store.ProductInfo,p:number) {
+        private addProduct(product: Cocoon.Store.ProductInfo, p: number) {
 
             var productListItem = new view.ProductListItem(product.productId, product.title.replace("(Join Jelly)", ""), product.description, product.localizedPrice);
             this.productsListItems[product.productId] = productListItem;
@@ -83,7 +83,7 @@
             console.log(JSON.stringify(product))
 
             // add function callback
-            productListItem.addEventListener("buy", (event: createjs.Event) => { Cocoon.Store.purchase(event["productId"]);});
+            productListItem.addEventListener("buy", (event: createjs.Event) => { Cocoon.Store.purchase(event["productId"]); });
             productListItem.addEventListener("share", (event: createjs.Event) => {
                 var productObject: view.ProductListItem = <view.ProductListItem>event.currentTarget
 
@@ -123,7 +123,7 @@
         }
 
         //lock UI for a time interval
-        private lockUI(timeout: number= 5000) {
+        private lockUI(timeout: number = 5000) {
             this.content.mouseEnabled = false;
             setTimeout(() => { this.unlockUI(); }, timeout);
         }
@@ -148,10 +148,10 @@
         // animate footer item
         private animateItem(productId: string) {
             switch (productId) {
-                case "time5x":   this.gameFooter.bounceItem(Items.TIME  );break;
-                case "fast5x":   this.gameFooter.bounceItem(Items.FAST  );break;
-                case "clean5x":  this.gameFooter.bounceItem(Items.CLEAN );break;
-                case "revive5x": this.gameFooter.bounceItem(Items.REVIVE);break;
+                case "time5x": this.gameFooter.bounceItem(Items.TIME); break;
+                case "fast5x": this.gameFooter.bounceItem(Items.FAST); break;
+                case "clean5x": this.gameFooter.bounceItem(Items.CLEAN); break;
+                case "revive5x": this.gameFooter.bounceItem(Items.REVIVE); break;
                 case "pack5x":
                     this.gameFooter.bounceItem(Items.TIME);
                     this.gameFooter.bounceItem(Items.FAST);
@@ -164,7 +164,7 @@
                     this.gameFooter.bounceItem(Items.CLEAN);
                     this.gameFooter.bounceItem(Items.REVIVE);
                     break;
-                
+
             }
         }
 
@@ -174,7 +174,7 @@
 
         // initialize product listing
         private initializeStore() {
-          //  if (!Cocoon.Store.nativeAvailable) return;
+            //  if (!Cocoon.Store.nativeAvailable) return;
             
             // on loaded products
             Cocoon.Store.on("load", {
@@ -196,7 +196,7 @@
                     this.lockUI();
                 },
                 success: (purchaseInfo) => {
-                    
+
                     this.fullFillPurchase(purchaseInfo.productId);
                     this.updateFooter();
                     this.unlockUI();
@@ -206,9 +206,9 @@
                         this.getProductListItem(purchaseInfo.productId).setPurchased(true);
                         Cocoon.Store.consume(purchaseInfo.transactionId, purchaseInfo.productId);
                     }
-                    
+
                     this.getProductListItem(purchaseInfo.productId).setPurchased();
-                     
+
 
                     Cocoon.Store.finish(purchaseInfo.transactionId)
                 },
@@ -219,11 +219,11 @@
             });
         
             // initialize store
-            Cocoon.Store.initialize({sandbox: true, managed: true});
+            Cocoon.Store.initialize({ sandbox: true, managed: true });
 
             // load products
-            var products = []; 
-            for(var p in productsData) products.push(p);
+            var products = [];
+            for (var p in productsData) products.push(p);
             Cocoon.Store.loadProducts(products);
         }
         
@@ -269,20 +269,20 @@
         private fullFillPurchase(productId: string): boolean {
 
             switch (productId) {
-                case "time5x":   JoinJelly.itemData.increaseItemAmmount(Items.TIME  , 5); break;
-                case "fast5x":   JoinJelly.itemData.increaseItemAmmount(Items.FAST  , 5); break;
-                case "clean5x":  JoinJelly.itemData.increaseItemAmmount(Items.CLEAN , 5); break;
+                case "time5x": JoinJelly.itemData.increaseItemAmmount(Items.TIME, 5); break;
+                case "fast5x": JoinJelly.itemData.increaseItemAmmount(Items.FAST, 5); break;
+                case "clean5x": JoinJelly.itemData.increaseItemAmmount(Items.CLEAN, 5); break;
                 case "revive5x": JoinJelly.itemData.increaseItemAmmount(Items.REVIVE, 5); break;
                 case "pack5x":
-                    JoinJelly.itemData.increaseItemAmmount(Items.TIME  , 5);
-                    JoinJelly.itemData.increaseItemAmmount(Items.FAST   , 5);
-                    JoinJelly.itemData.increaseItemAmmount(Items.CLEAN , 5);
+                    JoinJelly.itemData.increaseItemAmmount(Items.TIME, 5);
+                    JoinJelly.itemData.increaseItemAmmount(Items.FAST, 5);
+                    JoinJelly.itemData.increaseItemAmmount(Items.CLEAN, 5);
                     JoinJelly.itemData.increaseItemAmmount(Items.REVIVE, 5);
                     break;
                 case "pack10x":
-                    JoinJelly.itemData.increaseItemAmmount(Items.TIME  , 10);
-                    JoinJelly.itemData.increaseItemAmmount(Items.FAST  , 10);
-                    JoinJelly.itemData.increaseItemAmmount(Items.CLEAN , 10);
+                    JoinJelly.itemData.increaseItemAmmount(Items.TIME, 10);
+                    JoinJelly.itemData.increaseItemAmmount(Items.FAST, 10);
+                    JoinJelly.itemData.increaseItemAmmount(Items.CLEAN, 10);
                     JoinJelly.itemData.increaseItemAmmount(Items.REVIVE, 10);
                     break;
                 case "lucky": JoinJelly.itemData.increaseItemAmmount(Items.LUCKY, 1); break;

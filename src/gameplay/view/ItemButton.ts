@@ -87,13 +87,13 @@
             this.updateColor();
         }
 
-        public highLight(loop: boolean= true) {
+        public highLight(loop: boolean = true) {
             createjs.Tween.get(this, { loop: loop })
-                .to({ rotation: -10, scaleX: 1, scaleY: 1}, 100, createjs.Ease.quadInOut)
-                .to({ rotation: +10 ,scaleX:1.3,scaleY:1.3}, 200, createjs.Ease.quadInOut)
-                .to({ rotation: -10 ,scaleX:1.3,scaleY:1.3}, 200, createjs.Ease.quadInOut)
-                .to({ rotation: +10 ,scaleX:1.3,scaleY:1.3}, 200, createjs.Ease.quadInOut)
-                .to({ rotation: 0, scaleX: 1, scaleY: 1}, 100, createjs.Ease.quadInOut).wait(400);
+                .to({ rotation: -10, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut)
+                .to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut)
+                .to({ rotation: -10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut)
+                .to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut)
+                .to({ rotation: 0, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).wait(400);
         }
 
         public unHighlight() {

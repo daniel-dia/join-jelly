@@ -7,7 +7,7 @@
         public posy: number;
         private locked: boolean;
         private enabled: boolean;
-		private dragging: boolean;
+        private dragging: boolean;
 
         private value: number;
 
@@ -35,37 +35,37 @@
 
             //creates hitArea for the tile
             this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("000").drawRect(0, 0, tileSize, tileSize));
-      
+
         }
 
         public release() {
             this.jelly.executeAimationRelease();
             this.unlock();
-			this.dragging = false;
+            this.dragging = false;
         }
 
         public drag() {
             this.jelly.executeAnimationHold();
-			this.dragging = true;
+            this.dragging = true;
         }
 
         public isUnlocked(): boolean { return !this.locked; }
 
-		public isDragging(): boolean { return this.dragging; }
+        public isDragging(): boolean { return this.dragging; }
 
         public lock() { this.locked = true; }
 
         public unlock() {
             this.locked = false;
-			this.dragging = false;
+            this.dragging = false;
             this.jelly.setNumber(this.value);
-        } 
+        }
 
-        public enable() { this.enabled = true ; }
+        public enable() { this.enabled = true; }
 
         public disable() { this.enabled = false; }
 
-        public isEnabled():boolean { return this.enabled;}
+        public isEnabled(): boolean { return this.enabled; }
 
         // set tile number
         public setNumber(value: number) {

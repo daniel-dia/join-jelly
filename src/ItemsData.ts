@@ -13,7 +13,7 @@
 
         private items: Array<number>;
 
-        public static items = [Items.TIME, Items.CLEAN, Items.FAST,Items.REVIVE,Items.EVOLVE,Items.LUCKY];
+        public static items = [Items.TIME, Items.CLEAN, Items.FAST, Items.REVIVE, Items.EVOLVE, Items.LUCKY];
 
         constructor() {
             this.items = <Array<number>>(new Object());
@@ -24,11 +24,11 @@
             return this.items[item] || 0;
         }
 
-        public increaseItemAmmount(item: string, ammount: number= 1) {
+        public increaseItemAmmount(item: string, ammount: number = 1) {
             this.setItemAmmount(item, this.getItemAmmount(item) + ammount);
         }
 
-        public decreaseItemAmmount(item: string, ammount: number= 1) {
+        public decreaseItemAmmount(item: string, ammount: number = 1) {
             this.setItemAmmount(item, this.getItemAmmount(item) - ammount);
         }
 

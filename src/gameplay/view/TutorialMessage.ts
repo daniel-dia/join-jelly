@@ -9,7 +9,7 @@
             this.addChild(gameui.AssetsManager.getBitmap("ballon"));
 
             this.visible = false;
-            
+
             this.regX = 316
             this.regY = 366;
             this.x = 164 + this.regX;
@@ -25,7 +25,7 @@
             t.mouseEnabled = false;
 
             // add hitArea
-            this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-this.x+this.regX, -this.y+this.regY, defaultWidth, defaultHeight));
+            this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-this.x + this.regX, -this.y + this.regY, defaultWidth, defaultHeight));
 
             // add click event
             this.addEventListener("click", () => {
@@ -44,5 +44,5 @@
             gameui.AudiosManager.playSound("Interface Sound-14");
         }
 
-   }
+    }
 }

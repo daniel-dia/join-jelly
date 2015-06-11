@@ -2,7 +2,7 @@
 
     export class TimeBar extends createjs.Container {
 
-        private value:number
+        private value: number
         private percentBarMask: createjs.Shape;
 
         private redFx: createjs.DisplayObject;
@@ -15,7 +15,7 @@
         }
 
         private initializeObjects() {
-             
+
             var percentBar = new createjs.Container();
 
             var bar = gameui.AssetsManager.getBitmap("time_bar");
@@ -25,15 +25,15 @@
 
             this.redFx = red;
             this.brightFx = bright;
-            createjs.Tween.get(this.redFx, { loop: true }).to({ alpha: 0 }, 500);          
+            createjs.Tween.get(this.redFx, { loop: true }).to({ alpha: 0 }, 500);
 
             percentBar.addChild(bar);
             this.addChild(red);
             percentBar.addChild(bright);
-             
+
             this.addChild(percentBar);
-             
-           
+
+
             var shape = new createjs.Shape();
             shape.graphics.beginFill("red").drawRect(0, 0, 991, 35)
 
@@ -42,7 +42,7 @@
             percentBar.mask = this.percentBarMask;
         }
 
-        public setPercent(percent: number,alarm?:boolean) {
+        public setPercent(percent: number, alarm?: boolean) {
 
             //if value is greater, do a animation for increasing
             if (this.value < percent)

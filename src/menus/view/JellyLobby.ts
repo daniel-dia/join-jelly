@@ -1,6 +1,6 @@
 ﻿module joinjelly.menus.view {
 
-    export class JellyLobby extends createjs.Container{
+    export class JellyLobby extends createjs.Container {
 
         constructor(lastJelly: number) {
             super();
@@ -19,7 +19,7 @@
 
             // calculate all jellys already unlocked
             var jellys: Array<number> = new Array();
-            for (var j = 1; j <= lastJelly; j*=2)
+            for (var j = 1; j <= lastJelly; j *= 2)
                 jellys.push(j)
 
             var i = 0;
@@ -65,19 +65,19 @@
             var jelly = new gameplay.view.Jelly(); //gameplay.Tile(0, 0, 450);
 
             // adds jelly
-            this.addChildAt(jelly,0);
+            this.addChildAt(jelly, 0);
             jelly.setNumber(value);
 
-            var m = (position % 2)? -1:1;
+            var m = (position % 2) ? -1 : 1;
 
-            jelly.x = (positions[position][0] * defaultWidth - defaultWidth/2)*1.2;
+            jelly.x = (positions[position][0] * defaultWidth - defaultWidth / 2) * 1.2;
             jelly.y = positions[position][1] * -200 + 750;
-            
-            jelly.scaleX = jelly.scaleY = Math.min( 1 - positions[position][1] / 7 ,1);
+
+            jelly.scaleX = jelly.scaleY = Math.min(1 - positions[position][1] / 7, 1);
            
             //play JellySound
             gameui.AudiosManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
-            
+
 
 
         }

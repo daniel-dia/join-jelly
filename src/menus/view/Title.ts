@@ -9,7 +9,7 @@
         }
 
         private createJoin() {
-           
+
             var xPositions = [0, 213, 442, 631, 839];
             var waits = [0, 1, 0, 0, 1];
             var side = [0, 1, 1, -1, -1];
@@ -28,14 +28,14 @@
                 images[char] = image;
 
                 createjs.Tween.get(image)
-                    .wait(waits[char]* 400)
+                    .wait(waits[char] * 400)
                     .to({ alpha: 0, x: xPositions[char] - 300 * side[char], scaleX: 3, scaleY: 0.333 })
                     .to({ alpha: 2, x: xPositions[char], scaleX: 1, scaleY: 1 }, 2000, createjs.Ease.elasticInOut);
 
             }
 
-       
- 
+
+
         }
 
         private createJelly() {
@@ -50,7 +50,7 @@
 
                 var jelly = new joinjelly.view.JellyContainer();
                 jelly.visible = false;
-                jelly.executeAnimationIn(char*100 + 1600)
+                jelly.executeAnimationIn(char * 100 + 1600)
                 jelly.imageContainer.addChild(image);
                 this.addChild(jelly);
 

@@ -4,14 +4,14 @@
         private socialService: Cocoon.Social.Interface;
         constructor() {
 
-			if (!navigator.onLine) return;
+            if (!navigator.onLine) return;
 
             // get device os info
             var os = "web"
             if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
-		 
-            if (os == "windows" || os=="web") return;
-		 
+
+            if (os == "windows" || os == "web") return;
+
 
             if (os == "ios") {
                 //initializes game services
@@ -43,62 +43,62 @@
                 this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
             }  
 
-           // login into game Services
-			setTimeout(() => {
-				if (this.socialService && !this.socialService.isLoggedIn()) {
-					this.socialService.login((loggedIn, error) => {
-						if (error) console.error("login error: " + error.message + " " + error.code);
-						else if (!loggedIn) console.log("login cancelled");
-					});
-				}
-			}, 1000);
+            // login into game Services
+            setTimeout(() => {
+                if (this.socialService && !this.socialService.isLoggedIn()) {
+                    this.socialService.login((loggedIn, error) => {
+                        if (error) console.error("login error: " + error.message + " " + error.code);
+                        else if (!loggedIn) console.log("login cancelled");
+                    });
+                }
+            }, 1000);
         }
 
         // show native leaderboards
         public showLeaderboard() {
-			if (!navigator.onLine) return;
-			if (!this.socialService) return;
-			try {
-				this.socialService.showLeaderboard();
-			} catch (e) { }
-		}
+            if (!navigator.onLine) return;
+            if (!this.socialService) return;
+            try {
+                this.socialService.showLeaderboard();
+            } catch (e) { }
+        }
 
-		// show a achievement.
+        // show a achievement.
         public showAchievements() {
-			if (!navigator.onLine) return;
-			if (!this.socialService) return;
-			try {
-				this.socialService.showAchievements();
-			} catch (e) { }
-		}
+            if (!navigator.onLine) return;
+            if (!this.socialService) return;
+            try {
+                this.socialService.showAchievements();
+            } catch (e) { }
+        }
 
         // submit a score
         public submitScore(score: number) {
-			if (!navigator.onLine) return;
+            if (!navigator.onLine) return;
             if (!this.socialService) return;
-			try {
-				this.socialService.submitScore(score, (error) => {
-					if (error)
-						console.error("score error: " + error.message);
-					else
-						console.log("submited score: " + score);
-				});
-			} catch(e) { }
+            try {
+                this.socialService.submitScore(score, (error) => {
+                    if (error)
+                        console.error("score error: " + error.message);
+                    else
+                        console.log("submited score: " + score);
+                });
+            } catch (e) { }
         }
 
         // submit an achievement
         public submitJellyAchievent(jellyValue: number) {
-			if (!navigator.onLine) return;
+            if (!navigator.onLine) return;
             if (!this.socialService) return;
 
             // normalize value to log2 and submit
             var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
-			try {
-				this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber,(error) => {
-					if (error) console.error("submitAchievement error: " + error.message);
-					else console.log("submited Achievement: jelly " + jellyNumber);
-				});
-			} catch(e){ }
+            try {
+                this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, (error) => {
+                    if (error) console.error("submitAchievement error: " + error.message);
+                    else console.log("submited Achievement: jelly " + jellyNumber);
+                });
+            } catch (e) { }
         }
     }
 }

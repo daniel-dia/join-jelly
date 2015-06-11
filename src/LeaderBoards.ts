@@ -27,7 +27,7 @@ module joinjelly {
             if (!this.table) return;
             this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(
                 (queryResults) => {
-                      callback(queryResults);
+                    callback(queryResults);
                 },
                 (queryResults) => {
                     callback(null);
@@ -35,7 +35,7 @@ module joinjelly {
         }
 
         // saves scores to the cloud
-        public static setScore(score: number, name: string, newId: boolean= false) {
+        public static setScore(score: number, name: string, newId: boolean = false) {
 
             if (!this.table) return;
 

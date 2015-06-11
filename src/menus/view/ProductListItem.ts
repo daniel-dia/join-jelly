@@ -9,7 +9,7 @@
 
         constructor(productId: string, name: string, description: string, localizedPrice: string) {
             super();
-            
+
             var tContainer = new createjs.Container();
 
             // Add Background
@@ -44,8 +44,8 @@
             tContainer.addChild(icon);
 
             // Add Texts
-            if(description)
-			description = description.replace("  ", "\n");
+            if (description)
+                description = description.replace("  ", "\n");
             description = description.replace(";", "\n");
             var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
             var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
@@ -131,7 +131,7 @@
 
         public setAvaliable() { }
 
-        public setPurchased(timeOut:boolean=false) {
+        public setPurchased(timeOut: boolean = false) {
             this.purchaseButton.fadeOut();
             this.purchasedIcon.visible = true;
             this.loadingIcon.visible = false;

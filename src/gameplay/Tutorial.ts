@@ -27,10 +27,10 @@
         private tutorialItemFinger: view.TutorialMove;
         private messageNotify: () => void;
 
-		constructor(){
-			super(null);
-			
-		}
+        constructor() {
+            super(null);
+
+        }
 
         // #region tutorial ====================================================================================================
 
@@ -38,21 +38,21 @@
 
             super.createGUI();
             this.tutorialJellyFinger = new view.TutorialMove();
-            this.tutorialItemFinger  = new view.TutorialMove();
-            this.gameMessage.addEventListener("closed", () => { if(this.messageNotify)this.messageNotify();});
+            this.tutorialItemFinger = new view.TutorialMove();
+            this.gameMessage.addEventListener("closed", () => { if (this.messageNotify) this.messageNotify(); });
 
             this.tutorialItemFinger.rotation = -45;
 
             this.content.addChild(this.tutorialJellyFinger);
             this.footer.addChild(this.tutorialItemFinger);
-         
-            this.gameFooter.setItemAmmount(Items.REVIVE,1);
-            this.gameFooter.setItemAmmount(Items.FAST,  1);
+
+            this.gameFooter.setItemAmmount(Items.REVIVE, 1);
+            this.gameFooter.setItemAmmount(Items.FAST, 1);
             this.gameFooter.setItemAmmount(Items.CLEAN, 1);
-            this.gameFooter.setItemAmmount(Items.TIME,  1);
+            this.gameFooter.setItemAmmount(Items.TIME, 1);
 
             this.gameFooter.lockAll();
-        } 
+        }
 
         public start() {
             super.start();
@@ -79,17 +79,17 @@
                     this.tutorialWait(1500);
                     this.board.getTileById(16).setNumber(1);
                     this.board.getTileById(16).disable();
-					this.board.getTileById(19).setNumber(1);
+                    this.board.getTileById(19).setNumber(1);
                     this.board.getTileById(19).disable();
                 },
 
-     //           () => {
-     //               this.board.getTileById(16).disable();
-					//this.board.getTileById(19).disable();
-     //               this.showTutorialMessage(StringResources.tutorial.msgheplme);
-     //               this.waitMessage();
-     //           },
-				() => {
+                //           () => {
+                //               this.board.getTileById(16).disable();
+                //this.board.getTileById(19).disable();
+                //               this.showTutorialMessage(StringResources.tutorial.msgheplme);
+                //               this.waitMessage();
+                //           },
+                () => {
                     this.board.getTileById(17).setNumber(-1);
                     this.board.getTileById(20).setNumber(-1);
                     this.board.getTileById(22).setNumber(-1);
@@ -107,7 +107,7 @@
                 () => {
                     this.board.getTileById(18).disable();
                     this.hideTutorialFinger();
-                  
+
                     this.tutorialWait(700);
                 },
                 () => {
@@ -131,7 +131,7 @@
                     this.board.getTileById(16).disable();
                     this.tutorialWait(500);
                 },
-				() => {
+                () => {
                     this.hideTutorialFinger();
                     this.showTutorialMessage(StringResources.tutorial.msgPlay);
                     this.waitMessage();
@@ -144,37 +144,37 @@
 
                     this.hideTutorialFinger();
 
-                    this.board.getTileById(0). setNumber(2);
-                    this.board.getTileById(1). setNumber(-1);
-                    this.board.getTileById(2). setNumber(2);
-                    this.board.getTileById(3). setNumber(-1);
-                    this.board.getTileById(4). setNumber(2);  
-                    this.board.getTileById(5). setNumber(-1);
-                    this.board.getTileById(6). setNumber(-1);
-                    this.board.getTileById(7). setNumber(-1);
+                    this.board.getTileById(0).setNumber(2);
+                    this.board.getTileById(1).setNumber(-1);
+                    this.board.getTileById(2).setNumber(2);
+                    this.board.getTileById(3).setNumber(-1);
+                    this.board.getTileById(4).setNumber(2);
+                    this.board.getTileById(5).setNumber(-1);
+                    this.board.getTileById(6).setNumber(-1);
+                    this.board.getTileById(7).setNumber(-1);
                     this.board.getTileById(10).setNumber(-1);
-                    this.board.getTileById(12).setNumber(-1); 
+                    this.board.getTileById(12).setNumber(-1);
 
-                    this.board.getTileById(0). disable();
-                    this.board.getTileById(1). disable();
-                    this.board.getTileById(2). disable();
-                    this.board.getTileById(3). disable();
-                    this.board.getTileById(4). disable();
-                    this.board.getTileById(5). disable();
-                    this.board.getTileById(6). disable();
-                    this.board.getTileById(7). disable();
-                    this.board.getTileById(8). disable();
-                    this.board.getTileById(9). disable();
+                    this.board.getTileById(0).disable();
+                    this.board.getTileById(1).disable();
+                    this.board.getTileById(2).disable();
+                    this.board.getTileById(3).disable();
+                    this.board.getTileById(4).disable();
+                    this.board.getTileById(5).disable();
+                    this.board.getTileById(6).disable();
+                    this.board.getTileById(7).disable();
+                    this.board.getTileById(8).disable();
+                    this.board.getTileById(9).disable();
                     this.board.getTileById(10).disable();
                     this.board.getTileById(11).disable();
                     this.board.getTileById(12).disable();
                     this.board.getTileById(13).disable();
-                    this.board.getTileById(14).disable(); 
+                    this.board.getTileById(14).disable();
 
 
                     this.board.getTileById(18).disable();
                     this.tutorialWait(1000);
-  
+
                 },
                 () => {
                     this.showTutorialItem(Items.CLEAN);
@@ -185,7 +185,7 @@
                 () => {
                     this.gameFooter.hideMessage();
                     this.hideTutorialFinger();
-                    this.gameFooter.setItemAmmount(Items.CLEAN, 0) 
+                    this.gameFooter.setItemAmmount(Items.CLEAN, 0)
                     this.tutorialWait(1000);
                 },
                 () => {
@@ -204,17 +204,17 @@
                 () => {
                     this.showTutorialItem(Items.FAST);
                     this.gameFooter.highlight(Items.FAST);
-                    this.gameFooter.showMessage(Items.FAST,StringResources.tutorial.msgItemFast);
+                    this.gameFooter.showMessage(Items.FAST, StringResources.tutorial.msgItemFast);
                     this.waitItem();
                 },
-                () =>{
+                () => {
                     this.gameFooter.lockAll();
                     this.gameFooter.hideMessage();
                     this.hideTutorialFinger();
                     this.gameFooter.setItemAmmount(Items.FAST, 0)
                     this.tutorialWait(1000);
                 },
-               
+
                 () => {
                     JoinJelly.userData.history(histories.TUTORIAL);
                     JoinJelly.startLevel();
@@ -245,11 +245,11 @@
             }
         }
 
-        private waitMessage() { 
+        private waitMessage() {
             this.messageNotify = () => {
-                this.messageNotify= null;
+                this.messageNotify = null;
                 this.executeTutorialStep();
-            } 
+            }
         }
 
         private showTutorialMessage(text: string) {
@@ -307,8 +307,8 @@
             }
         }
 
-        protected updateFooter() {}
-       
-		public saveGame() {}
+        protected updateFooter() { }
+
+        public saveGame() { }
     }
 }

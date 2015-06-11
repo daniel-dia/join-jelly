@@ -5,7 +5,7 @@
         private ajoinFx: createjs.DisplayObject;
         private effect: joinjelly.view.Effect;
         private currentValue: number;
-        private eyeImg:createjs.DisplayObject;
+        private eyeImg: createjs.DisplayObject;
 
         private static jellies = [
             "1",
@@ -29,20 +29,20 @@
 
         // #region initialization =========================================
 
-        constructor(value?:number) {
+        constructor(value?: number) {
             super();
- 
+
             this.effect = new joinjelly.view.Effect();
             this.addChild(this.effect);
             this.effect.scaleX = this.effect.scaleY = 1.2;
             this.effect.x = 0
             this.effect.y = -100; 
-         //   this.setChildIndex(this.effect, 0);
+            //   this.setChildIndex(this.effect, 0);
 
-			if(value)this.setNumber(value)
+            if (value) this.setNumber(value)
         }
 
-        private getAssetIdByValue(value:number):string {
+        private getAssetIdByValue(value: number): string {
             if (value < 0) return value.toString();
             return Jelly.jellies[Math.log(value) / Math.log(2)];
         }
@@ -94,8 +94,8 @@
             this.currentValue = value;
 
             //update image 
-            if(this.eyeImg)
-            createjs.Tween.removeTweens(this.eyeImg);
+            if (this.eyeImg)
+                createjs.Tween.removeTweens(this.eyeImg);
             this.imageContainer.removeAllChildren();
             this.shadowContainer.removeAllChildren();
 
@@ -126,11 +126,11 @@
             this.effect.alpha = 0.5;
             this.effect.castSimple();
         }
- 
+
         public playLevelUp() {
             this.effect.alpha = 0.25;
             this.effect.castSimple();
-           
+
         }
 
         public playEvolve() {
@@ -140,10 +140,10 @@
 
         public playThunder() {
             setTimeout(() => { this.playEvolve(); }, 10);
-            setTimeout(() => { this.playLevelUp();}, 330);
+            setTimeout(() => { this.playLevelUp(); }, 330);
             setTimeout(() => { this.playEvolve(); }, 660);
-            setTimeout(() => { this.playLevelUp();}, 1000);
-            setTimeout(() => { this.playLevelUp();}, 1100);
+            setTimeout(() => { this.playLevelUp(); }, 1000);
+            setTimeout(() => { this.playLevelUp(); }, 1100);
         }
 
         /// #endregion

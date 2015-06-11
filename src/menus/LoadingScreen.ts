@@ -27,12 +27,12 @@ module joinjelly.menus {
             imagePath = "assets/images_" + assetscale + "x/";
 
           
-			//load audio
+            //load audio
             if (!testMode) {
-				createjs.Sound.alternateExtensions = ["mp3"];
-				createjs.Sound.registerSounds(audioManifest, audioPath);
+                createjs.Sound.alternateExtensions = ["mp3"];
+                createjs.Sound.registerSounds(audioManifest, audioPath);
             }
-			
+
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
             gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
             gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
@@ -41,8 +41,8 @@ module joinjelly.menus {
             gameui.AssetsManager.onProgress = (progress: any) => { loadinBar.update(progress); };
             gameui.AssetsManager.onComplete = () => { if (this.loaded) this.loaded(); };
 			
-			// Adds Background
-			this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
+            // Adds Background
+            this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
        
 
             // set default sound button

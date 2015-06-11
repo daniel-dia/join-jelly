@@ -18,8 +18,8 @@
         restoreWarning: "It will restore your purchases from store, Continue?",
         resetWarning: "Are you sure. All you progress will be lost",
         about: "About",
-		aboutText: "Develop by",
-		aboutURL: "www.dia-studio.com",
+        aboutText: "Develop by",
+        aboutURL: "www.dia-studio.com",
         tutorial: "Tutorial",
         shop: "shop",
         playerName: "Player Name",
@@ -39,7 +39,7 @@
         msgBoardFill: "but be careful, \ndo not let the board fill, \nthis is the end for us.",
 
     },
-    jellies : {
+    jellies: {
         1: { name: "Little Jelly", description: "Small but essential" },
         2: { name: "Droplet", description: "Dripping everywhere" },
         4: { name: "Little Cake", description: "Incredible Lemon \nflavor" },
@@ -122,8 +122,8 @@ var StringResources_pt = {
         restoreWarning: "Isso vai recuperar suas compras da loja, quer continuar?",
         resetWarning: "Você tem certeza? tudo que voce consquistou será perdido.",
         about: "Sobre",
-		aboutText: "Desenvolvido por",
-		aboutURL: "www.dia-studio.com",
+        aboutText: "Desenvolvido por",
+        aboutURL: "www.dia-studio.com",
         tutorial: "Tutorial",
         shop: "Compras",
         playerName: "Nome do Jogador",
@@ -142,7 +142,7 @@ var StringResources_pt = {
         msgBoardFill: "Mas Tenha cuidado, se acabar \nos espaços no chão é o fim.",
 
     },
-    jellies : {
+    jellies: {
         1: { name: "Geleinha", description: "Pequena mas \nimportante" },
         2: { name: "Gotinha", description: "gotejando por\ntodo lado" },
         4: { name: "Bolinho", description: "Incrível sabor de\nLimão" },

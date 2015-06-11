@@ -2,7 +2,7 @@
 
 module joinjelly {
     export class JoinJelly {
-        
+
         public static maxJelly: number = 65536;
         public static userData: UserData;
         public static gameScreen: gameui.GameScreen;
@@ -10,7 +10,7 @@ module joinjelly {
         public static itemData: ItemsData;
         public static gameServices: GameServices;
 
-        public static init(canvasName:string) {
+        public static init(canvasName: string) {
 
             this.userData = new UserData();
             this.analytics = new Analytics();
@@ -30,9 +30,9 @@ module joinjelly {
             }
 
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
-			Cocoon.App.exitCallback(() => {
-				return this.gameScreen.sendBackButtonEvent()
-			})
+            Cocoon.App.exitCallback(() => {
+                return this.gameScreen.sendBackButtonEvent()
+            })
 
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
@@ -41,7 +41,7 @@ module joinjelly {
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
                 if (window.location.search == "?test") {
-                    this.startTest(); 
+                    this.startTest();
                 } else {
                     var loadedGame = this.userData.loadGame();
                     if (loadedGame)
@@ -51,33 +51,33 @@ module joinjelly {
                 }
             }
         }
-		
+
         public static startTest() {
             var gs = new gameplay.GamePlayScreen(this.userData);
             this.gameScreen.switchScreen(gs);
             gs.selfPeformanceTest(false);
         }
 
-		public static showMainMenu() {
+        public static showMainMenu() {
             var transition = { type: "fade", time: 600 };
-            if    (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };
-            if    (this.gameScreen.currentScreen instanceof Jellypedia) transition = { type: "right", time: 500 };
+            if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };
+            if (this.gameScreen.currentScreen instanceof Jellypedia) transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         }
 
         public static startLevel() {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "bottom", time: 500 };
-			else transition = { type: "fade", time: 600 };
+            else transition = { type: "fade", time: 600 };
             this.gameScreen.switchScreen(new gameplay.GamePlayScreen(this.userData), null, transition);
         }
 
-		public static startLevelDirectaly() {
+        public static startLevelDirectaly() {
             this.gameScreen.switchScreen(new gameplay.GamePlayScreen(this.userData));
         }
 
         public static startTutorial() {
-			this.gameScreen.switchScreen(new gameplay.Tutorial());
+            this.gameScreen.switchScreen(new gameplay.Tutorial());
         }
 
         public static showStore(previousScreen: gameui.ScreenState) {
@@ -85,9 +85,9 @@ module joinjelly {
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new menus.StoreMenu(previousScreen), null, transition);
         }
-		
+
         public static showIntro() {
-             this.gameScreen.switchScreen(new joinjelly.StoryScreen());
+            this.gameScreen.switchScreen(new joinjelly.StoryScreen());
         }
 
         public static showLeaderboards() {
@@ -99,7 +99,7 @@ module joinjelly {
         public static showPedia() {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };
-            this.gameScreen.switchScreen(new Jellypedia(this.userData, StringResources.jellies ), null, transition);
+            this.gameScreen.switchScreen(new Jellypedia(this.userData, StringResources.jellies), null, transition);
         }
 
         public static showSettings() {

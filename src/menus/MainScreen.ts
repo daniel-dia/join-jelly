@@ -1,4 +1,4 @@
-﻿module joinjelly{
+﻿module joinjelly {
     export class MainScreen extends gameui.ScreenState {
 
         private timeStep = 2;
@@ -21,7 +21,7 @@
             this.createTitle();
 
             gameui.AudiosManager.playMusic("musicIntro");
-            
+
         }
 
         private createContent() {
@@ -51,13 +51,13 @@
         private createBackground() {
             this.background.addChild(gameui.AssetsManager.getBitmap("BackMain"));
         }
- 
+
         private createButtons() {
 
             if (this.userData) {
-                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore , "debussy");
+                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore, "debussy");
                 this.scoreText.x = 70;
-                this.scoreText.y = -250; 
+                this.scoreText.y = -250;
                 this.footer.addChild(this.scoreText);
 
                 this.scoreText = gameui.AssetsManager.getBitmapText(this.userData.getHighScore().toString(), "debussyBig");
@@ -72,7 +72,7 @@
             //add About button
             var settingsBt = new gameui.ImageButton("DIAStudioIco", () => { JoinJelly.showAbout(); });
             settingsBt.y = 165 / 2;
-            settingsBt.x = defaultWidth - 165/2;
+            settingsBt.x = defaultWidth - 165 / 2;
             this.header.addChild(settingsBt);
 
             //add Menu button

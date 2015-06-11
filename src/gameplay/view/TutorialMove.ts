@@ -1,6 +1,6 @@
 ﻿module joinjelly.gameplay.view {
 
-    export class TutorialMove extends createjs.Container{
+    export class TutorialMove extends createjs.Container {
 
         private fingerUp;
         private fingerDown;
@@ -8,7 +8,7 @@
             super();
 
             this.fingerUp = gameui.AssetsManager.getBitmap("tutorialFinger");
-            this.fingerDown =  gameui.AssetsManager.getBitmap("tutorialFingerDown");
+            this.fingerDown = gameui.AssetsManager.getBitmap("tutorialFingerDown");
 
             this.addChild(this.fingerUp);
             this.addChild(this.fingerDown);
@@ -19,7 +19,7 @@
             this.mouseEnabled = false;
 
             this.visible = false;
-            
+
         }
 
         public showMove(x1: number, y1: number, x2: number, y2: number) {
@@ -36,7 +36,7 @@
         }
 
 
-        public showClick(x1: number, y1: number ) {
+        public showClick(x1: number, y1: number) {
             this.visible = true;
             this.x = x1;
             this.y = y1;
@@ -48,7 +48,7 @@
                 .wait(1000).call(() => { this.fu() });
         }
 
-        private fd() { 
+        private fd() {
             this.fingerDown.visible = true;
             this.fingerUp.visible = false;
         }

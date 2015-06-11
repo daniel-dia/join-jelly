@@ -36,7 +36,7 @@
 
             //set pivot
             this.regX = (boardWidth * tileSize / 2);
-            this.regY = (boardHeight * tileSize / 2 );
+            this.regY = (boardHeight * tileSize / 2);
 
         }
 
@@ -58,7 +58,7 @@
             bg.regX = 358 / 2;
             bg.regY = 0;
             bg.alpha = 0.15;
-            bg.set(this.getTilePositionByCoords(x, y, tileSize,0));
+            bg.set(this.getTilePositionByCoords(x, y, tileSize, 0));
 
 
             var tileDO = new Tile(x, y, tileSize);
@@ -109,8 +109,8 @@
                     //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
                     var target = this.getTileByRawPos(e.localX, e.localY, tileSize);
                     if (target && target.name.toString() != tile.name) {
-                        if (target.isUnlocked()){
-                           var x= { origin: tile, target: target };
+                        if (target.isUnlocked()) {
+                            var x = { origin: tile, target: target };
                             var ev = new createjs.Event("dragging", false, false);
                             ev["originTile"] = tile;
                             ev["targetTile"] = target;
@@ -186,7 +186,7 @@
         }
 
         // get a new position for a tile based on its index
-        private getTilePositionByCoords(x: number, y: number, tileSize: number, random: number= 1): point {
+        private getTilePositionByCoords(x: number, y: number, tileSize: number, random: number = 1): point {
 
             var hexaOffset = (x == 1 || x == 3) ? tileSize / 2 : 0;
             return {
@@ -229,7 +229,7 @@
             return tiles;
         }
 
-		public getLockedNotDraggingTiles(): Array<Tile> {
+        public getLockedNotDraggingTiles(): Array<Tile> {
 
             //get next jelly
             var total = this.boardHeight * this.boardWidth;
@@ -300,7 +300,7 @@
         }
 
         // release e tile
-        private releaseDrag(tile: Tile, match: boolean= true, target?: Tile) {
+        private releaseDrag(tile: Tile, match: boolean = true, target?: Tile) {
 
             var index = this.touchDictionary.indexOf(tile);
             delete this.touchDictionary[index];
@@ -368,7 +368,7 @@
 
         // #region Animations --------------------------------------------------------------------------
 
-        public fadeTileToPos(tile: Tile, posx: number, posy: number, time: number= 100, delay: number= 0, alpha: number= 0) {
+        public fadeTileToPos(tile: Tile, posx: number, posy: number, time: number = 100, delay: number = 0, alpha: number = 0) {
             tile.lock();
             createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: alpha }, time, createjs.Ease.quadInOut).call(() => {
                 tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));

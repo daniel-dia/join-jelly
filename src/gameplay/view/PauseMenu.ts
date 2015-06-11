@@ -1,6 +1,6 @@
 ﻿module joinjelly.gameplay.view {
- 
-    export class PauseMenu extends joinjelly.menus.view.FlyOutMenu{
+
+    export class PauseMenu extends joinjelly.menus.view.FlyOutMenu {
 
 
         constructor() {
@@ -9,7 +9,7 @@
 
             var soundOptions = new menus.view.SoundOptions();
             this.addChild(soundOptions);
-            soundOptions.set({x: defaultWidth / 2,y:1000});
+            soundOptions.set({ x: defaultWidth / 2, y: 1000 });
         }
 
         //creates buttons controls

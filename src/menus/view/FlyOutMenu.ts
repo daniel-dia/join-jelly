@@ -3,9 +3,9 @@
     export class FlyOutMenu extends createjs.Container {
 
         private title: createjs.BitmapText;
-        private top:number;
+        private top: number;
 
-        constructor(title: string, heigth:number=1022) {
+        constructor(title: string, heigth: number = 1022) {
             super();
 
             this.top = defaultHeight / 2 + 1022 - heigth;
@@ -16,7 +16,7 @@
             this.AddBG(heigth);
             this.addTitle(title);
 
-            this.visible=false;
+            this.visible = false;
         }
 
         public setTitle(title: string) {
@@ -25,11 +25,11 @@
         }
 
         // creates menu background
-        private AddBG(heigth:number) {
+        private AddBG(heigth: number) {
             var dk = gameui.AssetsManager.getBitmap("popupdark");
             this.addChild(dk);
             dk.scaleX = dk.scaleY = 16
-            dk.x = -defaultWidth/2;
+            dk.x = -defaultWidth / 2;
             dk.y = -defaultHeight / 2;
             dk.mouseEnabled = false;
 
@@ -39,16 +39,16 @@
             this.addChild(bg);
 
             bg.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-bg.x + bg.regX, -bg.y + bg.regY, defaultWidth, defaultHeight));
-     
+
         }
 
         // creates menu title
-        private addTitle(title:string) {
+        private addTitle(title: string) {
             //create "points" text
             
             this.title = gameui.AssetsManager.getBitmapText("", "debussyBig")
-            this.title .set({ x: defaultWidth / 2, y: 600 });
-            this.addChild(this.title );
+            this.title.set({ x: defaultWidth / 2, y: 600 });
+            this.addChild(this.title);
 
             this.setTitle(title);
         }
@@ -83,8 +83,7 @@
             gameui.AudiosManager.playSound("Interface Sound-14");
         }
 
-        public hide()
-        {
+        public hide() {
             if (!this.visible) return;
             this.animateOut();
             gameui.AudiosManager.playSound("Interface Sound-15");

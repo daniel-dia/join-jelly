@@ -684,7 +684,6 @@
     <TypeScriptCompile Include="src\gameplay\view\PauseMenu.ts" />
     <TypeScriptCompile Include="src\gameplay\view\FinishDialog.ts" />
     <TypeScriptCompile Include="src\gameplay\view\GameHeader.ts" />
-    <TypeScriptCompile Include="src\gameplay\view\GameMenu.ts" />
     <TypeScriptCompile Include="src\gameplay\view\Jelly.ts" />
     <TypeScriptCompile Include="src\gameplay\view\LevelIndicator.ts" />
     <TypeScriptCompile Include="src\gameplay\view\TimeBar.ts" />

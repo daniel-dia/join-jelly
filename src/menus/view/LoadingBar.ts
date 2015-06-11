@@ -16,7 +16,7 @@
             this.addChild(bar);
 
             text.regX = text.getBounds().width / 2;
-            bar.x= -939 / 2 -40;
+            bar.x = -939 / 2 - 40;
             bg.regX = 1131 / 2;
 
             text.y = -100;
@@ -27,8 +27,8 @@
             bar.mask = this.barMask;
         }
 
-        public update(value:number) {
-            this.barMask.scaleX = value ;
+        public update(value: number) {
+            this.barMask.scaleX = value;
         }
     }
 }
