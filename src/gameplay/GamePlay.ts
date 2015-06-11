@@ -37,16 +37,16 @@
 
             this.userData = userData;
 
-			// set score to zero
+            // set score to zero
             this.score = 0;
 
-			// create all objects
+            // create all objects
             this.createBackground();
             this.createBoard();
             this.createGUI();
-			this.createEffects();
+            this.createEffects();
             
-			// start game        
+            // start game        
             this.start();
             
             // try to load a saved Game
@@ -54,7 +54,7 @@
 
             //if is first time then give some items.
             if (!JoinJelly.userData.getHistory("firstPlay")) {
-                JoinJelly.itemData.setItemAmmount(Items.REVIVE,1)
+                JoinJelly.itemData.setItemAmmount(Items.REVIVE, 1)
                 JoinJelly.itemData.setItemAmmount(Items.TIME, 2)
                 JoinJelly.itemData.setItemAmmount(Items.FAST, 2)
                 JoinJelly.itemData.setItemAmmount(Items.CLEAN, 2)
@@ -73,7 +73,7 @@
 
             this.evolveEffect = gameui.AssetsManager.getBitmap("fxEvolve");
             this.content.addChild(this.evolveEffect);
-            this.evolveEffect.regX=150;
+            this.evolveEffect.regX = 150;
             this.normalizeEffect(this.evolveEffect);
 
             this.reviveEffect = gameui.AssetsManager.getBitmap("reviveEffect");
@@ -109,7 +109,7 @@
                 this.dragged(e["originTile"], e["targetTile"]);
             });
             this.content.addChild(this.board);
-            
+
             this.board.x = defaultWidth / 2;
             this.board.y = defaultHeight / 2;
         }
@@ -132,7 +132,7 @@
             this.footer.addChild(this.gameFooter);
             this.updateFooter();
 
-            this.gameFooter.addEventListener("useitem",(e: createjs.Event) => { this.useItem(e.item) });
+            this.gameFooter.addEventListener("useitem", (e: createjs.Event) => { this.useItem(e.item) });
     
             // creates pause menu
             this.pauseMenu = new view.PauseMenu();
@@ -154,59 +154,61 @@
             this.countDown.y = defaultHeight / 2;
 
             // creates a toggle button
-            var tbt = new gameui.ImageButton("BtBoard",() => {
+            var tbt = new gameui.ImageButton("BtBoard", () => {
                 this.finishMenu.show();
+                this.gameHeader.hide();
                 tbt.fadeOut();
-				gameui.AudiosManager.playSound("Interface Sound-06");
+                gameui.AudiosManager.playSound("Interface Sound-06");
             });
 
             tbt.set({ x: 150, y: -150, visible: false });
             this.footer.addChild(tbt);
             this.showBoardButton = tbt;
 
-			//add eventListener
+            //add eventListener
 
-			this.finishMenu.addEventListener("restart",() => {
+            this.finishMenu.addEventListener("restart", () => {
                 this.pauseMenu.hide();
                 this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 
 
-            this.finishMenu.addEventListener("ok",() => {
+            this.finishMenu.addEventListener("ok", () => {
                 JoinJelly.showMainMenu();
             });
 
-            this.finishMenu.addEventListener("board",() => {
+            this.finishMenu.addEventListener("board", () => {
                 this.finishMenu.hide();
+                this.gameHeader.show();
                 tbt.fadeIn();
             });
 
-            this.finishMenu.addEventListener("share",() => {
-				alert("share");
-				var fb = Cocoon.Social.Facebook;
-				fb.init({ appId: fbAppId });
-				var socialService = fb.getSocialInterface();
+            this.finishMenu.addEventListener("share", () => {
+                alert("share");
+                var fb = Cocoon.Social.Facebook;
+                fb.init({ appId: fbAppId });
+                var socialService = fb.getSocialInterface();
                 alert("share");
 
-				var message = new Cocoon.Social.Message(
-					StringResources.social.shareDescription,
-					gameWebsiteIcon,
-					gameWebsite,
-					StringResources.social.shareTitle + " - " + this.score + " " + StringResources.menus.score,
-					StringResources.social.shareCaption);
+                var message = new Cocoon.Social.Message(
+                    StringResources.social.shareDescription,
+                    gameWebsiteIcon,
+                    gameWebsite,
+                    StringResources.social.shareTitle + " - " + this.score + " " + StringResources.menus.score,
+                    StringResources.social.shareCaption);
 
 
-				var that = this;
-				socialService.publishMessageWithDialog(message, function (error) {
-					console.log("shared " + JSON.stringify(error))
-					var sucess = true;
-					if (error) sucess = false;
-					if (sucess) alert("K");
+                var that = this;
+                socialService.publishMessageWithDialog(message, function (error) {
+                    console.log("shared " + JSON.stringify(error))
+                    var sucess = true;
+                    if (error) sucess = false;
+                    if (sucess) alert("K");
 
-				});
-			});
-			
+                });
+            });
+
 
             this.gameHeader.addEventListener("pause", () => {
                 this.pauseGame();
@@ -223,7 +225,7 @@
             this.pauseMenu.addEventListener("testFast", () => {
                 this.selfPeformanceTest(true);
             });
-            
+
             this.pauseMenu.addEventListener("home", () => {
                 this.pauseMenu.hide();
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
@@ -235,12 +237,12 @@
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 
-			this.onback = () => {
-				if (this.gamestate == GameState.paused)
-					this.continueGame();
-				else if (this.gamestate == GameState.playing)
-					this.pauseGame();
-			}
+            this.onback = () => {
+                if (this.gamestate == GameState.paused)
+                    this.continueGame();
+                else if (this.gamestate == GameState.playing)
+                    this.pauseGame();
+            }
         }
 
         // redim screen
@@ -258,12 +260,7 @@
         // acivate the screen
         activate(parameters?: any) {
             super.activate(parameters);
-            this.gameHeader.alpha = 0;
-
-            setTimeout(() => {
-                createjs.Tween.get(this.gameHeader).to({ alpha: 1 }, 500);
-            }, 500);
-
+            this.gameHeader.show();
             this.updateFooter();
         }
 
@@ -357,7 +354,7 @@
         // executes a game interaction
         protected gameInteraction() {
 
-			// verifies if game is loosed
+            // verifies if game is loosed
             if (this.verifyGameLoose()) this.endGame();
 
             // add a new tile  on board
@@ -366,18 +363,18 @@
             // updates interafce information
             this.updateInterfaceInfos();
 
-			// update currentLevel
+            // update currentLevel
             this.updateCurrentLevel();
         }
 
         // pause game
         public pauseGame() {
-			if (this.gamestate == GameState.standBy) return;
+            if (this.gamestate == GameState.standBy) return;
             if (this.gamestate == GameState.ended) return;
             this.pauseMenu.show();
             this.gamestate = GameState.paused;
             this.board.lock();
-			this.gameFooter.lockAll();
+            this.gameFooter.lockAll();
             this.gameHeader.mouseEnabled = false;
             this.content.mouseEnabled = false;
         }
@@ -386,7 +383,7 @@
         private continueGame() {
             //hide menus
             this.pauseMenu.hide();
-			this.gamestate = GameState.standBy;
+            this.gamestate = GameState.standBy;
 
             //wait 3 seconds to unpause
             setTimeout(() => {
@@ -394,7 +391,7 @@
                 this.board.unlock();
                 this.gameHeader.mouseEnabled = true;
                 this.content.mouseEnabled = true;
-				this.gameFooter.unlockAll();
+                this.gameFooter.unlockAll();
             }, 3200);
 
             //show a 3 seconds countdown to resume game
@@ -411,9 +408,9 @@
         }
 
         // finishes the game
-        private endGame(message?: string,win?:boolean) {
+        private endGame(message?: string, win?: boolean) {
 
-            this.view.setChildIndex(this.footer,this.view.getNumChildren()-1);
+            this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
 
             this.gamestate = GameState.standBy;
 
@@ -432,15 +429,17 @@
             // remove other ui items
             this.gameHeader.mouseEnabled = false;
             this.gameFooter.mouseEnabled = false;
-            createjs.Tween.get(this.gameHeader).to({ y: -425 }, 200, createjs.Ease.quadIn);
+
+            this.gameHeader.hide();
+            this.gameHeader.hidePauseButton();
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
         
             // shows finished game menu
             setTimeout(() => {
-                if(win)
+                if (win)
                     this.gamestate = GameState.win;
                 else
-                this.gamestate = GameState.ended;
+                    this.gamestate = GameState.ended;
 
                 this.finishMenu.show();
                 this.gameFooter.mouseEnabled = true;
@@ -448,20 +447,20 @@
                 // set footer items form revive
                 this.gameFooter.setItems([Items.REVIVE]);
                 this.gameFooter.unlockItem(Items.REVIVE);
-                this.gameFooter.highlight(Items.REVIVE); 
+                this.gameFooter.highlight(Items.REVIVE);
 
                 this.updateFooter();
                 createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
 
                 // save high score
-                JoinJelly.userData.setScore(Math.max(score , JoinJelly.userData.getHighScore()));
+                JoinJelly.userData.setScore(Math.max(score, JoinJelly.userData.getHighScore()));
 				
-				// submit score to Game Services
-				JoinJelly.gameServices.submitScore(Math.max(score, JoinJelly.userData.getHighScore()));
-                
+                // submit score to Game Services
+                JoinJelly.gameServices.submitScore(Math.max(score, JoinJelly.userData.getHighScore()));
+
 
             }, 1200);
-            this.finishMenu.setValues(score, Math.max(highScore,score), highJelly, message);
+            this.finishMenu.setValues(score, Math.max(highScore, score), highJelly, message);
 
             // log event
             if (win)
@@ -482,7 +481,7 @@
             if (newLevel > this.level) {
                 this.level = newLevel;
                 this.levelUpInterfaceEffect(newLevel);
-                this.updateInterfaceInfos();  
+                this.updateInterfaceInfos();
                 this.levelUpBonus();
             }
             this.level = newLevel;
@@ -491,7 +490,7 @@
         // give bonus when level up
         protected levelUpBonus() {
             this.useEvolve();
-			this.cleanAllDirty();
+            this.cleanAllDirty();
         }
 
         // calculate current level by moves. once level calculation is a iterative processe, this method uses a iterative calculation
@@ -532,42 +531,42 @@
         // Verifies if game is over
         private verifyGameLoose(): boolean {
 
-            var empty  = this.board.getEmptyTiles();
+            var empty = this.board.getEmptyTiles();
             var locked = this.board.getLockedNotDraggingTiles();
-		 
-            if (empty.length == 0 && locked.length == 0 )
+
+            if (empty.length == 0 && locked.length == 0)
                 return true;
 
             return false;
         }
 		
-		// add a random jelly with value 1 on board
-		private addRandomJellyOnBoard(JellyValue: number) {
+        // add a random jelly with value 1 on board
+        private addRandomJellyOnBoard(JellyValue: number) {
 			
-			// select a random value to add for higher levels.
-			for (var i = 10; i < this.level; i += 10)
+            // select a random value to add for higher levels.
+            for (var i = 10; i < this.level; i += 10)
                 if (Math.random() > 0.9) JellyValue *= 2;
-			if (JellyValue > JoinJelly.maxJelly) JellyValue = JoinJelly.maxJelly;
+            if (JellyValue > JoinJelly.maxJelly) JellyValue = JoinJelly.maxJelly;
 
 
-			this.addRandomTileOnBoard(JellyValue);
-			this.addRandomDirtyOnBoard();
+            this.addRandomTileOnBoard(JellyValue);
+            this.addRandomDirtyOnBoard();
 
-			this.saveGame();
-		}
+            this.saveGame();
+        }
 
-		// randomly adda a dirty to the board
-		private addRandomDirtyOnBoard() {
+        // randomly adda a dirty to the board
+        private addRandomDirtyOnBoard() {
             if (this.getDirtyProbabilityByLevel(this.level, initialDirtyProbability, finalDirtyProbability, easeDirtyProbability) > Math.random())
                 setTimeout(() => { this.addRandomTileOnBoard(-1); }, 500);
-		}
+        }
 
         // add a random tile with value 1 on board
         private addRandomTileOnBoard(value: number) {
 
             var empty = this.board.getEmptyTiles();
 
-			// if there is no more empty tiles, ends the game
+            // if there is no more empty tiles, ends the game
             if (empty.length > 0) {
                 var i = Math.floor(Math.random() * empty.length);
                 var tile = empty[i];
@@ -575,7 +574,7 @@
             }
         }
 		
-		// clean all dirty in the board
+        // clean all dirty in the board
         public cleanAllDirty() {
             var tiles = this.board.getAllTiles();
             for (var t in tiles) {
@@ -606,14 +605,14 @@
             var tiles = this.board.getAllTiles();
             var tilesCount = this.board.getEmptyTiles().length;
             var numberCount = {}
-            
+
             for (var t in tiles) {
                 var n = tiles[t].getNumber();
-                if (n>0 && !numberCount[n]) numberCount[n] = 0;
+                if (n > 0 && !numberCount[n]) numberCount[n] = 0;
                 numberCount[n]++;
             }
 
-            for(var c in numberCount)
+            for (var c in numberCount)
                 if (numberCount[c] > 1) return true;
 
             return false;
@@ -629,14 +628,14 @@
             // check if match is correct
             if (!this.canMatch(origin, target)) return false;
 
-			// adds match count
+            // adds match count
             this.matches++;
             
             // animate the mach
             this.board.match(origin, target);
 
             // increase score
-            var sum = newValue * 10 + Math.floor(Math.random() * newValue*10);
+            var sum = newValue * 10 + Math.floor(Math.random() * newValue * 10);
             this.score += sum;
             this.animateScoreFromTile(target, sum); // animate a score number
             
@@ -648,10 +647,10 @@
             if (item) this.animateItemFromTile(target, item);
      
             // update score
-			if (this.userData)
-				this.userData.setLastJelly(newValue);
+            if (this.userData)
+                this.userData.setLastJelly(newValue);
 
-			// updates all interfaces infos
+            // updates all interfaces infos
             this.updateInterfaceInfos();
 
             // notify match
@@ -675,39 +674,39 @@
             // verifies if it can move, make it a little more faster
             if (!this.canMove()) this.step(0);
             
-			// clean near Dirties
-			this.cleanNearDirty(target);
+            // clean near Dirties
+            this.cleanNearDirty(target);
 
             return true;
         }
 
-		// cleand neighbor dirty
-		private cleanNearDirty(target: Tile) {
+        // cleand neighbor dirty
+        private cleanNearDirty(target: Tile) {
             var neighborTiles = this.board.getNeighborTiles(target);
 
-			for (var t in neighborTiles) {
-				var tile = neighborTiles[t];
+            for (var t in neighborTiles) {
+                var tile = neighborTiles[t];
 
-				if (tile && tile.getNumber() < 0) {
-					var posx = target.x + (tile.x - target.x) * 1.5;
-					var posy = target.y + (tile.y - target.y) * 1.5;
-					this.board.fadeTileToPos(tile, posx, posy, 500);
-					tile.setNumber(0);
-				}
-			}
-		}
+                if (tile && tile.getNumber() < 0) {
+                    var posx = target.x + (tile.x - target.x) * 1.5;
+                    var posy = target.y + (tile.y - target.y) * 1.5;
+                    this.board.fadeTileToPos(tile, posx, posy, 500);
+                    tile.setNumber(0);
+                }
+            }
+        }
 
-		// saves the high valueable jelly to the score
+        // saves the high valueable jelly to the score
         private highJellySave(newValue) {
             if (this.highJelly < newValue) {
                 
                 // log HighJelly Event
                 joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time)
 
-				try {
-					// submit jelly to Game Services
-					JoinJelly.gameServices.submitJellyAchievent(newValue);
-				} catch (e) { console.log(e) }
+                try {
+                    // submit jelly to Game Services
+                    JoinJelly.gameServices.submitJellyAchievent(newValue);
+                } catch (e) { console.log(e) }
                 // set a new high jelly
                 this.highJelly = newValue;
             }
@@ -720,7 +719,7 @@
             var lucky = JoinJelly.itemData.getItemAmmount(Items.LUCKY) ? 2 : 1;
 
             // calculate random change to win a item
-            var goodChance: boolean = (Math.random() < itemProbability*lucky);
+            var goodChance: boolean = (Math.random() < itemProbability * lucky);
             
             // if true
             if (goodChance) {
@@ -728,7 +727,7 @@
 
                 // give item to user (user data)
                 JoinJelly.itemData.increaseItemAmmount(item);
-                
+
             }
             return item;
         }
@@ -748,22 +747,22 @@
             // animate item to footer
             var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
             var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
-            var xf = defaultWidth/2;
+            var xf = defaultWidth / 2;
             var yf = this.footer.y;;
 
-            var footerItem = this.gameFooter.getItemButton(item) 
+            var footerItem = this.gameFooter.getItemButton(item)
             if (footerItem) {
                 xf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).x;
                 yf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).y;
             }
             itemDO.alpha = 0;
-            createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1}, 400, createjs.Ease.quadInOut).to({x:xf,y:yf}, 1000, createjs.Ease.quadInOut).call(() => { 
+            createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(() => {
                 this.content.removeChild(itemDO);
                 this.updateFooter();
             });
-            
+
             this.content.addChild(itemDO);
-            
+
         }
 
         // animate a score in the board
@@ -773,15 +772,15 @@
             var textDO = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
             textDO.regX = textDO.getBounds().width / 2;
             textDO.mouseEnabled = false;
-           
+
 
             var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
             var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
             textDO.alpha = 0;
-            createjs.Tween.get(textDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi-170, alpha: 1 }, 400, createjs.Ease.quadOut).to({alpha:0},400).call(() => {
+            createjs.Tween.get(textDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 170, alpha: 1 }, 400, createjs.Ease.quadOut).to({ alpha: 0 }, 400).call(() => {
                 this.content.removeChild(textDO);
             });
-            
+
             this.content.addChild(textDO);
         }
 		
@@ -831,11 +830,11 @@
         }
 
         // reduces jellys per time during 5 seconds.
-        protected useTime() :boolean{
+        protected useTime(): boolean {
             if (this.gamestate == GameState.ended) return;
 
             this.step(4000);
-			this.gameFooter.lockItem(Items.TIME);
+            this.gameFooter.lockItem(Items.TIME);
 
             //cast effects
             this.freezeEffect.alpha = 0;
@@ -843,7 +842,7 @@
             createjs.Tween.removeTweens(this.freezeEffect);
             createjs.Tween.get(this.freezeEffect).to({ alpha: 1 }, 1000).to({ alpha: 0 }, 4000).call(() => {
                 this.freezeEffect.visible = false
-				this.gameFooter.unlockItem(Items.TIME);
+                this.gameFooter.unlockItem(Items.TIME);
             });
 
             gameui.AudiosManager.playSound("sounditemtime");
@@ -878,7 +877,7 @@
         }
 
         // revive after game end
-        protected useRevive(test=false): boolean {
+        protected useRevive(test = false): boolean {
 
             if (this.gamestate != GameState.ended) return false;
 
@@ -910,13 +909,14 @@
             this.showBoardButton.fadeOut();
 
             // set footer items
-            this.gameFooter.setItems([Items.TIME, Items.CLEAN, Items.FAST ]);
+            this.gameFooter.setItems([Items.TIME, Items.CLEAN, Items.FAST]);
             this.gameFooter.unlockAll();
             this.gameFooter.lockItem(Items.REVIVE);
 
             // remove other ui items
             this.gameHeader.mouseEnabled = true;
-            createjs.Tween.get(this.gameHeader).to({ y: -0 }, 200, createjs.Ease.quadIn);
+            this.gameHeader.show();
+            this.gameHeader.showPauseButton();
 
             // if not test, than play effects.
             if (!test) {
@@ -934,7 +934,7 @@
             return true;
         }
 
-		// evolve one random jelly (TODO tirar daqui)
+        // evolve one random jelly (TODO tirar daqui)
         protected useEvolve() {
             // evolve some random tile, except maximun tile
             if (this.gamestate == GameState.ended) return;
@@ -943,17 +943,17 @@
             var maxTile: number = 0;
 
             //get max tile
-            for(var t in tiles)
-                if (tiles[t].getNumber() > maxTile  )
+            for (var t in tiles)
+                if (tiles[t].getNumber() > maxTile)
                     maxTile = tiles[t].getNumber();
 
             //select elegible tiles to evolve
             var selectedTiles: Array<Tile> = new Array();
             for (var t in tiles)
-                if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 2 ) && tiles[t].isUnlocked())
+                if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 2) && tiles[t].isUnlocked())
                     selectedTiles.push(tiles[t]);
 
-            if(selectedTiles.length==0)
+            if (selectedTiles.length == 0)
                 for (var t in tiles)
                     if ((tiles[t].getNumber() < maxTile && tiles[t].getNumber() > 1) && tiles[t].isUnlocked())
                         selectedTiles.push(tiles[t]);
@@ -986,34 +986,34 @@
 
             // cast Effect On Tile
             tile.jelly.playThunder();
-            setTimeout(() => {tile.unlock();gameui.AudiosManager.playSound("evolve")}, 1000);
+            setTimeout(() => { tile.unlock(); gameui.AudiosManager.playSound("evolve") }, 1000);
 
             // cast a thunder effects 
             gameui.AudiosManager.playSound("sounditemfast");
 
             var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
             var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
- 
+
             this.evolveEffect.visible = true;
             this.evolveEffect.set({ alpha: 1, scaleX: 0.5, x: po.x, y: po.y });
-            
-            var angleDeg = Math.atan2(pt.y - po.y-50, pt.x - po.x) * 180 / Math.PI - 90;
+
+            var angleDeg = Math.atan2(pt.y - po.y - 50, pt.x - po.x) * 180 / Math.PI - 90;
             var scale = Math.sqrt(Math.pow(pt.y - 50 - po.y, 2) + Math.pow(pt.x - po.x, 2)) / 300;
             this.evolveEffect.rotation = angleDeg;
             this.evolveEffect.scaleY = 0;
-            
+
             createjs.Tween.removeTweens(this.evolveEffect);
-            createjs.Tween.get(this.evolveEffect).to({ scaleY: scale }, 200) 
-            createjs.Tween.get(this.evolveEffect).to({ alpha: 0 }, 1200,createjs.Ease.quadIn).call(() => {
+            createjs.Tween.get(this.evolveEffect).to({ scaleY: scale }, 200)
+            createjs.Tween.get(this.evolveEffect).to({ alpha: 0 }, 1200, createjs.Ease.quadIn).call(() => {
                 this.evolveEffect.visible = false
             });
-            
+
 
             return true;
         }
 
         // match 5 pair of jelly if avaliabe
-        protected useFast(test= false): boolean {
+        protected useFast(test = false): boolean {
             if (this.gamestate == GameState.ended) return;
             var tiles = this.board.getAllTiles();
             var matches = [];
@@ -1044,7 +1044,7 @@
             for (var m in matches)
                 this.matchJelly(matches[m][0], matches[m][1]);
 
-      
+
             return true;
         }
 
@@ -1084,7 +1084,7 @@
 
         public loadGame() {
 
-			if (!this.userData) return;
+            if (!this.userData) return;
 
             var saveGame = this.userData.loadGame();
             if (!saveGame || saveGame == null) return;
@@ -1098,10 +1098,10 @@
             this.updateFooter();
             this.updateInterfaceInfos();
 
-			if (this.verifyGameLoose())
-				this.endGame();
-			else
-				this.continueGame();
+            if (this.verifyGameLoose())
+                this.endGame();
+            else
+                this.continueGame();
         }
 
         // #endregion
@@ -1120,7 +1120,7 @@
                     JoinJelly.startTest();
                 }
 
-                
+
             }, 250);
         }
 

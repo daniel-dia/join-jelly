@@ -55,8 +55,6 @@
         } 
 
         public start() {
-            this.gameHeader.getChildByName("pauseButton").visible = false;
-
             super.start();
             this.resetTutorialStep();
             this.executeTutorialStep();

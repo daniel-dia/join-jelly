@@ -13,6 +13,7 @@
 
         private effect: joinjelly.view.Effect;
 
+        private pauseButton: gameui.UIItem;
         constructor() {
             super();
             this.addObjects();
@@ -25,7 +26,7 @@
                 this.dispatchEvent("pause");
             });
 
-            pauseButton.name = "pauseButton";
+            this.pauseButton = pauseButton;
             pauseButton.x = 157;
             pauseButton.y = 215;
             this.addChild(pauseButton);
@@ -89,6 +90,23 @@
             
         }
 
+        public hidePauseButton() {
+            this.pauseButton.fadeOut();
+        }
+
+        public showPauseButton() {
+            this.pauseButton.fadeIn();
+        }
+
+        public hide() {
+            createjs.Tween.get(this).to({ y: -425 }, 200, createjs.Ease.quadIn);
+        }
+
+        public show() {
+            this.visible = true;
+            this.alpha = 1;
+            createjs.Tween.get(this).to({ y: -0 }, 200, createjs.Ease.quadOut);
+        }
 
         // updates level ad score status
         public updateStatus(score: number,level:number,percent?:number,emptyPercent?:number, alarm?:boolean) {
