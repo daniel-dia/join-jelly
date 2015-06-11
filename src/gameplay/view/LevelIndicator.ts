@@ -17,7 +17,7 @@
                 .wait(500)
                 .to({ y: defaultHeight / 2 - 200, alpha: 0 }, 200, createjs.Ease.quadIn).call(() => {
                     this.removeChild(text);
-                    delete text;
+                    //delete text;
                 });;
 
         }
