@@ -133,9 +133,9 @@
     //#region history
 	
     public history(value: string) {
-        var hist = UserData.loadValue("history", {});
-        hist[value] = true;
-        UserData.saveValue("history", hist);
+        var history = UserData.loadValue("history", {});
+        history[value] = true;
+        UserData.saveValue("history", history);
     }
 
     public getHistory(value: string): boolean {

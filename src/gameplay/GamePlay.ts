@@ -53,7 +53,7 @@
             this.loadGame();
 
             //if is first time then give some items.
-            if(JoinJelly.userData.getHistory("firstPlay")) {
+            if (!JoinJelly.userData.getHistory("firstPlay")) {
                 JoinJelly.itemData.setItemAmmount(Items.REVIVE,1)
                 JoinJelly.itemData.setItemAmmount(Items.TIME, 2)
                 JoinJelly.itemData.setItemAmmount(Items.FAST, 2)
