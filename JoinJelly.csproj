@@ -601,11 +601,13 @@
     <Content Include="assets\style.css" />
     <TypeScriptCompile Include="src\gameplay\parameters.ts" />
     <Content Include="scripts\cocoon.js" />
+    <Content Include="scripts\createjs-2015.05.21.min.js" />
     <Content Include="scripts\cti.js" />
     <Content Include="scripts\EaselJS Editor.js" />
     <Content Include="scripts\FileSaver.js" />
     <Content Include="scripts\MobileServices.Web-1.2.5.min.js" />
     <Content Include="scripts\movieclip-0.8.0.min.js" />
+    <Content Include="scripts\movieclip-0.8.1.min.js" />
     <Content Include="scripts\Plataform.js" />
     <Content Include="scripts\script.min.js">
       <DependentUpon>script.js</DependentUpon>
