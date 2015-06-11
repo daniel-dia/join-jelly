@@ -1,701 +1,3 @@
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var gameui;
-(function (gameui) {
-    var UIItem = (function (_super) {
-        __extends(UIItem, _super);
-        function UIItem() {
-            _super.apply(this, arguments);
-            this.centered = false;
-            this.animating = false;
-        }
-        UIItem.prototype.centralize = function () {
-            this.regX = this.width / 2;
-            this.regY = this.height / 2;
-            this.centered = true;
-        };
-        UIItem.prototype.fadeOut = function (scaleX, scaleY) {
-            var _this = this;
-            if (scaleX === void 0) { scaleX = 0.5; }
-            if (scaleY === void 0) { scaleY = 0.5; }
-            this.resetFade();
-            createjs.Tween.get(this).to({
-                scaleX: scaleX,
-                scaleY: scaleY,
-                alpha: 0,
-                x: this.antX,
-                y: this.antY,
-            }, 200, createjs.Ease.quadIn).call(function () {
-                _this.visible = false;
-                _this.x = _this.antX;
-                _this.y = _this.antY;
-                _this.scaleX = _this.scaleY = 1;
-                _this.alpha = 1;
-                _this.animating = false;
-                _this.mouseEnabled = true;
-                ;
-            });
-        };
-        UIItem.prototype.resetFade = function () {
-            this.animating = true;
-            this.antX = this.x;
-            this.antY = this.y;
-            this.mouseEnabled = false;
-            createjs.Tween.removeTweens(this);
-        };
-        UIItem.prototype.fadeIn = function (scaleX, scaleY) {
-            var _this = this;
-            if (scaleX === void 0) { scaleX = 0.5; }
-            if (scaleY === void 0) { scaleY = 0.5; }
-            if (this.visible = true)
-                this.antX = null;
-            this.visible = true;
-            this.animating = true;
-            if (this.antX == null) {
-                this.antX = this.x;
-                this.antY = this.y;
-            }
-            this.scaleX = scaleX, this.scaleY = scaleY, this.alpha = 0, this.x = this.x;
-            this.y = this.y;
-            this.mouseEnabled = false;
-            createjs.Tween.removeTweens(this);
-            createjs.Tween.get(this).to({
-                scaleX: 1,
-                scaleY: 1,
-                alpha: 1,
-                x: this.antX,
-                y: this.antY,
-            }, 400, createjs.Ease.quadOut).call(function () {
-                _this.mouseEnabled = true;
-                _this.animating = false;
-            });
-        };
-        UIItem.prototype.createHitArea = function () {
-            var hit = new createjs.Shape();
-            var b = this.getBounds();
-            if (b)
-                hit.graphics.beginFill("#000").drawRect(b.x, b.y, b.width, b.height);
-            this.hitArea = hit;
-        };
-        return UIItem;
-    })(createjs.Container);
-    gameui.UIItem = UIItem;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
-    var AudiosManager = (function () {
-        function AudiosManager() {
-        }
-        AudiosManager.setMusicVolume = function (volume) {
-            if (this.currentMusic)
-                this.currentMusic.volume = volume;
-            this.musicVolue = volume;
-        };
-        AudiosManager.setSoundVeolume = function (volume) {
-            this.soundVolume = volume;
-        };
-        AudiosManager.getMusicVolume = function () {
-            if (this.musicVolue == undefined)
-                return 1;
-            return this.musicVolue;
-        };
-        AudiosManager.getSoundVolume = function () {
-            if (this.soundVolume == undefined)
-                return 1;
-            return this.soundVolume;
-        };
-        AudiosManager.playMusic = function (name, volume) {
-            if (volume === void 0) { volume = 1; }
-            if (this.currentMusic) {
-                this.currentMusic.setVolume(volume * this.getMusicVolume());
-                if (this.currentMusicName == name)
-                    return;
-                this.currentMusic.stop();
-                delete this.currentMusic;
-            }
-            this.currentMusicName = name;
-            this.currentMusic = createjs.Sound.play(name, null, null, null, 1000);
-            this.currentMusic.setVolume(volume * this.getMusicVolume());
-        };
-        AudiosManager.playSound = function (name, interrupt, delay, offset, loop, volume) {
-            if (delay === void 0) { delay = 0; }
-            if (volume === void 0) { volume = 1; }
-            return createjs.Sound.play(name, interrupt, delay, offset, loop, volume * this.getSoundVolume());
-        };
-        return AudiosManager;
-    })();
-    gameui.AudiosManager = AudiosManager;
-})(gameui || (gameui = {}));
-var images;
-var gameui;
-(function (gameui) {
-    var AssetsManager = (function () {
-        function AssetsManager() {
-        }
-        AssetsManager.loadAssets = function (manifest, path, spriteSheets) {
-            var _this = this;
-            if (path === void 0) { path = ""; }
-            this.spriteSheets = spriteSheets ? spriteSheets : new Array();
-            this.bitmapFontSpriteSheetDataArray = this.bitmapFontSpriteSheetDataArray ? this.bitmapFontSpriteSheetDataArray : new Array();
-            this.assetsManifest = manifest;
-            if (!images)
-                images = new Array();
-            if (!this.loader) {
-                this.loader = new createjs.LoadQueue(false);
-                this.loader.installPlugin(createjs.Sound);
-                createjs.Sound.alternateExtensions = ["mp3"];
-                this.loader.addEventListener("filestart", function (evt) {
-                    console.log("loading " + evt.item.src);
-                });
-                this.loader.addEventListener("fileload", function (evt) {
-                    console.log("loaded " + evt.item.src);
-                });
-                this.loader.addEventListener("complete", function (evt) {
-                    if (_this.onComplete)
-                        _this.onComplete();
-                });
-                this.loader.addEventListener("progress", function (evt) {
-                    if (_this.onProgress)
-                        _this.onProgress(evt.progress);
-                });
-                this.loader.addEventListener("fileload", function (evt) {
-                    if (evt.item.type == "image")
-                        images[evt.item.id] = evt.result;
-                    return true;
-                });
-            }
-            this.loader.loadManifest(manifest, true, path);
-        };
-        AssetsManager.loadFontSpriteSheet = function (id, spritesheetData) {
-            this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
-        };
-        AssetsManager.cleanAssets = function () {
-            if (images)
-                ;
-            for (var i in images) {
-                var img = images[i];
-                if (img.dispose)
-                    img.dispose();
-                delete images[i];
-            }
-        };
-        AssetsManager.getImagesArray = function () {
-            return images;
-        };
-        AssetsManager.getBitmap = function (name) {
-            if (this.spriteSheets)
-                if (this.spriteSheets[name])
-                    return this.getSprite(name, false);
-            var image = this.getLoadedImage(name);
-            if (image) {
-                var imgobj = new createjs.Bitmap(image);
-                imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
-                return imgobj;
-            }
-            var imgobj = new createjs.Bitmap(name);
-            imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
-            return imgobj;
-        };
-        AssetsManager.getBitmapText = function (text, bitmapFontId) {
-            var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
-            bitmapText.lineHeight = 100;
-            bitmapText.mouseEnabled = AssetsManager.defaultMouseEnabled;
-            return bitmapText;
-        };
-        AssetsManager.getLoadedImage = function (name) {
-            if (this.loader)
-                return this.loader.getResult(name);
-            return null;
-        };
-        AssetsManager.getSprite = function (name, play) {
-            if (play === void 0) { play = true; }
-            var data = this.spriteSheets[name];
-            for (var i in data.images)
-                if (typeof data.images[i] == "string")
-                    data.images[i] = this.getLoadedImage(data.images[i]);
-            var spritesheet = new createjs.SpriteSheet(data);
-            var sprite = new createjs.Sprite(spritesheet);
-            if (play)
-                sprite.play();
-            return sprite;
-        };
-        AssetsManager.defaultMouseEnabled = false;
-        return AssetsManager;
-    })();
-    gameui.AssetsManager = AssetsManager;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
-    var GameScreen = (function () {
-        function GameScreen(canvasId, gameWidth, gameHeight, fps, showFps) {
-            var _this = this;
-            if (fps === void 0) { fps = 60; }
-            this.defaultWidth = gameWidth;
-            this.defaultHeight = gameHeight;
-            this.stage = new createjs.Stage(canvasId);
-            createjs.Touch.enable(this.stage);
-            var x = 0;
-            createjs.Ticker.addEventListener("tick", function () {
-                _this.stage.update();
-            });
-            createjs.Ticker.setFPS(fps);
-            this.screenContainer = new createjs.Container();
-            this.stage.addChild(this.screenContainer);
-            if (showFps) {
-                var fpsMeter = new createjs.Text("FPS", " 18px Arial ", "#000");
-                fpsMeter.mouseEnabled = false;
-                fpsMeter.x = 0;
-                fpsMeter.y = 0;
-                this.stage.addChild(fpsMeter);
-                createjs.Ticker.addEventListener("tick", function () {
-                    fpsMeter.text = Math.floor(createjs.Ticker.getMeasuredFPS()) + " FPS";
-                });
-            }
-            this.resizeGameScreen(window.innerWidth, window.innerHeight);
-            window.onresize = function () {
-                _this.resizeGameScreen(window.innerWidth, window.innerHeight);
-            };
-        }
-        GameScreen.prototype.switchScreen = function (newScreen, parameters, transition) {
-            var _this = this;
-            var oldScreen = this.currentScreen;
-            if (!transition)
-                transition = new gameui.Transition();
-            var x = 0;
-            var y = 0;
-            var alpha = 1;
-            if (transition && oldScreen) {
-                switch (transition.type) {
-                    case "fade":
-                        alpha = 0;
-                        break;
-                    case "top":
-                        y = this.currentHeight;
-                        break;
-                    case "bottom":
-                        y = -this.currentHeight;
-                        break;
-                    case "left":
-                        x = -this.currentWidth;
-                        break;
-                    case "right":
-                        x = this.currentWidth;
-                        break;
-                    case "none":
-                        transition.time = 0;
-                        break;
-                }
-                if (transition.type && transition.type != "none") {
-                    newScreen.view.mouseEnabled = false;
-                    oldScreen.view.mouseEnabled = false;
-                    newScreen.view.set({ alpha: alpha, x: -x, y: -y });
-                    oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
-                    createjs.Tween.get(oldScreen.view).to({ alpha: 1, x: x, y: y }, transition.time, createjs.Ease.quadInOut);
-                    createjs.Tween.get(newScreen.view).to({ alpha: 1, x: 0, y: 0 }, transition.time, createjs.Ease.quadInOut).call(function () {
-                        oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
-                        newScreen.view.set({ 1: alpha, x: 0, y: 0 });
-                        newScreen.view.mouseEnabled = true;
-                        oldScreen.view.mouseEnabled = true;
-                        _this.removeOldScreen(oldScreen);
-                        oldScreen = null;
-                    });
-                }
-                else {
-                    this.removeOldScreen(oldScreen);
-                    oldScreen = null;
-                }
-            }
-            else {
-                this.removeOldScreen(oldScreen);
-                oldScreen = null;
-            }
-            newScreen.activate(parameters);
-            this.screenContainer.addChild(newScreen.view);
-            this.currentScreen = newScreen;
-            this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
-        };
-        GameScreen.prototype.resizeGameScreen = function (deviceWidth, deviceHeight, updateCSS) {
-            if (updateCSS === void 0) { updateCSS = true; }
-            if (this.defaultHeight) {
-                var aspect = this.defaultWidth / this.defaultHeight;
-                var aspectReal = deviceWidth / deviceHeight;
-                if (aspectReal > aspect) {
-                    var s = deviceHeight / this.defaultHeight;
-                    deviceWidth = this.defaultWidth * s;
-                }
-            }
-            this.stage.canvas.width = deviceWidth;
-            this.stage.canvas.height = deviceHeight;
-            this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
-        };
-        GameScreen.prototype.sendBackButtonEvent = function () {
-            if (this.currentScreen && this.currentScreen.onback) {
-                this.currentScreen.onback();
-                return false;
-            }
-            else
-                return true;
-        };
-        GameScreen.prototype.updateViewerScale = function (realWidth, realHeight, defaultWidth, defaultHeight) {
-            var scale = realWidth / defaultWidth;
-            this.currentHeight = realHeight / scale;
-            this.currentWidth = realWidth / scale;
-            this.defaultWidth = defaultWidth;
-            this.headerPosition = -(this.currentHeight - defaultHeight) / 2;
-            this.footerPosition = defaultHeight + (this.currentHeight - defaultHeight) / 2;
-            this.screenContainer.scaleX = this.screenContainer.scaleY = scale;
-            this.screenContainer.y = this.viewerOffset = (this.currentHeight - defaultHeight) / 2 * scale;
-            if (this.currentScreen)
-                this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
-        };
-        GameScreen.prototype.removeOldScreen = function (oldScreen) {
-            if (oldScreen != null) {
-                oldScreen.desactivate();
-                this.screenContainer.removeChild(oldScreen.view);
-                oldScreen = null;
-            }
-        };
-        return GameScreen;
-    })();
-    gameui.GameScreen = GameScreen;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
-    var Grid = (function (_super) {
-        __extends(Grid, _super);
-        function Grid(cols, rows, width, height, padding, flowHorizontal) {
-            if (padding === void 0) { padding = 0; }
-            _super.call(this);
-            this.flowHorizontal = false;
-            this.currentCol = 0;
-            this.currentRow = 0;
-            this.flowHorizontal = flowHorizontal;
-            this.cols = cols;
-            this.rows = rows;
-            this.padding = padding;
-            this.width = width;
-            this.height = height;
-            this.wSpacing = (width - padding * 2) / cols;
-            this.hSpacing = (height - padding * 2) / rows;
-        }
-        Grid.prototype.addObject = function (object) {
-            this.addChild(object);
-            object.x = this.getXPos();
-            object.y = this.getYPos();
-            this.updatePosition();
-        };
-        Grid.prototype.getXPos = function () {
-            return this.padding + this.currentCol * this.wSpacing + this.wSpacing / 2;
-        };
-        Grid.prototype.getYPos = function () {
-            return this.padding + this.currentRow * this.hSpacing + this.hSpacing / 2;
-        };
-        Grid.prototype.updatePosition = function () {
-            if (!this.flowHorizontal) {
-                this.currentCol++;
-                if (this.currentCol >= this.cols) {
-                    this.currentCol = 0;
-                    this.currentRow++;
-                }
-            }
-            else {
-                this.currentRow++;
-                if (this.currentRow >= this.rows) {
-                    this.currentRow = 0;
-                    this.currentCol++;
-                }
-            }
-        };
-        return Grid;
-    })(gameui.UIItem);
-    gameui.Grid = Grid;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
-    var Label = (function (_super) {
-        __extends(Label, _super);
-        function Label(text, font, color) {
-            if (text === void 0) { text = ""; }
-            if (font === void 0) { font = "600 90px Myriad Pro"; }
-            if (color === void 0) { color = "#82e790"; }
-            _super.call(this);
-            text = text.toUpperCase();
-            this.textField = new createjs.Text(text, font, color);
-            this.textField.textBaseline = "middle";
-            this.textField.textAlign = "center";
-            this.addChild(this.textField);
-        }
-        return Label;
-    })(gameui.UIItem);
-    gameui.Label = Label;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
-    var MenuContainer = (function (_super) {
-        __extends(MenuContainer, _super);
-        function MenuContainer(width, height, flowHorizontal) {
-            if (width === void 0) { width = null; }
-            if (height === void 0) { height = null; }
-            if (flowHorizontal === void 0) { flowHorizontal = false; }
-            if (!flowHorizontal)
-                _super.call(this, 1, 0, width, height, 0, flowHorizontal);
-            else
-                _super.call(this, 0, 1, width, height, 0, flowHorizontal);
-        }
-        MenuContainer.prototype.addLabel = function (text) {
-            var textObj;
-            textObj = new gameui.Label(text);
-            this.addObject(textObj);
-            return textObj.textField;
-        };
-        MenuContainer.prototype.addButton = function (text, event) {
-            if (event === void 0) { event = null; }
-            var buttonObj = new gameui.TextButton(text, null, null, null, event);
-            this.addObject(buttonObj);
-            return buttonObj;
-        };
-        MenuContainer.prototype.addOutButton = function (text, event) {
-            if (event === void 0) { event = null; }
-            var buttonObj = new gameui.TextButton(text, null, null, null, event);
-            this.addObject(buttonObj);
-            return buttonObj;
-        };
-        return MenuContainer;
-    })(gameui.Grid);
-    gameui.MenuContainer = MenuContainer;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
-    var ScreenState = (function () {
-        function ScreenState() {
-            this.view = new createjs.Container();
-            this.content = new createjs.Container();
-            this.overlay = new createjs.Container();
-            this.header = new createjs.Container();
-            this.footer = new createjs.Container();
-            this.background = new createjs.Container();
-            this.view.addChild(this.background);
-            this.view.addChild(this.content);
-            this.view.addChild(this.footer);
-            this.view.addChild(this.header);
-            this.view.addChild(this.overlay);
-        }
-        ScreenState.prototype.activate = function (parameters) {
-            this.content.visible = true;
-        };
-        ScreenState.prototype.desactivate = function (parameters) {
-            this.content.visible = false;
-        };
-        ScreenState.prototype.redim = function (headerY, footerY, width, heigth) {
-            this.screenHeight = heigth;
-            this.screenWidth = width;
-            this.footer.y = footerY;
-            this.header.y = headerY;
-            var dh = footerY + headerY;
-            var ch = footerY - headerY;
-            var scale = ch / dh;
-            if (scale < 1) {
-                scale = 1;
-                this.background.y = 0;
-                this.background.x = 0;
-            }
-            else {
-                this.background.y = headerY;
-                if (false) {
-                    this.background.x = -(width * scale - width) / 2;
-                    this.background.scaleX = this.background.scaleY = scale;
-                }
-                else {
-                    this.background.x = 0;
-                    this.background.scaleY = scale;
-                }
-            }
-            var mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, -(heigth - defaultHeight) / 2, width, heigth));
-            this.background.mask = mask;
-            this.footer.mask = mask;
-            this.header.mask = mask;
-            this.content.mask = mask;
-        };
-        return ScreenState;
-    })();
-    gameui.ScreenState = ScreenState;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
-    var Transition = (function () {
-        function Transition() {
-            this.time = 300;
-            this.type = "fade";
-        }
-        return Transition;
-    })();
-    gameui.Transition = Transition;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
-    var Button = (function (_super) {
-        __extends(Button, _super);
-        function Button(soundId) {
-            var _this = this;
-            _super.call(this);
-            this.enableAnimation = true;
-            this.mouse = false;
-            this.addEventListener("mousedown", function (event) {
-                _this.onPress(event);
-            });
-            this.addEventListener("pressup", function (event) {
-                _this.onPressUp(event);
-            });
-            this.addEventListener("mouseover", function () {
-                _this.mouse = true;
-            });
-            this.addEventListener("mouseout", function () {
-                _this.mouse = false;
-            });
-            this.soundId = soundId;
-        }
-        Button.setDefaultSoundId = function (soundId) {
-            this.DefaultSoundId = soundId;
-        };
-        Button.prototype.returnStatus = function () {
-            if (!this.mouse) {
-                this.scaleX = this.originalScaleX;
-                this.scaleY = this.originalScaleY;
-            }
-        };
-        Button.prototype.onPressUp = function (Event) {
-            this.mouse = false;
-            this.set({ scaleX: this.originalScaleX * 1.1, scaleY: this.originalScaleY * 1.1 });
-            createjs.Tween.get(this).to({ scaleX: this.originalScaleX, scaleY: this.originalScaleY }, 200, createjs.Ease.backOut);
-        };
-        Button.prototype.onPress = function (Event) {
-            var _this = this;
-            if (!this.enableAnimation)
-                return;
-            this.mouse = true;
-            if (this.originalScaleX == null) {
-                this.originalScaleX = this.scaleX;
-                this.originalScaleY = this.scaleY;
-            }
-            createjs.Tween.get(this).to({ scaleX: this.originalScaleX * 1.1, scaleY: this.originalScaleY * 1.1 }, 500, createjs.Ease.elasticOut).call(function () {
-                if (!_this.mouse) {
-                    createjs.Tween.get(_this).to({ scaleX: _this.originalScaleX, scaleY: _this.originalScaleY }, 300, createjs.Ease.backOut);
-                }
-            });
-            if (!this.soundId)
-                this.soundId = Button.DefaultSoundId;
-            if (this.soundId)
-                gameui.AudiosManager.playSound(this.soundId);
-        };
-        Button.prototype.setSound = function (soundId) {
-            this.soundId = soundId;
-        };
-        return Button;
-    })(gameui.UIItem);
-    gameui.Button = Button;
-    var ImageButton = (function (_super) {
-        __extends(ImageButton, _super);
-        function ImageButton(image, event, soundId) {
-            var _this = this;
-            _super.call(this, soundId);
-            if (event != null)
-                this.addEventListener("click", event);
-            if (image != null) {
-                this.background = gameui.AssetsManager.getBitmap(image);
-                this.addChildAt(this.background, 0);
-                if (this.background.getBounds()) {
-                    this.centralizeImage();
-                }
-                else if (this.background["image"])
-                    this.background["image"].onload = function () {
-                        _this.centralizeImage();
-                    };
-            }
-            this.createHitArea();
-        }
-        ImageButton.prototype.centralizeImage = function () {
-            this.width = this.background.getBounds().width;
-            this.height = this.background.getBounds().height;
-            this.background.regX = this.width / 2;
-            this.background.regY = this.height / 2;
-            this.centered = true;
-        };
-        return ImageButton;
-    })(Button);
-    gameui.ImageButton = ImageButton;
-    var TextButton = (function (_super) {
-        __extends(TextButton, _super);
-        function TextButton(text, font, color, background, event, soundId) {
-            if (text === void 0) { text = ""; }
-            _super.call(this, background, event, soundId);
-            text = text.toUpperCase();
-            this.text = new createjs.Text(text, font, color);
-            this.text.textBaseline = "middle";
-            this.text.textAlign = "center";
-            if (background == null) {
-                this.width = this.text.getMeasuredWidth() * 1.5;
-                this.height = this.text.getMeasuredHeight() * 1.5;
-            }
-            this.addChild(this.text);
-            this.createHitArea();
-            this.createHitArea();
-        }
-        return TextButton;
-    })(ImageButton);
-    gameui.TextButton = TextButton;
-    var BitmapTextButton = (function (_super) {
-        __extends(BitmapTextButton, _super);
-        function BitmapTextButton(text, bitmapFontId, background, event, soundId) {
-            _super.call(this, background, event, soundId);
-            text = text.toUpperCase();
-            this.bitmapText = gameui.AssetsManager.getBitmapText(text, bitmapFontId);
-            this.addChild(this.bitmapText);
-            this.bitmapText.regX = this.bitmapText.getBounds().width / 2;
-            this.bitmapText.regY = this.bitmapText.lineHeight / 2;
-            this.createHitArea();
-        }
-        return BitmapTextButton;
-    })(ImageButton);
-    gameui.BitmapTextButton = BitmapTextButton;
-    var IconButton = (function (_super) {
-        __extends(IconButton, _super);
-        function IconButton(icon, text, font, color, background, event, soundId) {
-            var _this = this;
-            if (icon === void 0) { icon = ""; }
-            if (text === void 0) { text = ""; }
-            if (font === void 0) { font = null; }
-            if (text != "")
-                text = " " + text;
-            _super.call(this, text, font, color, background, event, soundId);
-            this.icon = gameui.AssetsManager.getBitmap(icon);
-            this.addChild(this.icon);
-            this.text.textAlign = "left";
-            if (this.icon.getBounds())
-                this.icon.regY = this.icon.getBounds().height / 2;
-            else if (this.icon["image"])
-                this.icon["image"].onload = function () {
-                    _this.icon.regY = _this.icon.getBounds().height / 2;
-                };
-            this.updateLabel(text);
-            this.createHitArea();
-        }
-        IconButton.prototype.updateLabel = function (value) {
-            this.text.text = value;
-            if (this.icon.getBounds()) {
-                this.icon.x = -(this.icon.getBounds().width + 10 + this.text.getMeasuredWidth()) / 2;
-                this.text.x = this.icon.x + this.icon.getBounds().width + 10;
-            }
-        };
-        IconButton.prototype.centralizeIcon = function () {
-        };
-        return IconButton;
-    })(TextButton);
-    gameui.IconButton = IconButton;
-})(gameui || (gameui = {}));
 var joinjelly;
 (function (joinjelly) {
     var Items = (function () {
@@ -991,8 +293,7 @@ var Analytics = (function () {
             try {
                 xhr.send(JSON.stringify(data));
             }
-            catch (e) {
-            }
+            catch (e) { }
     };
     Analytics.prototype.normalizeNumber = function (value) {
         var s = (Math.floor(value)).toString();
@@ -1041,6 +342,12 @@ var productsData = {
     "pack5x": { icon: "5x Item Pack", consumable: true },
     "pack10x": { icon: "10x Item Pack", consumable: true },
     "lucky": { icon: "Lucky Clover", consumable: false },
+};
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
 };
 var joinjelly;
 (function (joinjelly) {
@@ -1141,13 +448,9 @@ var joinjelly;
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
-                gameui.AssetsManager.onProgress = function (progress) {
-                    loadinBar.update(progress);
-                };
-                gameui.AssetsManager.onComplete = function () {
-                    if (_this.loaded)
-                        _this.loaded();
-                };
+                gameui.AssetsManager.onProgress = function (progress) { loadinBar.update(progress); };
+                gameui.AssetsManager.onComplete = function () { if (_this.loaded)
+                    _this.loaded(); };
                 this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 var loadinBar = new menus.view.LoadingBar(imagePath);
@@ -1211,9 +514,7 @@ var joinjelly;
             }
             var x = defaultWidth + 100;
             var space = 250;
-            var settingsBt = new gameui.ImageButton("DIAStudioIco", function () {
-                joinjelly.JoinJelly.showAbout();
-            });
+            var settingsBt = new gameui.ImageButton("DIAStudioIco", function () { joinjelly.JoinJelly.showAbout(); });
             settingsBt.y = 165 / 2;
             settingsBt.x = defaultWidth - 165 / 2;
             this.header.addChild(settingsBt);
@@ -1235,9 +536,7 @@ var joinjelly;
             aboutBt.y = -150;
             aboutBt.x = x -= space;
             this.footer.addChild(aboutBt);
-            var leaderboardsBt = new gameui.ImageButton("BtLeaderBoards", function () {
-                joinjelly.JoinJelly.gameServices.showLeaderboard();
-            });
+            var leaderboardsBt = new gameui.ImageButton("BtLeaderBoards", function () { joinjelly.JoinJelly.gameServices.showLeaderboard(); });
             leaderboardsBt.y = -150;
             leaderboardsBt.x = x -= space;
             this.footer.addChild(leaderboardsBt);
@@ -1299,7 +598,10 @@ var joinjelly;
                         image.alpha = 0;
                         this.addChild(image);
                         images[char] = image;
-                        createjs.Tween.get(image).wait(waits[char] * 400).to({ alpha: 0, x: xPositions[char] - 300 * side[char], scaleX: 3, scaleY: 0.333 }).to({ alpha: 2, x: xPositions[char], scaleX: 1, scaleY: 1 }, 2000, createjs.Ease.elasticInOut);
+                        createjs.Tween.get(image)
+                            .wait(waits[char] * 400)
+                            .to({ alpha: 0, x: xPositions[char] - 300 * side[char], scaleX: 3, scaleY: 0.333 })
+                            .to({ alpha: 2, x: xPositions[char], scaleX: 1, scaleY: 1 }, 2000, createjs.Ease.elasticInOut);
                     }
                 };
                 GameTitle.prototype.createJelly = function () {
@@ -1424,6 +726,7 @@ var joinjelly;
                     bg.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-bg.x + bg.regX, -bg.y + bg.regY, defaultWidth, defaultHeight));
                 };
                 FlyOutMenu.prototype.addTitle = function (title) {
+                    //create "points" text
                     this.title = gameui.AssetsManager.getBitmapText("", "debussyBig");
                     this.title.set({ x: defaultWidth / 2, y: 600 });
                     this.addChild(this.title);
@@ -1444,9 +747,7 @@ var joinjelly;
                     this.alpha = 1;
                     this.scaleX = 1;
                     this.scaleY = 1;
-                    createjs.Tween.get(this).to({ alpha: 0, scaleX: 0.5, scaleY: 0.75 }, 200, createjs.Ease.quadIn).call(function () {
-                        _this.visible = false;
-                    });
+                    createjs.Tween.get(this).to({ alpha: 0, scaleX: 0.5, scaleY: 0.75 }, 200, createjs.Ease.quadIn).call(function () { _this.visible = false; });
                 };
                 FlyOutMenu.prototype.show = function () {
                     this.animateIn();
@@ -1524,9 +825,7 @@ var joinjelly;
                 this.gameFooter.mouseEnabled = false;
                 this.updateFooter();
                 this.content.y -= 200;
-                this.okButtonAction = function () {
-                    joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen);
-                };
+                this.okButtonAction = function () { joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen); };
                 this.initializeStore();
                 var restore = new gameui.BitmapTextButton(StringResources.menus.restore, "debussy", "BtTextBg", function () {
                     Cocoon.Dialog.confirm({
@@ -1556,9 +855,7 @@ var joinjelly;
                 productListItem.y = p * 380 + 380;
                 productListItem.x = 70;
                 console.log(JSON.stringify(product));
-                productListItem.addEventListener("buy", function (event) {
-                    Cocoon.Store.purchase(event["productId"]);
-                });
+                productListItem.addEventListener("buy", function (event) { Cocoon.Store.purchase(event["productId"]); });
                 productListItem.addEventListener("share", function (event) {
                     var productObject = event.currentTarget;
                     productObject.setPurchasing();
@@ -1592,9 +889,7 @@ var joinjelly;
                 var _this = this;
                 if (timeout === void 0) { timeout = 5000; }
                 this.content.mouseEnabled = false;
-                setTimeout(function () {
-                    _this.unlockUI();
-                }, timeout);
+                setTimeout(function () { _this.unlockUI(); }, timeout);
             };
             StoreMenu.prototype.unlockUI = function () {
                 this.content.mouseEnabled = true;
@@ -1636,6 +931,7 @@ var joinjelly;
                 }
             };
             StoreMenu.prototype.initializeStore = function () {
+                //  if (!Cocoon.Store.nativeAvailable) return;
                 var _this = this;
                 Cocoon.Store.on("load", {
                     started: function () {
@@ -1761,8 +1057,7 @@ var joinjelly;
                             joinjelly.JoinJelly.userData.resetAll();
                             joinjelly.JoinJelly.showMainMenu();
                         }
-                        else {
-                        }
+                        else { }
                     });
                 });
                 reset.y = y += space;
@@ -1831,24 +1126,16 @@ var joinjelly;
                     title.scaleX = title.scaleY = 1.1;
                     title.regX = title.getBounds().width / 2;
                     this.addChild(title);
-                    this.musicBtOn = new gameui.ImageButton("BtMusic", (function () {
-                        _this.setMusic(0);
-                    }));
+                    this.musicBtOn = new gameui.ImageButton("BtMusic", (function () { _this.setMusic(0); }));
                     this.musicBtOn.x = -145;
                     this.addChild(this.musicBtOn);
-                    this.soundBtOn = new gameui.ImageButton("BtSound", (function () {
-                        _this.setSound(0);
-                    }));
+                    this.soundBtOn = new gameui.ImageButton("BtSound", (function () { _this.setSound(0); }));
                     this.soundBtOn.x = 155;
                     this.addChild(this.soundBtOn);
-                    this.musicBtOff = new gameui.ImageButton("BtMusicOff", (function () {
-                        _this.setMusic(1);
-                    }));
+                    this.musicBtOff = new gameui.ImageButton("BtMusicOff", (function () { _this.setMusic(1); }));
                     this.musicBtOff.x = -145;
                     this.addChild(this.musicBtOff);
-                    this.soundBtOff = new gameui.ImageButton("BtSoundOff", (function () {
-                        _this.setSound(1);
-                    }));
+                    this.soundBtOff = new gameui.ImageButton("BtSoundOff", (function () { _this.setSound(1); }));
                     this.soundBtOff.x = 155;
                     this.addChild(this.soundBtOff);
                     var mus = joinjelly.JoinJelly.userData.getMusicVol();
@@ -1918,10 +1205,13 @@ var joinjelly;
                     alpha: 0,
                     scaleX: 0,
                 });
-                createjs.Tween.get(this.imageContainer).wait(delay).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut).call(function () {
+                createjs.Tween.get(this.imageContainer).wait(delay)
+                    .to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut)
+                    .to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut).call(function () {
                     _this.executeIdle();
                 });
-                createjs.Tween.get(this.shadowContainer).wait(delay).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(function () {
+                createjs.Tween.get(this.shadowContainer).wait(delay)
+                    .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(function () {
                 });
                 ;
             };
@@ -1930,7 +1220,8 @@ var joinjelly;
                     return;
                 this.state = "hold";
                 this.restore();
-                createjs.Tween.get(this.imageContainer).to({
+                createjs.Tween.get(this.imageContainer)
+                    .to({
                     scaleX: 0.8,
                     scaleY: 1.2
                 }, 1000, createjs.Ease.elasticOut);
@@ -1942,10 +1233,12 @@ var joinjelly;
                     return;
                 this.state = "release";
                 this.restore();
-                createjs.Tween.get(this.imageContainer).to({
+                createjs.Tween.get(this.imageContainer)
+                    .to({
                     scaleX: 0.8,
                     scaleY: 1.2
-                }, 5, createjs.Ease.sineInOut).to({
+                }, 5, createjs.Ease.sineInOut)
+                    .to({
                     scaleX: 1,
                     scaleY: 1
                 }, 2000, createjs.Ease.elasticOut).call(function () {
@@ -1999,11 +1292,23 @@ var joinjelly;
                     scaleX: 1 + scale,
                     scaleY: 1 - scale
                 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(_this.imageContainer, { loop: true }).to({ skewX: skew * 10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn).to({ skewX: skew * -10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn);
-                    createjs.Tween.get(_this.imageContainer, { loop: true }).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut);
+                    createjs.Tween.get(_this.imageContainer, { loop: true })
+                        .to({ skewX: skew * 10 }, f, createjs.Ease.quadOut)
+                        .to({ skewX: skew * 0 }, f, createjs.Ease.quadIn)
+                        .to({ skewX: skew * -10 }, f, createjs.Ease.quadOut)
+                        .to({ skewX: skew * 0 }, f, createjs.Ease.quadIn);
+                    createjs.Tween.get(_this.imageContainer, { loop: true })
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut);
                 });
                 createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleY: 1, scaleX: 1, skewX: 0 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(_this.shadowContainer, { loop: true }).to({ skewX: -5 * skew }, f, createjs.Ease.quadOut).to({ skewX: 0 * skew }, f, createjs.Ease.quadIn).to({ skewX: 5 * skew }, f, createjs.Ease.quadOut).to({ skewX: 0 * skew }, f, createjs.Ease.quadIn);
+                    createjs.Tween.get(_this.shadowContainer, { loop: true })
+                        .to({ skewX: -5 * skew }, f, createjs.Ease.quadOut)
+                        .to({ skewX: 0 * skew }, f, createjs.Ease.quadIn)
+                        .to({ skewX: 5 * skew }, f, createjs.Ease.quadOut)
+                        .to({ skewX: 0 * skew }, f, createjs.Ease.quadIn);
                 });
             };
             JellyContainer.prototype.executeIdle2 = function () {
@@ -2019,7 +1324,12 @@ var joinjelly;
                     scaleX: 1,
                     scaleY: 1
                 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(_this.imageContainer, { loop: true }).to({ scaleX: 1 - scale, scaleY: 1 + scale }, time / 4, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, time / 4, createjs.Ease.quadInOut).to({ scaleX: 1 - scale, scaleY: 1 + scale }, time / 4, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, time / 4, createjs.Ease.quadInOut).to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut);
+                    createjs.Tween.get(_this.imageContainer, { loop: true })
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, time / 4, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, time / 4, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, time / 4, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, time / 4, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut);
                 });
             };
             JellyContainer.prototype.executeIdle3 = function () {
@@ -2036,7 +1346,12 @@ var joinjelly;
                     scaleY: 1,
                     y: 0
                 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(_this.imageContainer, { loop: true }).to({ scaleX: 1 + scale * 2, scaleY: 1 - scale * 2, y: 0 }, time / 2, createjs.Ease.quadInOut).to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 4, createjs.Ease.quadIn).to({ scaleX: 1 + scale * 1, scaleY: 1 - scale * 1, y: -70 }, time / 4, createjs.Ease.quadOut).to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 5, createjs.Ease.quadIn).to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut);
+                    createjs.Tween.get(_this.imageContainer, { loop: true })
+                        .to({ scaleX: 1 + scale * 2, scaleY: 1 - scale * 2, y: 0 }, time / 2, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 4, createjs.Ease.quadIn)
+                        .to({ scaleX: 1 + scale * 1, scaleY: 1 - scale * 1, y: -70 }, time / 4, createjs.Ease.quadOut)
+                        .to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 5, createjs.Ease.quadIn)
+                        .to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut);
                 });
             };
             return JellyContainer;
@@ -2065,8 +1380,16 @@ var joinjelly;
                     scaleX: 1 + scale,
                     scaleY: 1 - scale
                 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(b, { loop: true }).to({ skewX: skew * 10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn).to({ skewX: skew * -10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn);
-                    createjs.Tween.get(b, { loop: true }).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut);
+                    createjs.Tween.get(b, { loop: true })
+                        .to({ skewX: skew * 10 }, f, createjs.Ease.quadOut)
+                        .to({ skewX: skew * 0 }, f, createjs.Ease.quadIn)
+                        .to({ skewX: skew * -10 }, f, createjs.Ease.quadOut)
+                        .to({ skewX: skew * 0 }, f, createjs.Ease.quadIn);
+                    createjs.Tween.get(b, { loop: true })
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut);
                 });
             }
             return LoadingBall;
@@ -2122,9 +1445,7 @@ var joinjelly;
                     levelIcon.mouseEnabled = true;
                     this.levelIcon = levelIcon;
                     this.addChild(levelIcon);
-                    levelIcon.addEventListener("click", function () {
-                        _this.levelUpEffect();
-                    });
+                    levelIcon.addEventListener("click", function () { _this.levelUpEffect(); });
                     this.effect = new joinjelly.view.Effect();
                     this.addChild(this.effect);
                     this.effect.x = 1288 + 213 / 2;
@@ -2163,9 +1484,7 @@ var joinjelly;
                     var _this = this;
                     this.effect.castBoth();
                     createjs.Tween.removeTweens(this.levelBar.mask);
-                    createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () {
-                        _this.levelBar.mask.scaleX = 0;
-                    });
+                    createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () { _this.levelBar.mask.scaleX = 0; });
                     createjs.Tween.removeTweens(this.levelText);
                     this.levelText.set({ scaleY: 0, scaleX: 4 });
                     createjs.Tween.get(this.levelText).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
@@ -2263,21 +1582,11 @@ var joinjelly;
                 };
                 Jelly.prototype.playThunder = function () {
                     var _this = this;
-                    setTimeout(function () {
-                        _this.playEvolve();
-                    }, 10);
-                    setTimeout(function () {
-                        _this.playLevelUp();
-                    }, 330);
-                    setTimeout(function () {
-                        _this.playEvolve();
-                    }, 660);
-                    setTimeout(function () {
-                        _this.playLevelUp();
-                    }, 1000);
-                    setTimeout(function () {
-                        _this.playLevelUp();
-                    }, 1100);
+                    setTimeout(function () { _this.playEvolve(); }, 10);
+                    setTimeout(function () { _this.playLevelUp(); }, 330);
+                    setTimeout(function () { _this.playEvolve(); }, 660);
+                    setTimeout(function () { _this.playLevelUp(); }, 1000);
+                    setTimeout(function () { _this.playLevelUp(); }, 1100);
                 };
                 Jelly.jellies = [
                     "1",
@@ -2324,7 +1633,10 @@ var joinjelly;
                     text.y = defaultHeight / 2 + 140;
                     text.alpha = 0;
                     text.regX = text.getBounds().width / 2;
-                    createjs.Tween.get(text).to({ y: defaultHeight / 2, alpha: 1 }, 200, createjs.Ease.quadOut).wait(500).to({ y: defaultHeight / 2 - 200, alpha: 0 }, 200, createjs.Ease.quadIn).call(function () {
+                    createjs.Tween.get(text)
+                        .to({ y: defaultHeight / 2, alpha: 1 }, 200, createjs.Ease.quadOut)
+                        .wait(500)
+                        .to({ y: defaultHeight / 2 - 200, alpha: 0 }, 200, createjs.Ease.quadIn).call(function () {
                         _this.removeChild(text);
                         delete text;
                     });
@@ -2350,9 +1662,7 @@ var joinjelly;
                     this.ammount = 0;
                     this.locked = false;
                     this.item = item;
-                    this.addEventListener("click", function () {
-                        _this.dispatchEvent({ type: "useitem", item: item });
-                    });
+                    this.addEventListener("click", function () { _this.dispatchEvent({ type: "useitem", item: item }); });
                     var bg = gameui.AssetsManager.getBitmap("itemBG");
                     var bgd = gameui.AssetsManager.getBitmap("itemBGDisabled");
                     var img = gameui.AssetsManager.getBitmap("item" + item);
@@ -2387,9 +1697,7 @@ var joinjelly;
                     this.text = text;
                     this.createHitArea();
                     this.addBt = add;
-                    this.addEventListener("click", function () {
-                        _this.unHighlight();
-                    });
+                    this.addEventListener("click", function () { _this.unHighlight(); });
                 }
                 ItemButton.prototype.setAmmount = function (ammount) {
                     this.ammount = ammount;
@@ -2416,7 +1724,12 @@ var joinjelly;
                 };
                 ItemButton.prototype.highLight = function (loop) {
                     if (loop === void 0) { loop = true; }
-                    createjs.Tween.get(this, { loop: loop }).to({ rotation: -10, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: -10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: 0, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).wait(400);
+                    createjs.Tween.get(this, { loop: loop })
+                        .to({ rotation: -10, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut)
+                        .to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut)
+                        .to({ rotation: -10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut)
+                        .to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut)
+                        .to({ rotation: 0, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).wait(400);
                 };
                 ItemButton.prototype.unHighlight = function () {
                     createjs.Tween.removeTweens(this);
@@ -2519,12 +1832,8 @@ var joinjelly;
                     this.brightFx.alpha = 1;
                     createjs.Tween.get(this.brightFx).to({ alpha: 0 }, 300);
                 };
-                TimeBar.prototype.setAlarmOn = function () {
-                    this.redFx.visible = true;
-                };
-                TimeBar.prototype.setAlarmOff = function () {
-                    this.redFx.visible = false;
-                };
+                TimeBar.prototype.setAlarmOn = function () { this.redFx.visible = true; };
+                TimeBar.prototype.setAlarmOff = function () { this.redFx.visible = false; };
                 return TimeBar;
             })(createjs.Container);
             view.TimeBar = TimeBar;
@@ -2662,11 +1971,10 @@ var joinjelly;
                     this.alpha = 0;
                     this.fu();
                     createjs.Tween.removeTweens(this);
-                    createjs.Tween.get(this, { loop: true }).to({ alpha: 1 }, 500).call(function () {
-                        _this.fd();
-                    }).to({ x: x2, y: y2 }, 1600, createjs.Ease.quadInOut).call(function () {
-                        _this.fu();
-                    }).to({ alpha: 0 }, 500);
+                    createjs.Tween.get(this, { loop: true })
+                        .to({ alpha: 1 }, 500).call(function () { _this.fd(); })
+                        .to({ x: x2, y: y2 }, 1600, createjs.Ease.quadInOut).call(function () { _this.fu(); })
+                        .to({ alpha: 0 }, 500);
                 };
                 TutorialMove.prototype.showClick = function (x1, y1) {
                     var _this = this;
@@ -2676,11 +1984,9 @@ var joinjelly;
                     this.alpha = 1;
                     this.fu();
                     createjs.Tween.removeTweens(this);
-                    createjs.Tween.get(this, { loop: true }).wait(500).call(function () {
-                        _this.fd();
-                    }).wait(1000).call(function () {
-                        _this.fu();
-                    });
+                    createjs.Tween.get(this, { loop: true })
+                        .wait(500).call(function () { _this.fd(); })
+                        .wait(1000).call(function () { _this.fu(); });
                 };
                 TutorialMove.prototype.fd = function () {
                     this.fingerDown.visible = true;
@@ -2920,7 +2226,10 @@ var joinjelly;
                     { x: tile.posx + 1, y: tile.posy + hexaOffset },
                 ];
                 for (var p in neighborCoords)
-                    if (neighborCoords[p].x >= 0 && neighborCoords[p].y >= 0 && neighborCoords[p].x < this.boardWidth && neighborCoords[p].y < this.boardHeight)
+                    if (neighborCoords[p].x >= 0 &&
+                        neighborCoords[p].y >= 0 &&
+                        neighborCoords[p].x < this.boardWidth &&
+                        neighborCoords[p].y < this.boardHeight)
                         neighbor.push(this.getTileByIndex(neighborCoords[p].x, neighborCoords[p].y));
                 return neighbor;
             };
@@ -2955,12 +2264,8 @@ var joinjelly;
                         highestTile = this.tiles[j].getNumber();
                 return highestTile;
             };
-            Board.prototype.lock = function () {
-                this.tilesContainer.mouseEnabled = false;
-            };
-            Board.prototype.unlock = function () {
-                this.tilesContainer.mouseEnabled = true;
-            };
+            Board.prototype.lock = function () { this.tilesContainer.mouseEnabled = false; };
+            Board.prototype.unlock = function () { this.tilesContainer.mouseEnabled = true; };
             Board.prototype.arrangeZOrder = function () {
                 for (var t = 0; t < this.tiles.length; t++)
                     this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.getNumChildren() - 1);
@@ -3018,7 +2323,12 @@ var joinjelly;
                 if (alarm) {
                     if (this.alarming)
                         return;
-                    createjs.Tween.get(this.tilesContainer, { loop: true }).to({ x: -10 }, 50).to({ x: +10 }, 100).to({ x: -10 }, 100).to({ x: 0 }, 50).wait(200);
+                    createjs.Tween.get(this.tilesContainer, { loop: true })
+                        .to({ x: -10 }, 50)
+                        .to({ x: +10 }, 100)
+                        .to({ x: -10 }, 100)
+                        .to({ x: 0 }, 50)
+                        .wait(200);
                 }
                 else {
                     if (!this.alarming)
@@ -3060,29 +2370,17 @@ var joinjelly;
                 this.jelly.executeAnimationHold();
                 this.dragging = true;
             };
-            Tile.prototype.isUnlocked = function () {
-                return !this.locked;
-            };
-            Tile.prototype.isDragging = function () {
-                return this.dragging;
-            };
-            Tile.prototype.lock = function () {
-                this.locked = true;
-            };
+            Tile.prototype.isUnlocked = function () { return !this.locked; };
+            Tile.prototype.isDragging = function () { return this.dragging; };
+            Tile.prototype.lock = function () { this.locked = true; };
             Tile.prototype.unlock = function () {
                 this.locked = false;
                 this.dragging = false;
                 this.jelly.setNumber(this.value);
             };
-            Tile.prototype.enable = function () {
-                this.enabled = true;
-            };
-            Tile.prototype.disable = function () {
-                this.enabled = false;
-            };
-            Tile.prototype.isEnabled = function () {
-                return this.enabled;
-            };
+            Tile.prototype.enable = function () { this.enabled = true; };
+            Tile.prototype.disable = function () { this.enabled = false; };
+            Tile.prototype.isEnabled = function () { return this.enabled; };
             Tile.prototype.setNumber = function (value) {
                 if (value > joinjelly.JoinJelly.maxJelly)
                     value = joinjelly.JoinJelly.maxJelly;
@@ -3114,15 +2412,6 @@ var joinjelly;
             function GamePlayScreen(userData) {
                 _super.call(this);
                 this.matches = 0;
-                this.boardSize = 5;
-                this.itemProbability = 0.005;
-                this.timeByLevel = 20000;
-                this.initialInterval = 800;
-                this.finalInterval = 300;
-                this.easeInterval = 0.99;
-                this.initialDirtyProbability = 0.1;
-                this.finalDirtyProbability = 0.5;
-                this.easeDirtyProbability = 0.99;
                 this.userData = userData;
                 this.score = 0;
                 this.createBackground();
@@ -3168,7 +2457,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.createBoard = function () {
                 var _this = this;
-                this.board = new gameplay.Board(this.boardSize, this.boardSize, 1536 / 5, true);
+                this.board = new gameplay.Board(gameplay.boardSize, gameplay.boardSize, 1536 / 5, true);
                 this.board.addEventListener("dragging", function (e) {
                     _this.dragged(e["originTile"], e["targetTile"]);
                 });
@@ -3187,9 +2476,7 @@ var joinjelly;
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 this.footer.addChild(this.gameFooter);
                 this.updateFooter();
-                this.gameFooter.addEventListener("useitem", function (e) {
-                    _this.useItem(e.item);
-                });
+                this.gameFooter.addEventListener("useitem", function (e) { _this.useItem(e.item); });
                 this.pauseMenu = new gameplay.view.PauseMenu();
                 this.overlay.addChild(this.pauseMenu);
                 this.finishMenu = new gameplay.view.FinishMenu();
@@ -3212,9 +2499,7 @@ var joinjelly;
                 this.finishMenu.addEventListener("restart", function () {
                     _this.pauseMenu.hide();
                     _this.userData.deleteSaveGame();
-                    setTimeout(function () {
-                        joinjelly.JoinJelly.startLevel();
-                    }, 200);
+                    setTimeout(function () { joinjelly.JoinJelly.startLevel(); }, 200);
                 });
                 this.finishMenu.addEventListener("ok", function () {
                     joinjelly.JoinJelly.showMainMenu();
@@ -3254,21 +2539,17 @@ var joinjelly;
                 });
                 this.pauseMenu.addEventListener("home", function () {
                     _this.pauseMenu.hide();
-                    setTimeout(function () {
-                        joinjelly.JoinJelly.showMainMenu();
-                    }, 200);
+                    setTimeout(function () { joinjelly.JoinJelly.showMainMenu(); }, 200);
                 });
                 this.pauseMenu.addEventListener("restart", function () {
                     _this.pauseMenu.hide();
                     _this.userData.deleteSaveGame();
-                    setTimeout(function () {
-                        joinjelly.JoinJelly.startLevel();
-                    }, 200);
+                    setTimeout(function () { joinjelly.JoinJelly.startLevel(); }, 200);
                 });
                 this.onback = function () {
-                    if (_this.gamestate == 2 /* paused */)
+                    if (_this.gamestate == GameState.paused)
                         _this.continueGame();
-                    else if (_this.gamestate == 1 /* playing */)
+                    else if (_this.gamestate == GameState.playing)
                         _this.pauseGame();
                 };
             };
@@ -3307,6 +2588,7 @@ var joinjelly;
                 this.board.levelUpEffect();
             };
             GamePlayScreen.prototype.start = function () {
+                //this.selfPeformanceTest()
                 this.level = 1;
                 this.matches = 0;
                 this.time = Date.now();
@@ -3315,19 +2597,19 @@ var joinjelly;
                 this.board.unlock();
                 this.updateInterfaceInfos();
                 gameui.AudiosManager.playMusic("music1");
-                this.gamestate = 1 /* playing */;
+                this.gamestate = GameState.playing;
                 this.step(500);
                 joinjelly.JoinJelly.analytics.logGameStart();
                 this.highJellySave(1);
             };
             GamePlayScreen.prototype.step = function (timeout) {
                 var _this = this;
-                clearTimeout(this.timeoutInterval);
-                this.timeoutInterval = setTimeout(function () {
-                    if (_this.gamestate == 1 /* playing */)
+                clearTimeout(gameplay.timeoutInterval);
+                gameplay.timeoutInterval = setTimeout(function () {
+                    if (_this.gamestate == GameState.playing)
                         _this.gameInteraction();
-                    if (_this.gamestate != 3 /* ended */)
-                        _this.step(_this.getTimeInterval(_this.level, _this.initialInterval, _this.finalInterval, _this.easeInterval));
+                    if (_this.gamestate != GameState.ended)
+                        _this.step(_this.getTimeInterval(_this.level, gameplay.initialInterval, _this.finalInterval, _this.easeInterval));
                 }, timeout);
             };
             GamePlayScreen.prototype.gameInteraction = function () {
@@ -3338,12 +2620,12 @@ var joinjelly;
                 this.updateCurrentLevel();
             };
             GamePlayScreen.prototype.pauseGame = function () {
-                if (this.gamestate == 4 /* standBy */)
+                if (this.gamestate == GameState.standBy)
                     return;
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
                 this.pauseMenu.show();
-                this.gamestate = 2 /* paused */;
+                this.gamestate = GameState.paused;
                 this.board.lock();
                 this.gameFooter.lockAll();
                 this.gameHeader.mouseEnabled = false;
@@ -3352,9 +2634,9 @@ var joinjelly;
             GamePlayScreen.prototype.continueGame = function () {
                 var _this = this;
                 this.pauseMenu.hide();
-                this.gamestate = 4 /* standBy */;
+                this.gamestate = GameState.standBy;
                 setTimeout(function () {
-                    _this.gamestate = 1 /* playing */;
+                    _this.gamestate = GameState.playing;
                     _this.board.unlock();
                     _this.gameHeader.mouseEnabled = true;
                     _this.content.mouseEnabled = true;
@@ -3369,7 +2651,7 @@ var joinjelly;
             GamePlayScreen.prototype.endGame = function (message, win) {
                 var _this = this;
                 this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
-                this.gamestate = 4 /* standBy */;
+                this.gamestate = GameState.standBy;
                 var score = this.score;
                 var highScore = joinjelly.JoinJelly.userData.getHighScore();
                 var highJelly = this.board.getHighestTileValue();
@@ -3383,9 +2665,9 @@ var joinjelly;
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
                 setTimeout(function () {
                     if (win)
-                        _this.gamestate = 5 /* win */;
+                        _this.gamestate = GameState.win;
                     else
-                        _this.gamestate = 3 /* ended */;
+                        _this.gamestate = GameState.ended;
                     _this.finishMenu.show();
                     _this.gameFooter.mouseEnabled = true;
                     _this.gameFooter.setItems([joinjelly.Items.REVIVE]);
@@ -3422,8 +2704,8 @@ var joinjelly;
                 var totalMoves = 0;
                 var level = 0;
                 while (totalMoves < moves) {
-                    var interval = this.getTimeInterval(level, this.initialInterval, this.finalInterval, this.easeInterval);
-                    var levelMoves = this.timeByLevel / interval;
+                    var interval = this.getTimeInterval(level, gameplay.initialInterval, gameplay.finalInterval, this.easeInterval);
+                    var levelMoves = gameplay.timeByLevel / interval;
                     totalMoves += levelMoves;
                     level++;
                 }
@@ -3432,8 +2714,8 @@ var joinjelly;
             GamePlayScreen.prototype.getMovesByLevel = function (level) {
                 var totalMoves = 0;
                 for (var calculatedLevel = 0; calculatedLevel < level; calculatedLevel++) {
-                    var interval = this.getTimeInterval(calculatedLevel, this.initialInterval, this.finalInterval, this.easeInterval);
-                    var levelMoves = this.timeByLevel / interval;
+                    var interval = this.getTimeInterval(calculatedLevel, gameplay.initialInterval, this.finalInterval, this.easeInterval);
+                    var levelMoves = gameplay.timeByLevel / interval;
                     totalMoves += levelMoves;
                 }
                 return totalMoves;
@@ -3460,10 +2742,8 @@ var joinjelly;
             };
             GamePlayScreen.prototype.addRandomDirtyOnBoard = function () {
                 var _this = this;
-                if (this.getDirtyProbabilityByLevel(this.level, this.initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
-                    setTimeout(function () {
-                        _this.addRandomTileOnBoard(-1);
-                    }, 500);
+                if (this.getDirtyProbabilityByLevel(this.level, gameplay.initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
+                    setTimeout(function () { _this.addRandomTileOnBoard(-1); }, 500);
             };
             GamePlayScreen.prototype.addRandomTileOnBoard = function (value) {
                 var empty = this.board.getEmptyTiles();
@@ -3561,7 +2841,7 @@ var joinjelly;
             GamePlayScreen.prototype.giveItemChance = function (items) {
                 var item = null;
                 var lucky = joinjelly.JoinJelly.itemData.getItemAmmount(joinjelly.Items.LUCKY) ? 2 : 1;
-                var goodChance = (Math.random() < this.itemProbability * lucky);
+                var goodChance = (Math.random() < gameplay.itemProbability * lucky);
                 if (goodChance) {
                     item = items[Math.floor(Math.random() * items.length)];
                     joinjelly.JoinJelly.itemData.increaseItemAmmount(item);
@@ -3641,7 +2921,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.useTime = function () {
                 var _this = this;
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
                 this.step(4000);
                 this.gameFooter.lockItem(joinjelly.Items.TIME);
@@ -3657,7 +2937,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.useClean = function () {
                 var _this = this;
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
                 var tiles = this.board.getAllTiles();
                 for (var t in tiles)
@@ -3679,11 +2959,11 @@ var joinjelly;
             GamePlayScreen.prototype.useRevive = function (test) {
                 var _this = this;
                 if (test === void 0) { test = false; }
-                if (this.gamestate != 3 /* ended */)
+                if (this.gamestate != GameState.ended)
                     return false;
                 UserData.getHistoryRevive();
                 this.saveGame();
-                this.gamestate = 1 /* playing */;
+                this.gamestate = GameState.playing;
                 this.board.unlock();
                 this.finishMenu.hide();
                 this.step(4000);
@@ -3708,7 +2988,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.useEvolve = function () {
                 var _this = this;
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
                 var tiles = this.board.getAllTiles();
                 var maxTile = 0;
@@ -3740,10 +3020,7 @@ var joinjelly;
                 tile.setNumber(newValue);
                 this.highJellySave(newValue);
                 tile.jelly.playThunder();
-                setTimeout(function () {
-                    tile.unlock();
-                    gameui.AudiosManager.playSound("evolve");
-                }, 1000);
+                setTimeout(function () { tile.unlock(); gameui.AudiosManager.playSound("evolve"); }, 1000);
                 gameui.AudiosManager.playSound("sounditemfast");
                 var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
                 var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
@@ -3762,7 +3039,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.useFast = function (test) {
                 if (test === void 0) { test = false; }
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
                 var tiles = this.board.getAllTiles();
                 var matches = [];
@@ -3832,13 +3109,13 @@ var joinjelly;
             GamePlayScreen.prototype.selfPeformanceTest = function (fast) {
                 var _this = this;
                 if (fast)
-                    this.initialInterval = 200;
+                    gameplay.initialInterval = 200;
                 var interval = setInterval(function () {
-                    if (_this.gamestate == 2 /* paused */)
+                    if (_this.gamestate == GameState.paused)
                         return;
                     _this.useRevive();
                     _this.useFast(true);
-                    if (_this.gamestate == 5 /* win */) {
+                    if (_this.gamestate == GameState.win) {
                         clearInterval(interval);
                         joinjelly.JoinJelly.startTest();
                     }
@@ -3873,10 +3150,8 @@ var joinjelly;
                 _super.prototype.createGUI.call(this);
                 this.tutorialJellyFinger = new gameplay.view.TutorialMove();
                 this.tutorialItemFinger = new gameplay.view.TutorialMove();
-                this.gameMessage.addEventListener("closed", function () {
-                    if (_this.messageNotify)
-                        _this.messageNotify();
-                });
+                this.gameMessage.addEventListener("closed", function () { if (_this.messageNotify)
+                    _this.messageNotify(); });
                 this.tutorialItemFinger.rotation = -45;
                 this.content.addChild(this.tutorialJellyFinger);
                 this.footer.addChild(this.tutorialItemFinger);
@@ -4027,8 +3302,7 @@ var joinjelly;
                     function () {
                         joinjelly.JoinJelly.userData.history(histories.TUTORIAL);
                         joinjelly.JoinJelly.startLevel();
-                    }
-                ];
+                    }];
                 if (steps[this.currentTutorialStep])
                     steps[this.currentTutorialStep]();
             };
@@ -4078,9 +3352,7 @@ var joinjelly;
                 this.tutorialJellyFinger.hide();
                 this.tutorialItemFinger.hide();
             };
-            Tutorial.prototype.giveItemChance = function (items) {
-                return null;
-            };
+            Tutorial.prototype.giveItemChance = function (items) { return null; };
             Tutorial.prototype.useItem = function (item) {
                 var sucess = false;
                 switch (item) {
@@ -4103,10 +3375,8 @@ var joinjelly;
                         this.itemNotify();
                 }
             };
-            Tutorial.prototype.updateFooter = function () {
-            };
-            Tutorial.prototype.saveGame = function () {
-            };
+            Tutorial.prototype.updateFooter = function () { };
+            Tutorial.prototype.saveGame = function () { };
             return Tutorial;
         })(gameplay.GamePlayScreen);
         gameplay.Tutorial = Tutorial;
@@ -4370,6 +3640,52 @@ var joinjelly;
     })();
     joinjelly.JoinJelly = JoinJelly;
 })(joinjelly || (joinjelly = {}));
+/// <reference path="gameui/uiitem.ts" />
+/// <reference path="gameui/AudioManager.ts" />
+/// <reference path="gameui/AssetsManager.ts" />
+/// <reference path="gameui/GameScreen.ts" />
+/// <reference path="gameui/UIItem.ts" />
+/// <reference path="gameui/Grid.ts" />
+/// <reference path="gameui/Label.ts" />
+/// <reference path="gameui/MenuContainer.ts" />
+/// <reference path="gameui/ScreenState.ts" />
+/// <reference path="gameui/Transition.ts" />
+/// <reference path="gameui/Button.ts" />
+/// <reference path="src/ItemsData.ts" />
+/// <reference path="src/StringResources.ts" /> 
+/// <reference path="src/Analytics.ts" />
+/// <reference path="src/InAppPurchases.ts" />
+/// <reference path="src/menus/ScrollabePage.ts" />
+/// <reference path="src/menus/LoadingScreen.ts" />
+/// <reference path="src/menus/MainScreen.ts" />
+/// <reference path="src/menus/Jellypedia.ts" />
+/// <reference path="src/menus/view/Title.ts" />
+/// <reference path="src/menus/view/JellyLobby.ts" />
+/// <reference path="src/menus/view/FlyOutMenu.ts" />
+/// <reference path="src/menus/view/JellypediaItem.ts" /> 
+/// <reference path="src/menus/StoreMenu.ts" />
+/// <reference path="src/menus/MainMenu.ts" />
+/// <reference path="src/menus/Credit.ts" />
+/// <reference path="src/menus/view/SoundOptions.ts" />
+/// <reference path="src/view/Jellyble.ts" />
+/// <reference path="src/view/LoadingBall.ts" />
+/// <reference path="src/gameplay/view/GameHeader.ts" />
+/// <reference path="src/gameplay/view/GameMenu.ts" />
+/// <reference path="src/gameplay/view/Jelly.ts" />
+/// <reference path="src/gameplay/view/LevelIndicator.ts" />
+/// <reference path="src/gameplay/view/ItemButton.ts" /> 
+/// <reference path="src/gameplay/view/PauseMenu.ts" />
+/// <reference path="src/gameplay/view/TimeBar.ts" />
+/// <reference path="src/gameplay/view/FinishDialog.ts" />
+/// <reference path="src/gameplay/view/TutorialMove.ts" />
+/// <reference path="src/gameplay/view/TutorialMessage.ts" />
+/// <reference path="src/gameplay/Board.ts" />
+/// <reference path="src/gameplay/Tile.ts" />
+/// <reference path="src/gameplay/GamePlay.ts" /> 
+/// <reference path="src/gameplay/Tutorial.ts" />
+/// <reference path="src/Message.ts" />
+/// <reference path="src/UserData.ts" />
+/// <reference path="src/JoinJelly.ts" /> 
 var defaultWidth = 768 * 2;
 var defaultHeight = 1024 * 2;
 var fbAppId = "1416523228649363";
@@ -4433,20 +3749,21 @@ var joinjelly;
                     var ns = [];
                     var time = 1000;
                     var transition = 200;
-                    setTimeout(function () {
-                        gameui.AudiosManager.playSound("Interface Sound-12");
-                    }, time * total + transition);
+                    setTimeout(function () { gameui.AudiosManager.playSound("Interface Sound-12"); }, time * total + transition);
                     for (var n = total; n > 0; n--) {
                         ns[n] = gameui.AssetsManager.getBitmap("n" + n);
                         this.addChild(ns[n]);
                         ns[n].regX = ns[n].getBounds().width / 2;
                         ns[n].regY = ns[n].getBounds().height / 2;
                         ns[n].mouseEnabled = false;
-                        createjs.Tween.get(ns[n]).to({ scaleX: 2, scaleY: 2, alpha: 0 }).wait((total - n) * time).to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut).call(function () {
-                            gameui.AudiosManager.playSound("Interface Sound-13");
-                        }).wait(time - transition).to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn).call(function (obj) {
-                            _this.removeChild(obj);
-                        });
+                        createjs.Tween.get(ns[n])
+                            .to({ scaleX: 2, scaleY: 2, alpha: 0 })
+                            .wait((total - n) * time)
+                            .to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut)
+                            .call(function () { gameui.AudiosManager.playSound("Interface Sound-13"); })
+                            .wait(time - transition)
+                            .to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn)
+                            .call(function (obj) { _this.removeChild(obj); });
                     }
                 };
                 return CountDown;
@@ -4614,8 +3931,7 @@ var joinjelly;
             try {
                 this.socialService.showLeaderboard();
             }
-            catch (e) {
-            }
+            catch (e) { }
         };
         GameServices.prototype.showAchievements = function () {
             if (!navigator.onLine)
@@ -4625,8 +3941,7 @@ var joinjelly;
             try {
                 this.socialService.showAchievements();
             }
-            catch (e) {
-            }
+            catch (e) { }
         };
         GameServices.prototype.submitScore = function (score) {
             if (!navigator.onLine)
@@ -4641,8 +3956,7 @@ var joinjelly;
                         console.log("submited score: " + score);
                 });
             }
-            catch (e) {
-            }
+            catch (e) { }
         };
         GameServices.prototype.submitJellyAchievent = function (jellyValue) {
             if (!navigator.onLine)
@@ -4658,13 +3972,687 @@ var joinjelly;
                         console.log("submited Achievement: jelly " + jellyNumber);
                 });
             }
-            catch (e) {
-            }
+            catch (e) { }
         };
         return GameServices;
     })();
     joinjelly.GameServices = GameServices;
 })(joinjelly || (joinjelly = {}));
+var images;
+var gameui;
+(function (gameui) {
+    var AssetsManager = (function () {
+        function AssetsManager() {
+        }
+        AssetsManager.loadAssets = function (manifest, path, spriteSheets) {
+            var _this = this;
+            if (path === void 0) { path = ""; }
+            this.spriteSheets = spriteSheets ? spriteSheets : new Array();
+            this.bitmapFontSpriteSheetDataArray = this.bitmapFontSpriteSheetDataArray ? this.bitmapFontSpriteSheetDataArray : new Array();
+            this.assetsManifest = manifest;
+            if (!images)
+                images = new Array();
+            if (!this.loader) {
+                this.loader = new createjs.LoadQueue(false);
+                this.loader.installPlugin(createjs.Sound);
+                createjs.Sound.alternateExtensions = ["mp3"];
+                this.loader.addEventListener("filestart", function (evt) { console.log("loading " + evt.item.src); });
+                this.loader.addEventListener("fileload", function (evt) { console.log("loaded " + evt.item.src); });
+                this.loader.addEventListener("complete", function (evt) { if (_this.onComplete)
+                    _this.onComplete(); });
+                this.loader.addEventListener("progress", function (evt) { if (_this.onProgress)
+                    _this.onProgress(evt.progress); });
+                this.loader.addEventListener("fileload", function (evt) {
+                    if (evt.item.type == "image")
+                        images[evt.item.id] = evt.result;
+                    return true;
+                });
+            }
+            this.loader.loadManifest(manifest, true, path);
+        };
+        AssetsManager.loadFontSpriteSheet = function (id, spritesheetData) {
+            this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
+        };
+        AssetsManager.cleanAssets = function () {
+            if (images)
+                ;
+            for (var i in images) {
+                var img = images[i];
+                if (img.dispose)
+                    img.dispose();
+                delete images[i];
+            }
+        };
+        AssetsManager.getImagesArray = function () {
+            return images;
+        };
+        AssetsManager.getBitmap = function (name) {
+            if (this.spriteSheets)
+                if (this.spriteSheets[name])
+                    return this.getSprite(name, false);
+            var image = this.getLoadedImage(name);
+            if (image) {
+                var imgobj = new createjs.Bitmap(image);
+                imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
+                return imgobj;
+            }
+            var imgobj = new createjs.Bitmap(name);
+            imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
+            return imgobj;
+        };
+        AssetsManager.getBitmapText = function (text, bitmapFontId) {
+            var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
+            bitmapText.lineHeight = 100;
+            bitmapText.mouseEnabled = AssetsManager.defaultMouseEnabled;
+            return bitmapText;
+        };
+        AssetsManager.getLoadedImage = function (name) {
+            if (this.loader)
+                return this.loader.getResult(name);
+            return null;
+        };
+        AssetsManager.getSprite = function (name, play) {
+            if (play === void 0) { play = true; }
+            var data = this.spriteSheets[name];
+            for (var i in data.images)
+                if (typeof data.images[i] == "string")
+                    data.images[i] = this.getLoadedImage(data.images[i]);
+            var spritesheet = new createjs.SpriteSheet(data);
+            var sprite = new createjs.Sprite(spritesheet);
+            if (play)
+                sprite.play();
+            return sprite;
+        };
+        AssetsManager.defaultMouseEnabled = false;
+        return AssetsManager;
+    })();
+    gameui.AssetsManager = AssetsManager;
+})(gameui || (gameui = {}));
+var gameui;
+(function (gameui) {
+    var AudiosManager = (function () {
+        function AudiosManager() {
+        }
+        AudiosManager.setMusicVolume = function (volume) {
+            if (this.currentMusic)
+                this.currentMusic.volume = volume;
+            this.musicVolue = volume;
+        };
+        AudiosManager.setSoundVeolume = function (volume) {
+            this.soundVolume = volume;
+        };
+        AudiosManager.getMusicVolume = function () {
+            if (this.musicVolue == undefined)
+                return 1;
+            return this.musicVolue;
+        };
+        AudiosManager.getSoundVolume = function () {
+            if (this.soundVolume == undefined)
+                return 1;
+            return this.soundVolume;
+        };
+        AudiosManager.playMusic = function (name, volume) {
+            if (volume === void 0) { volume = 1; }
+            if (this.currentMusic) {
+                this.currentMusic.setVolume(volume * this.getMusicVolume());
+                if (this.currentMusicName == name)
+                    return;
+                this.currentMusic.stop();
+                delete this.currentMusic;
+            }
+            this.currentMusicName = name;
+            this.currentMusic = createjs.Sound.play(name, null, null, null, 1000);
+            this.currentMusic.setVolume(volume * this.getMusicVolume());
+        };
+        AudiosManager.playSound = function (name, interrupt, delay, offset, loop, volume) {
+            if (delay === void 0) { delay = 0; }
+            if (volume === void 0) { volume = 1; }
+            return createjs.Sound.play(name, interrupt, delay, offset, loop, volume * this.getSoundVolume());
+        };
+        return AudiosManager;
+    })();
+    gameui.AudiosManager = AudiosManager;
+})(gameui || (gameui = {}));
+var gameui;
+(function (gameui) {
+    var Button = (function (_super) {
+        __extends(Button, _super);
+        function Button(soundId) {
+            var _this = this;
+            _super.call(this);
+            this.enableAnimation = true;
+            this.mouse = false;
+            this.addEventListener("mousedown", function (event) { _this.onPress(event); });
+            this.addEventListener("pressup", function (event) { _this.onPressUp(event); });
+            this.addEventListener("mouseover", function () { _this.mouse = true; });
+            this.addEventListener("mouseout", function () { _this.mouse = false; });
+            this.soundId = soundId;
+        }
+        Button.setDefaultSoundId = function (soundId) {
+            this.DefaultSoundId = soundId;
+        };
+        Button.prototype.returnStatus = function () {
+            if (!this.mouse) {
+                this.scaleX = this.originalScaleX;
+                this.scaleY = this.originalScaleY;
+            }
+        };
+        Button.prototype.onPressUp = function (Event) {
+            this.mouse = false;
+            this.set({ scaleX: this.originalScaleX * 1.1, scaleY: this.originalScaleY * 1.1 });
+            createjs.Tween.get(this).to({ scaleX: this.originalScaleX, scaleY: this.originalScaleY }, 200, createjs.Ease.backOut);
+        };
+        Button.prototype.onPress = function (Event) {
+            var _this = this;
+            if (!this.enableAnimation)
+                return;
+            this.mouse = true;
+            if (this.originalScaleX == null) {
+                this.originalScaleX = this.scaleX;
+                this.originalScaleY = this.scaleY;
+            }
+            createjs.Tween.get(this).to({ scaleX: this.originalScaleX * 1.1, scaleY: this.originalScaleY * 1.1 }, 500, createjs.Ease.elasticOut).call(function () {
+                if (!_this.mouse) {
+                    createjs.Tween.get(_this).to({ scaleX: _this.originalScaleX, scaleY: _this.originalScaleY }, 300, createjs.Ease.backOut);
+                }
+            });
+            if (!this.soundId)
+                this.soundId = Button.DefaultSoundId;
+            if (this.soundId)
+                gameui.AudiosManager.playSound(this.soundId);
+        };
+        Button.prototype.setSound = function (soundId) {
+            this.soundId = soundId;
+        };
+        return Button;
+    })(gameui.UIItem);
+    gameui.Button = Button;
+    var ImageButton = (function (_super) {
+        __extends(ImageButton, _super);
+        function ImageButton(image, event, soundId) {
+            var _this = this;
+            _super.call(this, soundId);
+            if (event != null)
+                this.addEventListener("click", event);
+            if (image != null) {
+                this.background = gameui.AssetsManager.getBitmap(image);
+                this.addChildAt(this.background, 0);
+                if (this.background.getBounds()) {
+                    this.centralizeImage();
+                }
+                else if (this.background["image"])
+                    this.background["image"].onload = function () { _this.centralizeImage(); };
+            }
+            this.createHitArea();
+        }
+        ImageButton.prototype.centralizeImage = function () {
+            this.width = this.background.getBounds().width;
+            this.height = this.background.getBounds().height;
+            this.background.regX = this.width / 2;
+            this.background.regY = this.height / 2;
+            this.centered = true;
+        };
+        return ImageButton;
+    })(Button);
+    gameui.ImageButton = ImageButton;
+    var TextButton = (function (_super) {
+        __extends(TextButton, _super);
+        function TextButton(text, font, color, background, event, soundId) {
+            if (text === void 0) { text = ""; }
+            _super.call(this, background, event, soundId);
+            text = text.toUpperCase();
+            this.text = new createjs.Text(text, font, color);
+            this.text.textBaseline = "middle";
+            this.text.textAlign = "center";
+            if (background == null) {
+                this.width = this.text.getMeasuredWidth() * 1.5;
+                this.height = this.text.getMeasuredHeight() * 1.5;
+            }
+            this.addChild(this.text);
+            this.createHitArea();
+            this.createHitArea();
+        }
+        return TextButton;
+    })(ImageButton);
+    gameui.TextButton = TextButton;
+    var BitmapTextButton = (function (_super) {
+        __extends(BitmapTextButton, _super);
+        function BitmapTextButton(text, bitmapFontId, background, event, soundId) {
+            _super.call(this, background, event, soundId);
+            text = text.toUpperCase();
+            this.bitmapText = gameui.AssetsManager.getBitmapText(text, bitmapFontId);
+            this.addChild(this.bitmapText);
+            this.bitmapText.regX = this.bitmapText.getBounds().width / 2;
+            this.bitmapText.regY = this.bitmapText.lineHeight / 2;
+            this.createHitArea();
+        }
+        return BitmapTextButton;
+    })(ImageButton);
+    gameui.BitmapTextButton = BitmapTextButton;
+    var IconButton = (function (_super) {
+        __extends(IconButton, _super);
+        function IconButton(icon, text, font, color, background, event, soundId) {
+            var _this = this;
+            if (icon === void 0) { icon = ""; }
+            if (text === void 0) { text = ""; }
+            if (font === void 0) { font = null; }
+            if (text != "")
+                text = " " + text;
+            _super.call(this, text, font, color, background, event, soundId);
+            this.icon = gameui.AssetsManager.getBitmap(icon);
+            this.addChild(this.icon);
+            this.text.textAlign = "left";
+            if (this.icon.getBounds())
+                this.icon.regY = this.icon.getBounds().height / 2;
+            else if (this.icon["image"])
+                this.icon["image"].onload = function () {
+                    _this.icon.regY = _this.icon.getBounds().height / 2;
+                };
+            this.updateLabel(text);
+            this.createHitArea();
+        }
+        IconButton.prototype.updateLabel = function (value) {
+            this.text.text = value;
+            if (this.icon.getBounds()) {
+                this.icon.x = -(this.icon.getBounds().width + 10 + this.text.getMeasuredWidth()) / 2;
+                this.text.x = this.icon.x + this.icon.getBounds().width + 10;
+            }
+        };
+        IconButton.prototype.centralizeIcon = function () {
+        };
+        return IconButton;
+    })(TextButton);
+    gameui.IconButton = IconButton;
+})(gameui || (gameui = {}));
+var gameui;
+(function (gameui) {
+    var GameScreen = (function () {
+        function GameScreen(canvasId, gameWidth, gameHeight, fps, showFps) {
+            var _this = this;
+            if (fps === void 0) { fps = 60; }
+            this.defaultWidth = gameWidth;
+            this.defaultHeight = gameHeight;
+            this.stage = new createjs.Stage(canvasId);
+            createjs.Touch.enable(this.stage);
+            var x = 0;
+            createjs.Ticker.addEventListener("tick", function () { _this.stage.update(); });
+            createjs.Ticker.setFPS(fps);
+            this.screenContainer = new createjs.Container();
+            this.stage.addChild(this.screenContainer);
+            if (showFps) {
+                var fpsMeter = new createjs.Text("FPS", " 18px Arial ", "#000");
+                fpsMeter.mouseEnabled = false;
+                fpsMeter.x = 0;
+                fpsMeter.y = 0;
+                this.stage.addChild(fpsMeter);
+                createjs.Ticker.addEventListener("tick", function () {
+                    fpsMeter.text = Math.floor(createjs.Ticker.getMeasuredFPS()) + " FPS";
+                });
+            }
+            this.resizeGameScreen(window.innerWidth, window.innerHeight);
+            window.onresize = function () { _this.resizeGameScreen(window.innerWidth, window.innerHeight); };
+        }
+        GameScreen.prototype.switchScreen = function (newScreen, parameters, transition) {
+            var _this = this;
+            var oldScreen = this.currentScreen;
+            if (!transition)
+                transition = new gameui.Transition();
+            var x = 0;
+            var y = 0;
+            var alpha = 1;
+            if (transition && oldScreen) {
+                switch (transition.type) {
+                    case "fade":
+                        alpha = 0;
+                        break;
+                    case "top":
+                        y = this.currentHeight;
+                        break;
+                    case "bottom":
+                        y = -this.currentHeight;
+                        break;
+                    case "left":
+                        x = -this.currentWidth;
+                        break;
+                    case "right":
+                        x = this.currentWidth;
+                        break;
+                    case "none":
+                        transition.time = 0;
+                        break;
+                }
+                if (transition.type && transition.type != "none") {
+                    newScreen.view.mouseEnabled = false;
+                    oldScreen.view.mouseEnabled = false;
+                    newScreen.view.set({ alpha: alpha, x: -x, y: -y });
+                    oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
+                    createjs.Tween.get(oldScreen.view).to({ alpha: 1, x: x, y: y }, transition.time, createjs.Ease.quadInOut);
+                    createjs.Tween.get(newScreen.view).to({ alpha: 1, x: 0, y: 0 }, transition.time, createjs.Ease.quadInOut).call(function () {
+                        oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
+                        newScreen.view.set({ 1: alpha, x: 0, y: 0 });
+                        newScreen.view.mouseEnabled = true;
+                        oldScreen.view.mouseEnabled = true;
+                        _this.removeOldScreen(oldScreen);
+                        oldScreen = null;
+                    });
+                }
+                else {
+                    this.removeOldScreen(oldScreen);
+                    oldScreen = null;
+                }
+            }
+            else {
+                this.removeOldScreen(oldScreen);
+                oldScreen = null;
+            }
+            newScreen.activate(parameters);
+            this.screenContainer.addChild(newScreen.view);
+            this.currentScreen = newScreen;
+            this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
+        };
+        GameScreen.prototype.resizeGameScreen = function (deviceWidth, deviceHeight, updateCSS) {
+            if (updateCSS === void 0) { updateCSS = true; }
+            if (this.defaultHeight) {
+                var aspect = this.defaultWidth / this.defaultHeight;
+                var aspectReal = deviceWidth / deviceHeight;
+                if (aspectReal > aspect) {
+                    var s = deviceHeight / this.defaultHeight;
+                    deviceWidth = this.defaultWidth * s;
+                }
+            }
+            this.stage.canvas.width = deviceWidth;
+            this.stage.canvas.height = deviceHeight;
+            this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
+        };
+        GameScreen.prototype.sendBackButtonEvent = function () {
+            if (this.currentScreen && this.currentScreen.onback) {
+                this.currentScreen.onback();
+                return false;
+            }
+            else
+                return true;
+        };
+        GameScreen.prototype.updateViewerScale = function (realWidth, realHeight, defaultWidth, defaultHeight) {
+            var scale = realWidth / defaultWidth;
+            this.currentHeight = realHeight / scale;
+            this.currentWidth = realWidth / scale;
+            this.defaultWidth = defaultWidth;
+            this.headerPosition = -(this.currentHeight - defaultHeight) / 2;
+            this.footerPosition = defaultHeight + (this.currentHeight - defaultHeight) / 2;
+            this.screenContainer.scaleX = this.screenContainer.scaleY = scale;
+            this.screenContainer.y = this.viewerOffset = (this.currentHeight - defaultHeight) / 2 * scale;
+            if (this.currentScreen)
+                this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
+        };
+        GameScreen.prototype.removeOldScreen = function (oldScreen) {
+            if (oldScreen != null) {
+                oldScreen.desactivate();
+                this.screenContainer.removeChild(oldScreen.view);
+                oldScreen = null;
+            }
+        };
+        return GameScreen;
+    })();
+    gameui.GameScreen = GameScreen;
+})(gameui || (gameui = {}));
+var gameui;
+(function (gameui) {
+    var Grid = (function (_super) {
+        __extends(Grid, _super);
+        function Grid(cols, rows, width, height, padding, flowHorizontal) {
+            if (padding === void 0) { padding = 0; }
+            _super.call(this);
+            this.flowHorizontal = false;
+            this.currentCol = 0;
+            this.currentRow = 0;
+            this.flowHorizontal = flowHorizontal;
+            this.cols = cols;
+            this.rows = rows;
+            this.padding = padding;
+            this.width = width;
+            this.height = height;
+            this.wSpacing = (width - padding * 2) / cols;
+            this.hSpacing = (height - padding * 2) / rows;
+        }
+        Grid.prototype.addObject = function (object) {
+            this.addChild(object);
+            object.x = this.getXPos();
+            object.y = this.getYPos();
+            this.updatePosition();
+        };
+        Grid.prototype.getXPos = function () {
+            return this.padding + this.currentCol * this.wSpacing + this.wSpacing / 2;
+        };
+        Grid.prototype.getYPos = function () {
+            return this.padding + this.currentRow * this.hSpacing + this.hSpacing / 2;
+        };
+        Grid.prototype.updatePosition = function () {
+            if (!this.flowHorizontal) {
+                this.currentCol++;
+                if (this.currentCol >= this.cols) {
+                    this.currentCol = 0;
+                    this.currentRow++;
+                }
+            }
+            else {
+                this.currentRow++;
+                if (this.currentRow >= this.rows) {
+                    this.currentRow = 0;
+                    this.currentCol++;
+                }
+            }
+        };
+        return Grid;
+    })(gameui.UIItem);
+    gameui.Grid = Grid;
+})(gameui || (gameui = {}));
+var gameui;
+(function (gameui) {
+    var Label = (function (_super) {
+        __extends(Label, _super);
+        function Label(text, font, color) {
+            if (text === void 0) { text = ""; }
+            if (font === void 0) { font = "600 90px Myriad Pro"; }
+            if (color === void 0) { color = "#82e790"; }
+            _super.call(this);
+            text = text.toUpperCase();
+            this.textField = new createjs.Text(text, font, color);
+            this.textField.textBaseline = "middle";
+            this.textField.textAlign = "center";
+            this.addChild(this.textField);
+        }
+        return Label;
+    })(gameui.UIItem);
+    gameui.Label = Label;
+})(gameui || (gameui = {}));
+var gameui;
+(function (gameui) {
+    var MenuContainer = (function (_super) {
+        __extends(MenuContainer, _super);
+        function MenuContainer(width, height, flowHorizontal) {
+            if (width === void 0) { width = null; }
+            if (height === void 0) { height = null; }
+            if (flowHorizontal === void 0) { flowHorizontal = false; }
+            if (!flowHorizontal)
+                _super.call(this, 1, 0, width, height, 0, flowHorizontal);
+            else
+                _super.call(this, 0, 1, width, height, 0, flowHorizontal);
+        }
+        MenuContainer.prototype.addLabel = function (text) {
+            var textObj;
+            textObj = new gameui.Label(text);
+            this.addObject(textObj);
+            return textObj.textField;
+        };
+        MenuContainer.prototype.addButton = function (text, event) {
+            if (event === void 0) { event = null; }
+            var buttonObj = new gameui.TextButton(text, null, null, null, event);
+            this.addObject(buttonObj);
+            return buttonObj;
+        };
+        MenuContainer.prototype.addOutButton = function (text, event) {
+            if (event === void 0) { event = null; }
+            var buttonObj = new gameui.TextButton(text, null, null, null, event);
+            this.addObject(buttonObj);
+            return buttonObj;
+        };
+        return MenuContainer;
+    })(gameui.Grid);
+    gameui.MenuContainer = MenuContainer;
+})(gameui || (gameui = {}));
+var gameui;
+(function (gameui) {
+    var ScreenState = (function () {
+        function ScreenState() {
+            this.view = new createjs.Container();
+            this.content = new createjs.Container();
+            this.overlay = new createjs.Container();
+            this.header = new createjs.Container();
+            this.footer = new createjs.Container();
+            this.background = new createjs.Container();
+            this.view.addChild(this.background);
+            this.view.addChild(this.content);
+            this.view.addChild(this.footer);
+            this.view.addChild(this.header);
+            this.view.addChild(this.overlay);
+        }
+        ScreenState.prototype.activate = function (parameters) {
+            this.content.visible = true;
+        };
+        ScreenState.prototype.desactivate = function (parameters) {
+            this.content.visible = false;
+        };
+        ScreenState.prototype.redim = function (headerY, footerY, width, heigth) {
+            this.screenHeight = heigth;
+            this.screenWidth = width;
+            this.footer.y = footerY;
+            this.header.y = headerY;
+            var dh = footerY + headerY;
+            var ch = footerY - headerY;
+            var scale = ch / dh;
+            if (scale < 1) {
+                scale = 1;
+                this.background.y = 0;
+                this.background.x = 0;
+            }
+            else {
+                this.background.y = headerY;
+                if (false) {
+                    this.background.x = -(width * scale - width) / 2;
+                    this.background.scaleX = this.background.scaleY = scale;
+                }
+                else {
+                    this.background.x = 0;
+                    this.background.scaleY = scale;
+                }
+            }
+            var mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, -(heigth - defaultHeight) / 2, width, heigth));
+            this.background.mask = mask;
+            this.footer.mask = mask;
+            this.header.mask = mask;
+            this.content.mask = mask;
+        };
+        return ScreenState;
+    })();
+    gameui.ScreenState = ScreenState;
+})(gameui || (gameui = {}));
+var gameui;
+(function (gameui) {
+    var Transition = (function () {
+        function Transition() {
+            this.time = 300;
+            this.type = "fade";
+        }
+        return Transition;
+    })();
+    gameui.Transition = Transition;
+})(gameui || (gameui = {}));
+var gameui;
+(function (gameui) {
+    var UIItem = (function (_super) {
+        __extends(UIItem, _super);
+        function UIItem() {
+            _super.apply(this, arguments);
+            this.centered = false;
+            this.animating = false;
+        }
+        UIItem.prototype.centralize = function () {
+            this.regX = this.width / 2;
+            this.regY = this.height / 2;
+            this.centered = true;
+        };
+        UIItem.prototype.fadeOut = function (scaleX, scaleY) {
+            var _this = this;
+            if (scaleX === void 0) { scaleX = 0.5; }
+            if (scaleY === void 0) { scaleY = 0.5; }
+            this.resetFade();
+            createjs.Tween.get(this).to({
+                scaleX: scaleX,
+                scaleY: scaleY,
+                alpha: 0,
+                x: this.antX,
+                y: this.antY,
+            }, 200, createjs.Ease.quadIn).call(function () {
+                _this.visible = false;
+                _this.x = _this.antX;
+                _this.y = _this.antY;
+                _this.scaleX = _this.scaleY = 1;
+                _this.alpha = 1;
+                _this.animating = false;
+                _this.mouseEnabled = true;
+                ;
+            });
+        };
+        UIItem.prototype.resetFade = function () {
+            this.animating = true;
+            this.antX = this.x;
+            this.antY = this.y;
+            this.mouseEnabled = false;
+            createjs.Tween.removeTweens(this);
+        };
+        UIItem.prototype.fadeIn = function (scaleX, scaleY) {
+            var _this = this;
+            if (scaleX === void 0) { scaleX = 0.5; }
+            if (scaleY === void 0) { scaleY = 0.5; }
+            if (this.visible = true)
+                this.antX = null;
+            this.visible = true;
+            this.animating = true;
+            if (this.antX == null) {
+                this.antX = this.x;
+                this.antY = this.y;
+            }
+            this.scaleX = scaleX,
+                this.scaleY = scaleY,
+                this.alpha = 0,
+                this.x = this.x;
+            this.y = this.y;
+            this.mouseEnabled = false;
+            createjs.Tween.removeTweens(this);
+            createjs.Tween.get(this).to({
+                scaleX: 1,
+                scaleY: 1,
+                alpha: 1,
+                x: this.antX,
+                y: this.antY,
+            }, 400, createjs.Ease.quadOut)
+                .call(function () {
+                _this.mouseEnabled = true;
+                _this.animating = false;
+            });
+        };
+        UIItem.prototype.createHitArea = function () {
+            var hit = new createjs.Shape();
+            var b = this.getBounds();
+            if (b)
+                hit.graphics.beginFill("#000").drawRect(b.x, b.y, b.width, b.height);
+            this.hitArea = hit;
+        };
+        return UIItem;
+    })(createjs.Container);
+    gameui.UIItem = UIItem;
+})(gameui || (gameui = {}));
+//module gameui {
 var joinjelly;
 (function (joinjelly) {
     var AzureLeaderBoards = (function () {
@@ -5020,8 +5008,7 @@ var joinjelly;
                     this.purchasedIcon.visible = false;
                     this.loadingIcon.visible = false;
                 };
-                ProductListItem.prototype.setAvaliable = function () {
-                };
+                ProductListItem.prototype.setAvaliable = function () { };
                 ProductListItem.prototype.setPurchased = function (timeOut) {
                     var _this = this;
                     if (timeOut === void 0) { timeOut = false; }
@@ -5030,9 +5017,7 @@ var joinjelly;
                     this.loadingIcon.visible = false;
                     gameui.AudiosManager.playSound("Interface Sound-11");
                     if (timeOut)
-                        setTimeout(function () {
-                            _this.setNormal();
-                        }, 1000);
+                        setTimeout(function () { _this.setNormal(); }, 1000);
                 };
                 ProductListItem.prototype.setNormal = function () {
                     this.purchaseButton.fadeIn();
@@ -5055,6 +5040,22 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        gameplay.boardSize = 5;
+        gameplay.itemProbability = 0.005;
+        gameplay.timeByLevel = 20000;
+        gameplay.timeoutInterval;
+        gameplay.initialInterval = 800;
+        gameplay.finalInterval = 300;
+        gameplay.easeInterval = 0.99;
+        gameplay.initialDirtyProbability = 0.1;
+        gameplay.finalDirtyProbability = 0.5;
+        gameplay.easeDirtyProbability = 0.99;
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
     var view;
     (function (view) {
         var Effect = (function (_super) {
@@ -5068,9 +5069,7 @@ var joinjelly;
                 fxs.regX = 100;
                 fxs.regY = 100;
                 this.addChild(fxs);
-                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () {
-                    _this.removeChild(fxs);
-                });
+                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () { _this.removeChild(fxs); });
             };
             Effect.prototype.castSimpleInv = function () {
                 var _this = this;
@@ -5081,9 +5080,7 @@ var joinjelly;
                 fxs.alpha = 2;
                 fxs.scaleX = 2;
                 fxs.scaleY = 2;
-                createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(function () {
-                    _this.removeChild(fxs);
-                });
+                createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(function () { _this.removeChild(fxs); });
             };
             Effect.prototype.castPart = function () {
                 var _this = this;
@@ -5093,9 +5090,7 @@ var joinjelly;
                 fxp.scaleX = fxp.scaleY = 0.2;
                 fxp.alpha = 2;
                 this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
+                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () { _this.removeChild(fxp); });
                 this.castParts();
             };
             Effect.prototype.castParts = function () {
@@ -5107,9 +5102,7 @@ var joinjelly;
                 fxp.rotation = 360 / 16;
                 fxp.alpha = 2;
                 this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
+                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () { _this.removeChild(fxp); });
             };
             Effect.prototype.castPartsInv = function () {
                 var _this = this;
@@ -5120,9 +5113,7 @@ var joinjelly;
                 fxp.rotation = 360 / 16;
                 fxp.alpha = 0;
                 this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2, rotation: 0 }, 1000, createjs.Ease.quadIn).call(function () {
-                    _this.removeChild(fxp);
-                });
+                createjs.Tween.get(fxp).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2, rotation: 0 }, 1000, createjs.Ease.quadIn).call(function () { _this.removeChild(fxp); });
             };
             Effect.prototype.castBoth = function () {
                 this.castPartsInv();

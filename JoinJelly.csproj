@@ -9,7 +9,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -599,6 +599,7 @@
     <Content Include="assets\sounds\sound_s3.mp3" />
     <Content Include="assets\sounds\sound_s3.ogg" />
     <Content Include="assets\style.css" />
+    <TypeScriptCompile Include="src\gameplay\parameters.ts" />
     <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\cti.js" />
     <Content Include="scripts\EaselJS Editor.js" />
@@ -713,7 +714,9 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="data\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

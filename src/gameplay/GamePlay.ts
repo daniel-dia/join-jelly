@@ -24,21 +24,6 @@
         private countDown: view.CountDown;
         protected gameMessage: view.TutoralMessage;
 
-        // parameters
-        private boardSize: number = 5;
-        private itemProbability: number = 0.005;
-
-        private timeByLevel: number = 20000;
-        private timeoutInterval: number;
-
-        private initialInterval: number = 800;
-        private finalInterval: number = 300;
-        private easeInterval: number = 0.99;
-
-        private initialDirtyProbability: number = 0.1;
-        private finalDirtyProbability: number = 0.5;
-        private easeDirtyProbability: number = 0.99;
-
         // effect 
         private freezeEffect: createjs.DisplayObject;
         private evolveEffect: createjs.DisplayObject;
@@ -118,7 +103,7 @@
 
         // create a new board
         private createBoard() {
-            this.board = new Board(this.boardSize, this.boardSize, 1536 / 5, true);
+            this.board = new Board(boardSize, boardSize, 1536 / 5, true);
             this.board.addEventListener("dragging", (e: createjs.MouseEvent) => {
 
                 this.dragged(e["originTile"], e["targetTile"]);
@@ -354,9 +339,9 @@
 
         // time step for adding tiles.
         protected step(timeout: number) {
-            clearTimeout(this.timeoutInterval);
+            clearTimeout(timeoutInterval);
 
-            this.timeoutInterval = setTimeout(() => {
+            timeoutInterval = setTimeout(() => {
 
                 // if is not playing, than does not execute a step
                 if (this.gamestate == GameState.playing)
@@ -364,7 +349,7 @@
 
                 // set timeout to another iteraction if game is not over
                 if (this.gamestate != GameState.ended)
-                    this.step(this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
+                    this.step(this.getTimeInterval(this.level, initialInterval, this.finalInterval, this.easeInterval));
             }, timeout);
 
         }
@@ -516,8 +501,8 @@
 
             // calculate moves ammount for each level, once it reches more than current moves, it returns the calculated level
             while (totalMoves < moves) {
-                var interval = this.getTimeInterval(level, this.initialInterval, this.finalInterval, this.easeInterval);
-                var levelMoves = this.timeByLevel / interval;
+                var interval = this.getTimeInterval(level, initialInterval, finalInterval, this.easeInterval);
+                var levelMoves = timeByLevel / interval;
                 totalMoves += levelMoves;
                 level++
             }
@@ -531,8 +516,8 @@
 
             // calculate moves ammount for each level, once it reches more than current moves, it returns the calculated level
             for (var calculatedLevel = 0; calculatedLevel < level; calculatedLevel++) {
-                var interval = this.getTimeInterval(calculatedLevel, this.initialInterval, this.finalInterval, this.easeInterval);
-                var levelMoves = this.timeByLevel / interval;
+                var interval = this.getTimeInterval(calculatedLevel, initialInterval, this.finalInterval, this.easeInterval);
+                var levelMoves = timeByLevel / interval;
                 totalMoves += levelMoves;
             }
 
@@ -573,7 +558,7 @@
 
 		// randomly adda a dirty to the board
 		private addRandomDirtyOnBoard() {
-            if (this.getDirtyProbabilityByLevel(this.level, this.initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
+            if (this.getDirtyProbabilityByLevel(this.level, initialDirtyProbability, this.finalDirtyProbability, this.easeDirtyProbability) > Math.random())
                 setTimeout(() => { this.addRandomTileOnBoard(-1); }, 500);
 		}
 
@@ -735,7 +720,7 @@
             var lucky = JoinJelly.itemData.getItemAmmount(Items.LUCKY) ? 2 : 1;
 
             // calculate random change to win a item
-            var goodChance: boolean = (Math.random() < this.itemProbability*lucky);
+            var goodChance: boolean = (Math.random() < itemProbability*lucky);
             
             // if true
             if (goodChance) {
@@ -1124,7 +1109,7 @@
 
         public selfPeformanceTest(fast?: boolean) {
 
-            if (fast) this.initialInterval = 200;
+            if (fast) initialInterval = 200;
             var interval = setInterval(() => {
                 // document.title = (this.initialInterval + " " + this.finalInterval + " " + this.easeInterval + " " + this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
                 if (this.gamestate == GameState.paused) return;
