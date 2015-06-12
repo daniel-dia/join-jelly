@@ -33,7 +33,7 @@
 /// <reference path="src/view/LoadingBall.ts" />
 
 /// <reference path="src/gameplay/view/GameHeader.ts" />
-/// <reference path="src/gameplay/view/GameMenu.ts" />
+ 
 /// <reference path="src/gameplay/view/Jelly.ts" />
 /// <reference path="src/gameplay/view/LevelIndicator.ts" />
 /// <reference path="src/gameplay/view/ItemButton.ts" /> 
