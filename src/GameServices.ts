@@ -24,10 +24,17 @@
             else if (os == "android") {
                 //initializes game services
                 var gp = Cocoon.Social.GooglePlayGames;
-                gp.init({ defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD });
+            
+
+                //if (!this.socialService.isLoggedIn()) {
+                gp.init({
+                    defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD
+                });
+                
                 this.socialService = gp.getSocialInterface();
                 // set achievement Map
                 this.socialService.setAchievementsMap(contantsAndroid)
+                //}
 
             }
             else if (os == "web") {
@@ -42,20 +49,24 @@
                 this.socialService.setAchievementsMap(contantsAndroid)
                 this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
             }  
-
+            
             // login into game Services
-            setTimeout(() => {
+            setTimeout(() => {  
                 if (this.socialService && !this.socialService.isLoggedIn()) {
                     this.socialService.login((loggedIn, error) => {
                         if (error) console.error("login error: " + error.message + " " + error.code);
                         else if (!loggedIn) console.log("login cancelled");
                     });
                 }
-            }, 1000);
+            }, 10000); 
         }
 
         // show native leaderboards
         public showLeaderboard() {
+
+            
+
+
             if (!navigator.onLine) return;
             if (!this.socialService) return;
             try {
