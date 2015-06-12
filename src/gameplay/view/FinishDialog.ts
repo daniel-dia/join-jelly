@@ -8,7 +8,7 @@
         private highScoreText: createjs.BitmapText;
 
         constructor() {
-            super(StringResources.menus.gameOver.toUpperCase(), 1250);
+            super(StringResources.menus.gameOver, 1250);
             this.addPoints();
             this.addLastJelly();
             this.addButtons();
