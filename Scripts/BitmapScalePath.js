@@ -19,11 +19,17 @@ createjs.Bitmap.prototype.draw = function (ctx, ignoreCache) {
     return true;
 };
 
+ createjs.Bitmap.prototype.isVisible = function () {
+    var image = this.image;
+    var hasContent = this.cacheCanvas || (image && (image.complete || image.getContext || image.readyState >= 2));
+    return !!(this.visible && this.alpha > 0 && this.scaleX != 0 && this.scaleY != 0 && hasContent);
+};
+
 createjs.Bitmap.prototype.getBounds = function () {
     var rect = this.DisplayObject_getBounds();
     if (rect) { return rect; }
-    var o = this.sourceRect || this.image;
-    var hasContent = (this.image && (this.image.complete || this.image.getContext || this.image.readyState >= 2));
+    var image = this.image, o = this.sourceRect || image;
+    var hasContent = (image && (image.complete || image.getContext || image.readyState >= 2));
     return hasContent ? this._rectangle.setValues(0, 0, o.width * 1 / assetscale, o.height * 1 / assetscale) : null;
 };
 
