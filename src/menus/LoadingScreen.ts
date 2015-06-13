@@ -24,6 +24,7 @@ module joinjelly.menus {
             assetscale = 1;
             if (window.innerWidth <= 1024) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;
+            assetscale = 0.25;
             imagePath = "assets/images_" + assetscale + "x/";
 
           

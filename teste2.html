@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="scripts/createjs-2014.12.12.min.js"></script>
+    <script>
+
+        function init() {
+            var stage = new createjs.Stage("mc");
+            var image = new createjs.Bitmap("assets/images_1x/BtAchievements.png");
+          
+            var shape = new createjs.Shape(new createjs.Graphics().beginFill("red").drawCircle(0, 0, 300))
+            stage.addChild(shape)
+            stage.addChild(image);
+            image.image.onload =function() { stage.update(); }
+        }
+    </script>
+</head>
+<body onload="init()">
+    <canvas id="mc" width="400" height="400"></canvas>
+</body>
+</html>

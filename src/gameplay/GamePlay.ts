@@ -19,7 +19,7 @@
         protected gameFooter: view.ItemsFooter;
         private gameLevelIndicator: view.LevelIndicator;
         private finishMenu: view.FinishMenu;
-        private pauseMenu: view.PauseMenu;
+        private pauseMenuOverlay: view.PauseMenuOverlay;
         private showBoardButton: gameui.Button;
         private countDown: view.CountDown;
         protected gameMessage: view.TutoralMessage;
@@ -134,14 +134,15 @@
 
             this.gameFooter.addEventListener("useitem", (e: createjs.Event) => { this.useItem(e.item) });
     
-            // creates pause menu
-            this.pauseMenu = new view.PauseMenu();
-            this.overlay.addChild(this.pauseMenu);
-
+          
             // creates a end menu
             this.finishMenu = new view.FinishMenu();
             this.overlay.addChild(this.finishMenu);
             this.finishMenu.y = -200;
+
+            // creates pause menu
+            this.pauseMenuOverlay = new view.PauseMenuOverlay();
+            this.content.addChild(this.pauseMenuOverlay);
 
             // create game message
             this.gameMessage = new view.TutoralMessage();
@@ -168,7 +169,7 @@
             //add eventListener
 
             this.finishMenu.addEventListener("restart", () => {
-                this.pauseMenu.hide();
+                this.pauseMenuOverlay.hide();
                 this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
@@ -209,30 +210,31 @@
                 });
             });
 
-
-            this.gameHeader.addEventListener("pause", () => {
+            this.gameHeader.addEventListener("pause",() => {
+                
                 this.pauseGame();
+                
             });
 
-            this.pauseMenu.addEventListener("play", () => {
+            this.pauseMenuOverlay.addEventListener("play", () => {
                 this.continueGame();
             });
 
-            this.pauseMenu.addEventListener("test", () => {
+            this.pauseMenuOverlay.addEventListener("test", () => {
                 this.selfPeformanceTest(false);
             });
 
-            this.pauseMenu.addEventListener("testFast", () => {
+            this.pauseMenuOverlay.addEventListener("testFast", () => {
                 this.selfPeformanceTest(true);
             });
 
-            this.pauseMenu.addEventListener("home", () => {
-                this.pauseMenu.hide();
+            this.pauseMenuOverlay.addEventListener("home", () => {
+                this.pauseMenuOverlay.hide();
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
             });
 
-            this.pauseMenu.addEventListener("restart", () => {
-                this.pauseMenu.hide();
+            this.pauseMenuOverlay.addEventListener("restart", () => {
+                this.pauseMenuOverlay.hide();
                 this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
@@ -371,19 +373,21 @@
         public pauseGame() {
             if (this.gamestate == GameState.standBy) return;
             if (this.gamestate == GameState.ended) return;
-            this.pauseMenu.show();
             this.gamestate = GameState.paused;
             this.board.lock();
             this.gameFooter.lockAll();
             this.gameHeader.mouseEnabled = false;
-            this.content.mouseEnabled = false;
+            this.pauseMenuOverlay.show();
+            this.gameHeader.hidePauseButton();
         }
 
         // unpause game
         private continueGame() {
             //hide menus
-            this.pauseMenu.hide();
+            this.pauseMenuOverlay.hide();
+            this.gameHeader.hidePauseButton();
             this.gamestate = GameState.standBy;
+            this.board.lock();
 
             //wait 3 seconds to unpause
             setTimeout(() => {
@@ -392,6 +396,7 @@
                 this.gameHeader.mouseEnabled = true;
                 this.content.mouseEnabled = true;
                 this.gameFooter.unlockAll();
+                this.gameHeader.showPauseButton();
             }, 3200);
 
             //show a 3 seconds countdown to resume game
@@ -419,7 +424,7 @@
             var highJelly = this.board.getHighestTileValue();
 
             // disable mouse interaction
-            this.pauseMenu.hide();
+            this.pauseMenuOverlay.hide();
             this.board.lock();
             this.board.setAlarm(false);
 

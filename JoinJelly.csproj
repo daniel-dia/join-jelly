@@ -623,6 +623,7 @@
     <Content Include="scripts\templates\assets\js\jquery-1.8.3.min.js" />
     <Content Include="scripts\templates\assets\js\jquery.equalheights.js" />
     <Content Include="scripts\templates\leaderboards.html" />
+    <Content Include="teste2.html" />
     <Content Include="Vídeo_geleias.html" />
     <Content Include="Vídeo_Titulo.html" />
     <Content Include="test.html" />
