@@ -1133,7 +1133,6 @@ var joinjelly;
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
-                assetscale = 0.25;
                 imagePath = "assets/images_" + assetscale + "x/";
                 if (!testMode) {
                     createjs.Sound.alternateExtensions = ["mp3"];
@@ -4982,7 +4981,7 @@ var joinjelly;
                     descriptionObj.y = 140;
                     titleObj.scaleX = titleObj.scaleY = 0.7;
                     descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
-                    titleObj.x = descriptionObj.x = 400;
+                    titleObj.x = descriptionObj.x = 360;
                     tContainer.addChild(titleObj);
                     tContainer.addChild(descriptionObj);
                     var unchecked = gameui.AssetsManager.getBitmap("unchecked");

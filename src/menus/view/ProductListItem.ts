@@ -53,7 +53,7 @@
             descriptionObj.y = 140;
             titleObj.scaleX = titleObj.scaleY = 0.7;
             descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
-            titleObj.x = descriptionObj.x = 400;
+            titleObj.x = descriptionObj.x = 360;
             tContainer.addChild(titleObj);
             tContainer.addChild(descriptionObj);
 
