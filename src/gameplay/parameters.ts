@@ -13,4 +13,6 @@
     export var initialDirtyProbability: number = 0.1;
     export var finalDirtyProbability: number = 0.5;
     export var easeDirtyProbability: number = 0.99;
+
+    export var increasingJellyValuePerLevel: number = 0.008;
 }

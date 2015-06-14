@@ -549,8 +549,9 @@
         private addRandomJellyOnBoard(JellyValue: number) {
 			
             // select a random value to add for higher levels.
-            for (var i = 10; i < this.level; i += 10)
-                if (Math.random() > 0.9) JellyValue *= 2;
+            for (var i = 10; i < this.level; i ++)
+                if (Math.random() < increasingJellyValuePerLevel)
+                    JellyValue *= 2;
             if (JellyValue > JoinJelly.maxJelly) JellyValue = JoinJelly.maxJelly;
 
 

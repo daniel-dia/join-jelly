@@ -3455,8 +3455,8 @@ var joinjelly;
                 return false;
             };
             GamePlayScreen.prototype.addRandomJellyOnBoard = function (JellyValue) {
-                for (var i = 10; i < this.level; i += 10)
-                    if (Math.random() > 0.9)
+                for (var i = 10; i < this.level; i++)
+                    if (Math.random() < gameplay.increasingJellyValuePerLevel)
                         JellyValue *= 2;
                 if (JellyValue > joinjelly.JoinJelly.maxJelly)
                     JellyValue = joinjelly.JoinJelly.maxJelly;
@@ -4429,10 +4429,11 @@ var joinjelly;
         gameplay.timeoutInterval;
         gameplay.initialInterval = 800;
         gameplay.finalInterval = 300;
-        gameplay.easeInterval = 0.99;
+        gameplay.easeInterval = 0.98;
         gameplay.initialDirtyProbability = 0.1;
         gameplay.finalDirtyProbability = 0.5;
         gameplay.easeDirtyProbability = 0.99;
+        gameplay.increasingJellyValuePerLevel = 0.008;
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
