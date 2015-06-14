@@ -8,7 +8,7 @@
 
     export var initialInterval: number = 800;
     export var finalInterval: number = 300;
-    export var easeInterval: number = 0.99;
+    export var easeInterval: number = 0.98;
 
     export var initialDirtyProbability: number = 0.1;
     export var finalDirtyProbability: number = 0.5;
