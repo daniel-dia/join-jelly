@@ -30,6 +30,8 @@ module joinjelly {
             }
 
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
+
+            // add back button callback
             Cocoon.App.exitCallback(() => {
                 return this.gameScreen.sendBackButtonEvent()
             })
