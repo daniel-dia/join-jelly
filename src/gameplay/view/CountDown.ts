@@ -8,7 +8,23 @@
             var ns: Array<createjs.DisplayObject> = []
             var time = 1000;
             var transition = 200;
-            setTimeout(() => { gameui.AudiosManager.playSound("Interface Sound-12"); }, time * total + transition)
+
+            var dk = gameui.AssetsManager.getBitmap("popupdark");
+            this.addChild(dk);
+            dk.scaleX = dk.scaleY = 16
+            dk.x = -defaultWidth / 2;
+            dk.y = -defaultHeight / 2;
+            dk.alpha = 0;
+            dk.mouseEnabled = false;
+            createjs.Tween.get(dk).to({ alpha: 1 }, 200);
+            setTimeout(() => {
+                createjs.Tween.get(dk).to({ alpha: 0 }, 200).call(() => { this.removeChild(dk); })
+            }, time * total + transition)
+
+
+            setTimeout(() => {
+                gameui.AudiosManager.playSound("Interface Sound-12");
+            }, time * total + transition)
 
             for (var n = total; n > 0; n--) {
 			

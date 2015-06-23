@@ -4322,6 +4322,10 @@ var joinjelly;
                 transition = { type: "top", time: 500 };
             if (this.gameScreen.currentScreen instanceof joinjelly.Jellypedia)
                 transition = { type: "right", time: 500 };
+            if (this.gameScreen.currentScreen instanceof joinjelly.menus.MainMenu)
+                transition = { type: "right", time: 500 };
+            if (this.gameScreen.currentScreen instanceof joinjelly.menus.StoreMenu)
+                transition = { type: "left", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         };
         JoinJelly.startLevel = function () {
@@ -4453,6 +4457,19 @@ var joinjelly;
                     var ns = [];
                     var time = 1000;
                     var transition = 200;
+                    var dk = gameui.AssetsManager.getBitmap("popupdark");
+                    this.addChild(dk);
+                    dk.scaleX = dk.scaleY = 16;
+                    dk.x = -defaultWidth / 2;
+                    dk.y = -defaultHeight / 2;
+                    dk.alpha = 0;
+                    dk.mouseEnabled = false;
+                    createjs.Tween.get(dk).to({ alpha: 1 }, 200);
+                    setTimeout(function () {
+                        createjs.Tween.get(dk).to({ alpha: 0 }, 200).call(function () {
+                            _this.removeChild(dk);
+                        });
+                    }, time * total + transition);
                     setTimeout(function () {
                         gameui.AudiosManager.playSound("Interface Sound-12");
                     }, time * total + transition);
