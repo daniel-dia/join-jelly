@@ -370,7 +370,7 @@
 
         public fadeTileToPos(tile: Tile, posx: number, posy: number, time: number = 100, delay: number = 0, alpha: number = 0) {
             tile.lock();
-            createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: alpha }, time, createjs.Ease.quadInOut).call(() => {
+            createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: alpha }, time, createjs.Ease.quadIn).call(() => {
                 tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
                 this.arrangeZOrder();
                 tile.unlock();

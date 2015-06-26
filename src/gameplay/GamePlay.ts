@@ -694,9 +694,10 @@
                 var tile = neighborTiles[t];
 
                 if (tile && tile.getNumber() < 0) {
-                    var posx = target.x + (tile.x - target.x) * 1.5;
-                    var posy = target.y + (tile.y - target.y) * 1.5;
-                    this.board.fadeTileToPos(tile, posx, posy, 500);
+                    var posx = target.x + (tile.x - target.x) * 1.6;
+                    var posy = target.y + (tile.y - target.y) * 1.6;
+                    this.board.fadeTileToPos(tile, posx, posy, 350);
+                    tile.jelly.playJoinFX();
                     tile.setNumber(0);
                 }
             }
