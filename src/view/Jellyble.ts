@@ -18,6 +18,14 @@
 
         //#region animations =============================================
 
+        public executeAnimationOut(duration:number) {
+
+            if (this.state == "out") return;
+            this.state = "out";
+            createjs.Tween.get(this.shadowContainer).to({ alpha: 0 }, duration, createjs.Ease.quadIn);
+            createjs.Tween.get(this.imageContainer).to({ scaleX: 0, scaleY: 0, y: 0, alpha: 0 }, duration, createjs.Ease.quadIn);
+        }
+
         public executeAnimationIn(delay:number=0) {
             if (this.state == "in") return;
             this.state = "in";
@@ -44,9 +52,7 @@
                 });
 
             createjs.Tween.get(this.shadowContainer).wait(delay)
-                .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut).call(() => {
-                    //this.executeIdle();
-                });;
+                .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut);
         }
 
         public executeAnimationHold() {

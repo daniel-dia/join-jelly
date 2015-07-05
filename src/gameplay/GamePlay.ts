@@ -555,7 +555,7 @@
             if (JellyValue > JoinJelly.maxJelly) JellyValue = JoinJelly.maxJelly;
 
 
-            this.addRandomTileOnBoard(JellyValue);
+            this.addRandomTileOnBoard(JellyValue);// 4096 * 4)//
             this.addRandomDirtyOnBoard();
 
             this.saveGame();
@@ -696,8 +696,9 @@
                 if (tile && tile.getNumber() < 0) {
                     var posx = target.x + (tile.x - target.x) * 1.6;
                     var posy = target.y + (tile.y - target.y) * 1.6;
+                    tile.jelly.playDistroyEffect();
                     this.board.fadeTileToPos(tile, posx, posy, 350);
-                    tile.jelly.playJoinFX();
+                  
                     tile.setNumber(0);
                 }
             }

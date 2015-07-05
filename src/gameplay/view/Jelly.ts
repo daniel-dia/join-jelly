@@ -88,14 +88,31 @@
 
         //set tile number
         public setNumber(value: number) {
+            if (this.currentValue == value) return;
             if (value > JoinJelly.maxJelly) value = JoinJelly.maxJelly;
 
-            if (this.currentValue == value) return;
+            if (this.currentValue > 0 && value > 0) {
+                this.executeAnimationOut(200);
+                setTimeout(() => {
+                    this.updateObjects(value);
+                    this.executeAnimationIn();
+                }, 200);
+            }
+            else {
+                this.updateObjects(value);
+                this.executeAnimationIn();
+            }
             this.currentValue = value;
+
+           
+        }
+
+        public updateObjects(value: number) {
 
             //update image 
             if (this.eyeImg)
                 createjs.Tween.removeTweens(this.eyeImg);
+
             this.imageContainer.removeAllChildren();
             this.shadowContainer.removeAllChildren();
 
@@ -112,10 +129,9 @@
                 this.createJelly(value);
                 this.createEyes(value);
 
-                this.executeAnimationIn();
-
                 if (value > 1) this.playJoinFX();
             }
+
         }
 
         // #endregion
@@ -130,12 +146,21 @@
         public playLevelUp() {
             this.effect.alpha = 0.25;
             this.effect.castSimple();
-
         }
 
         public playEvolve() {
             this.effect.alpha = 1;
             this.effect.castBoth();
+        }
+
+        public playUltimateEffect() {
+            this.effect.alpha = 1;
+            this.effect.castUltimateEffect();
+        }
+
+        public playDistroyEffect() {
+            this.effect.alpha = 1;
+            this.effect.castDistroyEffect();
         }
 
         public playThunder() {
