@@ -29,7 +29,7 @@
                 this.dispatchEvent("share")
             }));
             share.set({ x: 1240, y: 1020 });
-            this.addChild(share);
+            // this.addChild(share);
 
             //add home button;
             var home = new gameui.ImageButton("BtHome", (() => {

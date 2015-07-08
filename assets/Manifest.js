@@ -99,7 +99,8 @@
        { id: "BtTextBg", src: "BtTextBg.png" },
        { id: "BtMenu", src: "BtMenu.png" },
        { id: "BtPlusMini", src: "BtPlusMini.png" },
-
+       { id: "btRecord", src: "btRecord.png" },
+    
        { id: "GameOverBgJelly", src: "GameOverBgJelly.png" },
        { id: "GameOverBgPoints", src: "GameOverBgPoints.png" },
 

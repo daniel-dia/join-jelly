@@ -1199,16 +1199,6 @@ var joinjelly;
         };
         MainScreen.prototype.createButtons = function () {
             var _this = this;
-            if (this.userData) {
-                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore, "debussy");
-                this.scoreText.x = 70;
-                this.scoreText.y = -250;
-                this.footer.addChild(this.scoreText);
-                this.scoreText = gameui.AssetsManager.getBitmapText(this.userData.getHighScore().toString(), "debussyBig");
-                this.scoreText.x = 70;
-                this.scoreText.y = -170;
-                this.footer.addChild(this.scoreText);
-            }
             var x = defaultWidth + 100;
             var space = 250;
             var settingsBt = new gameui.ImageButton("DIAStudioIco", function () {
@@ -1235,12 +1225,22 @@ var joinjelly;
             aboutBt.y = -150;
             aboutBt.x = x -= space;
             this.footer.addChild(aboutBt);
-            var leaderboardsBt = new gameui.ImageButton("BtLeaderBoards", function () {
+            var leaderboardsBt = new gameui.ImageButton("btRecord", function () {
                 joinjelly.JoinJelly.gameServices.showLeaderboard();
             });
             leaderboardsBt.y = -150;
-            leaderboardsBt.x = x -= space;
+            leaderboardsBt.x = x = 370;
             this.footer.addChild(leaderboardsBt);
+            if (this.userData) {
+                this.scoreText = gameui.AssetsManager.getBitmapText(StringResources.menus.highScore, "debussy");
+                this.scoreText.x = -300;
+                this.scoreText.y = -250 + 100;
+                leaderboardsBt.addChild(this.scoreText);
+                this.scoreText = gameui.AssetsManager.getBitmapText(this.userData.getHighScore().toString(), "debussyBig");
+                this.scoreText.x = -300;
+                this.scoreText.y = -170 + 100;
+                leaderboardsBt.addChild(this.scoreText);
+            }
         };
         return MainScreen;
     })(gameui.ScreenState);
@@ -2595,7 +2595,6 @@ var joinjelly;
                         _this.dispatchEvent("share");
                     }));
                     share.set({ x: 1240, y: 1020 });
-                    this.addChild(share);
                     var home = new gameui.ImageButton("BtHome", (function () {
                         _this.dispatchEvent("ok");
                     }));
