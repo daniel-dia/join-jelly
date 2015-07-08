@@ -92,11 +92,11 @@
             if (value > JoinJelly.maxJelly) value = JoinJelly.maxJelly;
 
             if (this.currentValue > 0 && value > 0) {
-                this.executeAnimationOut(200);
+                this.executeAnimationOut(100);
                 setTimeout(() => {
                     this.updateObjects(value);
                     this.executeAnimationIn();
-                }, 200);
+                }, 100);
             }
             else {
                 this.updateObjects(value);

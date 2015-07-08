@@ -20,12 +20,15 @@
 
         public executeAnimationOut(duration:number) {
 
-            if (this.state == "out") return;
-            this.state = "out";
-            createjs.Tween.get(this.shadowContainer).to({ alpha: 0 }, duration, createjs.Ease.quadIn);
-            createjs.Tween.get(this.imageContainer).to({ scaleX: 0, scaleY: 0, y: 0, alpha: 0 }, duration, createjs.Ease.quadIn);
+          if (this.state == "out") return;
+          this.state = "out";
+          createjs.Tween.removeTweens(this.imageContainer)
+          createjs.Tween.get(this.shadowContainer).to({ alpha: 0 }, duration, createjs.Ease.quadIn);
+          createjs.Tween.get(this.imageContainer) 
+              .to({ scaleX: 1.3, scaleY: 1.3, y: 0, alpha:0.3 }, duration, createjs.Ease.quadIn)
+              
         }
-
+         
         public executeAnimationIn(delay:number=0) {
             if (this.state == "in") return;
             this.state = "in";
@@ -34,8 +37,8 @@
             this.imageContainer.set(
                 {
                     alpha: 0,
-                    scaleX: 0,
-                    scaleY: 0,
+                    scaleX: 0.3,
+                    scaleY: 0.3,
                     y: -40
                 });
 

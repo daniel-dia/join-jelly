@@ -62,6 +62,7 @@
 
 
             var tileDO = new Tile(x, y, tileSize);
+            tileDO.background = bg;
 
             // add a jelly on tile
             this.tiles.push(tileDO);
@@ -351,10 +352,6 @@
         public match(origin: Tile, target: Tile) {
 
             this.releaseDrag(origin, true, target);
-
-            target.set({ scaleX: 1.8, scaleY: 1.8, alpha: 0 });
-            createjs.Tween.get(target).to({ scaleX: 1, scaleY: 1, alpha: 1 }, 140, createjs.Ease.cubicOut);
-
             gameui.AudiosManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
         }
 
