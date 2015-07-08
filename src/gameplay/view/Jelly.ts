@@ -103,8 +103,7 @@
                 this.executeAnimationIn();
             }
             this.currentValue = value;
-
-           
+         
         }
 
         public updateObjects(value: number) {

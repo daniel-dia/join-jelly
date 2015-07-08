@@ -404,13 +404,7 @@
 
         }
 
-        // winTheGame
-        private winGame() {
-            this.endGame(StringResources.menus.gameOver, true)
-            this.gameFooter.visible = false;
-
-            // TODO something greater and memorable
-        }
+ 
 
         // finishes the game
         private endGame(message?: string, win?: boolean) {
@@ -555,7 +549,7 @@
             if (JellyValue > JoinJelly.maxJelly) JellyValue = JoinJelly.maxJelly;
 
 
-            this.addRandomTileOnBoard(JellyValue);// 4096 * 4)//
+            this.addRandomTileOnBoard(JellyValue);
             this.addRandomDirtyOnBoard();
 
             this.saveGame();
@@ -666,8 +660,8 @@
             this.highJellySave(newValue);
 
             // verify winGame
-            if (newValue > JoinJelly.maxJelly)
-                this.winGame();
+            if (newValue > JoinJelly.maxJelly) 
+                this.winGame(target);
             else
                 target.setNumber(newValue);
                 
@@ -684,6 +678,14 @@
             this.cleanNearDirty(target);
 
             return true;
+        }
+
+        private winGame(target:Tile) {
+            target.setNumber(0);
+            target.jelly.playUltimateEffect();
+            this.board.endGameEffect();
+            setTimeout(() => { this.board.cleanBoard(); }, 200);
+            gameui.AudiosManager.playSound("evolve");
         }
 
         // cleand neighbor dirty

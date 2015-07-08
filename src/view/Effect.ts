@@ -86,6 +86,9 @@
         }
 
         public castUltimateEffect() {
+
+
+
             var fx = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
             var src = { regX: 140 + Math.random() * 40, regY: 140 + Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 }
             var dst = { scaleX: 10, scaleY: 10, rotation: Math.random() * 360 / 16, alpha: 0 }
@@ -99,6 +102,13 @@
             this.addChild(fx);
             fx.set(src);
             createjs.Tween.get(fx).to(dst, 1400, createjs.Ease.quadOut).call(() => { this.removeChild(fx) });
+
+            var fx = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxJoin");
+            var src = { regX: 140 -Math.random() * 40, regY: 140 - Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 }
+            var dst = { scaleX: 10, scaleY: 10, rotation: Math.random() * 360 / 16, alpha: 0 }
+            this.addChild(fx);
+            fx.set(src);
+            createjs.Tween.get(fx).to(dst, 1000, createjs.Ease.quadOut).call(() => { this.removeChild(fx) });
         }
 
     }
