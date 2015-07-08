@@ -680,6 +680,7 @@
             return true;
         }
 
+        // after join 2 high values jellies
         private winGame(target:Tile) {
             target.setNumber(0);
             target.jelly.playUltimateEffect();
