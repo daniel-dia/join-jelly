@@ -94,7 +94,9 @@
                     else
                         console.log("submited score: " + score);
                 });
-            } catch (e) { }
+            } catch (e) {
+                console.error("score error: " + e);
+            }
         }
 
         // submit an achievement
