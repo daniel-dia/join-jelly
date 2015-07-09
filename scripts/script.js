@@ -4704,10 +4704,14 @@ var joinjelly;
             }
         };
         GameServices.prototype.submitScore = function (score) {
-            if (!navigator.onLine)
+            if (!this.socialService) {
+                console.error("No social Service");
                 return;
-            if (!this.socialService)
+            }
+            if (!navigator.onLine) {
+                console.error("No social connection");
                 return;
+            }
             try {
                 this.socialService.submitScore(score, function (error) {
                     if (error)

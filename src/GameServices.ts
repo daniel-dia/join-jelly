@@ -85,8 +85,16 @@
 
         // submit a score
         public submitScore(score: number) {
-            if (!navigator.onLine) return;
-            if (!this.socialService) return;
+            if (!this.socialService) {
+                console.error("No social Service");
+                return;
+            }
+
+            if (!navigator.onLine) {
+                console.error("No social connection");
+                return;
+            }
+             
             try {
                 this.socialService.submitScore(score, (error) => {
                     if (error)
