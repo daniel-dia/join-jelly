@@ -13,7 +13,7 @@
             this.addChild(dk);
             dk.scaleX = dk.scaleY = 16
             dk.x = -defaultWidth / 2;
-            dk.y = -defaultHeight / 2;
+            dk.y = -defaultHeight ;
             dk.alpha = 0;
             dk.mouseEnabled = false;
             createjs.Tween.get(dk).to({ alpha: 1 }, 200);

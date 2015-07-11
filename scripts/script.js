@@ -4497,7 +4497,7 @@ var joinjelly;
                     this.addChild(dk);
                     dk.scaleX = dk.scaleY = 16;
                     dk.x = -defaultWidth / 2;
-                    dk.y = -defaultHeight / 2;
+                    dk.y = -defaultHeight;
                     dk.alpha = 0;
                     dk.mouseEnabled = false;
                     createjs.Tween.get(dk).to({ alpha: 1 }, 200);
@@ -4715,13 +4715,13 @@ var joinjelly;
             try {
                 this.socialService.submitScore(score, function (error) {
                     if (error)
-                        console.error("score error: " + error.message);
+                        alert("score error: " + error.message);
                     else
-                        console.log("submited score: " + score);
+                        alert("submited score: " + score);
                 });
             }
             catch (e) {
-                console.error("score error: " + e);
+                alert("error: " + JSON.stringify(e));
             }
         };
         GameServices.prototype.submitJellyAchievent = function (jellyValue) {

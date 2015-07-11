@@ -98,12 +98,12 @@
             try {
                 this.socialService.submitScore(score, (error) => {
                     if (error)
-                        console.error("score error: " + error.message);
+                        alert("score error: " + error.message);
                     else
-                        console.log("submited score: " + score);
+                        alert("submited score: " + score);
                 });
             } catch (e) {
-                console.error("score error: " + e);
+                alert("error: " + JSON.stringify(e));
             }
         }
 
