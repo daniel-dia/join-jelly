@@ -959,11 +959,11 @@ var Analytics = (function () {
         return this.sessionId;
     };
     Analytics.prototype.getBuild = function () {
-        return "alpha 80";
+        return "alpha 1.0";
     };
     Analytics.prototype.sendEvent = function (eventId, subEventId, value, area, x, y) {
-        var game_key = '10b6363c0a7336d2d08a4036c0971226';
-        var secret_key = 'f4a554ef98cb148fcc02570e8abf591f43a10996';
+        var game_key = '8c544aeba45e500f2af6e9b1beee996a';
+        var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0';
         var category = "design";
         var message = {
             "user_id": this.getUser(),
@@ -3425,7 +3425,7 @@ var joinjelly;
                     _this.updateFooter();
                     createjs.Tween.get(_this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
                     joinjelly.JoinJelly.userData.setScore(Math.max(score, joinjelly.JoinJelly.userData.getHighScore()));
-                    joinjelly.JoinJelly.gameServices.submitScore(Math.max(score, joinjelly.JoinJelly.userData.getHighScore()));
+                    joinjelly.JoinJelly.gameServices.submitScore(score);
                 }, 1200);
                 this.finishMenu.setValues(score, Math.max(highScore, score), highJelly, message);
                 if (win)
@@ -4713,15 +4713,15 @@ var joinjelly;
                 return;
             }
             try {
-                this.socialService.submitScore(score, function (error) {
+                this.socialService.submitScore(score.toString(), function (error) {
                     if (error)
-                        alert("score error: " + error.message);
+                        console.error("score error: " + error.message);
                     else
-                        alert("submited score: " + score);
+                        console.log("submited score: " + score);
                 });
             }
             catch (e) {
-                alert("error: " + JSON.stringify(e));
+                console.error("error: " + JSON.stringify(e));
             }
         };
         GameServices.prototype.submitJellyAchievent = function (jellyValue) {

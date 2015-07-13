@@ -85,6 +85,7 @@
 
         // submit a score
         public submitScore(score: number) {
+
             if (!this.socialService) {
                 console.error("No social Service");
                 return;
@@ -96,14 +97,14 @@
             }
              
             try {
-                this.socialService.submitScore(score, (error) => {
+                this.socialService.submitScore(score.toString(),(error) => {
                     if (error)
-                        alert("score error: " + error.message);
+                        console.error("score error: " + error.message);
                     else
-                        alert("submited score: " + score);
+                        console.log("submited score: " + score);
                 });
             } catch (e) {
-                alert("error: " + JSON.stringify(e));
+                console.error("error: " + JSON.stringify(e));
             }
         }
 

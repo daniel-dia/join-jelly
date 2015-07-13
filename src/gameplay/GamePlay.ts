@@ -455,7 +455,7 @@
                 JoinJelly.userData.setScore(Math.max(score, JoinJelly.userData.getHighScore()));
 				
                 // submit score to Game Services
-                JoinJelly.gameServices.submitScore(Math.max(score, JoinJelly.userData.getHighScore()));
+                JoinJelly.gameServices.submitScore(score);
 
 
             }, 1200);

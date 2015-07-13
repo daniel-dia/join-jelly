@@ -201,6 +201,7 @@
             showLeaderboard(params?: Cocoon.Social.ScoreParams, callback?: (error) => void);
             submitAchievement(achievementID: string, callback: (error) => void);
             submitScore(score: number, callback?: (error) => void, params?: Cocoon.Social.ScoreParams);
+            submitScore(score: string, callback?: (error) => void, params?: Cocoon.Social.ScoreParams);
         }
 
         export class Achievement {

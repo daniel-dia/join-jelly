@@ -28,14 +28,14 @@ class Analytics {
     }
 
     private getBuild(): string {
-        return "alpha 80";
+        return "alpha 1.0";
     }
 
     private sendEvent(eventId: string, subEventId, value: number, area?: number, x?: number, y?: number) {
         //var game_key = '8c544aeba45e500f2af6e9b1beee996a'
         //var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0'
-        var game_key = '10b6363c0a7336d2d08a4036c0971226'
-        var secret_key = 'f4a554ef98cb148fcc02570e8abf591f43a10996'
+        var game_key = '8c544aeba45e500f2af6e9b1beee996a'
+        var secret_key = 'cd5bce1753ceadacad6b990046fd1fb5d884c9a0'
         //var data_api_key = '7a0a0ca9b1db2b56a94925ea5c640730e45dffed'
 
         var category = "design";
