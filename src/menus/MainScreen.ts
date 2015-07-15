@@ -82,7 +82,7 @@
             this.footer.addChild(storeBt);
 
             //add pedia button
-            var aboutBt = new gameui.ImageButton("BtAchievements", () => {
+            var aboutBt = new gameui.ImageButton("BtPedia", () => {
                 JoinJelly.showPedia();
             });
             aboutBt.y = -150;
@@ -91,7 +91,7 @@
 
 
             //add leaderboards button
-            var leaderboardsBt = new gameui.ImageButton("btRecord",() => {
+            var leaderboardsBt = new gameui.ImageButton("BtTextBg",() => {
                 JoinJelly.gameServices.showLeaderboard();
             });
             leaderboardsBt.y = -150;

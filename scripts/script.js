@@ -1234,13 +1234,13 @@ var joinjelly;
             storeBt.y = -150;
             storeBt.x = x -= space;
             this.footer.addChild(storeBt);
-            var aboutBt = new gameui.ImageButton("BtAchievements", function () {
+            var aboutBt = new gameui.ImageButton("BtPedia", function () {
                 joinjelly.JoinJelly.showPedia();
             });
             aboutBt.y = -150;
             aboutBt.x = x -= space;
             this.footer.addChild(aboutBt);
-            var leaderboardsBt = new gameui.ImageButton("btRecord", function () {
+            var leaderboardsBt = new gameui.ImageButton("BtTextBg", function () {
                 joinjelly.JoinJelly.gameServices.showLeaderboard();
             });
             leaderboardsBt.y = -150;
@@ -2510,7 +2510,7 @@ var joinjelly;
                     var playBt = new gameui.ImageButton("BtPlay", (function () {
                         _this.dispatchEvent("play");
                     }));
-                    playBt.set({ x: 157, y: 215 });
+                    playBt.set({ x: 157, y: 215, scaleX: 0.5, scaleY: 0.5 });
                     this.addChild(playBt);
                     var home = new gameui.ImageButton("BtMenu", (function () {
                         _this.dispatchEvent("home");
@@ -2628,24 +2628,20 @@ var joinjelly;
                 }
                 FinishMenu.prototype.addButtons = function () {
                     var _this = this;
-                    var close = new gameui.ImageButton("BtClose", (function () {
-                        _this.dispatchEvent("board");
+                    var close = new gameui.ImageButton("BtMinimize", (function () {
+                        _this.dispatchEvent("minimize");
                     }));
                     close.set({ x: 1350, y: 660 });
                     this.addChild(close);
-                    var share = new gameui.ImageButton("BtShare", (function () {
-                        _this.dispatchEvent("share");
-                    }));
-                    share.set({ x: 1240, y: 1020 });
-                    var home = new gameui.ImageButton("BtHome", (function () {
-                        _this.dispatchEvent("ok");
+                    var home = new gameui.ImageButton("BtMenu", (function () {
+                        _this.dispatchEvent("home");
                     }));
                     home.set({ x: 353, y: 1780 });
                     this.addChild(home);
                     var restart = new gameui.ImageButton("BtRestart", (function () {
                         _this.dispatchEvent("restart");
                     }));
-                    restart.set({ x: 1190, y: 1780 });
+                    restart.set({ x: 353 + 300, y: 1780 });
                     this.addChild(restart);
                 };
                 FinishMenu.prototype.addPoints = function () {
@@ -3281,7 +3277,7 @@ var joinjelly;
                     tbt.fadeOut();
                     gameui.AudiosManager.playSound("Interface Sound-06");
                 });
-                tbt.set({ x: 150, y: -150, visible: false });
+                tbt.set({ x: defaultWidth - 150, y: -150, visible: false });
                 this.footer.addChild(tbt);
                 this.showBoardButton = tbt;
                 this.finishMenu.addEventListener("restart", function () {
@@ -3291,10 +3287,11 @@ var joinjelly;
                         joinjelly.JoinJelly.startLevel();
                     }, 200);
                 });
-                this.finishMenu.addEventListener("ok", function () {
+                this.finishMenu.addEventListener("home", function () {
+                    _this.userData.deleteSaveGame();
                     joinjelly.JoinJelly.showMainMenu();
                 });
-                this.finishMenu.addEventListener("board", function () {
+                this.finishMenu.addEventListener("minimize", function () {
                     _this.finishMenu.hide();
                     _this.gameHeader.show();
                     tbt.fadeIn();
@@ -3333,6 +3330,7 @@ var joinjelly;
                 });
                 this.pauseMenuOverlay.addEventListener("home", function () {
                     _this.pauseMenuOverlay.hide();
+                    _this.userData.deleteSaveGame();
                     setTimeout(function () {
                         joinjelly.JoinJelly.showMainMenu();
                     }, 200);

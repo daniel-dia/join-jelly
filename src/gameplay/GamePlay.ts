@@ -162,7 +162,7 @@
                 gameui.AudiosManager.playSound("Interface Sound-06");
             });
 
-            tbt.set({ x: 150, y: -150, visible: false });
+            tbt.set({ x: defaultWidth - 150, y: -150, visible: false });
             this.footer.addChild(tbt);
             this.showBoardButton = tbt;
 
@@ -175,11 +175,12 @@
             });
 
 
-            this.finishMenu.addEventListener("ok", () => {
+            this.finishMenu.addEventListener("home",() => {
+                this.userData.deleteSaveGame();
                 JoinJelly.showMainMenu();
             });
 
-            this.finishMenu.addEventListener("board", () => {
+            this.finishMenu.addEventListener("minimize", () => {
                 this.finishMenu.hide();
                 this.gameHeader.show();
                 tbt.fadeIn();
@@ -234,6 +235,7 @@
 
             this.pauseMenuOverlay.addEventListener("home", () => {
                 this.pauseMenuOverlay.hide();
+                this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
             });
 

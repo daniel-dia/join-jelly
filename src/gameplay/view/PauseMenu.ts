@@ -24,7 +24,7 @@
                 this.dispatchEvent("play")
             }));
 
-            playBt.set({ x: 157, y: 215});
+            playBt.set({ x: 157, y: 215, scaleX:0.5, scaleY:0.5});
             this.addChild(playBt);
 
             //add home button;

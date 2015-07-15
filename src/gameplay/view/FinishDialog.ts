@@ -18,22 +18,22 @@
         private addButtons() {
 
             //add share button;
-            var close = new gameui.ImageButton("BtClose", (() => {
-                this.dispatchEvent("board")
+            var close = new gameui.ImageButton("BtMinimize", (() => {
+                this.dispatchEvent("minimize")
             }));
             close.set({ x: 1350, y: 660 });
             this.addChild(close);
 
-            //add showBoard button
-            var share = new gameui.ImageButton("BtShare", (() => {
-                this.dispatchEvent("share")
-            }));
-            share.set({ x: 1240, y: 1020 });
-            // this.addChild(share);
+            ////add showBoard button
+            //var share = new gameui.ImageButton("BtShare", (() => {
+            //    this.dispatchEvent("share")
+            //}));
+            //share.set({ x: 1240, y: 1020 });
+            //this.addChild(share);
 
             //add home button;
-            var home = new gameui.ImageButton("BtHome", (() => {
-                this.dispatchEvent("ok")
+            var home = new gameui.ImageButton("BtMenu", (() => {
+                this.dispatchEvent("home")
             }));
             home.set({ x: 353, y: 1780 });
             this.addChild(home);
@@ -42,7 +42,7 @@
             var restart = new gameui.ImageButton("BtRestart", (() => {
                 this.dispatchEvent("restart")
             }));
-            restart.set({ x: 1190, y: 1780 });
+            restart.set({ x: 353 + 300, y: 1780 });
             this.addChild(restart);
         }
 
