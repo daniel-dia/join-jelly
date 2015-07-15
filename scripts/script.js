@@ -23,6 +23,12 @@ var gameui;
             if (scaleX === void 0) { scaleX = 0.5; }
             if (scaleY === void 0) { scaleY = 0.5; }
             this.resetFade();
+            if (!this.scaleX)
+                this.scaleX = 1;
+            if (!this.scaleY)
+                this.scaleY = 1;
+            this.oldScaleX = this.scaleX;
+            this.oldScaleY = this.scaleY;
             createjs.Tween.get(this).to({
                 scaleX: scaleX,
                 scaleY: scaleY,
@@ -33,7 +39,8 @@ var gameui;
                 _this.visible = false;
                 _this.x = _this.antX;
                 _this.y = _this.antY;
-                _this.scaleX = _this.scaleY = 1;
+                _this.scaleX = _this.oldScaleX;
+                _this.scaleY = _this.oldScaleY;
                 _this.alpha = 1;
                 _this.animating = false;
                 _this.mouseEnabled = true;
@@ -44,6 +51,8 @@ var gameui;
             this.animating = true;
             this.antX = this.x;
             this.antY = this.y;
+            this.scaleX = this.oldScaleX;
+            this.scaleY = this.oldScaleY;
             this.mouseEnabled = false;
             createjs.Tween.removeTweens(this);
         };
@@ -53,6 +62,12 @@ var gameui;
             if (scaleY === void 0) { scaleY = 0.5; }
             if (this.visible = true)
                 this.antX = null;
+            if (!this.scaleX)
+                this.scaleX = 1;
+            if (!this.scaleY)
+                this.scaleY = 1;
+            this.oldScaleX = this.scaleX;
+            this.oldScaleY = this.scaleY;
             this.visible = true;
             this.animating = true;
             if (this.antX == null) {
@@ -64,8 +79,8 @@ var gameui;
             this.mouseEnabled = false;
             createjs.Tween.removeTweens(this);
             createjs.Tween.get(this).to({
-                scaleX: 1,
-                scaleY: 1,
+                scaleX: this.oldScaleX,
+                scaleY: this.oldScaleY,
                 alpha: 1,
                 x: this.antX,
                 y: this.antY,
@@ -1396,13 +1411,13 @@ var joinjelly;
         (function (view) {
             var FlyOutMenu = (function (_super) {
                 __extends(FlyOutMenu, _super);
-                function FlyOutMenu(title, heigth) {
-                    if (heigth === void 0) { heigth = 1022; }
+                function FlyOutMenu(title, height) {
+                    if (height === void 0) { height = 1022; }
                     _super.call(this);
-                    this.top = defaultHeight / 2 + 1022 - heigth;
+                    this.top = defaultHeight / 2 - 200;
                     this.regX = this.x = defaultWidth / 2;
                     this.regY = this.y = defaultHeight / 2;
-                    this.AddBG(heigth);
+                    this.AddBG(height);
                     this.addTitle(title);
                     this.visible = false;
                 }
@@ -1411,6 +1426,7 @@ var joinjelly;
                     this.title.regX = this.title.getBounds().width / 2;
                 };
                 FlyOutMenu.prototype.AddBG = function (heigth) {
+                    if (heigth === void 0) { heigth = 1022; }
                     var dk = gameui.AssetsManager.getBitmap("popupdark");
                     this.addChild(dk);
                     dk.scaleX = dk.scaleY = 16;
@@ -2147,10 +2163,10 @@ var joinjelly;
                     this.levelText = level;
                     this.addChild(level);
                 };
-                GameHeader.prototype.hidePauseButton = function () {
+                GameHeader.prototype.hideButtons = function () {
                     this.pauseButton.fadeOut();
                 };
-                GameHeader.prototype.showPauseButton = function () {
+                GameHeader.prototype.showButtons = function () {
                     this.pauseButton.fadeIn();
                 };
                 GameHeader.prototype.hide = function () {
@@ -2483,32 +2499,57 @@ var joinjelly;
             var PauseMenuOverlay = (function (_super) {
                 __extends(PauseMenuOverlay, _super);
                 function PauseMenuOverlay() {
-                    _super.call(this, StringResources.menus.pause);
+                    _super.call(this);
+                    this.AddBG(1000);
+                    this.addTitle(StringResources.menus.pause);
                     this.addButtons();
-                    var soundOptions = new joinjelly.menus.view.SoundOptions();
-                    this.addChild(soundOptions);
-                    soundOptions.set({ x: defaultWidth / 2, y: 1000 });
+                    this.visible = false;
                 }
                 PauseMenuOverlay.prototype.addButtons = function () {
                     var _this = this;
-                    var ok = new gameui.ImageButton("BtPlay", (function () {
+                    var playBt = new gameui.ImageButton("BtPlay", (function () {
                         _this.dispatchEvent("play");
                     }));
-                    ok.set({ x: 771, y: 1599 });
-                    this.addChild(ok);
-                    var home = new gameui.ImageButton("BtHome", (function () {
+                    playBt.set({ x: 157, y: 215 });
+                    this.addChild(playBt);
+                    var home = new gameui.ImageButton("BtMenu", (function () {
                         _this.dispatchEvent("home");
                     }));
-                    home.set({ x: 353, y: 1570 });
+                    home.set({ x: 157, y: 215 + 300 });
                     this.addChild(home);
                     var restart = new gameui.ImageButton("BtRestart", (function () {
                         _this.dispatchEvent("restart");
                     }));
-                    restart.set({ x: 1190, y: 1570 });
+                    restart.set({ x: 157, y: 215 + 600 });
                     this.addChild(restart);
                 };
+                PauseMenuOverlay.prototype.hide = function () {
+                    this.fadeOut();
+                };
+                PauseMenuOverlay.prototype.show = function () {
+                    this.fadeIn();
+                };
+                PauseMenuOverlay.prototype.AddBG = function (heigth) {
+                    if (heigth === void 0) { heigth = 1022; }
+                    var dk = gameui.AssetsManager.getBitmap("popupdark");
+                    this.addChild(dk);
+                    dk.scaleX = dk.scaleY = 16;
+                    dk.x = -defaultWidth / 2;
+                    dk.y = -defaultHeight / 2;
+                    dk.mouseEnabled = false;
+                };
+                PauseMenuOverlay.prototype.addTitle = function (title) {
+                    this.title = gameui.AssetsManager.getBitmapText("", "debussyBig");
+                    this.title.set({ x: defaultWidth / 2, y: 350 });
+                    this.addChild(this.title);
+                    this.setTitle(title);
+                };
+                PauseMenuOverlay.prototype.setTitle = function (title) {
+                    this.title.text = title.toUpperCase();
+                    this.title.regX = this.title.getBounds().width / 2;
+                };
                 return PauseMenuOverlay;
-            })(joinjelly.menus.view.FlyOutMenu);
+            })(gameui.UIItem);
             view.PauseMenuOverlay = PauseMenuOverlay;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
@@ -2587,11 +2628,11 @@ var joinjelly;
                 }
                 FinishMenu.prototype.addButtons = function () {
                     var _this = this;
-                    var board = new gameui.ImageButton("BtBoard", (function () {
+                    var close = new gameui.ImageButton("BtClose", (function () {
                         _this.dispatchEvent("board");
                     }));
-                    board.set({ x: defaultWidth / 2, y: 1780 });
-                    this.addChild(board);
+                    close.set({ x: 1350, y: 660 });
+                    this.addChild(close);
                     var share = new gameui.ImageButton("BtShare", (function () {
                         _this.dispatchEvent("share");
                     }));
@@ -2621,7 +2662,7 @@ var joinjelly;
                     tx.scaleX = tx.scaleY = 0.8;
                     container.addChild(tx);
                     this.highScoreText = tx;
-                    container.y += 260;
+                    container.y += 275;
                     this.addChild(container);
                     return container;
                 };
@@ -3227,14 +3268,14 @@ var joinjelly;
                 this.overlay.addChild(this.finishMenu);
                 this.finishMenu.y = -200;
                 this.pauseMenuOverlay = new gameplay.view.PauseMenuOverlay();
-                this.content.addChild(this.pauseMenuOverlay);
+                this.header.addChild(this.pauseMenuOverlay);
                 this.gameMessage = new gameplay.view.TutoralMessage();
                 this.content.addChild(this.gameMessage);
                 this.countDown = new gameplay.view.CountDown();
                 this.content.addChild(this.countDown);
                 this.countDown.x = defaultWidth / 2;
                 this.countDown.y = defaultHeight / 2;
-                var tbt = new gameui.ImageButton("BtBoard", function () {
+                var tbt = new gameui.ImageButton("BtMenu", function () {
                     _this.finishMenu.show();
                     _this.gameHeader.hide();
                     tbt.fadeOut();
@@ -3278,6 +3319,9 @@ var joinjelly;
                 this.gameHeader.addEventListener("pause", function () {
                     _this.pauseGame();
                 });
+                this.gameHeader.addEventListener("play", function () {
+                    _this.continueGame();
+                });
                 this.pauseMenuOverlay.addEventListener("play", function () {
                     _this.continueGame();
                 });
@@ -3291,6 +3335,13 @@ var joinjelly;
                     _this.pauseMenuOverlay.hide();
                     setTimeout(function () {
                         joinjelly.JoinJelly.showMainMenu();
+                    }, 200);
+                });
+                this.gameHeader.addEventListener("restart", function () {
+                    _this.pauseMenuOverlay.hide();
+                    _this.userData.deleteSaveGame();
+                    setTimeout(function () {
+                        joinjelly.JoinJelly.startLevel();
                     }, 200);
                 });
                 this.pauseMenuOverlay.addEventListener("restart", function () {
@@ -3345,6 +3396,7 @@ var joinjelly;
                 this.board.cleanBoard();
                 this.board.unlock();
                 this.updateInterfaceInfos();
+                this.gameHeader.showButtons();
                 gameui.AudiosManager.playMusic("music1");
                 this.gamestate = 1 /* playing */;
                 this.step(500);
@@ -3376,14 +3428,13 @@ var joinjelly;
                 this.gamestate = 2 /* paused */;
                 this.board.lock();
                 this.gameFooter.lockAll();
-                this.gameHeader.mouseEnabled = false;
                 this.pauseMenuOverlay.show();
-                this.gameHeader.hidePauseButton();
+                this.gameHeader.hideButtons();
             };
             GamePlayScreen.prototype.continueGame = function () {
                 var _this = this;
                 this.pauseMenuOverlay.hide();
-                this.gameHeader.hidePauseButton();
+                this.gameHeader.hideButtons();
                 this.gamestate = 4 /* standBy */;
                 this.board.lock();
                 setTimeout(function () {
@@ -3392,7 +3443,7 @@ var joinjelly;
                     _this.gameHeader.mouseEnabled = true;
                     _this.content.mouseEnabled = true;
                     _this.gameFooter.unlockAll();
-                    _this.gameHeader.showPauseButton();
+                    _this.gameHeader.showButtons();
                 }, 3200);
                 this.countDown.countDown(3);
             };
@@ -3410,7 +3461,7 @@ var joinjelly;
                 this.gameHeader.mouseEnabled = false;
                 this.gameFooter.mouseEnabled = false;
                 this.gameHeader.hide();
-                this.gameHeader.hidePauseButton();
+                this.gameHeader.hideButtons();
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
                 setTimeout(function () {
                     if (win)
@@ -3736,7 +3787,7 @@ var joinjelly;
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 this.gameHeader.mouseEnabled = true;
                 this.gameHeader.show();
-                this.gameHeader.showPauseButton();
+                this.gameHeader.showButtons();
                 if (!test) {
                     this.reviveEffect.alpha = 0;
                     this.reviveEffect.visible = true;

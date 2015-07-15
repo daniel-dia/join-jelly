@@ -18,11 +18,11 @@
         private addButtons() {
 
             //add share button;
-            var board = new gameui.ImageButton("BtBoard", (() => {
+            var close = new gameui.ImageButton("BtClose", (() => {
                 this.dispatchEvent("board")
             }));
-            board.set({ x: defaultWidth / 2, y: 1780 });
-            this.addChild(board);
+            close.set({ x: 1350, y: 660 });
+            this.addChild(close);
 
             //add showBoard button
             var share = new gameui.ImageButton("BtShare", (() => {
@@ -69,7 +69,7 @@
             container.addChild(tx);
             this.highScoreText = tx;
 
-            container.y += 260;
+            container.y += 275;
             this.addChild(container);
 
             return container;

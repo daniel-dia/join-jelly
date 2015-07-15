@@ -76,6 +76,7 @@
        { id: "particle", src: "Particle.png" },
 
        { id: "BtRestart", src: "BtRestart.png" },
+       { id: "BtClose", src: "BtClose.png" },
        { id: "BtAchievements", src: "BtAchievements.png" },
        { id: "BtLeaderBoards", src: "BtLeaderBoards.png" },
        { id: "BtEdit", src: "BtEdit.png" },

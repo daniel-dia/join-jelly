@@ -142,7 +142,7 @@
 
             // creates pause menu
             this.pauseMenuOverlay = new view.PauseMenuOverlay();
-            this.content.addChild(this.pauseMenuOverlay);
+            this.header.addChild(this.pauseMenuOverlay);
 
             // create game message
             this.gameMessage = new view.TutoralMessage();
@@ -155,7 +155,7 @@
             this.countDown.y = defaultHeight / 2;
 
             // creates a toggle button
-            var tbt = new gameui.ImageButton("BtBoard", () => {
+            var tbt = new gameui.ImageButton("BtMenu", () => {
                 this.finishMenu.show();
                 this.gameHeader.hide();
                 tbt.fadeOut();
@@ -211,10 +211,14 @@
             });
 
             this.gameHeader.addEventListener("pause",() => {
-                
                 this.pauseGame();
-                
             });
+
+            this.gameHeader.addEventListener("play",() => {
+                this.continueGame();
+            });
+
+         
 
             this.pauseMenuOverlay.addEventListener("play", () => {
                 this.continueGame();
@@ -231,6 +235,12 @@
             this.pauseMenuOverlay.addEventListener("home", () => {
                 this.pauseMenuOverlay.hide();
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
+            });
+
+            this.gameHeader.addEventListener("restart",() => {
+                this.pauseMenuOverlay.hide();
+                this.userData.deleteSaveGame();
+                setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 
             this.pauseMenuOverlay.addEventListener("restart", () => {
@@ -320,6 +330,7 @@
 
             // update interfaces
             this.updateInterfaceInfos();
+            this.gameHeader.showButtons();
 
             // play music
             gameui.AudiosManager.playMusic("music1");
@@ -376,16 +387,16 @@
             this.gamestate = GameState.paused;
             this.board.lock();
             this.gameFooter.lockAll();
-            this.gameHeader.mouseEnabled = false;
+            //this.gameHeader.mouseEnabled = false;
             this.pauseMenuOverlay.show();
-            this.gameHeader.hidePauseButton();
+            this.gameHeader.hideButtons();
         }
 
         // unpause game
         private continueGame() {
             //hide menus
             this.pauseMenuOverlay.hide();
-            this.gameHeader.hidePauseButton();
+            this.gameHeader.hideButtons();
             this.gamestate = GameState.standBy;
             this.board.lock();
 
@@ -396,7 +407,8 @@
                 this.gameHeader.mouseEnabled = true;
                 this.content.mouseEnabled = true;
                 this.gameFooter.unlockAll();
-                this.gameHeader.showPauseButton();
+                this.gameHeader.showButtons();
+
             }, 3200);
 
             //show a 3 seconds countdown to resume game
@@ -430,7 +442,7 @@
             this.gameFooter.mouseEnabled = false;
 
             this.gameHeader.hide();
-            this.gameHeader.hidePauseButton();
+            this.gameHeader.hideButtons();
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
         
             // shows finished game menu
@@ -927,7 +939,7 @@
             // remove other ui items
             this.gameHeader.mouseEnabled = true;
             this.gameHeader.show();
-            this.gameHeader.showPauseButton();
+            this.gameHeader.showButtons();
 
             // if not test, than play effects.
             if (!test) {

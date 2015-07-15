@@ -5,15 +5,15 @@
         private title: createjs.BitmapText;
         private top: number;
 
-        constructor(title: string, heigth: number = 1022) {
+        constructor(title: string, height: number = 1022) {
             super();
 
-            this.top = defaultHeight / 2 + 1022 - heigth;
+            this.top = defaultHeight / 2 - 200;
 
             this.regX = this.x = defaultWidth / 2;
             this.regY = this.y = defaultHeight / 2;
 
-            this.AddBG(heigth);
+            this.AddBG(height);
             this.addTitle(title);
 
             this.visible = false;
@@ -25,7 +25,7 @@
         }
 
         // creates menu background
-        private AddBG(heigth: number) {
+        private AddBG(heigth: number = 1022) {
             var dk = gameui.AssetsManager.getBitmap("popupdark");
             this.addChild(dk);
             dk.scaleX = dk.scaleY = 16

@@ -90,11 +90,11 @@
 
         }
 
-        public hidePauseButton() {
+        public hideButtons() {
             this.pauseButton.fadeOut();
         }
 
-        public showPauseButton() {
+        public showButtons() {
             this.pauseButton.fadeIn();
         }
 
