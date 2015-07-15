@@ -177,7 +177,10 @@
 
             this.finishMenu.addEventListener("home",() => {
                 this.userData.deleteSaveGame();
+                // save high score
+                JoinJelly.userData.setScore(Math.max(this.score, JoinJelly.userData.getHighScore()));
                 JoinJelly.showMainMenu();
+                
             });
 
             this.finishMenu.addEventListener("minimize", () => {
@@ -235,6 +238,7 @@
 
             this.pauseMenuOverlay.addEventListener("home", () => {
                 this.pauseMenuOverlay.hide();
+                JoinJelly.userData.setScore(Math.max(this.score, JoinJelly.userData.getHighScore()));
                 this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
             });
@@ -319,8 +323,6 @@
         // starts the game
         protected start() {
 
-            //this.selfPeformanceTest()
-
             this.level = 1;
             this.matches = 0;
             this.time = Date.now();
@@ -343,6 +345,9 @@
 
             // log game start event
             JoinJelly.analytics.logGameStart();
+
+            // set one more time played
+            JoinJelly.userData.addOneMorePlay();
 
             // set first achievement (jelly 1)
             this.highJellySave(1);

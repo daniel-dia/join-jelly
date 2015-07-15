@@ -24,7 +24,10 @@
 
        { id: "loadingBall", src: "loadingBall.png" },
        { id: "Background", src: "Background.jpg" },
-	   
+
+	   { id: "star", src: "star.png" },
+       { id: "starOff", src: "starOff.png" },
+
        { id: "hex", src: "hex.png" },
        { id: "powerTip", src: "powerTip.png" },
        { id: "bonus_icon", src: "bonus_icon.png" },

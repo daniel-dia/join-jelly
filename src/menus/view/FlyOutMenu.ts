@@ -31,15 +31,17 @@
             dk.scaleX = dk.scaleY = 16
             dk.x = -defaultWidth / 2;
             dk.y = -defaultHeight / 2;
-            dk.mouseEnabled = false;
+            dk.mouseEnabled = true;
+            var rec = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 192, 256))
+            dk.hitArea = rec;
 
             var bg = gameui.AssetsManager.getBitmap("FlyBG");
             bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
             bg.scaleY = heigth / 1022;
             this.addChild(bg);
-
-            bg.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-bg.x + bg.regX, -bg.y + bg.regY, defaultWidth, defaultHeight));
-
+           
+            bg.mouseEnabled = true;
+            
         }
 
         // creates menu title

@@ -100,6 +100,9 @@ class Analytics {
     public logGameStart() {
         this.sendEvent("GameStart", "start", 1);
     }
+    public logRating(rate) {
+        this.sendEvent("Rating", "userRate", rate);
+    }
 
     public logUsedItem(itemId: string, level: number) {
         this.sendEvent("UseItem", itemId, 1, level);

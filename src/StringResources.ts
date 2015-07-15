@@ -25,6 +25,8 @@
         playerName: "Player Name",
         playerNameDesc: "Type your name for the leaderboards.",
         error: "Sorry, Something went wrong",
+        rating: "Rate us",
+        ratingDesc: "Are you enjoying?\nPlease rate us"
 
     },
     tutorial: {
@@ -129,6 +131,8 @@ var StringResources_pt = {
         playerName: "Nome do Jogador",
         playerNameDesc: "Digite seu nome para aparecer no placar dos melhores",
         error: "Desculpe, algo deu errado.",
+        rating: "Avaliação",
+        ratingDesc: "Está gostando? \nNos Ajude. Dê sua avaliação"
     },
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",

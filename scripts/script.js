@@ -780,6 +780,8 @@ var StringResources = {
         playerName: "Player Name",
         playerNameDesc: "Type your name for the leaderboards.",
         error: "Sorry, Something went wrong",
+        rating: "Rate us",
+        ratingDesc: "Are you enjoying?\nPlease rate us"
     },
     tutorial: {
         msgheplme: "Help me to evolve\nJoin  2 identical jellies.",
@@ -878,6 +880,8 @@ var StringResources_pt = {
         playerName: "Nome do Jogador",
         playerNameDesc: "Digite seu nome para aparecer no placar dos melhores",
         error: "Desculpe, algo deu errado.",
+        rating: "Avaliação",
+        ratingDesc: "Está gostando? \nNos Ajude. Dê sua avaliação"
     },
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
@@ -1027,6 +1031,9 @@ var Analytics = (function () {
     };
     Analytics.prototype.logGameStart = function () {
         this.sendEvent("GameStart", "start", 1);
+    };
+    Analytics.prototype.logRating = function (rate) {
+        this.sendEvent("Rating", "userRate", rate);
     };
     Analytics.prototype.logUsedItem = function (itemId, level) {
         this.sendEvent("UseItem", itemId, 1, level);
@@ -1188,7 +1195,12 @@ var joinjelly;
             this.createBackground();
             this.createButtons();
             this.createTitle();
+            this.rating = new joinjelly.menus.view.RatingFlyOut();
+            this.content.addChild(this.rating);
+            this.rating.x = defaultWidth / 2;
+            this.rating.y = defaultHeight / 2;
             gameui.AudiosManager.playMusic("musicIntro");
+            this.rating.show();
         }
         MainScreen.prototype.createContent = function () {
             var lobby = new joinjelly.menus.view.JellyLobby(this.userData.getLastJelly());
@@ -1432,12 +1444,14 @@ var joinjelly;
                     dk.scaleX = dk.scaleY = 16;
                     dk.x = -defaultWidth / 2;
                     dk.y = -defaultHeight / 2;
-                    dk.mouseEnabled = false;
+                    dk.mouseEnabled = true;
+                    var rec = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 192, 256));
+                    dk.hitArea = rec;
                     var bg = gameui.AssetsManager.getBitmap("FlyBG");
                     bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
                     bg.scaleY = heigth / 1022;
                     this.addChild(bg);
-                    bg.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-bg.x + bg.regX, -bg.y + bg.regY, defaultWidth, defaultHeight));
+                    bg.mouseEnabled = true;
                 };
                 FlyOutMenu.prototype.addTitle = function (title) {
                     this.title = gameui.AssetsManager.getBitmapText("", "debussyBig");
@@ -3289,6 +3303,7 @@ var joinjelly;
                 });
                 this.finishMenu.addEventListener("home", function () {
                     _this.userData.deleteSaveGame();
+                    joinjelly.JoinJelly.userData.setScore(Math.max(_this.score, joinjelly.JoinJelly.userData.getHighScore()));
                     joinjelly.JoinJelly.showMainMenu();
                 });
                 this.finishMenu.addEventListener("minimize", function () {
@@ -3330,6 +3345,7 @@ var joinjelly;
                 });
                 this.pauseMenuOverlay.addEventListener("home", function () {
                     _this.pauseMenuOverlay.hide();
+                    joinjelly.JoinJelly.userData.setScore(Math.max(_this.score, joinjelly.JoinJelly.userData.getHighScore()));
                     _this.userData.deleteSaveGame();
                     setTimeout(function () {
                         joinjelly.JoinJelly.showMainMenu();
@@ -3399,6 +3415,7 @@ var joinjelly;
                 this.gamestate = 1 /* playing */;
                 this.step(500);
                 joinjelly.JoinJelly.analytics.logGameStart();
+                joinjelly.JoinJelly.userData.addOneMorePlay();
                 this.highJellySave(1);
             };
             GamePlayScreen.prototype.step = function (timeout) {
@@ -4285,6 +4302,14 @@ var UserData = (function () {
                 callback();
             }
         });
+    };
+    UserData.prototype.addOneMorePlay = function () {
+        var un = UserData.loadValue("plays", 0);
+        un++;
+        UserData.saveValue("plays", un);
+    };
+    UserData.prototype.getPlays = function () {
+        return UserData.loadValue("plays", 0);
     };
     UserData.prototype.getMusicVol = function () {
         return UserData.loadValue("music", 1);
@@ -5179,6 +5204,159 @@ var joinjelly;
                 return ProductListItem;
             })(createjs.Container);
             view.ProductListItem = ProductListItem;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var RatingFlyOut = (function (_super) {
+                __extends(RatingFlyOut, _super);
+                function RatingFlyOut() {
+                    _super.call(this, StringResources.menus.rating, 1250);
+                    this.addTexts();
+                    this.addButtons();
+                    this.addStars();
+                }
+                RatingFlyOut.prototype.show = function () {
+                    if (!navigator.onLine)
+                        return;
+                    if (joinjelly.JoinJelly.userData.getHistory("rated"))
+                        return;
+                    if (joinjelly.JoinJelly.userData.getPlays() < 3)
+                        return;
+                    if (joinjelly.JoinJelly.userData.getHighScore() < 5000)
+                        return;
+                    _super.prototype.show.call(this);
+                };
+                RatingFlyOut.prototype.addTexts = function () {
+                    var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.ratingDesc, "debussy");
+                    tx.set({ x: 200, y: 880 });
+                    this.addChild(tx);
+                    this.scoreText = tx;
+                };
+                RatingFlyOut.prototype.addButtons = function () {
+                    var _this = this;
+                    var close = new gameui.ImageButton("BtClose", (function () {
+                        _this.hide();
+                    }));
+                    close.set({ x: 1350, y: 660 });
+                    this.addChild(close);
+                };
+                RatingFlyOut.prototype.addStars = function () {
+                    var _this = this;
+                    var stars = [];
+                    for (var i = 0; i < 5; i++) {
+                        var star = new Star();
+                        this.addChild(star);
+                        star.y = 1300;
+                        star.x = 200 * i + (defaultWidth - 800) / 2;
+                        stars[i] = star;
+                    }
+                    stars[0].addEventListener("click", function () {
+                        stars[0].turnOn();
+                        stars[1].turnOff();
+                        stars[2].turnOff();
+                        stars[3].turnOff();
+                        stars[4].turnOff();
+                        _this.saveRating(1);
+                        _this.askForDetails();
+                    });
+                    stars[1].addEventListener("click", function () {
+                        stars[0].turnOn();
+                        stars[1].turnOn();
+                        stars[2].turnOff();
+                        stars[3].turnOff();
+                        stars[4].turnOff();
+                        _this.saveRating(2);
+                        _this.askForDetails();
+                    });
+                    stars[2].addEventListener("click", function () {
+                        stars[0].turnOn();
+                        stars[1].turnOn();
+                        stars[2].turnOn();
+                        stars[3].turnOff();
+                        stars[4].turnOff();
+                        _this.saveRating(3);
+                        _this.thankUser();
+                    });
+                    stars[3].addEventListener("click", function () {
+                        stars[0].turnOn();
+                        stars[1].turnOn();
+                        stars[2].turnOn();
+                        stars[3].turnOn();
+                        stars[4].turnOff();
+                        _this.saveRating(4);
+                        _this.gotoStore();
+                    });
+                    stars[4].addEventListener("click", function () {
+                        stars[0].turnOn();
+                        stars[1].turnOn();
+                        stars[2].turnOn();
+                        stars[3].turnOn();
+                        stars[4].turnOn();
+                        _this.saveRating(5);
+                        _this.gotoStore();
+                    });
+                };
+                RatingFlyOut.prototype.saveRating = function (rate) {
+                    joinjelly.JoinJelly.userData.history("rated");
+                    joinjelly.JoinJelly.analytics.logRating(rate);
+                };
+                RatingFlyOut.prototype.askForDetails = function () {
+                    this.hide();
+                };
+                RatingFlyOut.prototype.thankUser = function () {
+                    this.hide();
+                };
+                RatingFlyOut.prototype.gotoStore = function () {
+                    this.hide();
+                    var IOS_RATING_URL = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=519623307&onlyLatestVersion=false&type=Purple+Software";
+                    var ANDROID_RATING_URL = "market://details?id=com.diastudio.joinjelly";
+                    var ratingURL = null;
+                    var os = "web";
+                    if (Cocoon.Device.getDeviceInfo())
+                        os = Cocoon.Device.getDeviceInfo().os;
+                    if (os == "web")
+                        return;
+                    else if (os == "ios")
+                        ratingURL = IOS_RATING_URL;
+                    else if (os == "android")
+                        ratingURL = ANDROID_RATING_URL;
+                    else if (os == "windows")
+                        return;
+                    Cocoon.App.openURL(ratingURL);
+                };
+                return RatingFlyOut;
+            })(view.FlyOutMenu);
+            view.RatingFlyOut = RatingFlyOut;
+            var Star = (function (_super) {
+                __extends(Star, _super);
+                function Star() {
+                    _super.call(this);
+                    var starOff = gameui.AssetsManager.getBitmap("starOff");
+                    var star = gameui.AssetsManager.getBitmap("star");
+                    star.regX = star.regY = 140 / 2;
+                    starOff.regX = starOff.regY = 140 / 2;
+                    this.addChild(starOff);
+                    this.addChild(star);
+                    star.visible = false;
+                    this.width = 140;
+                    this.height = 140;
+                    this.createHitArea();
+                    this.star = star;
+                }
+                Star.prototype.turnOn = function () {
+                    this.star.visible = true;
+                };
+                Star.prototype.turnOff = function () {
+                    this.star.visible = false;
+                };
+                return Star;
+            })(gameui.Button);
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));

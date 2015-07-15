@@ -10,6 +10,8 @@
 
         private userData: UserData;
 
+        private rating: menus.view.RatingFlyOut;
+   
         constructor(userData: UserData) {
             super();
 
@@ -20,7 +22,15 @@
             this.createButtons();
             this.createTitle();
 
+            // rating Menu
+            this.rating = new menus.view.RatingFlyOut();
+            this.content.addChild(this.rating);
+            this.rating.x = defaultWidth / 2;
+            this.rating.y = defaultHeight / 2;
+            
             gameui.AudiosManager.playMusic("musicIntro");
+
+            this.rating.show();
 
         }
 
@@ -53,9 +63,6 @@
         }
 
         private createButtons() {
-
-        
-
             var x = defaultWidth + 100;
             var space = 250;
 

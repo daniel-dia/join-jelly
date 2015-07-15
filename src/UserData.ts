@@ -61,6 +61,16 @@
             );
     }
 
+    public addOneMorePlay() {
+        var un = UserData.loadValue("plays",0);
+        un++;
+        UserData.saveValue("plays", un);
+    }
+
+    public getPlays() {
+        return UserData.loadValue("plays", 0);
+    }
+
     //#endregion
 
     //#region options
