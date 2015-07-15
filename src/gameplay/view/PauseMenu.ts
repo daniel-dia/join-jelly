@@ -11,9 +11,6 @@
             this.addButtons();
 
             this.visible = false;
-            //var soundOptions = new menus.view.SoundOptions();
-            //this.addChild(soundOptions);
-            //soundOptions.set({ x: defaultWidth / 2, y: 1000 });
         }
  
         //creates buttons controls
