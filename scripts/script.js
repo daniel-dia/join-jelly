@@ -5323,7 +5323,7 @@ var joinjelly;
                     if (os == "web")
                         return;
                     else if (os == "ios")
-                        ratingURL = IOS_RATING_URL;
+                        return;
                     else if (os == "android")
                         ratingURL = ANDROID_RATING_URL;
                     else if (os == "windows")

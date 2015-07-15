@@ -131,7 +131,7 @@
             if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
 
             if (os == "web") return;
-            else if (os == "ios") ratingURL = IOS_RATING_URL;
+            else if (os == "ios") return;
             else if (os == "android") ratingURL = ANDROID_RATING_URL;
             else if (os == "windows") return;
 
