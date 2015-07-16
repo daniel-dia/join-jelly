@@ -29,7 +29,7 @@ module joinjelly.menus {
 
           
             //load audio
-            if (!testMode && !WPAudioManager) {
+            if (!testMode && typeof WPAudioManager== 'undefined') {
                 createjs.Sound.alternateExtensions = ["mp3"];
                 createjs.Sound.registerSounds(audioManifest, audioPath);
             }

@@ -160,7 +160,7 @@ WindowsNativeFunctions = {
 
 
 Cocoon.App.exitCallback = function (appShouldFinishCallback) {
-
+    if (!Windows.Phone) return;
     var hardwareButtons = Windows.Phone.UI.Input.HardwareButtons;
     hardwareButtons.addEventListener("backpressed", function (e) {
         // Navigate back in your webview. 

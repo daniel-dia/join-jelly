@@ -1156,7 +1156,7 @@ var joinjelly;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
                 imagePath = "assets/images_" + assetscale + "x/";
-                if (!testMode && !WPAudioManager) {
+                if (!testMode && typeof WPAudioManager == 'undefined') {
                     createjs.Sound.alternateExtensions = ["mp3"];
                     createjs.Sound.registerSounds(audioManifest, audioPath);
                 }
@@ -5229,6 +5229,8 @@ var joinjelly;
                     if (joinjelly.JoinJelly.userData.getPlays() < 3)
                         return;
                     if (joinjelly.JoinJelly.userData.getHighScore() < 5000)
+                        return;
+                    if (Math.random() < 0.7)
                         return;
                     _super.prototype.show.call(this);
                 };
