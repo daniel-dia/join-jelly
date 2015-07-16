@@ -1156,7 +1156,7 @@ var joinjelly;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
                 imagePath = "assets/images_" + assetscale + "x/";
-                if (!testMode) {
+                if (!testMode && !WPAudioManager) {
                     createjs.Sound.alternateExtensions = ["mp3"];
                     createjs.Sound.registerSounds(audioManifest, audioPath);
                 }

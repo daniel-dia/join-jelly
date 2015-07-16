@@ -2,6 +2,7 @@
 declare var debussyFontBig;
 declare var imageManifest;
 declare var audioManifest;
+declare var WPAudioManager;
 
 declare function createSpriteSheetFromFont(font: any, path: string);
 
@@ -28,7 +29,7 @@ module joinjelly.menus {
 
           
             //load audio
-            if (!testMode) {
+            if (!testMode && !WPAudioManager) {
                 createjs.Sound.alternateExtensions = ["mp3"];
                 createjs.Sound.registerSounds(audioManifest, audioPath);
             }
