@@ -1,4 +1,4 @@
-var __extends = this.__extends || function (d, b) {
+﻿var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -5230,8 +5230,6 @@ var joinjelly;
                         return;
                     if (joinjelly.JoinJelly.userData.getHighScore() < 5000)
                         return;
-                    if (Math.random() < 0.7)
-                        return;
                     _super.prototype.show.call(this);
                 };
                 RatingFlyOut.prototype.addTexts = function () {
@@ -5328,8 +5326,10 @@ var joinjelly;
                         return;
                     else if (os == "android")
                         ratingURL = ANDROID_RATING_URL;
-                    else if (os == "windows")
+                    else if (os == "windows") {
+                        Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri("ms-windows-store:REVIEW?PFN=DIAStudio.JoinJelly_gs119xcmtqkqr"));
                         return;
+                    }
                     Cocoon.App.openURL(ratingURL);
                 };
                 return RatingFlyOut;

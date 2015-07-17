@@ -1,4 +1,5 @@
-﻿module joinjelly.menus.view {
+﻿declare var Windows;
+module joinjelly.menus.view {
 
     export class RatingFlyOut extends FlyOutMenu {
 
@@ -133,7 +134,14 @@
             if (os == "web") return;
             else if (os == "ios") return;
             else if (os == "android") ratingURL = ANDROID_RATING_URL;
-            else if (os == "windows") return;
+            else if (os == "windows") {
+                
+                Windows.System.Launcher.launchUriAsync(
+                    new Windows.Foundation.Uri("ms-windows-store:REVIEW?PFN=DIAStudio.JoinJelly_gs119xcmtqkqr")
+                    );
+
+                return;
+            }
 
             Cocoon.App.openURL(ratingURL);
 
