@@ -65,7 +65,7 @@ WindowsNativeFunctions = {
     },
     IDTK_SRV_STORE: {
         requestInitialization: function (arguments) {
-            currentApp = Windows.ApplicationModel.Store.CurrentAppSimulator || Windows.ApplicationModel.Store.CurrentApp;
+            currentApp = Windows.ApplicationModel.Store.CurrentApp;
                 licenseInformation = currentApp.licenseInformation;
         },
         fetchProductsFromStore: function (arguments) {
