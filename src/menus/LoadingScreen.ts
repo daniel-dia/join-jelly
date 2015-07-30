@@ -14,16 +14,14 @@ module joinjelly.menus {
 
         constructor() {
             super();
-
-			
-
+            
             // set path 
             var audioPath = "assets/sounds/";
             var imagePath = "assets/images/";
 
             // define path to load by plataform and screen size
             assetscale = 1;
-            if (window.innerWidth <= 1024) assetscale = 0.5;
+            if (window.innerWidth <= 1070) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;
             imagePath = "assets/images_" + assetscale + "x/";
 
