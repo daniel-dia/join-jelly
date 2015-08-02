@@ -478,7 +478,7 @@
 
 
             }, 1200);
-            this.finishMenu.setValues(score, Math.max(highScore, score), highJelly, message);
+            this.finishMenu.setValues(score, JoinJelly.userData.getHighScore()), highJelly, message);
 
             // log event
             if (win)

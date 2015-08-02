@@ -114,8 +114,8 @@
         }
 
         // set values
-        public setValues(score: number, best: number, jelly?: number, title?: string) {
-            if (best > JoinJelly.maxJelly) best = JoinJelly.maxJelly;
+        public setValues(score: number, highScore: number, jelly?: number, title?: string) {
+            if (jelly > JoinJelly.maxJelly) jelly = JoinJelly.maxJelly;
             if (title)
                 this.setTitle(title);
 
@@ -130,7 +130,7 @@
             }, 30);
 
 
-            this.highScoreText.text = StringResources.menus.highScore + ": " + best.toString();
+            this.highScoreText.text = StringResources.menus.highScore + ": " + highScore.toString();
             this.jelly.setNumber(jelly);
 
             this.jellyText.text = StringResources.jellies[jelly].name;
