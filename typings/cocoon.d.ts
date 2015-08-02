@@ -82,22 +82,22 @@
             function logout(callback);
             function requestAdditionalPermissions(permissionsType, permissions, callback);
             function showFriendPicker(callback);
-            function showShareDialog(parameters:fbMessage, callback);
+            function showShareDialog(parameters: fbMessage, callback);
             function subscribe(name, callback);
             function ui(params, cb);
             function unsubscribe(name, callback);
             function uploadPhoto(file, callback);
- 
-			interface fbMessage {
-				description: string;
-				caption: string;
-				name: string;
-				link: string;
-				picture: string
-			}
-		}
 
-        export module GameCenter  {  //Not Completed
+            interface fbMessage {
+                description: string;
+                caption: string;
+                name: string;
+                link: string;
+                picture: string
+            }
+        }
+
+        export module GameCenter {  //Not Completed
 
             function getLocalPlayer();
             function getMultiplayerInterface();
@@ -114,7 +114,7 @@
             function submitAchievements(achievements: Array<Cocoon.Social.GameCenter.Achievement>, callback: (error) => void);
             function submitScore(score: Cocoon.Social.GameCenter.Score, callback: (error) => void);
 
- 
+
             export interface Achievement {
                 identifier: string;
                 percentComplete: number;//Percentage of achievement complete (from 0 to 100).
@@ -173,10 +173,10 @@
             }
         }
 
-        export class GooglePlayGames  {
+        export class GooglePlayGames {
             static init(params?);
             static getSocialInterface(): Cocoon.Social.Interface;
-            static getMultiplayerInterface():any //Cocoon.Multiplayer.MultiplayerService;
+            static getMultiplayerInterface(): any //Cocoon.Multiplayer.MultiplayerService;
         }
 
         export class Interface {
@@ -187,7 +187,7 @@
             logout(callback: (error) => void);
             publishMessage(message: Cocoon.Social.Message, callback: (error) => void);
             publishMessageWithDialog(message: Cocoon.Social.Message, callback: (error) => void);
-            requestAchievements(callback: (achievements:Array<Cocoon.Social.Achievement> , error) => void, userId?: string);
+            requestAchievements(callback: (achievements: Array<Cocoon.Social.Achievement>, error) => void, userId?: string);
             requestAllAchievements(callback: (error) => void);
             requestFriends(callback: (error) => void, userID: string);
             requestPublishPermissions(callback: (error) => void);
@@ -195,7 +195,7 @@
             requestUser(callback: (error) => void, userID: string);
             requestUserImage(callback: (error) => void, userID: string, imageSize: Cocoon.Social.ImageSize);
             resetAchievements(callback: (error) => void);
-            setAchievementsMap(map:any);
+            setAchievementsMap(map: any);
             setTemplates(leaderboardsTemplate: string, achievementsTemplate: string)
             showAchievements(callback?: (error) => void);
             showLeaderboard(params?: Cocoon.Social.ScoreParams, callback?: (error) => void);
@@ -283,29 +283,50 @@
 
     }
 
-	export module App {
-		function exit();
-		function exitCallback(callback: () => boolean);
-		function forward(code: string);
-		function forwardAsync(code: string,callback: () => void)
-		function hideTheWebView()
-		function load(path: string, storageType: STORAGETYPE)
-		function loadInTheWebView(path: string, callback: any, storageType: STORAGETYPE)
-		function openURL(url:string)
-		function pause()
-		function reload()
-		function reloadWebView()
-		function resume()
-		function showTheWebView(x: number, y: number, width: number, height: number)
-		function on(event: string, callback: () => void);
-		var StorageType: STORAGETYPE;
-		enum STORAGETYPE {
-			PORTRAIT,
-			INTERNAL_STORAGE,
-			EXTERNAL_STORAGE,
-			TEMPORARY_STORAGE,
-		}
-	}
+    export module App {
+        function exit();
+        function exitCallback(callback: () => boolean);
+        function forward(code: string);
+        function forwardAsync(code: string, callback: () => void)
+        function hideTheWebView()
+        function load(path: string, storageType: STORAGETYPE)
+        function loadInTheWebView(path: string, callback: any, storageType: STORAGETYPE)
+        function openURL(url: string)
+        function pause()
+        function reload()
+        function reloadWebView()
+        function resume()
+        function showTheWebView(x: number, y: number, width: number, height: number)
+        function on(event: string, callback: () => void);
+        var StorageType: STORAGETYPE;
+        enum STORAGETYPE {
+            PORTRAIT,
+            INTERNAL_STORAGE,
+            EXTERNAL_STORAGE,
+            TEMPORARY_STORAGE,
+        }
+    }
 
+    export module Ad {
+
+        function hideBanner();
+        function loadBanner();
+        function loadInterstitial();
+        function setBannerLayout(bannerLayout: BannerLayout);
+        function showBanner();
+        function showInterstitial();
+
+        module interstitial {
+            function on(event: string, callback: () => void);
+        }
+        module banner {
+            function on(event: string, callback: () => void);
+        }
+
+        enum BannerLayout {
+            TOP_CENTER,
+            BOTTOM_CENTER
+        }
+    }
 	
 }
