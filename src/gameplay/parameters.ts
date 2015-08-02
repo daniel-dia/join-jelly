@@ -1,7 +1,7 @@
 ﻿module joinjelly.gameplay {
     // parameters
     export var boardSize: number = 5;
-    export var itemProbability: number = 0.005;
+    export var itemProbability: number = 0.003;
 
     export var timeByLevel: number = 20000;
     export var timeoutInterval: number;
