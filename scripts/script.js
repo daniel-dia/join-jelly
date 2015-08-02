@@ -1,4 +1,4 @@
-﻿var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -74,7 +74,10 @@ var gameui;
                 this.antX = this.x;
                 this.antY = this.y;
             }
-            this.scaleX = scaleX, this.scaleY = scaleY, this.alpha = 0, this.x = this.x;
+            this.scaleX = scaleX,
+                this.scaleY = scaleY,
+                this.alpha = 0,
+                this.x = this.x;
             this.y = this.y;
             this.mouseEnabled = false;
             createjs.Tween.removeTweens(this);
@@ -84,7 +87,8 @@ var gameui;
                 alpha: 1,
                 x: this.antX,
                 y: this.antY,
-            }, 400, createjs.Ease.quadOut).call(function () {
+            }, 400, createjs.Ease.quadOut)
+                .call(function () {
                 _this.mouseEnabled = true;
                 _this.animating = false;
             });
@@ -163,20 +167,12 @@ var gameui;
                 this.loader = new createjs.LoadQueue(false);
                 this.loader.installPlugin(createjs.Sound);
                 createjs.Sound.alternateExtensions = ["mp3"];
-                this.loader.addEventListener("filestart", function (evt) {
-                    console.log("loading " + evt.item.src);
-                });
-                this.loader.addEventListener("fileload", function (evt) {
-                    console.log("loaded " + evt.item.src);
-                });
-                this.loader.addEventListener("complete", function (evt) {
-                    if (_this.onComplete)
-                        _this.onComplete();
-                });
-                this.loader.addEventListener("progress", function (evt) {
-                    if (_this.onProgress)
-                        _this.onProgress(evt.progress);
-                });
+                this.loader.addEventListener("filestart", function (evt) { console.log("loading " + evt.item.src); });
+                this.loader.addEventListener("fileload", function (evt) { console.log("loaded " + evt.item.src); });
+                this.loader.addEventListener("complete", function (evt) { if (_this.onComplete)
+                    _this.onComplete(); });
+                this.loader.addEventListener("progress", function (evt) { if (_this.onProgress)
+                    _this.onProgress(evt.progress); });
                 this.loader.addEventListener("fileload", function (evt) {
                     if (evt.item.type == "image")
                         images[evt.item.id] = evt.result;
@@ -254,9 +250,7 @@ var gameui;
             this.stage = new createjs.Stage(canvasId);
             createjs.Touch.enable(this.stage);
             var x = 0;
-            createjs.Ticker.addEventListener("tick", function () {
-                _this.stage.update();
-            });
+            createjs.Ticker.addEventListener("tick", function () { _this.stage.update(); });
             createjs.Ticker.setFPS(fps);
             this.screenContainer = new createjs.Container();
             this.stage.addChild(this.screenContainer);
@@ -271,9 +265,7 @@ var gameui;
                 });
             }
             this.resizeGameScreen(window.innerWidth, window.innerHeight);
-            window.onresize = function () {
-                _this.resizeGameScreen(window.innerWidth, window.innerHeight);
-            };
+            window.onresize = function () { _this.resizeGameScreen(window.innerWidth, window.innerHeight); };
         }
         GameScreen.prototype.switchScreen = function (newScreen, parameters, transition) {
             var _this = this;
@@ -559,18 +551,10 @@ var gameui;
             _super.call(this);
             this.enableAnimation = true;
             this.mouse = false;
-            this.addEventListener("mousedown", function (event) {
-                _this.onPress(event);
-            });
-            this.addEventListener("pressup", function (event) {
-                _this.onPressUp(event);
-            });
-            this.addEventListener("mouseover", function () {
-                _this.mouse = true;
-            });
-            this.addEventListener("mouseout", function () {
-                _this.mouse = false;
-            });
+            this.addEventListener("mousedown", function (event) { _this.onPress(event); });
+            this.addEventListener("pressup", function (event) { _this.onPressUp(event); });
+            this.addEventListener("mouseover", function () { _this.mouse = true; });
+            this.addEventListener("mouseout", function () { _this.mouse = false; });
             this.soundId = soundId;
         }
         Button.setDefaultSoundId = function (soundId) {
@@ -626,9 +610,7 @@ var gameui;
                     this.centralizeImage();
                 }
                 else if (this.background["image"])
-                    this.background["image"].onload = function () {
-                        _this.centralizeImage();
-                    };
+                    this.background["image"].onload = function () { _this.centralizeImage(); };
             }
             this.createHitArea();
         }
@@ -1010,8 +992,7 @@ var Analytics = (function () {
             try {
                 xhr.send(JSON.stringify(data));
             }
-            catch (e) {
-            }
+            catch (e) { }
     };
     Analytics.prototype.normalizeNumber = function (value) {
         var s = (Math.floor(value)).toString();
@@ -1151,7 +1132,7 @@ var joinjelly;
                 var audioPath = "assets/sounds/";
                 var imagePath = "assets/images/";
                 assetscale = 1;
-                if (window.innerWidth <= 1024)
+                if (window.innerWidth <= 1070)
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
@@ -1163,13 +1144,9 @@ var joinjelly;
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
-                gameui.AssetsManager.onProgress = function (progress) {
-                    loadinBar.update(progress);
-                };
-                gameui.AssetsManager.onComplete = function () {
-                    if (_this.loaded)
-                        _this.loaded();
-                };
+                gameui.AssetsManager.onProgress = function (progress) { loadinBar.update(progress); };
+                gameui.AssetsManager.onComplete = function () { if (_this.loaded)
+                    _this.loaded(); };
                 this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 var loadinBar = new menus.view.LoadingBar(imagePath);
@@ -1193,6 +1170,7 @@ var joinjelly;
             this.userData = userData;
             this.createContent();
             this.createBackground();
+            this.createTestsButtons();
             this.createButtons();
             this.createTitle();
             this.rating = new joinjelly.menus.view.RatingFlyOut();
@@ -1228,9 +1206,7 @@ var joinjelly;
             var _this = this;
             var x = defaultWidth + 100;
             var space = 250;
-            var settingsBt = new gameui.ImageButton("DIAStudioIco", function () {
-                joinjelly.JoinJelly.showAbout();
-            });
+            var settingsBt = new gameui.ImageButton("DIAStudioIco", function () { joinjelly.JoinJelly.showAbout(); });
             settingsBt.y = 165 / 2;
             settingsBt.x = defaultWidth - 165 / 2;
             this.header.addChild(settingsBt);
@@ -1268,6 +1244,47 @@ var joinjelly;
                 this.scoreText.y = -170 + 100;
                 leaderboardsBt.addChild(this.scoreText);
             }
+        };
+        MainScreen.prototype.createTestsButtons = function () {
+            var x = 150;
+            var space = 250;
+            var bt = new gameui.ImageButton("BtMenu", function () {
+                Cocoon.Ad.loadBanner();
+                Cocoon.Ad.loadInterstitial();
+            });
+            bt.y = 150;
+            bt.x = x;
+            this.header.addChild(bt);
+            var bt = new gameui.ImageButton("BtMenu", function () {
+                Cocoon.Ad.showBanner();
+            });
+            bt.y = 150;
+            bt.x = x += space;
+            this.header.addChild(bt);
+            var bt = new gameui.ImageButton("BtMenu", function () {
+                Cocoon.Ad.hideBanner();
+            });
+            bt.y = 150;
+            bt.x = x += space;
+            this.header.addChild(bt);
+            var bt = new gameui.ImageButton("BtMenu", function () {
+                Cocoon.Ad.showInterstitial();
+            });
+            bt.y = 150;
+            bt.x = x += space;
+            this.header.addChild(bt);
+            var bt = new gameui.ImageButton("BtMenu", function () {
+                Cocoon.Ad.setBannerLayout(Cocoon.Ad.BannerLayout.BOTTOM_CENTER);
+            });
+            bt.y = 150;
+            bt.x = x += space;
+            this.header.addChild(bt);
+            var bt = new gameui.ImageButton("BtMenu", function () {
+                Cocoon.Ad.setBannerLayout(Cocoon.Ad.BannerLayout.TOP_CENTER);
+            });
+            bt.y = 150;
+            bt.x = x += space;
+            this.header.addChild(bt);
         };
         return MainScreen;
     })(gameui.ScreenState);
@@ -1326,7 +1343,10 @@ var joinjelly;
                         image.alpha = 0;
                         this.addChild(image);
                         images[char] = image;
-                        createjs.Tween.get(image).wait(waits[char] * 400).to({ alpha: 0, x: xPositions[char] - 300 * side[char], scaleX: 3, scaleY: 0.333 }).to({ alpha: 2, x: xPositions[char], scaleX: 1, scaleY: 1 }, 2000, createjs.Ease.elasticInOut);
+                        createjs.Tween.get(image)
+                            .wait(waits[char] * 400)
+                            .to({ alpha: 0, x: xPositions[char] - 300 * side[char], scaleX: 3, scaleY: 0.333 })
+                            .to({ alpha: 2, x: xPositions[char], scaleX: 1, scaleY: 1 }, 2000, createjs.Ease.elasticInOut);
                     }
                 };
                 GameTitle.prototype.createJelly = function () {
@@ -1454,6 +1474,7 @@ var joinjelly;
                     bg.mouseEnabled = true;
                 };
                 FlyOutMenu.prototype.addTitle = function (title) {
+                    //create "points" text
                     this.title = gameui.AssetsManager.getBitmapText("", "debussyBig");
                     this.title.set({ x: defaultWidth / 2, y: 600 });
                     this.addChild(this.title);
@@ -1474,9 +1495,7 @@ var joinjelly;
                     this.alpha = 1;
                     this.scaleX = 1;
                     this.scaleY = 1;
-                    createjs.Tween.get(this).to({ alpha: 0, scaleX: 0.5, scaleY: 0.75 }, 200, createjs.Ease.quadIn).call(function () {
-                        _this.visible = false;
-                    });
+                    createjs.Tween.get(this).to({ alpha: 0, scaleX: 0.5, scaleY: 0.75 }, 200, createjs.Ease.quadIn).call(function () { _this.visible = false; });
                 };
                 FlyOutMenu.prototype.show = function () {
                     this.animateIn();
@@ -1554,9 +1573,7 @@ var joinjelly;
                 this.gameFooter.mouseEnabled = false;
                 this.updateFooter();
                 this.content.y -= 200;
-                this.okButtonAction = function () {
-                    joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen);
-                };
+                this.okButtonAction = function () { joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen); };
                 this.initializeStore();
                 var restore = new gameui.BitmapTextButton(StringResources.menus.restore, "debussy", "BtTextBg", function () {
                     Cocoon.Dialog.confirm({
@@ -1586,9 +1603,7 @@ var joinjelly;
                 productListItem.y = p * 380 + 380;
                 productListItem.x = 70;
                 console.log(JSON.stringify(product));
-                productListItem.addEventListener("buy", function (event) {
-                    Cocoon.Store.purchase(event["productId"]);
-                });
+                productListItem.addEventListener("buy", function (event) { Cocoon.Store.purchase(event["productId"]); });
                 productListItem.addEventListener("share", function (event) {
                     var productObject = event.currentTarget;
                     productObject.setPurchasing();
@@ -1622,9 +1637,7 @@ var joinjelly;
                 var _this = this;
                 if (timeout === void 0) { timeout = 5000; }
                 this.content.mouseEnabled = false;
-                setTimeout(function () {
-                    _this.unlockUI();
-                }, timeout);
+                setTimeout(function () { _this.unlockUI(); }, timeout);
             };
             StoreMenu.prototype.unlockUI = function () {
                 this.content.mouseEnabled = true;
@@ -1666,6 +1679,7 @@ var joinjelly;
                 }
             };
             StoreMenu.prototype.initializeStore = function () {
+                //  if (!Cocoon.Store.nativeAvailable) return;
                 var _this = this;
                 Cocoon.Store.on("load", {
                     started: function () {
@@ -1791,8 +1805,7 @@ var joinjelly;
                             joinjelly.JoinJelly.userData.resetAll();
                             joinjelly.JoinJelly.showMainMenu();
                         }
-                        else {
-                        }
+                        else { }
                     });
                 });
                 reset.y = y += space;
@@ -1861,24 +1874,16 @@ var joinjelly;
                     title.scaleX = title.scaleY = 1.1;
                     title.regX = title.getBounds().width / 2;
                     this.addChild(title);
-                    this.musicBtOn = new gameui.ImageButton("BtMusic", (function () {
-                        _this.setMusic(0);
-                    }));
+                    this.musicBtOn = new gameui.ImageButton("BtMusic", (function () { _this.setMusic(0); }));
                     this.musicBtOn.x = -145;
                     this.addChild(this.musicBtOn);
-                    this.soundBtOn = new gameui.ImageButton("BtSound", (function () {
-                        _this.setSound(0);
-                    }));
+                    this.soundBtOn = new gameui.ImageButton("BtSound", (function () { _this.setSound(0); }));
                     this.soundBtOn.x = 155;
                     this.addChild(this.soundBtOn);
-                    this.musicBtOff = new gameui.ImageButton("BtMusicOff", (function () {
-                        _this.setMusic(1);
-                    }));
+                    this.musicBtOff = new gameui.ImageButton("BtMusicOff", (function () { _this.setMusic(1); }));
                     this.musicBtOff.x = -145;
                     this.addChild(this.musicBtOff);
-                    this.soundBtOff = new gameui.ImageButton("BtSoundOff", (function () {
-                        _this.setSound(1);
-                    }));
+                    this.soundBtOff = new gameui.ImageButton("BtSoundOff", (function () { _this.setSound(1); }));
                     this.soundBtOff.x = 155;
                     this.addChild(this.soundBtOff);
                     var mus = joinjelly.JoinJelly.userData.getMusicVol();
@@ -1937,7 +1942,8 @@ var joinjelly;
                 this.state = "out";
                 createjs.Tween.removeTweens(this.imageContainer);
                 createjs.Tween.get(this.shadowContainer).to({ alpha: 0 }, duration, createjs.Ease.quadIn);
-                createjs.Tween.get(this.imageContainer).to({ scaleX: 1.3, scaleY: 1.3, y: 0, alpha: 0.3 }, duration, createjs.Ease.quadIn);
+                createjs.Tween.get(this.imageContainer)
+                    .to({ scaleX: 1.3, scaleY: 1.3, y: 0, alpha: 0.3 }, duration, createjs.Ease.quadIn);
             };
             JellyContainer.prototype.executeAnimationIn = function (delay) {
                 var _this = this;
@@ -1956,17 +1962,21 @@ var joinjelly;
                     alpha: 0,
                     scaleX: 0,
                 });
-                createjs.Tween.get(this.imageContainer).wait(delay).to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut).to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut).call(function () {
+                createjs.Tween.get(this.imageContainer).wait(delay)
+                    .to({ alpha: 1, scaleX: 0.8, scaleY: 1.2 }, 200, createjs.Ease.sineOut)
+                    .to({ scaleX: 1, scaleY: 1, y: 0 }, 2000, createjs.Ease.elasticOut).call(function () {
                     _this.executeIdle();
                 });
-                createjs.Tween.get(this.shadowContainer).wait(delay).to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut);
+                createjs.Tween.get(this.shadowContainer).wait(delay)
+                    .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 400, createjs.Ease.sineOut);
             };
             JellyContainer.prototype.executeAnimationHold = function () {
                 if (this.state == "hold")
                     return;
                 this.state = "hold";
                 this.restore();
-                createjs.Tween.get(this.imageContainer).to({
+                createjs.Tween.get(this.imageContainer)
+                    .to({
                     scaleX: 0.8,
                     scaleY: 1.2
                 }, 1000, createjs.Ease.elasticOut);
@@ -1978,10 +1988,12 @@ var joinjelly;
                     return;
                 this.state = "release";
                 this.restore();
-                createjs.Tween.get(this.imageContainer).to({
+                createjs.Tween.get(this.imageContainer)
+                    .to({
                     scaleX: 0.8,
                     scaleY: 1.2
-                }, 5, createjs.Ease.sineInOut).to({
+                }, 5, createjs.Ease.sineInOut)
+                    .to({
                     scaleX: 1,
                     scaleY: 1
                 }, 2000, createjs.Ease.elasticOut).call(function () {
@@ -2035,11 +2047,23 @@ var joinjelly;
                     scaleX: 1 + scale,
                     scaleY: 1 - scale
                 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(_this.imageContainer, { loop: true }).to({ skewX: skew * 10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn).to({ skewX: skew * -10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn);
-                    createjs.Tween.get(_this.imageContainer, { loop: true }).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut);
+                    createjs.Tween.get(_this.imageContainer, { loop: true })
+                        .to({ skewX: skew * 10 }, f, createjs.Ease.quadOut)
+                        .to({ skewX: skew * 0 }, f, createjs.Ease.quadIn)
+                        .to({ skewX: skew * -10 }, f, createjs.Ease.quadOut)
+                        .to({ skewX: skew * 0 }, f, createjs.Ease.quadIn);
+                    createjs.Tween.get(_this.imageContainer, { loop: true })
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut);
                 });
                 createjs.Tween.get(this.shadowContainer).to({ alpha: 1, scaleY: 1, scaleX: 1, skewX: 0 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(_this.shadowContainer, { loop: true }).to({ skewX: -5 * skew }, f, createjs.Ease.quadOut).to({ skewX: 0 * skew }, f, createjs.Ease.quadIn).to({ skewX: 5 * skew }, f, createjs.Ease.quadOut).to({ skewX: 0 * skew }, f, createjs.Ease.quadIn);
+                    createjs.Tween.get(_this.shadowContainer, { loop: true })
+                        .to({ skewX: -5 * skew }, f, createjs.Ease.quadOut)
+                        .to({ skewX: 0 * skew }, f, createjs.Ease.quadIn)
+                        .to({ skewX: 5 * skew }, f, createjs.Ease.quadOut)
+                        .to({ skewX: 0 * skew }, f, createjs.Ease.quadIn);
                 });
             };
             JellyContainer.prototype.executeIdle2 = function () {
@@ -2055,7 +2079,12 @@ var joinjelly;
                     scaleX: 1,
                     scaleY: 1
                 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(_this.imageContainer, { loop: true }).to({ scaleX: 1 - scale, scaleY: 1 + scale }, time / 4, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, time / 4, createjs.Ease.quadInOut).to({ scaleX: 1 - scale, scaleY: 1 + scale }, time / 4, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, time / 4, createjs.Ease.quadInOut).to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut);
+                    createjs.Tween.get(_this.imageContainer, { loop: true })
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, time / 4, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, time / 4, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, time / 4, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, time / 4, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut);
                 });
             };
             JellyContainer.prototype.executeIdle3 = function () {
@@ -2072,7 +2101,12 @@ var joinjelly;
                     scaleY: 1,
                     y: 0
                 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(_this.imageContainer, { loop: true }).to({ scaleX: 1 + scale * 2, scaleY: 1 - scale * 2, y: 0 }, time / 2, createjs.Ease.quadInOut).to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 4, createjs.Ease.quadIn).to({ scaleX: 1 + scale * 1, scaleY: 1 - scale * 1, y: -70 }, time / 4, createjs.Ease.quadOut).to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 5, createjs.Ease.quadIn).to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut);
+                    createjs.Tween.get(_this.imageContainer, { loop: true })
+                        .to({ scaleX: 1 + scale * 2, scaleY: 1 - scale * 2, y: 0 }, time / 2, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 4, createjs.Ease.quadIn)
+                        .to({ scaleX: 1 + scale * 1, scaleY: 1 - scale * 1, y: -70 }, time / 4, createjs.Ease.quadOut)
+                        .to({ scaleX: 1 - scale * 2, scaleY: 1 + scale * 2, y: 0 }, time / 5, createjs.Ease.quadIn)
+                        .to({ scaleX: 1, scaleY: 1 }, time * 2, createjs.Ease.elasticOut);
                 });
             };
             return JellyContainer;
@@ -2101,8 +2135,16 @@ var joinjelly;
                     scaleX: 1 + scale,
                     scaleY: 1 - scale
                 }, 400, createjs.Ease.quadInOut).call(function () {
-                    createjs.Tween.get(b, { loop: true }).to({ skewX: skew * 10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn).to({ skewX: skew * -10 }, f, createjs.Ease.quadOut).to({ skewX: skew * 0 }, f, createjs.Ease.quadIn);
-                    createjs.Tween.get(b, { loop: true }).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut).to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut);
+                    createjs.Tween.get(b, { loop: true })
+                        .to({ skewX: skew * 10 }, f, createjs.Ease.quadOut)
+                        .to({ skewX: skew * 0 }, f, createjs.Ease.quadIn)
+                        .to({ skewX: skew * -10 }, f, createjs.Ease.quadOut)
+                        .to({ skewX: skew * 0 }, f, createjs.Ease.quadIn);
+                    createjs.Tween.get(b, { loop: true })
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 - scale, scaleY: 1 + scale }, f, createjs.Ease.quadInOut)
+                        .to({ scaleX: 1 + scale, scaleY: 1 - scale }, f, createjs.Ease.quadInOut);
                 });
             }
             return LoadingBall;
@@ -2158,9 +2200,7 @@ var joinjelly;
                     levelIcon.mouseEnabled = true;
                     this.levelIcon = levelIcon;
                     this.addChild(levelIcon);
-                    levelIcon.addEventListener("click", function () {
-                        _this.levelUpEffect();
-                    });
+                    levelIcon.addEventListener("click", function () { _this.levelUpEffect(); });
                     this.effect = new joinjelly.view.Effect();
                     this.addChild(this.effect);
                     this.effect.x = 1288 + 213 / 2;
@@ -2213,9 +2253,7 @@ var joinjelly;
                     var _this = this;
                     this.effect.castBoth();
                     createjs.Tween.removeTweens(this.levelBar.mask);
-                    createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () {
-                        _this.levelBar.mask.scaleX = 0;
-                    });
+                    createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () { _this.levelBar.mask.scaleX = 0; });
                     createjs.Tween.removeTweens(this.levelText);
                     this.levelText.set({ scaleY: 0, scaleX: 4 });
                     createjs.Tween.get(this.levelText).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
@@ -2334,21 +2372,11 @@ var joinjelly;
                 };
                 Jelly.prototype.playThunder = function () {
                     var _this = this;
-                    setTimeout(function () {
-                        _this.playEvolve();
-                    }, 10);
-                    setTimeout(function () {
-                        _this.playLevelUp();
-                    }, 330);
-                    setTimeout(function () {
-                        _this.playEvolve();
-                    }, 660);
-                    setTimeout(function () {
-                        _this.playLevelUp();
-                    }, 1000);
-                    setTimeout(function () {
-                        _this.playLevelUp();
-                    }, 1100);
+                    setTimeout(function () { _this.playEvolve(); }, 10);
+                    setTimeout(function () { _this.playLevelUp(); }, 330);
+                    setTimeout(function () { _this.playEvolve(); }, 660);
+                    setTimeout(function () { _this.playLevelUp(); }, 1000);
+                    setTimeout(function () { _this.playLevelUp(); }, 1100);
                 };
                 Jelly.jellies = [
                     "1",
@@ -2395,7 +2423,10 @@ var joinjelly;
                     text.y = defaultHeight / 2 + 140;
                     text.alpha = 0;
                     text.regX = text.getBounds().width / 2;
-                    createjs.Tween.get(text).to({ y: defaultHeight / 2, alpha: 1 }, 200, createjs.Ease.quadOut).wait(500).to({ y: defaultHeight / 2 - 200, alpha: 0 }, 200, createjs.Ease.quadIn).call(function () {
+                    createjs.Tween.get(text)
+                        .to({ y: defaultHeight / 2, alpha: 1 }, 200, createjs.Ease.quadOut)
+                        .wait(500)
+                        .to({ y: defaultHeight / 2 - 200, alpha: 0 }, 200, createjs.Ease.quadIn).call(function () {
                         _this.removeChild(text);
                     });
                     ;
@@ -2420,9 +2451,7 @@ var joinjelly;
                     this.ammount = 0;
                     this.locked = false;
                     this.item = item;
-                    this.addEventListener("click", function () {
-                        _this.dispatchEvent({ type: "useitem", item: item });
-                    });
+                    this.addEventListener("click", function () { _this.dispatchEvent({ type: "useitem", item: item }); });
                     var bg = gameui.AssetsManager.getBitmap("itemBG");
                     var bgd = gameui.AssetsManager.getBitmap("itemBGDisabled");
                     var img = gameui.AssetsManager.getBitmap("item" + item);
@@ -2457,9 +2486,7 @@ var joinjelly;
                     this.text = text;
                     this.createHitArea();
                     this.addBt = add;
-                    this.addEventListener("click", function () {
-                        _this.unHighlight();
-                    });
+                    this.addEventListener("click", function () { _this.unHighlight(); });
                 }
                 ItemButton.prototype.setAmmount = function (ammount) {
                     this.ammount = ammount;
@@ -2486,7 +2513,12 @@ var joinjelly;
                 };
                 ItemButton.prototype.highLight = function (loop) {
                     if (loop === void 0) { loop = true; }
-                    createjs.Tween.get(this, { loop: loop }).to({ rotation: -10, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: -10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut).to({ rotation: 0, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).wait(400);
+                    createjs.Tween.get(this, { loop: loop })
+                        .to({ rotation: -10, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut)
+                        .to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut)
+                        .to({ rotation: -10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut)
+                        .to({ rotation: +10, scaleX: 1.3, scaleY: 1.3 }, 200, createjs.Ease.quadInOut)
+                        .to({ rotation: 0, scaleX: 1, scaleY: 1 }, 100, createjs.Ease.quadInOut).wait(400);
                 };
                 ItemButton.prototype.unHighlight = function () {
                     createjs.Tween.removeTweens(this);
@@ -2553,6 +2585,7 @@ var joinjelly;
                     dk.mouseEnabled = false;
                 };
                 PauseMenuOverlay.prototype.addTitle = function (title) {
+                    //create "points" text
                     this.title = gameui.AssetsManager.getBitmapText("", "debussyBig");
                     this.title.set({ x: defaultWidth / 2, y: 350 });
                     this.addChild(this.title);
@@ -2614,12 +2647,8 @@ var joinjelly;
                     this.brightFx.alpha = 1;
                     createjs.Tween.get(this.brightFx).to({ alpha: 0 }, 300);
                 };
-                TimeBar.prototype.setAlarmOn = function () {
-                    this.redFx.visible = true;
-                };
-                TimeBar.prototype.setAlarmOff = function () {
-                    this.redFx.visible = false;
-                };
+                TimeBar.prototype.setAlarmOn = function () { this.redFx.visible = true; };
+                TimeBar.prototype.setAlarmOff = function () { this.redFx.visible = false; };
                 return TimeBar;
             })(createjs.Container);
             view.TimeBar = TimeBar;
@@ -2699,10 +2728,10 @@ var joinjelly;
                     container.y += 200;
                     return container;
                 };
-                FinishMenu.prototype.setValues = function (score, best, jelly, title) {
+                FinishMenu.prototype.setValues = function (score, highScore, jelly, title) {
                     var _this = this;
-                    if (best > joinjelly.JoinJelly.maxJelly)
-                        best = joinjelly.JoinJelly.maxJelly;
+                    if (jelly > joinjelly.JoinJelly.maxJelly)
+                        jelly = joinjelly.JoinJelly.maxJelly;
                     if (title)
                         this.setTitle(title);
                     var t = { value: 0 };
@@ -2713,7 +2742,7 @@ var joinjelly;
                         if (t.value >= 1)
                             clearInterval(interval);
                     }, 30);
-                    this.highScoreText.text = StringResources.menus.highScore + ": " + best.toString();
+                    this.highScoreText.text = StringResources.menus.highScore + ": " + highScore.toString();
                     this.jelly.setNumber(jelly);
                     this.jellyText.text = StringResources.jellies[jelly].name;
                     if (this.jellyText.getBounds())
@@ -2752,11 +2781,10 @@ var joinjelly;
                     this.alpha = 0;
                     this.fu();
                     createjs.Tween.removeTweens(this);
-                    createjs.Tween.get(this, { loop: true }).to({ alpha: 1 }, 500).call(function () {
-                        _this.fd();
-                    }).to({ x: x2, y: y2 }, 1600, createjs.Ease.quadInOut).call(function () {
-                        _this.fu();
-                    }).to({ alpha: 0 }, 500);
+                    createjs.Tween.get(this, { loop: true })
+                        .to({ alpha: 1 }, 500).call(function () { _this.fd(); })
+                        .to({ x: x2, y: y2 }, 1600, createjs.Ease.quadInOut).call(function () { _this.fu(); })
+                        .to({ alpha: 0 }, 500);
                 };
                 TutorialMove.prototype.showClick = function (x1, y1) {
                     var _this = this;
@@ -2766,11 +2794,9 @@ var joinjelly;
                     this.alpha = 1;
                     this.fu();
                     createjs.Tween.removeTweens(this);
-                    createjs.Tween.get(this, { loop: true }).wait(500).call(function () {
-                        _this.fd();
-                    }).wait(1000).call(function () {
-                        _this.fu();
-                    });
+                    createjs.Tween.get(this, { loop: true })
+                        .wait(500).call(function () { _this.fd(); })
+                        .wait(1000).call(function () { _this.fu(); });
                 };
                 TutorialMove.prototype.fd = function () {
                     this.fingerDown.visible = true;
@@ -3011,7 +3037,10 @@ var joinjelly;
                     { x: tile.posx + 1, y: tile.posy + hexaOffset },
                 ];
                 for (var p in neighborCoords)
-                    if (neighborCoords[p].x >= 0 && neighborCoords[p].y >= 0 && neighborCoords[p].x < this.boardWidth && neighborCoords[p].y < this.boardHeight)
+                    if (neighborCoords[p].x >= 0 &&
+                        neighborCoords[p].y >= 0 &&
+                        neighborCoords[p].x < this.boardWidth &&
+                        neighborCoords[p].y < this.boardHeight)
                         neighbor.push(this.getTileByIndex(neighborCoords[p].x, neighborCoords[p].y));
                 return neighbor;
             };
@@ -3046,12 +3075,8 @@ var joinjelly;
                         highestTile = this.tiles[j].getNumber();
                 return highestTile;
             };
-            Board.prototype.lock = function () {
-                this.tilesContainer.mouseEnabled = false;
-            };
-            Board.prototype.unlock = function () {
-                this.tilesContainer.mouseEnabled = true;
-            };
+            Board.prototype.lock = function () { this.tilesContainer.mouseEnabled = false; };
+            Board.prototype.unlock = function () { this.tilesContainer.mouseEnabled = true; };
             Board.prototype.arrangeZOrder = function () {
                 for (var t = 0; t < this.tiles.length; t++)
                     this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.getNumChildren() - 1);
@@ -3107,7 +3132,12 @@ var joinjelly;
                 if (alarm) {
                     if (this.alarming)
                         return;
-                    createjs.Tween.get(this.tilesContainer, { loop: true }).to({ x: -10 }, 50).to({ x: +10 }, 100).to({ x: -10 }, 100).to({ x: 0 }, 50).wait(200);
+                    createjs.Tween.get(this.tilesContainer, { loop: true })
+                        .to({ x: -10 }, 50)
+                        .to({ x: +10 }, 100)
+                        .to({ x: -10 }, 100)
+                        .to({ x: 0 }, 50)
+                        .wait(200);
                 }
                 else {
                     if (!this.alarming)
@@ -3149,29 +3179,17 @@ var joinjelly;
                 this.jelly.executeAnimationHold();
                 this.dragging = true;
             };
-            Tile.prototype.isUnlocked = function () {
-                return !this.locked;
-            };
-            Tile.prototype.isDragging = function () {
-                return this.dragging;
-            };
-            Tile.prototype.lock = function () {
-                this.locked = true;
-            };
+            Tile.prototype.isUnlocked = function () { return !this.locked; };
+            Tile.prototype.isDragging = function () { return this.dragging; };
+            Tile.prototype.lock = function () { this.locked = true; };
             Tile.prototype.unlock = function () {
                 this.locked = false;
                 this.dragging = false;
                 this.jelly.setNumber(this.value);
             };
-            Tile.prototype.enable = function () {
-                this.enabled = true;
-            };
-            Tile.prototype.disable = function () {
-                this.enabled = false;
-            };
-            Tile.prototype.isEnabled = function () {
-                return this.enabled;
-            };
+            Tile.prototype.enable = function () { this.enabled = true; };
+            Tile.prototype.disable = function () { this.enabled = false; };
+            Tile.prototype.isEnabled = function () { return this.enabled; };
             Tile.prototype.setNumber = function (value) {
                 if (value > joinjelly.JoinJelly.maxJelly)
                     value = joinjelly.JoinJelly.maxJelly;
@@ -3271,9 +3289,7 @@ var joinjelly;
                 this.gameFooter.lockItem(joinjelly.Items.REVIVE);
                 this.footer.addChild(this.gameFooter);
                 this.updateFooter();
-                this.gameFooter.addEventListener("useitem", function (e) {
-                    _this.useItem(e.item);
-                });
+                this.gameFooter.addEventListener("useitem", function (e) { _this.useItem(e.item); });
                 this.finishMenu = new gameplay.view.FinishMenu();
                 this.overlay.addChild(this.finishMenu);
                 this.finishMenu.y = -200;
@@ -3297,9 +3313,7 @@ var joinjelly;
                 this.finishMenu.addEventListener("restart", function () {
                     _this.pauseMenuOverlay.hide();
                     _this.userData.deleteSaveGame();
-                    setTimeout(function () {
-                        joinjelly.JoinJelly.startLevel();
-                    }, 200);
+                    setTimeout(function () { joinjelly.JoinJelly.startLevel(); }, 200);
                 });
                 this.finishMenu.addEventListener("home", function () {
                     _this.userData.deleteSaveGame();
@@ -3347,28 +3361,22 @@ var joinjelly;
                     _this.pauseMenuOverlay.hide();
                     joinjelly.JoinJelly.userData.setScore(Math.max(_this.score, joinjelly.JoinJelly.userData.getHighScore()));
                     _this.userData.deleteSaveGame();
-                    setTimeout(function () {
-                        joinjelly.JoinJelly.showMainMenu();
-                    }, 200);
+                    setTimeout(function () { joinjelly.JoinJelly.showMainMenu(); }, 200);
                 });
                 this.gameHeader.addEventListener("restart", function () {
                     _this.pauseMenuOverlay.hide();
                     _this.userData.deleteSaveGame();
-                    setTimeout(function () {
-                        joinjelly.JoinJelly.startLevel();
-                    }, 200);
+                    setTimeout(function () { joinjelly.JoinJelly.startLevel(); }, 200);
                 });
                 this.pauseMenuOverlay.addEventListener("restart", function () {
                     _this.pauseMenuOverlay.hide();
                     _this.userData.deleteSaveGame();
-                    setTimeout(function () {
-                        joinjelly.JoinJelly.startLevel();
-                    }, 200);
+                    setTimeout(function () { joinjelly.JoinJelly.startLevel(); }, 200);
                 });
                 this.onback = function () {
-                    if (_this.gamestate == 2 /* paused */)
+                    if (_this.gamestate == GameState.paused)
                         _this.continueGame();
-                    else if (_this.gamestate == 1 /* playing */)
+                    else if (_this.gamestate == GameState.playing)
                         _this.pauseGame();
                 };
             };
@@ -3412,7 +3420,7 @@ var joinjelly;
                 this.updateInterfaceInfos();
                 this.gameHeader.showButtons();
                 gameui.AudiosManager.playMusic("music1");
-                this.gamestate = 1 /* playing */;
+                this.gamestate = GameState.playing;
                 this.step(500);
                 joinjelly.JoinJelly.analytics.logGameStart();
                 joinjelly.JoinJelly.userData.addOneMorePlay();
@@ -3422,9 +3430,9 @@ var joinjelly;
                 var _this = this;
                 clearTimeout(gameplay.timeoutInterval);
                 gameplay.timeoutInterval = setTimeout(function () {
-                    if (_this.gamestate == 1 /* playing */)
+                    if (_this.gamestate == GameState.playing)
                         _this.gameInteraction();
-                    if (_this.gamestate != 3 /* ended */)
+                    if (_this.gamestate != GameState.ended)
                         _this.step(_this.getTimeInterval(_this.level, gameplay.initialInterval, gameplay.finalInterval, gameplay.easeInterval));
                 }, timeout);
             };
@@ -3436,11 +3444,11 @@ var joinjelly;
                 this.updateCurrentLevel();
             };
             GamePlayScreen.prototype.pauseGame = function () {
-                if (this.gamestate == 4 /* standBy */)
+                if (this.gamestate == GameState.standBy)
                     return;
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
-                this.gamestate = 2 /* paused */;
+                this.gamestate = GameState.paused;
                 this.board.lock();
                 this.gameFooter.lockAll();
                 this.pauseMenuOverlay.show();
@@ -3450,10 +3458,10 @@ var joinjelly;
                 var _this = this;
                 this.pauseMenuOverlay.hide();
                 this.gameHeader.hideButtons();
-                this.gamestate = 4 /* standBy */;
+                this.gamestate = GameState.standBy;
                 this.board.lock();
                 setTimeout(function () {
-                    _this.gamestate = 1 /* playing */;
+                    _this.gamestate = GameState.playing;
                     _this.board.unlock();
                     _this.gameHeader.mouseEnabled = true;
                     _this.content.mouseEnabled = true;
@@ -3465,7 +3473,7 @@ var joinjelly;
             GamePlayScreen.prototype.endGame = function (message, win) {
                 var _this = this;
                 this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
-                this.gamestate = 4 /* standBy */;
+                this.gamestate = GameState.standBy;
                 var score = this.score;
                 var highScore = joinjelly.JoinJelly.userData.getHighScore();
                 var highJelly = this.board.getHighestTileValue();
@@ -3480,9 +3488,9 @@ var joinjelly;
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
                 setTimeout(function () {
                     if (win)
-                        _this.gamestate = 5 /* win */;
+                        _this.gamestate = GameState.win;
                     else
-                        _this.gamestate = 3 /* ended */;
+                        _this.gamestate = GameState.ended;
                     _this.finishMenu.show();
                     _this.gameFooter.mouseEnabled = true;
                     _this.gameFooter.setItems([joinjelly.Items.REVIVE]);
@@ -3493,7 +3501,7 @@ var joinjelly;
                     joinjelly.JoinJelly.userData.setScore(Math.max(score, joinjelly.JoinJelly.userData.getHighScore()));
                     joinjelly.JoinJelly.gameServices.submitScore(score);
                 }, 1200);
-                this.finishMenu.setValues(score, Math.max(highScore, score), highJelly, message);
+                this.finishMenu.setValues(score, joinjelly.JoinJelly.userData.getHighScore(), highJelly, message);
                 if (win)
                     joinjelly.JoinJelly.analytics.logWinGame(this.level, highJelly, this.matches, Date.now() - this.time);
                 else
@@ -3558,9 +3566,7 @@ var joinjelly;
             GamePlayScreen.prototype.addRandomDirtyOnBoard = function () {
                 var _this = this;
                 if (this.getDirtyProbabilityByLevel(this.level, gameplay.initialDirtyProbability, gameplay.finalDirtyProbability, gameplay.easeDirtyProbability) > Math.random())
-                    setTimeout(function () {
-                        _this.addRandomTileOnBoard(-1);
-                    }, 500);
+                    setTimeout(function () { _this.addRandomTileOnBoard(-1); }, 500);
             };
             GamePlayScreen.prototype.addRandomTileOnBoard = function (value) {
                 var empty = this.board.getEmptyTiles();
@@ -3636,9 +3642,7 @@ var joinjelly;
                 target.setNumber(0);
                 target.jelly.playUltimateEffect();
                 this.board.endGameEffect();
-                setTimeout(function () {
-                    _this.board.cleanBoard();
-                }, 200);
+                setTimeout(function () { _this.board.cleanBoard(); }, 200);
                 gameui.AudiosManager.playSound("evolve");
             };
             GamePlayScreen.prototype.cleanNearDirty = function (target) {
@@ -3748,7 +3752,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.useTime = function () {
                 var _this = this;
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
                 this.step(4000);
                 this.gameFooter.lockItem(joinjelly.Items.TIME);
@@ -3764,7 +3768,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.useClean = function () {
                 var _this = this;
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
                 var tiles = this.board.getAllTiles();
                 for (var t in tiles)
@@ -3786,11 +3790,11 @@ var joinjelly;
             GamePlayScreen.prototype.useRevive = function (test) {
                 var _this = this;
                 if (test === void 0) { test = false; }
-                if (this.gamestate != 3 /* ended */)
+                if (this.gamestate != GameState.ended)
                     return false;
                 UserData.getHistoryRevive();
                 this.saveGame();
-                this.gamestate = 1 /* playing */;
+                this.gamestate = GameState.playing;
                 this.board.unlock();
                 this.finishMenu.hide();
                 this.step(4000);
@@ -3816,7 +3820,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.useEvolve = function () {
                 var _this = this;
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
                 var tiles = this.board.getAllTiles();
                 var maxTile = 0;
@@ -3848,10 +3852,7 @@ var joinjelly;
                 tile.setNumber(newValue);
                 this.highJellySave(newValue);
                 tile.jelly.playThunder();
-                setTimeout(function () {
-                    tile.unlock();
-                    gameui.AudiosManager.playSound("evolve");
-                }, 1000);
+                setTimeout(function () { tile.unlock(); gameui.AudiosManager.playSound("evolve"); }, 1000);
                 gameui.AudiosManager.playSound("sounditemfast");
                 var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
                 var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
@@ -3870,7 +3871,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.useFast = function (test) {
                 if (test === void 0) { test = false; }
-                if (this.gamestate == 3 /* ended */)
+                if (this.gamestate == GameState.ended)
                     return;
                 var tiles = this.board.getAllTiles();
                 var matches = [];
@@ -3942,11 +3943,11 @@ var joinjelly;
                 if (fast)
                     gameplay.initialInterval = 200;
                 var interval = setInterval(function () {
-                    if (_this.gamestate == 2 /* paused */)
+                    if (_this.gamestate == GameState.paused)
                         return;
                     _this.useRevive();
                     _this.useFast(true);
-                    if (_this.gamestate == 5 /* win */) {
+                    if (_this.gamestate == GameState.win) {
                         clearInterval(interval);
                         joinjelly.JoinJelly.startTest();
                     }
@@ -3981,10 +3982,8 @@ var joinjelly;
                 _super.prototype.createGUI.call(this);
                 this.tutorialJellyFinger = new gameplay.view.TutorialMove();
                 this.tutorialItemFinger = new gameplay.view.TutorialMove();
-                this.gameMessage.addEventListener("closed", function () {
-                    if (_this.messageNotify)
-                        _this.messageNotify();
-                });
+                this.gameMessage.addEventListener("closed", function () { if (_this.messageNotify)
+                    _this.messageNotify(); });
                 this.tutorialItemFinger.rotation = -45;
                 this.content.addChild(this.tutorialJellyFinger);
                 this.footer.addChild(this.tutorialItemFinger);
@@ -4134,8 +4133,7 @@ var joinjelly;
                     function () {
                         joinjelly.JoinJelly.userData.history(histories.TUTORIAL);
                         joinjelly.JoinJelly.startLevel();
-                    }
-                ];
+                    }];
                 if (steps[this.currentTutorialStep])
                     steps[this.currentTutorialStep]();
             };
@@ -4185,9 +4183,7 @@ var joinjelly;
                 this.tutorialJellyFinger.hide();
                 this.tutorialItemFinger.hide();
             };
-            Tutorial.prototype.giveItemChance = function (items) {
-                return null;
-            };
+            Tutorial.prototype.giveItemChance = function (items) { return null; };
             Tutorial.prototype.useItem = function (item) {
                 var sucess = false;
                 switch (item) {
@@ -4210,10 +4206,8 @@ var joinjelly;
                         this.itemNotify();
                 }
             };
-            Tutorial.prototype.updateFooter = function () {
-            };
-            Tutorial.prototype.saveGame = function () {
-            };
+            Tutorial.prototype.updateFooter = function () { };
+            Tutorial.prototype.saveGame = function () { };
             return Tutorial;
         })(gameplay.GamePlayScreen);
         gameplay.Tutorial = Tutorial;
@@ -4487,58 +4481,57 @@ var joinjelly;
     })();
     joinjelly.JoinJelly = JoinJelly;
 })(joinjelly || (joinjelly = {}));
-var defaultWidth = 768 * 2;
-var defaultHeight = 1024 * 2;
-var fbAppId = "1416523228649363";
-var gameWebsite = "www.joinjelly.com";
-var gameWebsiteIcon = "www.joinjelly.com/icon.png";
-var contantsAndroid = {
-    ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',
-    ACH_JELLY_2: 'CgkI49ztp64KEAIQBQ',
-    ACH_JELLY_3: 'CgkI49ztp64KEAIQBg',
-    ACH_JELLY_4: 'CgkI49ztp64KEAIQBA',
-    ACH_JELLY_5: 'CgkI49ztp64KEAIQBQ',
-    ACH_JELLY_6: 'CgkI49ztp64KEAIQBg',
-    ACH_JELLY_7: 'CgkI49ztp64KEAIQBw',
-    ACH_JELLY_8: 'CgkI49ztp64KEAIQCA',
-    ACH_JELLY_9: 'CgkI49ztp64KEAIQCQ',
-    ACH_JELLY_10: 'CgkI49ztp64KEAIQCg',
-    ACH_JELLY_11: 'CgkI49ztp64KEAIQCw',
-    ACH_JELLY_12: 'CgkI49ztp64KEAIQDA',
-    ACH_JELLY_13: 'CgkI49ztp64KEAIQDQ',
-    ACH_JELLY_14: 'CgkI49ztp64KEAIQDg',
-    ACH_JELLY_15: 'CgkI49ztp64KEAIQDw',
-    ACH_JELLY_16: 'CgkI49ztp64KEAIQEA',
-    ACH_JELLY_17: 'CgkI49ztp64KEAIQEQ',
-    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
-    LEAD_LEADERBOARD: 'CgkI49ztp64KEAIQAg',
-};
-var constantsiOS = {
-    ACH_JELLY_1: 'jelly01',
-    ACH_JELLY_2: 'jelly02',
-    ACH_JELLY_3: 'jelly03',
-    ACH_JELLY_4: 'jelly04',
-    ACH_JELLY_5: 'jelly05',
-    ACH_JELLY_6: 'jelly06',
-    ACH_JELLY_7: 'jelly07',
-    ACH_JELLY_8: 'jelly08',
-    ACH_JELLY_9: 'jelly09',
-    ACH_JELLY_10: 'jelly10',
-    ACH_JELLY_11: 'jelly11',
-    ACH_JELLY_12: 'jelly12',
-    ACH_JELLY_13: 'jelly13',
-    ACH_JELLY_14: 'jelly14',
-    ACH_JELLY_15: 'jelly15',
-    ACH_JELLY_16: 'jelly16',
-    ACH_JELLY_17: 'jelly17',
-    LEAD_LEADERBOARD: 'leaderboards',
-};
+/// <reference path="gameui/uiitem.ts" />
+/// <reference path="gameui/AudioManager.ts" />
+/// <reference path="gameui/AssetsManager.ts" />
+/// <reference path="gameui/GameScreen.ts" />
+/// <reference path="gameui/UIItem.ts" />
+/// <reference path="gameui/Grid.ts" />
+/// <reference path="gameui/Label.ts" />
+/// <reference path="gameui/MenuContainer.ts" />
+/// <reference path="gameui/ScreenState.ts" />
+/// <reference path="gameui/Transition.ts" />
+/// <reference path="gameui/Button.ts" />
+/// <reference path="src/ItemsData.ts" />
+/// <reference path="src/StringResources.ts" /> 
+/// <reference path="src/Analytics.ts" />
+/// <reference path="src/InAppPurchases.ts" />
+/// <reference path="src/menus/ScrollabePage.ts" />
+/// <reference path="src/menus/LoadingScreen.ts" />
+/// <reference path="src/menus/MainScreen.ts" />
+/// <reference path="src/menus/Jellypedia.ts" />
+/// <reference path="src/menus/view/Title.ts" />
+/// <reference path="src/menus/view/JellyLobby.ts" />
+/// <reference path="src/menus/view/FlyOutMenu.ts" />
+/// <reference path="src/menus/view/JellypediaItem.ts" /> 
+/// <reference path="src/menus/StoreMenu.ts" />
+/// <reference path="src/menus/MainMenu.ts" />
+/// <reference path="src/menus/Credit.ts" />
+/// <reference path="src/menus/view/SoundOptions.ts" />
+/// <reference path="src/view/Jellyble.ts" />
+/// <reference path="src/view/LoadingBall.ts" />
+/// <reference path="src/gameplay/view/GameHeader.ts" />
+/// <reference path="src/gameplay/view/Jelly.ts" />
+/// <reference path="src/gameplay/view/LevelIndicator.ts" />
+/// <reference path="src/gameplay/view/ItemButton.ts" /> 
+/// <reference path="src/gameplay/view/PauseMenu.ts" />
+/// <reference path="src/gameplay/view/TimeBar.ts" />
+/// <reference path="src/gameplay/view/FinishDialog.ts" />
+/// <reference path="src/gameplay/view/TutorialMove.ts" />
+/// <reference path="src/gameplay/view/TutorialMessage.ts" />
+/// <reference path="src/gameplay/Board.ts" />
+/// <reference path="src/gameplay/Tile.ts" />
+/// <reference path="src/gameplay/GamePlay.ts" /> 
+/// <reference path="src/gameplay/Tutorial.ts" />
+/// <reference path="src/Message.ts" />
+/// <reference path="src/UserData.ts" />
+/// <reference path="src/JoinJelly.ts" /> 
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
     (function (gameplay) {
         gameplay.boardSize = 5;
-        gameplay.itemProbability = 0.005;
+        gameplay.itemProbability = 0.003;
         gameplay.timeByLevel = 20000;
         gameplay.timeoutInterval;
         gameplay.initialInterval = 800;
@@ -4550,663 +4543,7 @@ var joinjelly;
         gameplay.increasingJellyValuePerLevel = 0.008;
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var CountDown = (function (_super) {
-                __extends(CountDown, _super);
-                function CountDown() {
-                    _super.apply(this, arguments);
-                }
-                CountDown.prototype.countDown = function (total) {
-                    var _this = this;
-                    if (total === void 0) { total = 3; }
-                    var ns = [];
-                    var time = 1000;
-                    var transition = 200;
-                    var dk = gameui.AssetsManager.getBitmap("popupdark");
-                    this.addChild(dk);
-                    dk.scaleX = dk.scaleY = 16;
-                    dk.x = -defaultWidth / 2;
-                    dk.y = -defaultHeight;
-                    dk.alpha = 0;
-                    dk.mouseEnabled = false;
-                    createjs.Tween.get(dk).to({ alpha: 1 }, 200);
-                    setTimeout(function () {
-                        createjs.Tween.get(dk).to({ alpha: 0 }, 200).call(function () {
-                            _this.removeChild(dk);
-                        });
-                    }, time * total + transition);
-                    setTimeout(function () {
-                        gameui.AudiosManager.playSound("Interface Sound-12");
-                    }, time * total + transition);
-                    for (var n = total; n > 0; n--) {
-                        ns[n] = gameui.AssetsManager.getBitmap("n" + n);
-                        this.addChild(ns[n]);
-                        ns[n].regX = ns[n].getBounds().width / 2;
-                        ns[n].regY = ns[n].getBounds().height / 2;
-                        ns[n].mouseEnabled = false;
-                        createjs.Tween.get(ns[n]).to({ scaleX: 2, scaleY: 2, alpha: 0 }).wait((total - n) * time).to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut).call(function () {
-                            gameui.AudiosManager.playSound("Interface Sound-13");
-                        }).wait(time - transition).to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn).call(function (obj) {
-                            _this.removeChild(obj);
-                        });
-                    }
-                };
-                return CountDown;
-            })(createjs.Container);
-            view.CountDown = CountDown;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var ItemsFooter = (function (_super) {
-                __extends(ItemsFooter, _super);
-                function ItemsFooter(items) {
-                    _super.call(this);
-                    this.itemSize = 270;
-                    this.itemsButtons = [];
-                    this.addObjects();
-                    this.setItems(items);
-                }
-                ItemsFooter.prototype.setItems = function (items) {
-                    var itemSize = this.itemSize;
-                    if (items.length >= 5)
-                        itemSize = 200;
-                    this.cleanButtons();
-                    if (!items)
-                        return;
-                    for (var i in items)
-                        this.addItem(items[i], i);
-                    for (var i in items) {
-                        this.itemsButtons[items[i]].y = -150;
-                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
-                    }
-                };
-                ItemsFooter.prototype.cleanButtons = function () {
-                    for (var i in this.itemsButtons)
-                        this.removeChild(this.itemsButtons[i]);
-                    this.itemsButtons = [];
-                };
-                ItemsFooter.prototype.addObjects = function () {
-                    var bg = gameui.AssetsManager.getBitmap("footer");
-                    this.addChild(bg);
-                    bg.y = -162;
-                    bg.x = (defaultWidth - 1161) / 2;
-                    var lucky = gameui.AssetsManager.getBitmap("lucky");
-                    this.addChild(lucky);
-                    lucky.y = -210;
-                    lucky.x = (defaultWidth - 250);
-                    lucky.scaleX = lucky.scaleY = 0.5;
-                    this.lucky = lucky;
-                    this.gameMessage = new view.TutoralMessage();
-                    this.addChild(this.gameMessage);
-                };
-                ItemsFooter.prototype.addItem = function (item, pos) {
-                    var _this = this;
-                    var bt = new view.ItemButton(item);
-                    this.addChild(bt);
-                    this.itemsButtons[item] = bt;
-                    bt.addEventListener("click", function () {
-                        _this.dispatchEvent({ type: "useitem", item: item });
-                    });
-                };
-                ItemsFooter.prototype.getItemButton = function (item) {
-                    return this.itemsButtons[item];
-                };
-                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
-                    if (this.itemsButtons[item])
-                        this.itemsButtons[item].setAmmount(ammount);
-                    if (item == "lucky")
-                        this.lucky.visible = (ammount > 0);
-                };
-                ItemsFooter.prototype.showMessage = function (itemId, message) {
-                    this.gameMessage.x = this.getItemButton(itemId).x;
-                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
-                    this.gameMessage.show(message);
-                };
-                ItemsFooter.prototype.hideMessage = function () {
-                    this.gameMessage.fadeOut();
-                };
-                ItemsFooter.prototype.bounceItem = function (item) {
-                    this.getItemButton(item).highLight(false);
-                };
-                ItemsFooter.prototype.highlight = function (item) {
-                    this.unHighlightAll();
-                    this.getItemButton(item).highLight();
-                };
-                ItemsFooter.prototype.unHighlightAll = function () {
-                    for (var i in this.itemsButtons)
-                        this.itemsButtons[i].unHighlight();
-                };
-                ItemsFooter.prototype.lockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    if (b)
-                        b.lock();
-                };
-                ItemsFooter.prototype.unlockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    b.unlock();
-                };
-                ItemsFooter.prototype.lockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].lock();
-                };
-                ItemsFooter.prototype.unlockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].unlock();
-                };
-                return ItemsFooter;
-            })(createjs.Container);
-            view.ItemsFooter = ItemsFooter;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var GameServices = (function () {
-        function GameServices() {
-            var _this = this;
-            if (!navigator.onLine)
-                return;
-            var os = "web";
-            if (Cocoon.Device.getDeviceInfo())
-                os = Cocoon.Device.getDeviceInfo().os;
-            if (os == "windows" || os == "web")
-                return;
-            if (os == "ios") {
-                this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
-                this.socialService.setAchievementsMap(constantsiOS);
-            }
-            else if (os == "android") {
-                var gp = Cocoon.Social.GooglePlayGames;
-                gp.init({
-                    defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD
-                });
-                this.socialService = gp.getSocialInterface();
-                this.socialService.setAchievementsMap(contantsAndroid);
-            }
-            else if (os == "web") {
-                var gp = Cocoon.Social.GooglePlayGames;
-                gp.init({
-                    clientId: contantsAndroid.CLIENT_ID,
-                    defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD
-                });
-                this.socialService = gp.getSocialInterface();
-                this.socialService.setAchievementsMap(contantsAndroid);
-                this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
-            }
-            setTimeout(function () {
-                if (_this.socialService && !_this.socialService.isLoggedIn()) {
-                    _this.socialService.login(function (loggedIn, error) {
-                        if (error)
-                            console.error("login error: " + error.message + " " + error.code);
-                        else if (!loggedIn)
-                            console.log("login cancelled");
-                    });
-                }
-            }, 10000);
-        }
-        GameServices.prototype.showLeaderboard = function () {
-            if (!navigator.onLine)
-                return;
-            if (!this.socialService)
-                return;
-            try {
-                this.socialService.showLeaderboard();
-            }
-            catch (e) {
-            }
-        };
-        GameServices.prototype.showAchievements = function () {
-            if (!navigator.onLine)
-                return;
-            if (!this.socialService)
-                return;
-            try {
-                this.socialService.showAchievements();
-            }
-            catch (e) {
-            }
-        };
-        GameServices.prototype.submitScore = function (score) {
-            if (!this.socialService) {
-                console.error("No social Service");
-                return;
-            }
-            if (!navigator.onLine) {
-                console.error("No social connection");
-                return;
-            }
-            try {
-                this.socialService.submitScore(score.toString(), function (error) {
-                    if (error)
-                        console.error("score error: " + error.message);
-                    else
-                        console.log("submited score: " + score);
-                });
-            }
-            catch (e) {
-                console.error("error: " + JSON.stringify(e));
-            }
-        };
-        GameServices.prototype.submitJellyAchievent = function (jellyValue) {
-            if (!navigator.onLine)
-                return;
-            if (!this.socialService)
-                return;
-            var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
-            try {
-                this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, function (error) {
-                    if (error)
-                        console.error("submitAchievement error: " + error.message);
-                    else
-                        console.log("submited Achievement: jelly " + jellyNumber);
-                });
-            }
-            catch (e) {
-            }
-        };
-        return GameServices;
-    })();
-    joinjelly.GameServices = GameServices;
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var AzureLeaderBoards = (function () {
-        function AzureLeaderBoards() {
-        }
-        AzureLeaderBoards.init = function () {
-            this.deviceId = localStorage.getItem("deviceId");
-            if (typeof WindowsAzure == 'undefined')
-                return;
-            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
-            this.table = this.client.getTable("LeaderBoards");
-        };
-        AzureLeaderBoards.getScoreNames = function (callback, count) {
-            if (!this.table)
-                return;
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
-                callback(queryResults);
-            }, function (queryResults) {
-                callback(null);
-            });
-        };
-        AzureLeaderBoards.setScore = function (score, name, newId) {
-            var _this = this;
-            if (newId === void 0) { newId = false; }
-            if (!this.table)
-                return;
-            if (this.deviceId && !newId) {
-                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
-            }
-            else {
-                this.table.insert({ name: name, score: score, gameid: this.gameId }).then(function (result) {
-                    if (result.id) {
-                        _this.deviceId = result.id;
-                        localStorage.setItem("deviceId", _this.deviceId);
-                    }
-                });
-            }
-        };
-        AzureLeaderBoards.host = "https://dialeaderboards.azure-mobile.net";
-        AzureLeaderBoards.key = "GyalJGfVBZeaGMTMGxKuytNMXjjoqC94";
-        AzureLeaderBoards.gameId = "joinjelly";
-        return AzureLeaderBoards;
-    })();
-    joinjelly.AzureLeaderBoards = AzureLeaderBoards;
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var LeaderBoards = (function (_super) {
-            __extends(LeaderBoards, _super);
-            function LeaderBoards() {
-                var _this = this;
-                _super.call(this, StringResources.menus.leaderboards);
-                this.maxScroll = 1700;
-                var loading = new joinjelly.view.LoadingBall();
-                this.scrollableContent.addChild(loading);
-                loading.x = defaultWidth / 2;
-                loading.y = 800;
-                var message = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
-                this.scrollableContent.addChild(message);
-                message.regX = message.getBounds().width / 2;
-                message.x = defaultWidth / 2;
-                message.y = 900;
-                message.visible = true;
-                this.loadLeaderBoards(function (results) {
-                    loading.visible = false;
-                    if (results != null) {
-                        _this.fillLeaderBoards(results);
-                        message.visible = false;
-                    }
-                    else {
-                        message.text = StringResources.menus.error;
-                        message.visible = true;
-                        message.regX = message.getBounds().width / 2;
-                    }
-                });
-            }
-            LeaderBoards.prototype.fillLeaderBoards = function (results) {
-                var space = 200;
-                var start = 400;
-                for (var r in results) {
-                    var i = new menus.view.LeaderBoardItem(results[r].score, results[r].name, parseInt(r) + 1);
-                    i.x = defaultWidth / 2;
-                    i.y = start + space * r;
-                    this.scrollableContent.addChild(i);
-                }
-                this.maxScroll = start + results.length * space;
-            };
-            LeaderBoards.prototype.loadLeaderBoards = function (callback) {
-                joinjelly.AzureLeaderBoards.getScoreNames(callback, 20);
-            };
-            return LeaderBoards;
-        })(joinjelly.ScrollablePage);
-        menus.LeaderBoards = LeaderBoards;
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var StoryScreen = (function (_super) {
-        __extends(StoryScreen, _super);
-        function StoryScreen() {
-            _super.call(this);
-            var intro = new lib.Intro3();
-            this.content.addChild(intro);
-            intro.play();
-            intro.loop = false;
-            intro.addEventListener("click", function () {
-                intro.stop();
-                joinjelly.JoinJelly.startTutorial();
-            });
-            intro.addEventListener("complete", function () {
-                intro.stop();
-                joinjelly.JoinJelly.startTutorial();
-            });
-        }
-        return StoryScreen;
-    })(gameui.ScreenState);
-    joinjelly.StoryScreen = StoryScreen;
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var view;
-        (function (view) {
-            var LeaderBoardItem = (function (_super) {
-                __extends(LeaderBoardItem, _super);
-                function LeaderBoardItem(score, name, position) {
-                    if (position === void 0) { position = 1; }
-                    _super.call(this);
-                    this.regX = 1056 / 2;
-                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
-                    bg.scaleY = 0.65;
-                    this.addChild(bg);
-                    var tContainer = new createjs.Container();
-                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
-                    var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
-                    var scoreObj = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
-                    scoreObj.regX = scoreObj.getBounds().width;
-                    positionObj.y = 30;
-                    titleObj.y = 30;
-                    scoreObj.y = 30;
-                    positionObj.x = 30;
-                    titleObj.x = 150;
-                    scoreObj.x = 1000;
-                    tContainer.addChild(titleObj);
-                    tContainer.addChild(scoreObj);
-                    tContainer.addChild(positionObj);
-                    this.addChild(tContainer);
-                }
-                return LeaderBoardItem;
-            })(createjs.Container);
-            view.LeaderBoardItem = LeaderBoardItem;
-        })(view = menus.view || (menus.view = {}));
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var view;
-        (function (view) {
-            var LoadingBar = (function (_super) {
-                __extends(LoadingBar, _super);
-                function LoadingBar(imagePath) {
-                    _super.call(this);
-                    var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
-                    var text = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
-                    var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
-                    this.addChild(bg);
-                    this.addChild(text);
-                    this.addChild(bar);
-                    text.regX = text.getBounds().width / 2;
-                    bar.x = -939 / 2 - 40;
-                    bg.regX = 1131 / 2;
-                    text.y = -100;
-                    bar.y = 85;
-                    this.barMask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, bar.y, 939, 57));
-                    this.barMask.x = bar.x;
-                    bar.mask = this.barMask;
-                }
-                LoadingBar.prototype.update = function (value) {
-                    this.barMask.scaleX = value;
-                };
-                return LoadingBar;
-            })(createjs.Container);
-            view.LoadingBar = LoadingBar;
-        })(view = menus.view || (menus.view = {}));
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var view;
-        (function (view) {
-            var PlayerNameOptions = (function (_super) {
-                __extends(PlayerNameOptions, _super);
-                function PlayerNameOptions() {
-                    _super.call(this);
-                    this.addObjects();
-                }
-                PlayerNameOptions.prototype.addObjects = function () {
-                    var _this = this;
-                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
-                    bg.y = -130;
-                    bg.regX = bg.getBounds().width / 2;
-                    this.addChild(bg);
-                    var title = gameui.AssetsManager.getBitmapText(StringResources.menus.playerName, "debussy");
-                    title.y = -190;
-                    title.scaleX = title.scaleY = 1.1;
-                    title.regX = title.getBounds().width / 2;
-                    this.addChild(title);
-                    var playerName = gameui.AssetsManager.getBitmapText(joinjelly.JoinJelly.userData.getPlayerName(), "debussy");
-                    this.addChild(playerName);
-                    this.playerName = playerName;
-                    playerName.x = -450;
-                    playerName.y = -60;
-                    var playerNameEdit = new gameui.ImageButton("BtSettings", function () {
-                        joinjelly.JoinJelly.userData.promptPlayerName(function () {
-                            _this.playerName.text = joinjelly.JoinJelly.userData.getPlayerName();
-                            ;
-                        });
-                    });
-                    this.addChild(playerNameEdit);
-                    playerNameEdit.x = 400;
-                };
-                return PlayerNameOptions;
-            })(createjs.Container);
-            view.PlayerNameOptions = PlayerNameOptions;
-        })(view = menus.view || (menus.view = {}));
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var view;
-        (function (view) {
-            var ProductListItem = (function (_super) {
-                __extends(ProductListItem, _super);
-                function ProductListItem(productId, name, description, localizedPrice) {
-                    var _this = this;
-                    _super.call(this);
-                    var tContainer = new createjs.Container();
-                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
-                    bg.x = 232;
-                    bg.y = 27;
-                    bg.scaleY = 1.25;
-                    bg.scaleX = 0.75;
-                    tContainer.addChild(bg);
-                    var iconId = "";
-                    switch (productId) {
-                        case "time5x":
-                            iconId = "itemtime";
-                            break;
-                        case "fast5x":
-                            iconId = "itemfast";
-                            break;
-                        case "revive5x":
-                            iconId = "itemrevive";
-                            break;
-                        case "evolve5x":
-                            iconId = "itemevolve";
-                            break;
-                        case "clean5x":
-                            iconId = "itemclean";
-                            break;
-                        case "pack5x":
-                        case "pack1x":
-                        case "pack10x":
-                            iconId = "itemPack";
-                            break;
-                        case "lucky":
-                            iconId = "lucky";
-                            break;
-                        default: iconId = "itemPack";
-                    }
-                    var icon = gameui.AssetsManager.getBitmap(iconId);
-                    icon.regX = icon.getBounds().width / 2;
-                    icon.regY = icon.getBounds().height / 2;
-                    icon.scaleX = icon.scaleY = 0.8;
-                    icon.x = 225;
-                    icon.y = 188;
-                    tContainer.addChild(icon);
-                    if (description)
-                        description = description.replace("  ", "\n");
-                    description = description.replace(";", "\n");
-                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
-                    var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
-                    titleObj.y = 40;
-                    descriptionObj.y = 140;
-                    titleObj.scaleX = titleObj.scaleY = 0.7;
-                    descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
-                    titleObj.x = descriptionObj.x = 360;
-                    tContainer.addChild(titleObj);
-                    tContainer.addChild(descriptionObj);
-                    var unchecked = gameui.AssetsManager.getBitmap("unchecked");
-                    unchecked.regX = unchecked.getBounds().width / 2;
-                    unchecked.regY = unchecked.getBounds().height / 2;
-                    unchecked.y = 152;
-                    unchecked.x = 1199;
-                    this.addChild(unchecked);
-                    var check = gameui.AssetsManager.getBitmap("check");
-                    check.regX = check.getBounds().width / 2;
-                    check.regY = check.getBounds().height / 2;
-                    check.y = 152;
-                    check.x = 1199;
-                    this.purchasedIcon = check;
-                    this.addChild(check);
-                    var loading = new joinjelly.view.LoadingBall();
-                    loading.y = 152;
-                    loading.x = 1199;
-                    this.loadingIcon = loading;
-                    this.addChild(loading);
-                    var priceDO = gameui.AssetsManager.getBitmapText(localizedPrice, "debussy");
-                    priceDO.y = 251;
-                    priceDO.x = 1199;
-                    priceDO.regX = priceDO.getBounds().width / 2;
-                    priceDO.scaleX = priceDO.scaleY = 0.8;
-                    if (localizedPrice != "share")
-                        tContainer.addChild(priceDO);
-                    if (localizedPrice == "share") {
-                        var button = new gameui.ImageButton("BtShare", function () {
-                            _this.setPurchasing();
-                            _this.dispatchEvent({ type: "share", productId: productId });
-                        });
-                    }
-                    else {
-                        var button = new gameui.ImageButton("BtStore", function () {
-                            _this.setPurchasing();
-                            _this.dispatchEvent({ type: "buy", productId: productId });
-                        });
-                    }
-                    button.y = 152;
-                    button.x = 1199;
-                    this.purchaseButton = button;
-                    this.addChild(button);
-                    this.addChild(tContainer);
-                    tContainer.cache(100, 27, 1250, 300);
-                }
-                ProductListItem.prototype.setPurchasing = function () {
-                    this.disable();
-                    this.loadingIcon.visible = true;
-                };
-                ProductListItem.prototype.loading = function () {
-                    this.disable();
-                    this.loadingIcon.visible = true;
-                };
-                ProductListItem.prototype.setNotAvaliable = function () {
-                    this.purchaseButton.fadeOut();
-                    this.purchasedIcon.visible = false;
-                    this.loadingIcon.visible = false;
-                };
-                ProductListItem.prototype.setAvaliable = function () {
-                };
-                ProductListItem.prototype.setPurchased = function (timeOut) {
-                    var _this = this;
-                    if (timeOut === void 0) { timeOut = false; }
-                    this.purchaseButton.fadeOut();
-                    this.purchasedIcon.visible = true;
-                    this.loadingIcon.visible = false;
-                    gameui.AudiosManager.playSound("Interface Sound-11");
-                    if (timeOut)
-                        setTimeout(function () {
-                            _this.setNormal();
-                        }, 1000);
-                };
-                ProductListItem.prototype.setNormal = function () {
-                    this.purchaseButton.fadeIn();
-                    this.purchasedIcon.visible = false;
-                    this.loadingIcon.visible = false;
-                };
-                ProductListItem.prototype.enable = function () {
-                    this.purchaseButton.fadeIn();
-                    this.loadingIcon.visible = false;
-                };
-                ProductListItem.prototype.disable = function () {
-                    this.purchasedIcon.visible = false;
-                    this.purchaseButton.fadeOut();
-                };
-                return ProductListItem;
-            })(createjs.Container);
-            view.ProductListItem = ProductListItem;
-        })(view = menus.view || (menus.view = {}));
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
+//module gameui {
 var joinjelly;
 (function (joinjelly) {
     var menus;
@@ -5364,6 +4701,399 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
+    var GameServices = (function () {
+        function GameServices() {
+            var _this = this;
+            if (!navigator.onLine)
+                return;
+            var os = "web";
+            if (Cocoon.Device.getDeviceInfo())
+                os = Cocoon.Device.getDeviceInfo().os;
+            if (os == "windows" || os == "web")
+                return;
+            if (os == "ios") {
+                this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
+                this.socialService.setAchievementsMap(constantsiOS);
+            }
+            else if (os == "android") {
+                var gp = Cocoon.Social.GooglePlayGames;
+                gp.init({
+                    defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD
+                });
+                this.socialService = gp.getSocialInterface();
+                this.socialService.setAchievementsMap(contantsAndroid);
+            }
+            else if (os == "web") {
+                var gp = Cocoon.Social.GooglePlayGames;
+                gp.init({
+                    clientId: contantsAndroid.CLIENT_ID,
+                    defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD
+                });
+                this.socialService = gp.getSocialInterface();
+                this.socialService.setAchievementsMap(contantsAndroid);
+                this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
+            }
+            setTimeout(function () {
+                if (_this.socialService && !_this.socialService.isLoggedIn()) {
+                    _this.socialService.login(function (loggedIn, error) {
+                        if (error)
+                            console.error("login error: " + error.message + " " + error.code);
+                        else if (!loggedIn)
+                            console.log("login cancelled");
+                    });
+                }
+            }, 10000);
+        }
+        GameServices.prototype.showLeaderboard = function () {
+            if (!navigator.onLine)
+                return;
+            if (!this.socialService)
+                return;
+            try {
+                this.socialService.showLeaderboard();
+            }
+            catch (e) { }
+        };
+        GameServices.prototype.showAchievements = function () {
+            if (!navigator.onLine)
+                return;
+            if (!this.socialService)
+                return;
+            try {
+                this.socialService.showAchievements();
+            }
+            catch (e) { }
+        };
+        GameServices.prototype.submitScore = function (score) {
+            if (!this.socialService) {
+                console.error("No social Service");
+                return;
+            }
+            if (!navigator.onLine) {
+                console.error("No social connection");
+                return;
+            }
+            try {
+                this.socialService.submitScore(score.toString(), function (error) {
+                    if (error)
+                        console.error("score error: " + error.message);
+                    else
+                        console.log("submited score: " + score);
+                });
+            }
+            catch (e) {
+                console.error("error: " + JSON.stringify(e));
+            }
+        };
+        GameServices.prototype.submitJellyAchievent = function (jellyValue) {
+            if (!navigator.onLine)
+                return;
+            if (!this.socialService)
+                return;
+            var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
+            try {
+                this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, function (error) {
+                    if (error)
+                        console.error("submitAchievement error: " + error.message);
+                    else
+                        console.log("submited Achievement: jelly " + jellyNumber);
+                });
+            }
+            catch (e) { }
+        };
+        return GameServices;
+    })();
+    joinjelly.GameServices = GameServices;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var CountDown = (function (_super) {
+                __extends(CountDown, _super);
+                function CountDown() {
+                    _super.apply(this, arguments);
+                }
+                CountDown.prototype.countDown = function (total) {
+                    var _this = this;
+                    if (total === void 0) { total = 3; }
+                    var ns = [];
+                    var time = 1000;
+                    var transition = 200;
+                    var dk = gameui.AssetsManager.getBitmap("popupdark");
+                    this.addChild(dk);
+                    dk.scaleX = dk.scaleY = 16;
+                    dk.x = -defaultWidth / 2;
+                    dk.y = -defaultHeight;
+                    dk.alpha = 0;
+                    dk.mouseEnabled = false;
+                    createjs.Tween.get(dk).to({ alpha: 1 }, 200);
+                    setTimeout(function () {
+                        createjs.Tween.get(dk).to({ alpha: 0 }, 200).call(function () { _this.removeChild(dk); });
+                    }, time * total + transition);
+                    setTimeout(function () {
+                        gameui.AudiosManager.playSound("Interface Sound-12");
+                    }, time * total + transition);
+                    for (var n = total; n > 0; n--) {
+                        ns[n] = gameui.AssetsManager.getBitmap("n" + n);
+                        this.addChild(ns[n]);
+                        ns[n].regX = ns[n].getBounds().width / 2;
+                        ns[n].regY = ns[n].getBounds().height / 2;
+                        ns[n].mouseEnabled = false;
+                        createjs.Tween.get(ns[n])
+                            .to({ scaleX: 2, scaleY: 2, alpha: 0 })
+                            .wait((total - n) * time)
+                            .to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut)
+                            .call(function () { gameui.AudiosManager.playSound("Interface Sound-13"); })
+                            .wait(time - transition)
+                            .to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn)
+                            .call(function (obj) { _this.removeChild(obj); });
+                    }
+                };
+                return CountDown;
+            })(createjs.Container);
+            view.CountDown = CountDown;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var LeaderBoards = (function (_super) {
+            __extends(LeaderBoards, _super);
+            function LeaderBoards() {
+                var _this = this;
+                _super.call(this, StringResources.menus.leaderboards);
+                this.maxScroll = 1700;
+                var loading = new joinjelly.view.LoadingBall();
+                this.scrollableContent.addChild(loading);
+                loading.x = defaultWidth / 2;
+                loading.y = 800;
+                var message = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
+                this.scrollableContent.addChild(message);
+                message.regX = message.getBounds().width / 2;
+                message.x = defaultWidth / 2;
+                message.y = 900;
+                message.visible = true;
+                this.loadLeaderBoards(function (results) {
+                    loading.visible = false;
+                    if (results != null) {
+                        _this.fillLeaderBoards(results);
+                        message.visible = false;
+                    }
+                    else {
+                        message.text = StringResources.menus.error;
+                        message.visible = true;
+                        message.regX = message.getBounds().width / 2;
+                    }
+                });
+            }
+            LeaderBoards.prototype.fillLeaderBoards = function (results) {
+                var space = 200;
+                var start = 400;
+                for (var r in results) {
+                    var i = new menus.view.LeaderBoardItem(results[r].score, results[r].name, parseInt(r) + 1);
+                    i.x = defaultWidth / 2;
+                    i.y = start + space * r;
+                    this.scrollableContent.addChild(i);
+                }
+                this.maxScroll = start + results.length * space;
+            };
+            LeaderBoards.prototype.loadLeaderBoards = function (callback) {
+                joinjelly.AzureLeaderBoards.getScoreNames(callback, 20);
+            };
+            return LeaderBoards;
+        })(joinjelly.ScrollablePage);
+        menus.LeaderBoards = LeaderBoards;
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var AzureLeaderBoards = (function () {
+        function AzureLeaderBoards() {
+        }
+        AzureLeaderBoards.init = function () {
+            this.deviceId = localStorage.getItem("deviceId");
+            if (typeof WindowsAzure == 'undefined')
+                return;
+            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
+            this.table = this.client.getTable("LeaderBoards");
+        };
+        AzureLeaderBoards.getScoreNames = function (callback, count) {
+            if (!this.table)
+                return;
+            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
+                callback(queryResults);
+            }, function (queryResults) {
+                callback(null);
+            });
+        };
+        AzureLeaderBoards.setScore = function (score, name, newId) {
+            var _this = this;
+            if (newId === void 0) { newId = false; }
+            if (!this.table)
+                return;
+            if (this.deviceId && !newId) {
+                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
+            }
+            else {
+                this.table.insert({ name: name, score: score, gameid: this.gameId }).then(function (result) {
+                    if (result.id) {
+                        _this.deviceId = result.id;
+                        localStorage.setItem("deviceId", _this.deviceId);
+                    }
+                });
+            }
+        };
+        AzureLeaderBoards.host = "https://dialeaderboards.azure-mobile.net";
+        AzureLeaderBoards.key = "GyalJGfVBZeaGMTMGxKuytNMXjjoqC94";
+        AzureLeaderBoards.gameId = "joinjelly";
+        return AzureLeaderBoards;
+    })();
+    joinjelly.AzureLeaderBoards = AzureLeaderBoards;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var StoryScreen = (function (_super) {
+        __extends(StoryScreen, _super);
+        function StoryScreen() {
+            _super.call(this);
+            var intro = new lib.Intro3();
+            this.content.addChild(intro);
+            intro.play();
+            intro.loop = false;
+            intro.addEventListener("click", function () {
+                intro.stop();
+                joinjelly.JoinJelly.startTutorial();
+            });
+            intro.addEventListener("complete", function () {
+                intro.stop();
+                joinjelly.JoinJelly.startTutorial();
+            });
+        }
+        return StoryScreen;
+    })(gameui.ScreenState);
+    joinjelly.StoryScreen = StoryScreen;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var LeaderBoardItem = (function (_super) {
+                __extends(LeaderBoardItem, _super);
+                function LeaderBoardItem(score, name, position) {
+                    if (position === void 0) { position = 1; }
+                    _super.call(this);
+                    this.regX = 1056 / 2;
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
+                    bg.scaleY = 0.65;
+                    this.addChild(bg);
+                    var tContainer = new createjs.Container();
+                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
+                    var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
+                    var scoreObj = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
+                    scoreObj.regX = scoreObj.getBounds().width;
+                    positionObj.y = 30;
+                    titleObj.y = 30;
+                    scoreObj.y = 30;
+                    positionObj.x = 30;
+                    titleObj.x = 150;
+                    scoreObj.x = 1000;
+                    tContainer.addChild(titleObj);
+                    tContainer.addChild(scoreObj);
+                    tContainer.addChild(positionObj);
+                    this.addChild(tContainer);
+                }
+                return LeaderBoardItem;
+            })(createjs.Container);
+            view.LeaderBoardItem = LeaderBoardItem;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var LoadingBar = (function (_super) {
+                __extends(LoadingBar, _super);
+                function LoadingBar(imagePath) {
+                    _super.call(this);
+                    var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
+                    var text = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
+                    var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
+                    this.addChild(bg);
+                    this.addChild(text);
+                    this.addChild(bar);
+                    text.regX = text.getBounds().width / 2;
+                    bar.x = -939 / 2 - 40;
+                    bg.regX = 1131 / 2;
+                    text.y = -100;
+                    bar.y = 85;
+                    this.barMask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, bar.y, 939, 57));
+                    this.barMask.x = bar.x;
+                    bar.mask = this.barMask;
+                }
+                LoadingBar.prototype.update = function (value) {
+                    this.barMask.scaleX = value;
+                };
+                return LoadingBar;
+            })(createjs.Container);
+            view.LoadingBar = LoadingBar;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var PlayerNameOptions = (function (_super) {
+                __extends(PlayerNameOptions, _super);
+                function PlayerNameOptions() {
+                    _super.call(this);
+                    this.addObjects();
+                }
+                PlayerNameOptions.prototype.addObjects = function () {
+                    var _this = this;
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
+                    bg.y = -130;
+                    bg.regX = bg.getBounds().width / 2;
+                    this.addChild(bg);
+                    var title = gameui.AssetsManager.getBitmapText(StringResources.menus.playerName, "debussy");
+                    title.y = -190;
+                    title.scaleX = title.scaleY = 1.1;
+                    title.regX = title.getBounds().width / 2;
+                    this.addChild(title);
+                    var playerName = gameui.AssetsManager.getBitmapText(joinjelly.JoinJelly.userData.getPlayerName(), "debussy");
+                    this.addChild(playerName);
+                    this.playerName = playerName;
+                    playerName.x = -450;
+                    playerName.y = -60;
+                    var playerNameEdit = new gameui.ImageButton("BtSettings", function () {
+                        joinjelly.JoinJelly.userData.promptPlayerName(function () {
+                            _this.playerName.text = joinjelly.JoinJelly.userData.getPlayerName();
+                            ;
+                        });
+                    });
+                    this.addChild(playerNameEdit);
+                    playerNameEdit.x = 400;
+                };
+                return PlayerNameOptions;
+            })(createjs.Container);
+            view.PlayerNameOptions = PlayerNameOptions;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
     var view;
     (function (view) {
         var Effect = (function (_super) {
@@ -5377,9 +5107,7 @@ var joinjelly;
                 fxs.regX = 100;
                 fxs.regY = 100;
                 this.addChild(fxs);
-                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () {
-                    _this.removeChild(fxs);
-                });
+                createjs.Tween.get(fxs).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 500, createjs.Ease.linear).call(function () { _this.removeChild(fxs); });
             };
             Effect.prototype.castSimpleInv = function () {
                 var _this = this;
@@ -5390,9 +5118,7 @@ var joinjelly;
                 fxs.alpha = 2;
                 fxs.scaleX = 2;
                 fxs.scaleY = 2;
-                createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(function () {
-                    _this.removeChild(fxs);
-                });
+                createjs.Tween.get(fxs).to({ scaleX: 0.5, scaleY: 0.5, alpha: 2 }, 800, createjs.Ease.linear).call(function () { _this.removeChild(fxs); });
             };
             Effect.prototype.castPart = function () {
                 var _this = this;
@@ -5402,9 +5128,7 @@ var joinjelly;
                 fxp.scaleX = fxp.scaleY = 0.2;
                 fxp.alpha = 2;
                 this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
+                createjs.Tween.get(fxp).to({ scaleX: 1.6, scaleY: 1.6, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () { _this.removeChild(fxp); });
                 this.castParts();
             };
             Effect.prototype.castParts = function () {
@@ -5416,9 +5140,7 @@ var joinjelly;
                 fxp.rotation = 360 / 16;
                 fxp.alpha = 2;
                 this.addChild(fxp);
-                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fxp);
-                });
+                createjs.Tween.get(fxp).to({ scaleX: 2.2, scaleY: 2.2, alpha: 0 }, 500, createjs.Ease.quadOut).call(function () { _this.removeChild(fxp); });
             };
             Effect.prototype.castPartsInv = function () {
                 var _this = this;
@@ -5427,9 +5149,7 @@ var joinjelly;
                 var dst = { scaleX: 0.5, scaleY: 0.5, alpha: 2, rotation: 0 };
                 fx.set(src);
                 this.addChild(fx);
-                createjs.Tween.get(fx).to(dst, 1000, createjs.Ease.quadIn).call(function () {
-                    _this.removeChild(fx);
-                });
+                createjs.Tween.get(fx).to(dst, 1000, createjs.Ease.quadIn).call(function () { _this.removeChild(fx); });
             };
             Effect.prototype.castBoth = function () {
                 this.castPartsInv();
@@ -5442,25 +5162,19 @@ var joinjelly;
                 var dst = { scaleX: 2, scaleY: 2, rotation: Math.random() * 360 / 16, alpha: 0 };
                 this.addChild(fx1);
                 fx1.set(src);
-                createjs.Tween.get(fx1).to(dst, 250, createjs.Ease.quadIn).call(function () {
-                    _this.removeChild(fx1);
-                });
+                createjs.Tween.get(fx1).to(dst, 250, createjs.Ease.quadIn).call(function () { _this.removeChild(fx1); });
                 var fx2 = gameui.AssetsManager.getBitmap("fxPart");
                 var src = { regX: 140 + Math.random() * 40, regY: 140 + Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 };
                 var dst = { scaleX: 2, scaleY: 2, rotation: Math.random() * 360 / 16, alpha: 0 };
                 this.addChild(fx2);
                 fx2.set(src);
-                createjs.Tween.get(fx2).to(dst, 350, createjs.Ease.quadIn).call(function () {
-                    _this.removeChild(fx2);
-                });
+                createjs.Tween.get(fx2).to(dst, 350, createjs.Ease.quadIn).call(function () { _this.removeChild(fx2); });
                 var fx3 = gameui.AssetsManager.getBitmap("fxJoin");
                 var src = { regX: 140, regY: 140, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 3 };
                 var dst = { scaleX: 3, scaleY: 0, rotation: Math.random() * 360 / 16, alpha: 0 };
                 this.addChild(fx3);
                 fx3.set(src);
-                createjs.Tween.get(fx3).to(dst, 350, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fx3);
-                });
+                createjs.Tween.get(fx3).to(dst, 350, createjs.Ease.quadOut).call(function () { _this.removeChild(fx3); });
             };
             Effect.prototype.castUltimateEffect = function () {
                 var _this = this;
@@ -5469,29 +5183,328 @@ var joinjelly;
                 var dst = { scaleX: 10, scaleY: 10, rotation: Math.random() * 360 / 16, alpha: 0 };
                 this.addChild(fx);
                 fx.set(src);
-                createjs.Tween.get(fx).to(dst, 1000, createjs.Ease.quadIn).call(function () {
-                    _this.removeChild(fx);
-                });
+                createjs.Tween.get(fx).to(dst, 1000, createjs.Ease.quadIn).call(function () { _this.removeChild(fx); });
                 var fx = gameui.AssetsManager.getBitmap("fxJoin");
                 var src = { regX: 140 + Math.random() * 40, regY: 140 + Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 };
                 var dst = { scaleX: 10, scaleY: 10, rotation: Math.random() * 360 / 16, alpha: 0 };
                 this.addChild(fx);
                 fx.set(src);
-                createjs.Tween.get(fx).to(dst, 1400, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fx);
-                });
+                createjs.Tween.get(fx).to(dst, 1400, createjs.Ease.quadOut).call(function () { _this.removeChild(fx); });
                 var fx = gameui.AssetsManager.getBitmap("fxJoin");
                 var src = { regX: 140 - Math.random() * 40, regY: 140 - Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 };
                 var dst = { scaleX: 10, scaleY: 10, rotation: Math.random() * 360 / 16, alpha: 0 };
                 this.addChild(fx);
                 fx.set(src);
-                createjs.Tween.get(fx).to(dst, 1000, createjs.Ease.quadOut).call(function () {
-                    _this.removeChild(fx);
-                });
+                createjs.Tween.get(fx).to(dst, 1000, createjs.Ease.quadOut).call(function () { _this.removeChild(fx); });
             };
             return Effect;
         })(createjs.Container);
         view.Effect = Effect;
     })(view = joinjelly.view || (joinjelly.view = {}));
+})(joinjelly || (joinjelly = {}));
+var defaultWidth = 768 * 2;
+var defaultHeight = 1024 * 2;
+var fbAppId = "1416523228649363";
+var gameWebsite = "www.joinjelly.com";
+var gameWebsiteIcon = "www.joinjelly.com/icon.png";
+var contantsAndroid = {
+    ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',
+    ACH_JELLY_2: 'CgkI49ztp64KEAIQBQ',
+    ACH_JELLY_3: 'CgkI49ztp64KEAIQBg',
+    ACH_JELLY_4: 'CgkI49ztp64KEAIQBA',
+    ACH_JELLY_5: 'CgkI49ztp64KEAIQBQ',
+    ACH_JELLY_6: 'CgkI49ztp64KEAIQBg',
+    ACH_JELLY_7: 'CgkI49ztp64KEAIQBw',
+    ACH_JELLY_8: 'CgkI49ztp64KEAIQCA',
+    ACH_JELLY_9: 'CgkI49ztp64KEAIQCQ',
+    ACH_JELLY_10: 'CgkI49ztp64KEAIQCg',
+    ACH_JELLY_11: 'CgkI49ztp64KEAIQCw',
+    ACH_JELLY_12: 'CgkI49ztp64KEAIQDA',
+    ACH_JELLY_13: 'CgkI49ztp64KEAIQDQ',
+    ACH_JELLY_14: 'CgkI49ztp64KEAIQDg',
+    ACH_JELLY_15: 'CgkI49ztp64KEAIQDw',
+    ACH_JELLY_16: 'CgkI49ztp64KEAIQEA',
+    ACH_JELLY_17: 'CgkI49ztp64KEAIQEQ',
+    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
+    LEAD_LEADERBOARD: 'CgkI49ztp64KEAIQAg',
+};
+var constantsiOS = {
+    ACH_JELLY_1: 'jelly01',
+    ACH_JELLY_2: 'jelly02',
+    ACH_JELLY_3: 'jelly03',
+    ACH_JELLY_4: 'jelly04',
+    ACH_JELLY_5: 'jelly05',
+    ACH_JELLY_6: 'jelly06',
+    ACH_JELLY_7: 'jelly07',
+    ACH_JELLY_8: 'jelly08',
+    ACH_JELLY_9: 'jelly09',
+    ACH_JELLY_10: 'jelly10',
+    ACH_JELLY_11: 'jelly11',
+    ACH_JELLY_12: 'jelly12',
+    ACH_JELLY_13: 'jelly13',
+    ACH_JELLY_14: 'jelly14',
+    ACH_JELLY_15: 'jelly15',
+    ACH_JELLY_16: 'jelly16',
+    ACH_JELLY_17: 'jelly17',
+    LEAD_LEADERBOARD: 'leaderboards',
+};
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var ItemsFooter = (function (_super) {
+                __extends(ItemsFooter, _super);
+                function ItemsFooter(items) {
+                    _super.call(this);
+                    this.itemSize = 270;
+                    this.itemsButtons = [];
+                    this.addObjects();
+                    this.setItems(items);
+                }
+                ItemsFooter.prototype.setItems = function (items) {
+                    var itemSize = this.itemSize;
+                    if (items.length >= 5)
+                        itemSize = 200;
+                    this.cleanButtons();
+                    if (!items)
+                        return;
+                    for (var i in items)
+                        this.addItem(items[i], i);
+                    for (var i in items) {
+                        this.itemsButtons[items[i]].y = -150;
+                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
+                    }
+                };
+                ItemsFooter.prototype.cleanButtons = function () {
+                    for (var i in this.itemsButtons)
+                        this.removeChild(this.itemsButtons[i]);
+                    this.itemsButtons = [];
+                };
+                ItemsFooter.prototype.addObjects = function () {
+                    var bg = gameui.AssetsManager.getBitmap("footer");
+                    this.addChild(bg);
+                    bg.y = -162;
+                    bg.x = (defaultWidth - 1161) / 2;
+                    var lucky = gameui.AssetsManager.getBitmap("lucky");
+                    this.addChild(lucky);
+                    lucky.y = -210;
+                    lucky.x = (defaultWidth - 250);
+                    lucky.scaleX = lucky.scaleY = 0.5;
+                    this.lucky = lucky;
+                    this.gameMessage = new view.TutoralMessage();
+                    this.addChild(this.gameMessage);
+                };
+                ItemsFooter.prototype.addItem = function (item, pos) {
+                    var _this = this;
+                    var bt = new view.ItemButton(item);
+                    this.addChild(bt);
+                    this.itemsButtons[item] = bt;
+                    bt.addEventListener("click", function () {
+                        _this.dispatchEvent({ type: "useitem", item: item });
+                    });
+                };
+                ItemsFooter.prototype.getItemButton = function (item) {
+                    return this.itemsButtons[item];
+                };
+                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
+                    if (this.itemsButtons[item])
+                        this.itemsButtons[item].setAmmount(ammount);
+                    if (item == "lucky")
+                        this.lucky.visible = (ammount > 0);
+                };
+                ItemsFooter.prototype.showMessage = function (itemId, message) {
+                    this.gameMessage.x = this.getItemButton(itemId).x;
+                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
+                    this.gameMessage.show(message);
+                };
+                ItemsFooter.prototype.hideMessage = function () {
+                    this.gameMessage.fadeOut();
+                };
+                ItemsFooter.prototype.bounceItem = function (item) {
+                    this.getItemButton(item).highLight(false);
+                };
+                ItemsFooter.prototype.highlight = function (item) {
+                    this.unHighlightAll();
+                    this.getItemButton(item).highLight();
+                };
+                ItemsFooter.prototype.unHighlightAll = function () {
+                    for (var i in this.itemsButtons)
+                        this.itemsButtons[i].unHighlight();
+                };
+                ItemsFooter.prototype.lockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    if (b)
+                        b.lock();
+                };
+                ItemsFooter.prototype.unlockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    b.unlock();
+                };
+                ItemsFooter.prototype.lockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].lock();
+                };
+                ItemsFooter.prototype.unlockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].unlock();
+                };
+                return ItemsFooter;
+            })(createjs.Container);
+            view.ItemsFooter = ItemsFooter;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var ProductListItem = (function (_super) {
+                __extends(ProductListItem, _super);
+                function ProductListItem(productId, name, description, localizedPrice) {
+                    var _this = this;
+                    _super.call(this);
+                    var tContainer = new createjs.Container();
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
+                    bg.x = 232;
+                    bg.y = 27;
+                    bg.scaleY = 1.25;
+                    bg.scaleX = 0.75;
+                    tContainer.addChild(bg);
+                    var iconId = "";
+                    switch (productId) {
+                        case "time5x":
+                            iconId = "itemtime";
+                            break;
+                        case "fast5x":
+                            iconId = "itemfast";
+                            break;
+                        case "revive5x":
+                            iconId = "itemrevive";
+                            break;
+                        case "evolve5x":
+                            iconId = "itemevolve";
+                            break;
+                        case "clean5x":
+                            iconId = "itemclean";
+                            break;
+                        case "pack5x":
+                        case "pack1x":
+                        case "pack10x":
+                            iconId = "itemPack";
+                            break;
+                        case "lucky":
+                            iconId = "lucky";
+                            break;
+                        default: iconId = "itemPack";
+                    }
+                    var icon = gameui.AssetsManager.getBitmap(iconId);
+                    icon.regX = icon.getBounds().width / 2;
+                    icon.regY = icon.getBounds().height / 2;
+                    icon.scaleX = icon.scaleY = 0.8;
+                    icon.x = 225;
+                    icon.y = 188;
+                    tContainer.addChild(icon);
+                    if (description)
+                        description = description.replace("  ", "\n");
+                    description = description.replace(";", "\n");
+                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussyBig");
+                    var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
+                    titleObj.y = 40;
+                    descriptionObj.y = 140;
+                    titleObj.scaleX = titleObj.scaleY = 0.7;
+                    descriptionObj.scaleX = descriptionObj.scaleY = 0.8;
+                    titleObj.x = descriptionObj.x = 360;
+                    tContainer.addChild(titleObj);
+                    tContainer.addChild(descriptionObj);
+                    var unchecked = gameui.AssetsManager.getBitmap("unchecked");
+                    unchecked.regX = unchecked.getBounds().width / 2;
+                    unchecked.regY = unchecked.getBounds().height / 2;
+                    unchecked.y = 152;
+                    unchecked.x = 1199;
+                    this.addChild(unchecked);
+                    var check = gameui.AssetsManager.getBitmap("check");
+                    check.regX = check.getBounds().width / 2;
+                    check.regY = check.getBounds().height / 2;
+                    check.y = 152;
+                    check.x = 1199;
+                    this.purchasedIcon = check;
+                    this.addChild(check);
+                    var loading = new joinjelly.view.LoadingBall();
+                    loading.y = 152;
+                    loading.x = 1199;
+                    this.loadingIcon = loading;
+                    this.addChild(loading);
+                    var priceDO = gameui.AssetsManager.getBitmapText(localizedPrice, "debussy");
+                    priceDO.y = 251;
+                    priceDO.x = 1199;
+                    priceDO.regX = priceDO.getBounds().width / 2;
+                    priceDO.scaleX = priceDO.scaleY = 0.8;
+                    if (localizedPrice != "share")
+                        tContainer.addChild(priceDO);
+                    if (localizedPrice == "share") {
+                        var button = new gameui.ImageButton("BtShare", function () {
+                            _this.setPurchasing();
+                            _this.dispatchEvent({ type: "share", productId: productId });
+                        });
+                    }
+                    else {
+                        var button = new gameui.ImageButton("BtStore", function () {
+                            _this.setPurchasing();
+                            _this.dispatchEvent({ type: "buy", productId: productId });
+                        });
+                    }
+                    button.y = 152;
+                    button.x = 1199;
+                    this.purchaseButton = button;
+                    this.addChild(button);
+                    this.addChild(tContainer);
+                    tContainer.cache(100, 27, 1250, 300);
+                }
+                ProductListItem.prototype.setPurchasing = function () {
+                    this.disable();
+                    this.loadingIcon.visible = true;
+                };
+                ProductListItem.prototype.loading = function () {
+                    this.disable();
+                    this.loadingIcon.visible = true;
+                };
+                ProductListItem.prototype.setNotAvaliable = function () {
+                    this.purchaseButton.fadeOut();
+                    this.purchasedIcon.visible = false;
+                    this.loadingIcon.visible = false;
+                };
+                ProductListItem.prototype.setAvaliable = function () { };
+                ProductListItem.prototype.setPurchased = function (timeOut) {
+                    var _this = this;
+                    if (timeOut === void 0) { timeOut = false; }
+                    this.purchaseButton.fadeOut();
+                    this.purchasedIcon.visible = true;
+                    this.loadingIcon.visible = false;
+                    gameui.AudiosManager.playSound("Interface Sound-11");
+                    if (timeOut)
+                        setTimeout(function () { _this.setNormal(); }, 1000);
+                };
+                ProductListItem.prototype.setNormal = function () {
+                    this.purchaseButton.fadeIn();
+                    this.purchasedIcon.visible = false;
+                    this.loadingIcon.visible = false;
+                };
+                ProductListItem.prototype.enable = function () {
+                    this.purchaseButton.fadeIn();
+                    this.loadingIcon.visible = false;
+                };
+                ProductListItem.prototype.disable = function () {
+                    this.purchasedIcon.visible = false;
+                    this.purchaseButton.fadeOut();
+                };
+                return ProductListItem;
+            })(createjs.Container);
+            view.ProductListItem = ProductListItem;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 //# sourceMappingURL=script.js.map
