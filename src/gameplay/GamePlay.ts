@@ -174,13 +174,13 @@
 
             this.finishMenu.addEventListener("restart", () => {
                 this.pauseMenuOverlay.hide();
-                this.userData.deleteSaveGame();
+                if (this.userData) this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 
 
             this.finishMenu.addEventListener("home",() => {
-                this.userData.deleteSaveGame();
+                if (this.userData) this.userData.deleteSaveGame();
                 // save high score
                 JoinJelly.userData.setScore(Math.max(this.score, JoinJelly.userData.getHighScore()));
                 JoinJelly.showMainMenu();
@@ -256,13 +256,13 @@
             this.pauseMenuOverlay.addEventListener("home", () => {
                 this.pauseMenuOverlay.hide();
                 JoinJelly.userData.setScore(Math.max(this.score, JoinJelly.userData.getHighScore()));
-                this.userData.deleteSaveGame();
+                if (this.userData) this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
             });
 
             this.gameHeader.addEventListener("restart",() => {
                 this.pauseMenuOverlay.hide();
-                this.userData.deleteSaveGame();
+                if (this.userData) this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 

@@ -556,6 +556,7 @@
     <Content Include="assets\sounds\sound_s3.mp3" />
     <Content Include="assets\sounds\sound_s3.ogg" />
     <Content Include="assets\style.css" />
+    <Content Include="scripts\script.js" />
     <Content Include="Windows\setMobileRealScale.js" />
     <Content Include="Windows\WindowsCocoonjs.js" />
     <Content Include="Windows\WpAudioManager.js" />

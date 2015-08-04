@@ -3271,11 +3271,13 @@ var joinjelly;
                 this.showBoardButton = tbt;
                 this.finishMenu.addEventListener("restart", function () {
                     _this.pauseMenuOverlay.hide();
-                    _this.userData.deleteSaveGame();
+                    if (_this.userData)
+                        _this.userData.deleteSaveGame();
                     setTimeout(function () { joinjelly.JoinJelly.startLevel(); }, 200);
                 });
                 this.finishMenu.addEventListener("home", function () {
-                    _this.userData.deleteSaveGame();
+                    if (_this.userData)
+                        _this.userData.deleteSaveGame();
                     joinjelly.JoinJelly.userData.setScore(Math.max(_this.score, joinjelly.JoinJelly.userData.getHighScore()));
                     joinjelly.JoinJelly.showMainMenu();
                 });
@@ -3332,12 +3334,14 @@ var joinjelly;
                 this.pauseMenuOverlay.addEventListener("home", function () {
                     _this.pauseMenuOverlay.hide();
                     joinjelly.JoinJelly.userData.setScore(Math.max(_this.score, joinjelly.JoinJelly.userData.getHighScore()));
-                    _this.userData.deleteSaveGame();
+                    if (_this.userData)
+                        _this.userData.deleteSaveGame();
                     setTimeout(function () { joinjelly.JoinJelly.showMainMenu(); }, 200);
                 });
                 this.gameHeader.addEventListener("restart", function () {
                     _this.pauseMenuOverlay.hide();
-                    _this.userData.deleteSaveGame();
+                    if (_this.userData)
+                        _this.userData.deleteSaveGame();
                     setTimeout(function () { joinjelly.JoinJelly.startLevel(); }, 200);
                 });
                 this.pauseMenuOverlay.addEventListener("restart", function () {
@@ -4399,9 +4403,8 @@ var joinjelly;
         };
         JoinJelly.initializeAds = function () {
             Cocoon.Ad.interstitial.on("ready", function () {
-                console.log("ads loaded1");
                 Cocoon.Ad.interstitial["loaded"] = true;
-                console.log("ads loaded2");
+                console.log("ads loaded");
             });
         };
         JoinJelly.startTest = function () {
