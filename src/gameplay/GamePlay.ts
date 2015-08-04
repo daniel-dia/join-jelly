@@ -29,7 +29,7 @@
         private evolveEffect: createjs.DisplayObject;
         private reviveEffect: createjs.DisplayObject;
         private cleanEffect: createjs.DisplayObject;
-
+ 
         // #region =================================== initialization ================================================
 
         constructor(userData: UserData) {
@@ -62,6 +62,11 @@
             }
 
             JoinJelly.userData.history("firstPlay")
+
+            if (!Cocoon.Ad.interstitial["loaded"])
+                Cocoon.Ad.loadInterstitial();
+            console.log("loading ad");
+
         }
 
         // create game effects
@@ -190,29 +195,44 @@
             });
 
             this.finishMenu.addEventListener("share", () => {
-                alert("share");
+                //initialize the Facebook Service the same way as the Official JS SDK
                 var fb = Cocoon.Social.Facebook;
                 fb.init({ appId: fbAppId });
                 var socialService = fb.getSocialInterface();
-                alert("share");
 
+                // mediaURL, linkURL, linkText, linkCaption
                 var message = new Cocoon.Social.Message(
                     StringResources.social.shareDescription,
                     gameWebsiteIcon,
                     gameWebsite,
-                    StringResources.social.shareTitle + " - " + this.score + " " + StringResources.menus.score,
+                    StringResources.social.shareTitle,
                     StringResources.social.shareCaption);
-
-
                 var that = this;
+
                 socialService.publishMessageWithDialog(message, function (error) {
-                    console.log("shared " + JSON.stringify(error))
                     var sucess = true;
                     if (error) sucess = false;
-                    if (sucess) alert("K");
-
+                    if (sucess) {
+                        JoinJelly.userData.history("shared");
+                        JoinJelly.itemData.increaseItemAmmount("revive", 1);
+                        that.updateFooter();
+                        that.finishMenu.hideSpecialOfferButton();
+                        console.log("shareded");
+                        gameui.AudiosManager.playSound("Interface Sound-11");
+                    }
                 });
             });
+
+            this.finishMenu.addEventListener("watch", () => {
+                JoinJelly.itemData.increaseItemAmmount("revive", 1);
+                this.updateFooter();
+                this.finishMenu.hideSpecialOfferButton();
+                console.log("watched");
+                this.userData.history("watched", Date.now());
+                gameui.AudiosManager.playSound("Interface Sound-11");
+                Cocoon.Ad.showInterstitial();
+                Cocoon.Ad.interstitial["loaded"] = false;
+            })
 
             this.gameHeader.addEventListener("pause",() => {
                 this.pauseGame();
@@ -221,8 +241,6 @@
             this.gameHeader.addEventListener("play",() => {
                 this.continueGame();
             });
-
-         
 
             this.pauseMenuOverlay.addEventListener("play", () => {
                 this.continueGame();
@@ -452,6 +470,20 @@
             this.gameHeader.hideButtons();
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
         
+            // show special offers
+            Cocoon.Ad.interstitial["loaded"] =true
+            if (Cocoon.Ad.interstitial["loaded"] && (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + 30 * 1000 * 60 < Date.now())) {
+                this.finishMenu.showWhatchVideoButton();
+                console.log("watch shown")
+            }
+
+            else if (!JoinJelly.userData.getHistory("shared")) {
+                this.finishMenu.showShareButton();
+                console.log("share shown");
+            } 
+            
+
+
             // shows finished game menu
             setTimeout(() => {
                 if (win)

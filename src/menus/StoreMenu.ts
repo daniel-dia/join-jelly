@@ -84,24 +84,8 @@
 
             // add function callback
             productListItem.addEventListener("buy", (event: createjs.Event) => { Cocoon.Store.purchase(event["productId"]); });
-            productListItem.addEventListener("share", (event: createjs.Event) => {
-                var productObject: view.ProductListItem = <view.ProductListItem>event.currentTarget
 
-                productObject.setPurchasing();
-                this.lockUI();
-
-                this.purchaseShareProduct(event["productId"], (sucess: boolean) => {
-                    if (sucess) {
-                        productObject.setPurchased();
-                        gameui.AudiosManager.playSound("Interface Sound-11");
-                    } else {
-                        productObject.setNormal();
-                    }
-                    this.updateFooter();
-                    this.unlockUI();
-                });
-            });
-
+            
         }
 
         // show a loading message
@@ -227,38 +211,6 @@
             Cocoon.Store.loadProducts(products);
         }
         
-        // call for product purchasing
-        private purchaseShareProduct(productId: string, callback: (sucess: boolean) => void) {
-
-            var fb = Cocoon.Social.Facebook;
-
-            //initialize the Facebook Service the same way as the Official JS SDK
-            fb.init({ appId: fbAppId });
-
-
-            var socialService = fb.getSocialInterface();
-
-            // mediaURL, linkURL, linkText, linkCaption
-            var message = new Cocoon.Social.Message(
-                StringResources.social.shareDescription,
-                gameWebsiteIcon,
-                gameWebsite,
-                StringResources.social.shareTitle,
-                StringResources.social.shareCaption);
-            var that = this;
-            socialService.publishMessageWithDialog(message, function (error) {
-                console.log("shared " + JSON.stringify(error))
-                var sucess = true;
-                if (error) sucess = false;
-
-                if (sucess) {
-                    that.fullFillPurchase(productId);
-                    //InAppPurchases.reportProductFullfillment(productId);
-                }
-
-                callback(sucess);
-            });
-        }
 
         // verify product avaliability
         private updateProductsAvaliability() {

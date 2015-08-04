@@ -142,13 +142,13 @@
 
     //#region history
 	
-    public history(value: string) {
+    public history(key: string, value:any=true) {
         var history = UserData.loadValue("history", {});
-        history[value] = true;
+        history[key] = value;
         UserData.saveValue("history", history);
     }
 
-    public getHistory(value: string): boolean {
+    public getHistory(value: string): any {
         var hist = UserData.loadValue("history", {});
         return hist[value];
     }

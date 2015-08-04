@@ -92,6 +92,7 @@
        { id: "BtOk", src: "BtOk.png" },
        { id: "BtShare", src: "BtShare.png" },
        { id: "BtTextBg", src: "BtTextBg.png" },
+       { id: "BtTextBgBlue", src: "BtTextBgBlue.png" },
        { id: "BtMenu", src: "BtMenu.png" },
        { id: "BtPlusMini", src: "BtPlusMini.png" }, 
     

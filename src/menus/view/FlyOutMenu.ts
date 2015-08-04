@@ -3,7 +3,7 @@
     export class FlyOutMenu extends createjs.Container {
 
         private title: createjs.BitmapText;
-        private top: number;
+        protected top: number;
 
         constructor(title: string, height: number = 1022) {
             super();

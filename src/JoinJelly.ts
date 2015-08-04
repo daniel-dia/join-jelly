@@ -42,6 +42,8 @@ module joinjelly {
 
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
+                this.initializeAds();
+
                 if (window.location.search == "?test") {
                     this.startTest();
                 } else {
@@ -52,6 +54,14 @@ module joinjelly {
                         JoinJelly.showMainMenu();
                 }
             }
+        }
+
+        public static initializeAds() {
+            //cache ad
+            Cocoon.Ad.interstitial.on("ready", () => {
+            Cocoon.Ad.interstitial["loaded"] = true
+                console.log("ads loaded");
+            })
         }
 
         public static startTest() {

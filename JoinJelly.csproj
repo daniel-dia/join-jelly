@@ -567,9 +567,6 @@
     <Content Include="scripts\MobileServices.Web-1.2.5.min.js" />
     <Content Include="scripts\movieclip-0.8.1.min.js" />
     <Content Include="scripts\Plataform.js" />
-    <Content Include="scripts\script.min.js">
-      <DependentUpon>script.js</DependentUpon>
-    </Content>
     <Content Include="scripts\templates\achievements.html" />
     <Content Include="scripts\templates\assets\css\main.css" />
     <Content Include="scripts\templates\assets\css\page_achivements.css" />
@@ -591,7 +588,6 @@
     <Content Include="scripts\md5.js" />
     <TypeScriptCompile Include="gameui\WpAudioManager.ts" />
     <TypeScriptCompile Include="gameui\AudioManager.ts" />
-    <Content Include="scripts\script.js" />
     <TypeScriptCompile Include="src\menus\view\RatingMenu.ts" />
     <TypeScriptCompile Include="src\GameServices.ts" />
     <TypeScriptCompile Include="src\gameplay\view\CountDown.ts" />
@@ -664,9 +660,6 @@
     <TypeScriptCompile Include="src\view\LoadingBall.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="scripts\script.min.js.map">
-      <DependentUpon>script.min.js</DependentUpon>
-    </Content>
     <Content Include="assets\sounds\Interface Sound-13.xmp" />
     <Content Include="assets\sounds\music1.xmp" />
     <None Include="web.Debug.config">

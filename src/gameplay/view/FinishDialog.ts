@@ -6,12 +6,15 @@
         private jelly: view.Jelly;
         private scoreText: createjs.BitmapText;
         private highScoreText: createjs.BitmapText;
+        private specialOfferButton: createjs.DisplayObject;
 
         constructor() {
             super(StringResources.menus.gameOver, 1250);
-            this.addPoints();
+            this.top -= 200;
+            this.addPoints(); 
             this.addLastJelly();
             this.addButtons();
+          
         }
 
         // creates buttons controls
@@ -111,6 +114,35 @@
 
             container.y += 200;
             return container;
+        }
+
+       public showShareButton() {
+            var bt = new gameui.BitmapTextButton(StringResources.menus.share, "debussy", "BtTextBgBlue", () => {
+                this.dispatchEvent("share");
+            }).set({ x: defaultWidth/2, y: 2050 }); 
+            bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+            bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+            this.addChild(bt);
+            this.specialOfferButton = bt;
+        }
+ 
+
+        public showWhatchVideoButton() {
+            var bt = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", () => {
+               this.dispatchEvent("watch");
+            }).set({ x: defaultWidth / 2, y: 2050 });
+            bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+            bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+            this.addChild(bt)
+            this.specialOfferButton = bt;
+        } 
+
+
+        public hideSpecialOfferButton() {
+            if (this.specialOfferButton) {
+                this.removeChild(this.specialOfferButton);
+                this.specialOfferButton = null
+            }
         }
 
         // set values

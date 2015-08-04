@@ -2,8 +2,8 @@
 var defaultHeight: number = 1024*2;
 
 var fbAppId: string = "1416523228649363";
-var gameWebsite: string = "www.joinjelly.com";
-var gameWebsiteIcon: string = "www.joinjelly.com/icon.png";
+var gameWebsite: string = "http://www.joinjelly.com";
+var gameWebsiteIcon: string = "http://www.joinjelly.com/preview.jpg"; 
 
 var contantsAndroid ={
     ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',

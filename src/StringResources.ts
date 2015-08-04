@@ -26,7 +26,10 @@
         playerNameDesc: "Type your name for the leaderboards.",
         error: "Sorry, Something went wrong",
         rating: "Rate us",
-        ratingDesc: "Are you enjoying?\nPlease rate us"
+        ratingDesc: "Are you enjoying?\nPlease rate us",
+        like: "Like us",
+        share: "Share",
+        watchVideo: "Watch Video",
 
     },
     tutorial: {
@@ -98,7 +101,7 @@
     },
 
     social: {
-        shareDescription: "I Love this game!",
+        shareDescription: "Help the jellie neighbourhood to evolve and eliminate your monster enemies! Join equal jellies to see new characters. The more jellies evolved more discoveries! But beware, be aware that the enemy has power over time and his henchmen.Many jellies want to help, many came from far away to fight, but you need to be fast for it to be organized before the desperation defeat you.",
         shareTitle: "JoinJelly",
         shareCaption: "",
     }
@@ -132,7 +135,10 @@ var StringResources_pt = {
         playerNameDesc: "Digite seu nome para aparecer no placar dos melhores",
         error: "Desculpe, algo deu errado.",
         rating: "Avaliação",
-        ratingDesc: "Está gostando? \nNos Ajude. Dê sua avaliação"
+        ratingDesc: "Está gostando? \nNos Ajude. Dê sua avaliação",
+        like: "Curtir",
+        share: "Compartilhar",
+        watchVideo: "Veja um Video",
     },
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
@@ -209,8 +215,8 @@ var StringResources_pt = {
     credit: {
     },
     social: {
-        shareDescription: "Muito bom esse jogo!",
-        shareTitle: "JoinJelly",
+        shareDescription: "Ajude a comunidade geleística a evoluir e  eliminar seus inimigos! Junte geleias iguais para evoluir e doscrobrir novos personagens. Quanto mais geleias evoluídas mais descobertas! Mas cuidado, você verá que o inimigo tem poder sobre o tempo e seus capangas. Muitas geleias querem ajudar, muitas vieram de longe para o combate.  Mas seja rápido antes que o desespero o derrote!.!",
+        shareTitle: "Join Jelly",
         shareCaption: "",
     }
 

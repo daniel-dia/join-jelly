@@ -763,7 +763,10 @@ var StringResources = {
         playerNameDesc: "Type your name for the leaderboards.",
         error: "Sorry, Something went wrong",
         rating: "Rate us",
-        ratingDesc: "Are you enjoying?\nPlease rate us"
+        ratingDesc: "Are you enjoying?\nPlease rate us",
+        like: "Like us",
+        share: "Share",
+        watchVideo: "Watch Video",
     },
     tutorial: {
         msgheplme: "Help me to evolve\nJoin  2 identical jellies.",
@@ -831,7 +834,7 @@ var StringResources = {
     },
     credit: {},
     social: {
-        shareDescription: "I Love this game!",
+        shareDescription: "Help the jellie neighbourhood to evolve and eliminate your monster enemies! Join equal jellies to see new characters. The more jellies evolved more discoveries! But beware, be aware that the enemy has power over time and his henchmen.Many jellies want to help, many came from far away to fight, but you need to be fast for it to be organized before the desperation defeat you.",
         shareTitle: "JoinJelly",
         shareCaption: "",
     }
@@ -863,7 +866,10 @@ var StringResources_pt = {
         playerNameDesc: "Digite seu nome para aparecer no placar dos melhores",
         error: "Desculpe, algo deu errado.",
         rating: "Avaliação",
-        ratingDesc: "Está gostando? \nNos Ajude. Dê sua avaliação"
+        ratingDesc: "Está gostando? \nNos Ajude. Dê sua avaliação",
+        like: "Curtir",
+        share: "Compartilhar",
+        watchVideo: "Veja um Video",
     },
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
@@ -937,8 +943,8 @@ var StringResources_pt = {
     },
     credit: {},
     social: {
-        shareDescription: "Muito bom esse jogo!",
-        shareTitle: "JoinJelly",
+        shareDescription: "Ajude a comunidade geleística a evoluir e  eliminar seus inimigos! Junte geleias iguais para evoluir e doscrobrir novos personagens. Quanto mais geleias evoluídas mais descobertas! Mas cuidado, você verá que o inimigo tem poder sobre o tempo e seus capangas. Muitas geleias querem ajudar, muitas vieram de longe para o combate.  Mas seja rápido antes que o desespero o derrote!.!",
+        shareTitle: "Join Jelly",
         shareCaption: "",
     }
 };
@@ -1248,38 +1254,44 @@ var joinjelly;
         MainScreen.prototype.createTestsButtons = function () {
             var x = 150;
             var space = 250;
+            Cocoon.Ad.interstitial.on("ready", function () {
+                alert("intesr Ready");
+            });
+            Cocoon.Ad.banner.on("ready", function () {
+                alert("Banner Ready");
+            });
             var bt = new gameui.ImageButton("BtMenu", function () {
                 Cocoon.Ad.loadBanner();
-                Cocoon.Ad.loadInterstitial();
+                alert("loaind");
             });
             bt.y = 150;
             bt.x = x;
             this.header.addChild(bt);
-            var bt = new gameui.ImageButton("BtMenu", function () {
+            bt = new gameui.ImageButton("BtMenu", function () {
                 Cocoon.Ad.showBanner();
             });
             bt.y = 150;
             bt.x = x += space;
             this.header.addChild(bt);
-            var bt = new gameui.ImageButton("BtMenu", function () {
+            bt = new gameui.ImageButton("BtMenu", function () {
                 Cocoon.Ad.hideBanner();
             });
             bt.y = 150;
             bt.x = x += space;
             this.header.addChild(bt);
-            var bt = new gameui.ImageButton("BtMenu", function () {
+            bt = new gameui.ImageButton("BtMenu", function () {
                 Cocoon.Ad.showInterstitial();
             });
             bt.y = 150;
             bt.x = x += space;
             this.header.addChild(bt);
-            var bt = new gameui.ImageButton("BtMenu", function () {
+            bt = new gameui.ImageButton("BtMenu", function () {
                 Cocoon.Ad.setBannerLayout(Cocoon.Ad.BannerLayout.BOTTOM_CENTER);
             });
             bt.y = 150;
             bt.x = x += space;
             this.header.addChild(bt);
-            var bt = new gameui.ImageButton("BtMenu", function () {
+            bt = new gameui.ImageButton("BtMenu", function () {
                 Cocoon.Ad.setBannerLayout(Cocoon.Ad.BannerLayout.TOP_CENTER);
             });
             bt.y = 150;
@@ -1596,7 +1608,6 @@ var joinjelly;
                     this.addProduct(productList[p], p);
             };
             StoreMenu.prototype.addProduct = function (product, p) {
-                var _this = this;
                 var productListItem = new menus.view.ProductListItem(product.productId, product.title.replace("(Join Jelly)", ""), product.description, product.localizedPrice);
                 this.productsListItems[product.productId] = productListItem;
                 this.scrollableContent.addChild(productListItem);
@@ -1604,22 +1615,6 @@ var joinjelly;
                 productListItem.x = 70;
                 console.log(JSON.stringify(product));
                 productListItem.addEventListener("buy", function (event) { Cocoon.Store.purchase(event["productId"]); });
-                productListItem.addEventListener("share", function (event) {
-                    var productObject = event.currentTarget;
-                    productObject.setPurchasing();
-                    _this.lockUI();
-                    _this.purchaseShareProduct(event["productId"], function (sucess) {
-                        if (sucess) {
-                            productObject.setPurchased();
-                            gameui.AudiosManager.playSound("Interface Sound-11");
-                        }
-                        else {
-                            productObject.setNormal();
-                        }
-                        _this.updateFooter();
-                        _this.unlockUI();
-                    });
-                });
             };
             StoreMenu.prototype.showLoading = function () {
                 this.StatusText.text = StringResources.menus.loading;
@@ -1719,23 +1714,6 @@ var joinjelly;
                 for (var p in productsData)
                     products.push(p);
                 Cocoon.Store.loadProducts(products);
-            };
-            StoreMenu.prototype.purchaseShareProduct = function (productId, callback) {
-                var fb = Cocoon.Social.Facebook;
-                fb.init({ appId: fbAppId });
-                var socialService = fb.getSocialInterface();
-                var message = new Cocoon.Social.Message(StringResources.social.shareDescription, gameWebsiteIcon, gameWebsite, StringResources.social.shareTitle, StringResources.social.shareCaption);
-                var that = this;
-                socialService.publishMessageWithDialog(message, function (error) {
-                    console.log("shared " + JSON.stringify(error));
-                    var sucess = true;
-                    if (error)
-                        sucess = false;
-                    if (sucess) {
-                        that.fullFillPurchase(productId);
-                    }
-                    callback(sucess);
-                });
             };
             StoreMenu.prototype.updateProductsAvaliability = function () {
             };
@@ -2665,6 +2643,7 @@ var joinjelly;
                 __extends(FinishMenu, _super);
                 function FinishMenu() {
                     _super.call(this, StringResources.menus.gameOver, 1250);
+                    this.top -= 200;
                     this.addPoints();
                     this.addLastJelly();
                     this.addButtons();
@@ -2727,6 +2706,32 @@ var joinjelly;
                     container.addChild(tx);
                     container.y += 200;
                     return container;
+                };
+                FinishMenu.prototype.showShareButton = function () {
+                    var _this = this;
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.share, "debussy", "BtTextBgBlue", function () {
+                        _this.dispatchEvent("share");
+                    }).set({ x: defaultWidth / 2, y: 2050 });
+                    bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+                    bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+                    this.addChild(bt);
+                    this.specialOfferButton = bt;
+                };
+                FinishMenu.prototype.showWhatchVideoButton = function () {
+                    var _this = this;
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", function () {
+                        _this.dispatchEvent("watch");
+                    }).set({ x: defaultWidth / 2, y: 2050 });
+                    bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+                    bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+                    this.addChild(bt);
+                    this.specialOfferButton = bt;
+                };
+                FinishMenu.prototype.hideSpecialOfferButton = function () {
+                    if (this.specialOfferButton) {
+                        this.removeChild(this.specialOfferButton);
+                        this.specialOfferButton = null;
+                    }
                 };
                 FinishMenu.prototype.setValues = function (score, highScore, jelly, title) {
                     var _this = this;
@@ -3241,6 +3246,13 @@ var joinjelly;
                     joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
                 }
                 joinjelly.JoinJelly.userData.history("firstPlay");
+                if (!Cocoon.Ad.interstitial["loaded"])
+                    Cocoon.Ad.interstitial.on("ready", function () {
+                        Cocoon.Ad.interstitial["loaded"] = true;
+                        console.log("ads loaded");
+                    });
+                Cocoon.Ad.loadInterstitial();
+                console.log("loading ad");
             }
             GamePlayScreen.prototype.createEffects = function () {
                 this.freezeEffect = gameui.AssetsManager.getBitmap("freezeEffect");
@@ -3326,21 +3338,34 @@ var joinjelly;
                     tbt.fadeIn();
                 });
                 this.finishMenu.addEventListener("share", function () {
-                    alert("share");
                     var fb = Cocoon.Social.Facebook;
                     fb.init({ appId: fbAppId });
                     var socialService = fb.getSocialInterface();
-                    alert("share");
-                    var message = new Cocoon.Social.Message(StringResources.social.shareDescription, gameWebsiteIcon, gameWebsite, StringResources.social.shareTitle + " - " + _this.score + " " + StringResources.menus.score, StringResources.social.shareCaption);
+                    var message = new Cocoon.Social.Message(StringResources.social.shareDescription, gameWebsiteIcon, gameWebsite, StringResources.social.shareTitle, StringResources.social.shareCaption);
                     var that = _this;
                     socialService.publishMessageWithDialog(message, function (error) {
-                        console.log("shared " + JSON.stringify(error));
                         var sucess = true;
                         if (error)
                             sucess = false;
-                        if (sucess)
-                            alert("K");
+                        if (sucess) {
+                            joinjelly.JoinJelly.userData.history("shared");
+                            joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 1);
+                            that.updateFooter();
+                            that.finishMenu.hideSpecialOfferButton();
+                            console.log("shareded");
+                            gameui.AudiosManager.playSound("Interface Sound-11");
+                        }
                     });
+                });
+                this.finishMenu.addEventListener("watch", function () {
+                    joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 1);
+                    _this.updateFooter();
+                    _this.finishMenu.hideSpecialOfferButton();
+                    console.log("watched");
+                    _this.userData.history("watched", Date.now());
+                    gameui.AudiosManager.playSound("Interface Sound-11");
+                    Cocoon.Ad.showInterstitial();
+                    Cocoon.Ad.interstitial["loaded"] = false;
                 });
                 this.gameHeader.addEventListener("pause", function () {
                     _this.pauseGame();
@@ -3486,6 +3511,15 @@ var joinjelly;
                 this.gameHeader.hide();
                 this.gameHeader.hideButtons();
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
+                Cocoon.Ad.interstitial["loaded"] = true;
+                if (Cocoon.Ad.interstitial["loaded"] && (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + 30 * 1000 * 60 < Date.now())) {
+                    this.finishMenu.showWhatchVideoButton();
+                    console.log("watch shown");
+                }
+                else if (!joinjelly.JoinJelly.userData.getHistory("shared")) {
+                    this.finishMenu.showShareButton();
+                    console.log("share shown");
+                }
                 setTimeout(function () {
                     if (win)
                         _this.gamestate = GameState.win;
@@ -4346,9 +4380,10 @@ var UserData = (function () {
             return defaultVaule;
         return JSON.parse(value);
     };
-    UserData.prototype.history = function (value) {
+    UserData.prototype.history = function (key, value) {
+        if (value === void 0) { value = true; }
         var history = UserData.loadValue("history", {});
-        history[value] = true;
+        history[key] = value;
         UserData.saveValue("history", history);
     };
     UserData.prototype.getHistory = function (value) {
@@ -5205,8 +5240,8 @@ var joinjelly;
 var defaultWidth = 768 * 2;
 var defaultHeight = 1024 * 2;
 var fbAppId = "1416523228649363";
-var gameWebsite = "www.joinjelly.com";
-var gameWebsiteIcon = "www.joinjelly.com/icon.png";
+var gameWebsite = "http://www.joinjelly.com";
+var gameWebsiteIcon = "http://www.joinjelly.com/preview.jpg";
 var contantsAndroid = {
     ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',
     ACH_JELLY_2: 'CgkI49ztp64KEAIQBQ',
