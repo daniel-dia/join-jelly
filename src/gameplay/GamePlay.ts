@@ -63,8 +63,7 @@
 
             JoinJelly.userData.history("firstPlay")
 
-            if (!Cocoon.Ad.interstitial["loaded"])
-                Cocoon.Ad.loadInterstitial();
+            Cocoon.Ad.loadInterstitial();
             console.log("loading ad");
 
         }
@@ -471,7 +470,6 @@
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
         
             // show special offers
-            Cocoon.Ad.interstitial["loaded"] =true
             if (Cocoon.Ad.interstitial["loaded"] && (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + 30 * 1000 * 60 < Date.now())) {
                 this.finishMenu.showWhatchVideoButton();
                 console.log("watch shown")

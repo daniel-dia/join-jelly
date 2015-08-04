@@ -1176,7 +1176,6 @@ var joinjelly;
             this.userData = userData;
             this.createContent();
             this.createBackground();
-            this.createTestsButtons();
             this.createButtons();
             this.createTitle();
             this.rating = new joinjelly.menus.view.RatingFlyOut();
@@ -1250,53 +1249,6 @@ var joinjelly;
                 this.scoreText.y = -170 + 100;
                 leaderboardsBt.addChild(this.scoreText);
             }
-        };
-        MainScreen.prototype.createTestsButtons = function () {
-            var x = 150;
-            var space = 250;
-            Cocoon.Ad.interstitial.on("ready", function () {
-                alert("intesr Ready");
-            });
-            Cocoon.Ad.banner.on("ready", function () {
-                alert("Banner Ready");
-            });
-            var bt = new gameui.ImageButton("BtMenu", function () {
-                Cocoon.Ad.loadBanner();
-                alert("loaind");
-            });
-            bt.y = 150;
-            bt.x = x;
-            this.header.addChild(bt);
-            bt = new gameui.ImageButton("BtMenu", function () {
-                Cocoon.Ad.showBanner();
-            });
-            bt.y = 150;
-            bt.x = x += space;
-            this.header.addChild(bt);
-            bt = new gameui.ImageButton("BtMenu", function () {
-                Cocoon.Ad.hideBanner();
-            });
-            bt.y = 150;
-            bt.x = x += space;
-            this.header.addChild(bt);
-            bt = new gameui.ImageButton("BtMenu", function () {
-                Cocoon.Ad.showInterstitial();
-            });
-            bt.y = 150;
-            bt.x = x += space;
-            this.header.addChild(bt);
-            bt = new gameui.ImageButton("BtMenu", function () {
-                Cocoon.Ad.setBannerLayout(Cocoon.Ad.BannerLayout.BOTTOM_CENTER);
-            });
-            bt.y = 150;
-            bt.x = x += space;
-            this.header.addChild(bt);
-            bt = new gameui.ImageButton("BtMenu", function () {
-                Cocoon.Ad.setBannerLayout(Cocoon.Ad.BannerLayout.TOP_CENTER);
-            });
-            bt.y = 150;
-            bt.x = x += space;
-            this.header.addChild(bt);
         };
         return MainScreen;
     })(gameui.ScreenState);
@@ -3246,11 +3198,6 @@ var joinjelly;
                     joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
                 }
                 joinjelly.JoinJelly.userData.history("firstPlay");
-                if (!Cocoon.Ad.interstitial["loaded"])
-                    Cocoon.Ad.interstitial.on("ready", function () {
-                        Cocoon.Ad.interstitial["loaded"] = true;
-                        console.log("ads loaded");
-                    });
                 Cocoon.Ad.loadInterstitial();
                 console.log("loading ad");
             }
@@ -3511,7 +3458,6 @@ var joinjelly;
                 this.gameHeader.hide();
                 this.gameHeader.hideButtons();
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
-                Cocoon.Ad.interstitial["loaded"] = true;
                 if (Cocoon.Ad.interstitial["loaded"] && (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + 30 * 1000 * 60 < Date.now())) {
                     this.finishMenu.showWhatchVideoButton();
                     console.log("watch shown");
@@ -4438,6 +4384,7 @@ var joinjelly;
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             loadingScreen.loaded = function () {
+                _this.initializeAds();
                 if (window.location.search == "?test") {
                     _this.startTest();
                 }
@@ -4449,6 +4396,13 @@ var joinjelly;
                         JoinJelly.showMainMenu();
                 }
             };
+        };
+        JoinJelly.initializeAds = function () {
+            Cocoon.Ad.interstitial.on("ready", function () {
+                console.log("ads loaded1");
+                Cocoon.Ad.interstitial["loaded"] = true;
+                console.log("ads loaded2");
+            });
         };
         JoinJelly.startTest = function () {
             var gs = new joinjelly.gameplay.GamePlayScreen(this.userData);

@@ -57,9 +57,9 @@ module joinjelly {
         }
 
         public static initializeAds() {
-            //cache ad
+
             Cocoon.Ad.interstitial.on("ready", () => {
-            Cocoon.Ad.interstitial["loaded"] = true
+                Cocoon.Ad.interstitial["loaded"] = true;
                 console.log("ads loaded");
             })
         }
