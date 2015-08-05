@@ -135,6 +135,16 @@
             bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
             this.addChild(bt)
             this.specialOfferButton = bt;
+       } 
+
+        public showGiftTimeout(minutes: number) {
+            var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", () => {}).set({ x: defaultWidth / 2, y: 2050 });
+            bt.mouseEnabled = false;
+           // bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+           // bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+            this.addChild(bt)
+            this.specialOfferButton = bt;
+
         } 
 
 

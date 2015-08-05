@@ -30,6 +30,7 @@
         like: "Like us",
         share: "Share",
         watchVideo: "Watch Video",
+        gift: "gift in @ minutes",
 
     },
     tutorial: {
@@ -139,6 +140,7 @@ var StringResources_pt = {
         like: "Curtir",
         share: "Compartilhar",
         watchVideo: "Veja um Video",
+        gift: "vídeo em @ min",
     },
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",

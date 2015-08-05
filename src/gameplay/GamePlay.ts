@@ -474,11 +474,14 @@
                 this.finishMenu.showWhatchVideoButton();
                 console.log("watch shown")
             }
-
             else if (!JoinJelly.userData.getHistory("shared")) {
                 this.finishMenu.showShareButton();
                 console.log("share shown");
-            } 
+            }
+            else {
+                this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + 30 * 1000 * 60 - Date.now()) / 60000))
+
+            }
             
 
 

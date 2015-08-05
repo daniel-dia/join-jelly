@@ -767,6 +767,7 @@ var StringResources = {
         like: "Like us",
         share: "Share",
         watchVideo: "Watch Video",
+        gift: "gift in @ minutes",
     },
     tutorial: {
         msgheplme: "Help me to evolve\nJoin  2 identical jellies.",
@@ -870,6 +871,7 @@ var StringResources_pt = {
         like: "Curtir",
         share: "Compartilhar",
         watchVideo: "Veja um Video",
+        gift: "vídeo em @ min",
     },
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
@@ -2679,6 +2681,12 @@ var joinjelly;
                     this.addChild(bt);
                     this.specialOfferButton = bt;
                 };
+                FinishMenu.prototype.showGiftTimeout = function (minutes) {
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", function () { }).set({ x: defaultWidth / 2, y: 2050 });
+                    bt.mouseEnabled = false;
+                    this.addChild(bt);
+                    this.specialOfferButton = bt;
+                };
                 FinishMenu.prototype.hideSpecialOfferButton = function () {
                     if (this.specialOfferButton) {
                         this.removeChild(this.specialOfferButton);
@@ -3469,6 +3477,9 @@ var joinjelly;
                 else if (!joinjelly.JoinJelly.userData.getHistory("shared")) {
                     this.finishMenu.showShareButton();
                     console.log("share shown");
+                }
+                else {
+                    this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + 30 * 1000 * 60 - Date.now()) / 60000));
                 }
                 setTimeout(function () {
                     if (win)
