@@ -78,11 +78,6 @@
 
             if (this.isUnlocked())
                 this.jelly.setNumber(value);
-
-            if (this.value == 0)
-                this.background.alpha = 0.15;
-            else
-                this.background.alpha = 0.10;
         }
 
         public getNumber(): number {
