@@ -59,7 +59,12 @@ module joinjelly {
         public static initializeAds() {
 
             Cocoon.Ad.interstitial.on("ready", () => {
+                // tells that a ads s loaded
                 Cocoon.Ad.interstitial["loaded"] = true;
+
+                // once a ads is loaded so it is avaliable for this app.
+                this.userData.history("ads_avaliable");
+
                 console.log("ads loaded");
             })
         }

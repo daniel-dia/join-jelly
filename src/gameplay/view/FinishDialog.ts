@@ -6,15 +6,15 @@
         private jelly: view.Jelly;
         private scoreText: createjs.BitmapText;
         private highScoreText: createjs.BitmapText;
-        private specialOfferButton: createjs.DisplayObject;
+        private specialOffer: createjs.DisplayObject;
 
         constructor() {
             super(StringResources.menus.gameOver, 1250);
             this.top -= 200;
-            this.addPoints(); 
+            this.addPoints();
             this.addLastJelly();
             this.addButtons();
-          
+
         }
 
         // creates buttons controls
@@ -116,42 +116,51 @@
             return container;
         }
 
-       public showShareButton() {
+        public showShareButton() {
+            this.hideSpecialOffer();
             var bt = new gameui.BitmapTextButton(StringResources.menus.share, "debussy", "BtTextBgBlue", () => {
                 this.dispatchEvent("share");
-            }).set({ x: defaultWidth/2, y: 2050 }); 
+            }).set({ x: defaultWidth / 2, y: 2050 });
             bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
             bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
             this.addChild(bt);
-            this.specialOfferButton = bt;
+            this.specialOffer = bt;
         }
 
 
-       public showWhatchVideoButton() {
-           var bt: gameui.BitmapTextButton = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", () => {
-               this.dispatchEvent("watch");
-           });
-           bt.set({ x: defaultWidth / 2, y: 2050 });
-           bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
-           bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
-           bt.bitmapText.set({ scaleX: 0.9 })
-           this.addChild(bt)
-           this.specialOfferButton = bt;
-       } 
+        public showWhatchVideoButton() {
+            this.hideSpecialOffer();
+            var bt: gameui.BitmapTextButton = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", () => {
+                this.dispatchEvent("watch");
+            });
+            bt.set({ x: defaultWidth / 2, y: 2050 });
+            bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+            bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+            bt.bitmapText.set({ scaleX: 0.9 })
+            this.addChild(bt)
+            this.specialOffer = bt;
+        }
 
         public showGiftTimeout(minutes: number) {
-            var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", () => {}).set({ x: defaultWidth / 2, y: 2050 });
+            this.hideSpecialOffer();
+            var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", () => { }).set({ x: defaultWidth / 2, y: 2050 });
             bt.mouseEnabled = false;
             this.addChild(bt)
-            this.specialOfferButton = bt;
+            this.specialOffer = bt;
+        }
 
-        } 
+        public showGiftLoading() {
+            this.hideSpecialOffer();
+            var bt = new gameui.BitmapTextButton(StringResources.menus.loading, "debussy", "", () => { }).set({ x: defaultWidth / 2, y: 2050 });
+            bt.mouseEnabled = false;
+            this.addChild(bt)
+            this.specialOffer = bt;
+        }
 
-
-        public hideSpecialOfferButton() {
-            if (this.specialOfferButton) {
-                this.removeChild(this.specialOfferButton);
-                this.specialOfferButton = null
+        public hideSpecialOffer() {
+            if (this.specialOffer) {
+                this.removeChild(this.specialOffer);
+                this.specialOffer = null
             }
         }
 

@@ -179,12 +179,12 @@
             });
 
 
-            this.finishMenu.addEventListener("home",() => {
+            this.finishMenu.addEventListener("home", () => {
                 if (this.userData) this.userData.deleteSaveGame();
                 // save high score
                 JoinJelly.userData.setScore(Math.max(this.score, JoinJelly.userData.getHighScore()));
                 JoinJelly.showMainMenu();
-                
+
             });
 
             this.finishMenu.addEventListener("minimize", () => {
@@ -215,9 +215,10 @@
                         JoinJelly.userData.history("shared");
                         JoinJelly.itemData.increaseItemAmmount("revive", 1);
                         that.updateFooter();
-                        that.finishMenu.hideSpecialOfferButton();
+                        that.finishMenu.hideSpecialOffer();
                         console.log("shareded");
                         gameui.AudiosManager.playSound("Interface Sound-11");
+                        this.showSpecialOffer() 
                     }
                 });
             });
@@ -233,23 +234,27 @@
                 JoinJelly.itemData.increaseItemAmmount(item, 1);
 
                 // shows which item the user has won
-                this.animateItemFromPos(defaultWidth / 2, defaultHeight/5*4, item)
+                this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
 
                 // update interface
                 this.updateFooter();
-                this.finishMenu.hideSpecialOfferButton();
+                this.finishMenu.hideSpecialOffer();
                 console.log("watched");
                 this.userData.history("watched", Date.now());
                 gameui.AudiosManager.playSound("Interface Sound-11");
-                Cocoon.Ad.showInterstitial();
-                Cocoon.Ad.interstitial["loaded"] = false;
+                setTimeout(() => {
+                    Cocoon.Ad.showInterstitial();
+                    Cocoon.Ad.interstitial["loaded"] = false;
+                    this.showSpecialOffer()
+                }, 1000);
+                
             })
 
-            this.gameHeader.addEventListener("pause",() => {
+            this.gameHeader.addEventListener("pause", () => {
                 this.pauseGame();
             });
 
-            this.gameHeader.addEventListener("play",() => {
+            this.gameHeader.addEventListener("play", () => {
                 this.continueGame();
             });
 
@@ -272,7 +277,7 @@
                 setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
             });
 
-            this.gameHeader.addEventListener("restart",() => {
+            this.gameHeader.addEventListener("restart", () => {
                 this.pauseMenuOverlay.hide();
                 if (this.userData) this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
@@ -481,22 +486,8 @@
             this.gameHeader.hideButtons();
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
         
-            // show special 
-            Cocoon.Ad.interstitial["loaded"] = true;
-            this.userData.history("watched",null)
-            if (Cocoon.Ad.interstitial["loaded"] && (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + 30 * 1000 * 60 < Date.now())) {
-                this.finishMenu.showWhatchVideoButton();
-                console.log("watch shown")
-            }
-            else if (!JoinJelly.userData.getHistory("shared")) {
-                this.finishMenu.showShareButton();
-                console.log("share shown");
-            }
-            else {
-                this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + 30 * 1000 * 60 - Date.now()) / 60000))
-            }
-            
-
+            // show special offer
+            this.showSpecialOffer();
 
             // shows finished game menu
             setTimeout(() => {
@@ -537,6 +528,44 @@
 			
             // play end game effect
             this.board.endGameEffect();
+        }
+
+        // show special offer in the finish menu.
+        private showSpecialOffer() {
+            var minutes = 30;
+            // if user does not share yet.
+            if (!JoinJelly.userData.getHistory("shared")) {
+                this.finishMenu.showShareButton();
+                console.log("share shown");
+                return;
+            }
+
+            // if user already share, show ads. if ads already been loaded any time
+            if (this.userData.getHistory("ads_avaliable")) {
+
+                // if user is elegible to watch a ads.
+                if (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
+
+                    // if is loaded and is on time
+                    if (Cocoon.Ad.interstitial["loaded"]) {
+                        this.finishMenu.showWhatchVideoButton();
+                        console.log("watch shown")
+                    }
+
+                    // if is not lodaded yet
+                    else {
+                        this.finishMenu.showGiftLoading();
+                        // try show offer again after 1 sec
+                        setTimeout(() => { this.showSpecialOffer() }, 1000);
+                    }
+                    return;
+                }
+
+                // or else it is not on time yet
+                else 
+                    this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + 30 * 1000 * 60 - Date.now()) / 60000))
+                
+            }
         }
 
         // update current level
@@ -608,7 +637,7 @@
         private addRandomJellyOnBoard(JellyValue: number) {
 			
             // select a random value to add for higher levels.
-            for (var i = 10; i < this.level; i ++)
+            for (var i = 10; i < this.level; i++)
                 if (Math.random() < increasingJellyValuePerLevel)
                     JellyValue *= 2;
             if (JellyValue > JoinJelly.maxJelly) JellyValue = JoinJelly.maxJelly;
@@ -725,7 +754,7 @@
             this.highJellySave(newValue);
 
             // verify winGame
-            if (newValue > JoinJelly.maxJelly) 
+            if (newValue > JoinJelly.maxJelly)
                 this.winGame(target);
             else
                 target.setNumber(newValue);
@@ -746,7 +775,7 @@
         }
 
         // after join 2 high values jellies
-        private winGame(target:Tile) {
+        private winGame(target: Tile) {
             target.setNumber(0);
             target.jelly.playUltimateEffect();
             this.board.endGameEffect();
@@ -766,7 +795,7 @@
                     var posy = target.y + (tile.y - target.y) * 1.6;
                     tile.jelly.playDistroyEffect();
                     this.board.fadeTileToPos(tile, posx, posy, 350);
-                  
+
                     tile.setNumber(0);
                 }
             }
@@ -836,7 +865,7 @@
                 yf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).y;
             }
             itemDO.alpha = 0;
-            createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y:yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(() => {
+            createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(() => {
                 this.content.removeChild(itemDO);
                 this.updateFooter();
             });

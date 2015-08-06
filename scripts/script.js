@@ -2663,16 +2663,18 @@ var joinjelly;
                 };
                 FinishMenu.prototype.showShareButton = function () {
                     var _this = this;
+                    this.hideSpecialOffer();
                     var bt = new gameui.BitmapTextButton(StringResources.menus.share, "debussy", "BtTextBgBlue", function () {
                         _this.dispatchEvent("share");
                     }).set({ x: defaultWidth / 2, y: 2050 });
                     bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
                     bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
                     this.addChild(bt);
-                    this.specialOfferButton = bt;
+                    this.specialOffer = bt;
                 };
                 FinishMenu.prototype.showWhatchVideoButton = function () {
                     var _this = this;
+                    this.hideSpecialOffer();
                     var bt = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", function () {
                         _this.dispatchEvent("watch");
                     });
@@ -2681,18 +2683,26 @@ var joinjelly;
                     bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
                     bt.bitmapText.set({ scaleX: 0.9 });
                     this.addChild(bt);
-                    this.specialOfferButton = bt;
+                    this.specialOffer = bt;
                 };
                 FinishMenu.prototype.showGiftTimeout = function (minutes) {
+                    this.hideSpecialOffer();
                     var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", function () { }).set({ x: defaultWidth / 2, y: 2050 });
                     bt.mouseEnabled = false;
                     this.addChild(bt);
-                    this.specialOfferButton = bt;
+                    this.specialOffer = bt;
                 };
-                FinishMenu.prototype.hideSpecialOfferButton = function () {
-                    if (this.specialOfferButton) {
-                        this.removeChild(this.specialOfferButton);
-                        this.specialOfferButton = null;
+                FinishMenu.prototype.showGiftLoading = function () {
+                    this.hideSpecialOffer();
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.loading, "debussy", "", function () { }).set({ x: defaultWidth / 2, y: 2050 });
+                    bt.mouseEnabled = false;
+                    this.addChild(bt);
+                    this.specialOffer = bt;
+                };
+                FinishMenu.prototype.hideSpecialOffer = function () {
+                    if (this.specialOffer) {
+                        this.removeChild(this.specialOffer);
+                        this.specialOffer = null;
                     }
                 };
                 FinishMenu.prototype.setValues = function (score, highScore, jelly, title) {
@@ -3306,9 +3316,10 @@ var joinjelly;
                             joinjelly.JoinJelly.userData.history("shared");
                             joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 1);
                             that.updateFooter();
-                            that.finishMenu.hideSpecialOfferButton();
+                            that.finishMenu.hideSpecialOffer();
                             console.log("shareded");
                             gameui.AudiosManager.playSound("Interface Sound-11");
+                            this.showSpecialOffer();
                         }
                     });
                 });
@@ -3318,12 +3329,15 @@ var joinjelly;
                     joinjelly.JoinJelly.itemData.increaseItemAmmount(item, 1);
                     _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
                     _this.updateFooter();
-                    _this.finishMenu.hideSpecialOfferButton();
+                    _this.finishMenu.hideSpecialOffer();
                     console.log("watched");
                     _this.userData.history("watched", Date.now());
                     gameui.AudiosManager.playSound("Interface Sound-11");
-                    Cocoon.Ad.showInterstitial();
-                    Cocoon.Ad.interstitial["loaded"] = false;
+                    setTimeout(function () {
+                        Cocoon.Ad.showInterstitial();
+                        Cocoon.Ad.interstitial["loaded"] = false;
+                        _this.showSpecialOffer();
+                    }, 1000);
                 });
                 this.gameHeader.addEventListener("pause", function () {
                     _this.pauseGame();
@@ -3471,19 +3485,7 @@ var joinjelly;
                 this.gameHeader.hide();
                 this.gameHeader.hideButtons();
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
-                Cocoon.Ad.interstitial["loaded"] = true;
-                this.userData.history("watched", null);
-                if (Cocoon.Ad.interstitial["loaded"] && (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + 30 * 1000 * 60 < Date.now())) {
-                    this.finishMenu.showWhatchVideoButton();
-                    console.log("watch shown");
-                }
-                else if (!joinjelly.JoinJelly.userData.getHistory("shared")) {
-                    this.finishMenu.showShareButton();
-                    console.log("share shown");
-                }
-                else {
-                    this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + 30 * 1000 * 60 - Date.now()) / 60000));
-                }
+                this.showSpecialOffer();
                 setTimeout(function () {
                     if (win)
                         _this.gamestate = GameState.win;
@@ -3506,6 +3508,30 @@ var joinjelly;
                     joinjelly.JoinJelly.analytics.logEndGame(this.level, highJelly, this.matches, Date.now() - this.time);
                 gameui.AudiosManager.playSound("end");
                 this.board.endGameEffect();
+            };
+            GamePlayScreen.prototype.showSpecialOffer = function () {
+                var _this = this;
+                var minutes = 30;
+                if (!joinjelly.JoinJelly.userData.getHistory("shared")) {
+                    this.finishMenu.showShareButton();
+                    console.log("share shown");
+                    return;
+                }
+                if (this.userData.getHistory("ads_avaliable")) {
+                    if (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
+                        if (Cocoon.Ad.interstitial["loaded"]) {
+                            this.finishMenu.showWhatchVideoButton();
+                            console.log("watch shown");
+                        }
+                        else {
+                            this.finishMenu.showGiftLoading();
+                            setTimeout(function () { _this.showSpecialOffer(); }, 1000);
+                        }
+                        return;
+                    }
+                    else
+                        this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + 30 * 1000 * 60 - Date.now()) / 60000));
+                }
             };
             GamePlayScreen.prototype.updateCurrentLevel = function () {
                 var newLevel = this.getLevelByMoves(this.matches);
@@ -4419,8 +4445,10 @@ var joinjelly;
             };
         };
         JoinJelly.initializeAds = function () {
+            var _this = this;
             Cocoon.Ad.interstitial.on("ready", function () {
                 Cocoon.Ad.interstitial["loaded"] = true;
+                _this.userData.history("ads_avaliable");
                 console.log("ads loaded");
             });
         };
