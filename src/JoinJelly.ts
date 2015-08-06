@@ -59,6 +59,11 @@ module joinjelly {
         }
 
         public static initializeSocial() {
+            var os = "web"
+            if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
+
+            if (os == "windows" ) return;
+
             //initialize the Facebook Service the same way as the Official JS SDK
             var fb = Cocoon.Social.Facebook;
             fb.init({ appId: fbAppId });

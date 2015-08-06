@@ -4445,6 +4445,11 @@ var joinjelly;
             };
         };
         JoinJelly.initializeSocial = function () {
+            var os = "web";
+            if (Cocoon.Device.getDeviceInfo())
+                os = Cocoon.Device.getDeviceInfo().os;
+            if (os == "windows")
+                return;
             var fb = Cocoon.Social.Facebook;
             fb.init({ appId: fbAppId });
             this.FBSocialService = fb.getSocialInterface();
