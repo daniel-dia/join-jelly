@@ -2675,9 +2675,11 @@ var joinjelly;
                     var _this = this;
                     var bt = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", function () {
                         _this.dispatchEvent("watch");
-                    }).set({ x: defaultWidth / 2, y: 2050 });
-                    bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
-                    bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+                    });
+                    bt.set({ x: defaultWidth / 2, y: 2050 });
+                    bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+                    bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+                    bt.bitmapText.set({ scaleX: 0.9 });
                     this.addChild(bt);
                     this.specialOfferButton = bt;
                 };
@@ -3311,7 +3313,10 @@ var joinjelly;
                     });
                 });
                 this.finishMenu.addEventListener("watch", function () {
-                    joinjelly.JoinJelly.itemData.increaseItemAmmount("revive", 1);
+                    var items = [joinjelly.Items.CLEAN, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.FAST, joinjelly.Items.TIME, joinjelly.Items.TIME, joinjelly.Items.REVIVE];
+                    var item = items[Math.floor(Math.random() * items.length)];
+                    joinjelly.JoinJelly.itemData.increaseItemAmmount(item, 1);
+                    _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
                     _this.updateFooter();
                     _this.finishMenu.hideSpecialOfferButton();
                     console.log("watched");
@@ -3466,6 +3471,8 @@ var joinjelly;
                 this.gameHeader.hide();
                 this.gameHeader.hideButtons();
                 createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
+                Cocoon.Ad.interstitial["loaded"] = true;
+                this.userData.history("watched", null);
                 if (Cocoon.Ad.interstitial["loaded"] && (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + 30 * 1000 * 60 < Date.now())) {
                     this.finishMenu.showWhatchVideoButton();
                     console.log("watch shown");
@@ -3672,6 +3679,11 @@ var joinjelly;
                 return item;
             };
             GamePlayScreen.prototype.animateItemFromTile = function (tile, item) {
+                var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
+                var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
+                this.animateItemFromPos(xi, xi, item);
+            };
+            GamePlayScreen.prototype.animateItemFromPos = function (xi, yi, item) {
                 var _this = this;
                 gameui.AudiosManager.playSound("Interface Sound-11");
                 var itemDO = gameui.AssetsManager.getBitmap("item" + item);
@@ -3679,8 +3691,6 @@ var joinjelly;
                 itemDO.regX = itemDO.getBounds().width / 2;
                 itemDO.regY = itemDO.getBounds().height / 2;
                 itemDO.scaleY = itemDO.scaleX = 0.5;
-                var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
-                var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
                 var xf = defaultWidth / 2;
                 var yf = this.footer.y;
                 ;
@@ -3690,11 +3700,11 @@ var joinjelly;
                     yf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).y;
                 }
                 itemDO.alpha = 0;
-                createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(function () {
+                createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(function () {
                     _this.content.removeChild(itemDO);
                     _this.updateFooter();
                 });
-                this.content.addChild(itemDO);
+                this.overlay.addChild(itemDO);
             };
             GamePlayScreen.prototype.animateScoreFromTile = function (tile, score) {
                 var _this = this;

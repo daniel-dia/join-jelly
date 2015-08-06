@@ -125,23 +125,23 @@
             this.addChild(bt);
             this.specialOfferButton = bt;
         }
- 
 
-        public showWhatchVideoButton() {
-            var bt = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", () => {
+
+       public showWhatchVideoButton() {
+           var bt: gameui.BitmapTextButton = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", () => {
                this.dispatchEvent("watch");
-            }).set({ x: defaultWidth / 2, y: 2050 });
-            bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
-            bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
-            this.addChild(bt)
-            this.specialOfferButton = bt;
+           });
+           bt.set({ x: defaultWidth / 2, y: 2050 });
+           bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+           bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+           bt.bitmapText.set({ scaleX: 0.9 })
+           this.addChild(bt)
+           this.specialOfferButton = bt;
        } 
 
         public showGiftTimeout(minutes: number) {
             var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", () => {}).set({ x: defaultWidth / 2, y: 2050 });
             bt.mouseEnabled = false;
-           // bt.addChild(gameui.AssetsManager.getBitmap("itemrevive").set({ x: -380, y: -60, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
-           // bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -490, y: -60, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
             this.addChild(bt)
             this.specialOfferButton = bt;
 

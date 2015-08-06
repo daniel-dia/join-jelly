@@ -222,8 +222,20 @@
                 });
             });
 
+            // when user watches a video
             this.finishMenu.addEventListener("watch", () => {
-                JoinJelly.itemData.increaseItemAmmount("revive", 1);
+
+                // select a random item
+                var items = [Items.CLEAN, Items.CLEAN, Items.FAST, Items.FAST, Items.TIME, Items.TIME, Items.REVIVE]
+                var item = items[Math.floor(Math.random() * items.length)];
+                
+                // increase item ammout
+                JoinJelly.itemData.increaseItemAmmount(item, 1);
+
+                // shows which item the user has won
+                this.animateItemFromPos(defaultWidth / 2, defaultHeight/5*4, item)
+
+                // update interface
                 this.updateFooter();
                 this.finishMenu.hideSpecialOfferButton();
                 console.log("watched");
@@ -469,7 +481,9 @@
             this.gameHeader.hideButtons();
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
         
-            // show special offers
+            // show special 
+            Cocoon.Ad.interstitial["loaded"] = true;
+            this.userData.history("watched",null)
             if (Cocoon.Ad.interstitial["loaded"] && (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + 30 * 1000 * 60 < Date.now())) {
                 this.finishMenu.showWhatchVideoButton();
                 console.log("watch shown")
@@ -480,7 +494,6 @@
             }
             else {
                 this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + 30 * 1000 * 60 - Date.now()) / 60000))
-
             }
             
 
@@ -797,6 +810,12 @@
 
         // animate a item moving from tile to the footer
         private animateItemFromTile(tile: Tile, item: string) {
+            var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
+            var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
+            this.animateItemFromPos(xi, xi, item);
+        }
+
+        private animateItemFromPos(xi: number, yi: number, item: string) {
             // play sound
             gameui.AudiosManager.playSound("Interface Sound-11");
 
@@ -808,8 +827,6 @@
             itemDO.scaleY = itemDO.scaleX = 0.5;
 
             // animate item to footer
-            var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
-            var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
             var xf = defaultWidth / 2;
             var yf = this.footer.y;;
 
@@ -819,13 +836,12 @@
                 yf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).y;
             }
             itemDO.alpha = 0;
-            createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: tile.y - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(() => {
+            createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y:yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(() => {
                 this.content.removeChild(itemDO);
                 this.updateFooter();
             });
 
-            this.content.addChild(itemDO);
-
+            this.overlay.addChild(itemDO);
         }
 
         // animate a score in the board
