@@ -195,10 +195,6 @@ module joinjelly.gameplay {
             });
 
             this.finishMenu.addEventListener("share", () => {
-                //initialize the Facebook Service the same way as the Official JS SDK
-                var fb = Cocoon.Social.Facebook;
-                fb.init({ appId: fbAppId });
-                var socialService = fb.getSocialInterface();
 
                 // mediaURL, linkURL, linkText, linkCaption
                 var message = new Cocoon.Social.Message(
@@ -209,17 +205,24 @@ module joinjelly.gameplay {
                     StringResources.social.shareCaption);
                 var that = this;
 
-                socialService.publishMessageWithDialog(message, function (error) {
+                JoinJelly.FBSocialService.publishMessageWithDialog(message, function (error) {
                     var sucess = true;
                     if (error) sucess = false;
                     if (sucess) {
                         JoinJelly.userData.history("shared");
-                        JoinJelly.itemData.increaseItemAmmount("revive", 1);
+                        JoinJelly.itemData.increaseItemAmmount(Items.REVIVE, 1);
+                        JoinJelly.itemData.increaseItemAmmount(Items.CLEAN, 1);
+                        JoinJelly.itemData.increaseItemAmmount(Items.FAST, 1);
+                        JoinJelly.itemData.increaseItemAmmount(Items.TIME, 1);
                         that.updateFooter();
                         that.finishMenu.hideSpecialOffer();
                         console.log("shareded");
+
+                        // shows which item the user has won
+                        that.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack")
+                                        
                         gameui.AudiosManager.playSound("Interface Sound-11");
-                        this.showSpecialOffer() 
+                        that.showSpecialOffer() 
                     }
                 });
             });
@@ -534,9 +537,8 @@ module joinjelly.gameplay {
         // show special offer in the finish menu.
         private showSpecialOffer() {
             var minutes = 30;
-
             // if user does not share yet.
-            if (!JoinJelly.userData.getHistory("shared") && typeof FB != 'undefined') {
+            if (!JoinJelly.userData.getHistory("shared") && JoinJelly.FBSocialService) {
                 this.finishMenu.showShareButton();
                 console.log("share shown");
                 return;

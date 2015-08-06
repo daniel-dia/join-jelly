@@ -9,6 +9,7 @@ module joinjelly {
         public static analytics: Analytics;
         public static itemData: ItemsData;
         public static gameServices: GameServices;
+        public static FBSocialService: any;
 
         public static init(canvasName: string) {
 
@@ -16,6 +17,7 @@ module joinjelly {
             this.analytics = new Analytics();
             this.itemData = new ItemsData();
             this.gameServices = new GameServices();
+            this.initializeSocial();
 
             // define language
             var lang = (window.navigator.userLanguage || window.navigator.language).substr(0, 2).toLowerCase();
@@ -54,6 +56,13 @@ module joinjelly {
                         JoinJelly.showMainMenu();
                 }
             }
+        }
+
+        public static initializeSocial() {
+            //initialize the Facebook Service the same way as the Official JS SDK
+            var fb = Cocoon.Social.Facebook;
+            fb.init({ appId: fbAppId });
+            this.FBSocialService = fb.getSocialInterface();
         }
 
         public static initializeAds() {
