@@ -1,4 +1,5 @@
-﻿module joinjelly.gameplay {
+﻿declare var FB;
+module joinjelly.gameplay {
 
     export class GamePlayScreen extends gameui.ScreenState {
         
@@ -533,8 +534,9 @@
         // show special offer in the finish menu.
         private showSpecialOffer() {
             var minutes = 30;
+
             // if user does not share yet.
-            if (!JoinJelly.userData.getHistory("shared")) {
+            if (!JoinJelly.userData.getHistory("shared") && typeof FB != 'undefined') {
                 this.finishMenu.showShareButton();
                 console.log("share shown");
                 return;
@@ -563,7 +565,7 @@
 
                 // or else it is not on time yet
                 else 
-                    this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + 30 * 1000 * 60 - Date.now()) / 60000))
+                    this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000))
                 
             }
         }
