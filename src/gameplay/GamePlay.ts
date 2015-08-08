@@ -64,6 +64,7 @@ module joinjelly.gameplay {
 
             JoinJelly.userData.history("firstPlay")
 
+            console.log("start loading ad");
             Cocoon.Ad.loadInterstitial();
             console.log("loading ad");
 
@@ -206,7 +207,9 @@ module joinjelly.gameplay {
                 var that = this;
 
                 JoinJelly.FBSocialService.publishMessageWithDialog(message, function (error) {
+                    console.log("share callback");
                     var sucess = true;
+                    console.log(JSON.stringify(error));
                     if (error) sucess = false;
                     if (sucess) {
                         JoinJelly.userData.history("shared");
@@ -217,12 +220,16 @@ module joinjelly.gameplay {
                         that.updateFooter();
                         that.finishMenu.hideSpecialOffer();
                         console.log("shareded");
+                        that.showSpecialOffer() 
 
                         // shows which item the user has won
-                        that.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack")
-                                        
-                        gameui.AudiosManager.playSound("Interface Sound-11");
-                        that.showSpecialOffer() 
+                        setTimeout(() => {
+                            that.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack")
+                            gameui.AudiosManager.playSound("Interface Sound-11");
+
+                        }, 1000);
+
+      
                     }
                 });
             });
@@ -536,6 +543,8 @@ module joinjelly.gameplay {
 
         // show special offer in the finish menu.
         private showSpecialOffer() {
+            return;
+
             var minutes = 30;
             // if user does not share yet.
             if (!JoinJelly.userData.getHistory("shared") && JoinJelly.FBSocialService) {

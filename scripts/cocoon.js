@@ -6436,6 +6436,7 @@ Cocoon.define("Cocoon.Social", function (extension) {
          */
         submitScore: function (score, callback) {
             if (this.nativeAvailable) {
+
                 Cocoon.callNative(this.nativeExtensionName, "submitScore", [score, callback], true);
             }
             else {
@@ -7436,21 +7437,14 @@ Cocoon.define("Cocoon.Social", function (extension) {
             });
         },
 
-        publishMessageWithDialog: function (message, callback) {
-            this.fb.showShareDialog(fromCocoonMessageToFBMessage(message), function (response) {
-                if (callback) {
-                    var error = {message: "Not posted"};
-                    if(response){
-                        if (response.error)
-                            error = response.error;
-                        else if (response.post_id)
-                            error = null;
-                    }
+         publishMessageWithDialog: function(message, callback) { 
+             this.fb.showShareDialog(fromCocoonMessageToFBMessage(message), function(response){ 
+                  if (callback) { 
+                      callback(response.error); 
+                  } 
+             }); 
+         }, 
 
-                    callback(error);
-               }
-            });
-        },
 
         requestScore: function (callback, params) {
             var apiCall = ((params && params.userID) ? params.userID : "me") + "/scores";

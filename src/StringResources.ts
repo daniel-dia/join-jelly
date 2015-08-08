@@ -104,7 +104,7 @@
     social: {
         shareDescription: "Help the jellie neighbourhood to evolve and eliminate your monster enemies! Join equal jellies to see new characters. The more jellies evolved more discoveries! But beware, be aware that the enemy has power over time and his henchmen.Many jellies want to help, many came from far away to fight, but you need to be fast for it to be organized before the desperation defeat you.",
         shareTitle: "JoinJelly",
-        shareCaption: "",
+        shareCaption: "Hi!",
     }
 }
 
@@ -219,7 +219,7 @@ var StringResources_pt = {
     social: {
         shareDescription: "Ajude a comunidade geleística a evoluir e  eliminar seus inimigos! Junte geleias iguais para evoluir e doscrobrir novos personagens. Quanto mais geleias evoluídas mais descobertas! Mas cuidado, você verá que o inimigo tem poder sobre o tempo e seus capangas. Muitas geleias querem ajudar, muitas vieram de longe para o combate.  Mas seja rápido antes que o desespero o derrote!.!",
         shareTitle: "Join Jelly",
-        shareCaption: "",
+        shareCaption: "Hi",
     }
 
 }

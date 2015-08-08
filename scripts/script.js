@@ -835,7 +835,7 @@ var StringResources = {
     social: {
         shareDescription: "Help the jellie neighbourhood to evolve and eliminate your monster enemies! Join equal jellies to see new characters. The more jellies evolved more discoveries! But beware, be aware that the enemy has power over time and his henchmen.Many jellies want to help, many came from far away to fight, but you need to be fast for it to be organized before the desperation defeat you.",
         shareTitle: "JoinJelly",
-        shareCaption: "",
+        shareCaption: "Hi!",
     }
 };
 var StringResources_pt = {
@@ -945,7 +945,7 @@ var StringResources_pt = {
     social: {
         shareDescription: "Ajude a comunidade geleística a evoluir e  eliminar seus inimigos! Junte geleias iguais para evoluir e doscrobrir novos personagens. Quanto mais geleias evoluídas mais descobertas! Mas cuidado, você verá que o inimigo tem poder sobre o tempo e seus capangas. Muitas geleias querem ajudar, muitas vieram de longe para o combate.  Mas seja rápido antes que o desespero o derrote!.!",
         shareTitle: "Join Jelly",
-        shareCaption: "",
+        shareCaption: "Hi",
     }
 };
 var Analytics = (function () {
@@ -3212,6 +3212,7 @@ var joinjelly;
                     joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
                 }
                 joinjelly.JoinJelly.userData.history("firstPlay");
+                console.log("start loading ad");
                 Cocoon.Ad.loadInterstitial();
                 console.log("loading ad");
             }
@@ -3304,7 +3305,9 @@ var joinjelly;
                     var message = new Cocoon.Social.Message(StringResources.social.shareDescription, gameWebsiteIcon, gameWebsite, StringResources.social.shareTitle, StringResources.social.shareCaption);
                     var that = _this;
                     joinjelly.JoinJelly.FBSocialService.publishMessageWithDialog(message, function (error) {
+                        console.log("share callback");
                         var sucess = true;
+                        console.log(JSON.stringify(error));
                         if (error)
                             sucess = false;
                         if (sucess) {
@@ -3316,9 +3319,11 @@ var joinjelly;
                             that.updateFooter();
                             that.finishMenu.hideSpecialOffer();
                             console.log("shareded");
-                            that.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack");
-                            gameui.AudiosManager.playSound("Interface Sound-11");
                             that.showSpecialOffer();
+                            setTimeout(function () {
+                                that.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack");
+                                gameui.AudiosManager.playSound("Interface Sound-11");
+                            }, 1000);
                         }
                     });
                 });
@@ -3510,6 +3515,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.showSpecialOffer = function () {
                 var _this = this;
+                return;
                 var minutes = 30;
                 if (!joinjelly.JoinJelly.userData.getHistory("shared") && joinjelly.JoinJelly.FBSocialService) {
                     this.finishMenu.showShareButton();
@@ -4459,6 +4465,7 @@ var joinjelly;
             Cocoon.Ad.interstitial.on("ready", function () {
                 Cocoon.Ad.interstitial["loaded"] = true;
                 _this.userData.history("ads_avaliable");
+                alert("AD LOADED");
                 console.log("ads loaded");
             });
         };
@@ -4821,7 +4828,11 @@ var joinjelly;
                 return;
             }
             try {
-                this.socialService.submitScore(score.toString(), function (error) {
+                var sc;
+                sc = score;
+                if (Cocoon.Device.getDeviceInfo().os == "android")
+                    sc = score.toString();
+                this.socialService.submitScore(sc, function (error) {
                     if (error)
                         console.error("score error: " + error.message);
                     else
