@@ -97,7 +97,10 @@
             }
              
             try {
-                this.socialService.submitScore(score.toString(),(error) => {
+                var sc;
+                sc = score;
+                if (Cocoon.Device.getDeviceInfo().os == "android") sc = score.toString();
+                this.socialService.submitScore(sc,(error) => {
                     if (error)
                         console.error("score error: " + error.message);
                     else
