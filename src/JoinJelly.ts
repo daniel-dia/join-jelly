@@ -78,7 +78,7 @@ module joinjelly {
 
                 // once a ads is loaded so it is avaliable for this app.
                 this.userData.history("ads_avaliable");
-                alert("AD LOADED");
+              
                 console.log("ads loaded");
             })
         }
