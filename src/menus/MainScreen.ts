@@ -32,6 +32,10 @@
 
             this.rating.show();
 
+            this.onback = () => {
+                Cocoon.App.exit();
+            }
+
         }
 
         private createContent() {
