@@ -912,7 +912,7 @@ module joinjelly.gameplay {
             }
             itemDO.alpha = 0;
             createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(() => {
-                this.content.removeChild(itemDO);
+                this.overlay.removeChild(itemDO);
                 this.updateFooter();
             });
 
