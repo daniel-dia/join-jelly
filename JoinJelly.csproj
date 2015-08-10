@@ -500,7 +500,6 @@
     <Content Include="assets\images_1x\tutorialFinger.png" />
     <Content Include="assets\images_1x\tutorialFingerDown.png" />
     <Content Include="assets\images_1x\unchecked.png" />
-    <Content Include="assets\Intro2.js" />
     <Content Include="assets\Intro3.js" />
     <Content Include="assets\Manifest.js" />
     <Content Include="assets\resize.bat" />
@@ -569,9 +568,9 @@
     <TypeScriptCompile Include="src\gameplay\parameters.ts" />
     <Content Include="scripts\cocoon.js" />
     <Content Include="scripts\createjs-2015.05.21.min.js" />
-    <Content Include="scripts\cti.js" />
-    <Content Include="scripts\FileSaver.js" />
-    <Content Include="scripts\MobileServices.Web-1.2.5.min.js" />
+    <Content Include="scripts_tools\cti.js" />
+    <Content Include="scripts_tools\FileSaver.js" />
+    <Content Include="scripts_tools\MobileServices.Web-1.2.5.min.js" />
     <Content Include="scripts\movieclip-0.8.1.min.js" />
     <Content Include="scripts\Plataform.js" />
     <Content Include="scripts\templates\achievements.html" />
