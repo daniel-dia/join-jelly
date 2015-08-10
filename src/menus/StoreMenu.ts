@@ -171,7 +171,7 @@
                 error: (errorMessage) => {
                     this.showError();
                 }
-            })
+            },{once: true })
 
             // on purchasing products
             Cocoon.Store.on("purchase", {
@@ -200,7 +200,7 @@
                     this.getProductListItem(productId).setNormal();
                     this.unlockUI();
                 }
-            });
+            }, {once:true});
         
             // initialize store
             Cocoon.Store.initialize({ sandbox: true, managed: true });

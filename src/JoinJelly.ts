@@ -50,9 +50,6 @@ module joinjelly {
                     this.startTest();
                 } else {
                     var loadedGame = this.userData.loadGame();
-                    if (loadedGame)
-                        JoinJelly.startLevel();
-                    else
                         JoinJelly.showMainMenu();
                 }
             }
@@ -75,10 +72,8 @@ module joinjelly {
             Cocoon.Ad.interstitial.on("ready", () => {
                 // tells that a ads s loaded
                 Cocoon.Ad.interstitial["loaded"] = true;
-
                 // once a ads is loaded so it is avaliable for this app.
                 this.userData.history("ads_avaliable");
-              
                 console.log("ads loaded");
             })
         }

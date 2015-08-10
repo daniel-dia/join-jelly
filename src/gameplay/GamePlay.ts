@@ -64,9 +64,10 @@ module joinjelly.gameplay {
 
             JoinJelly.userData.history("firstPlay")
 
-            console.log("start loading ad");
+            if (Cocoon.Ad.interstitial["loaded"])
             Cocoon.Ad.loadInterstitial();
             console.log("loading ad");
+             
 
         }
 
@@ -237,28 +238,31 @@ module joinjelly.gameplay {
             // when user watches a video
             this.finishMenu.addEventListener("watch", () => {
 
-                // select a random item
-                var items = [Items.CLEAN, Items.CLEAN, Items.FAST, Items.FAST, Items.TIME, Items.TIME, Items.REVIVE]
-                var item = items[Math.floor(Math.random() * items.length)];
-                
-                // increase item ammout
-                JoinJelly.itemData.increaseItemAmmount(item, 1);
-
-                // shows which item the user has won
-                this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
-
                 // update interface
                 this.updateFooter();
                 this.finishMenu.hideSpecialOffer();
                 console.log("watched");
                 this.userData.history("watched", Date.now());
-                gameui.AudiosManager.playSound("Interface Sound-11");
-                setTimeout(() => {
-                    Cocoon.Ad.showInterstitial();
-                    Cocoon.Ad.interstitial["loaded"] = false;
-                    this.showSpecialOffer()
-                }, 1000);
                 
+                Cocoon.Ad.showInterstitial();
+                Cocoon.Ad.interstitial["loaded"] = false;
+                Cocoon.Ad.interstitial.on("hidden", () => {
+
+                    // give random item to player
+                    gameui.AudiosManager.playSound("Interface Sound-11");
+                    // select a random item
+                    var items = [Items.CLEAN, Items.CLEAN, Items.FAST, Items.FAST, Items.TIME, Items.TIME, Items.REVIVE]
+                    var item = items[Math.floor(Math.random() * items.length)];
+                
+                    // increase item ammout
+                    JoinJelly.itemData.increaseItemAmmount(item, 1);
+
+                    // shows which item the user has won
+                    this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
+
+                },{once: true });
+
+                this.showSpecialOffer();                
             })
 
             this.gameHeader.addEventListener("pause", () => {
@@ -542,43 +546,72 @@ module joinjelly.gameplay {
         }
 
         // show special offer in the finish menu.
-        private showSpecialOffer() {
-            return;
+        private showSpecialOffer() { 
 
-            var minutes = 30;
+            var minutes = 1;
+
+
+            // if ads already been loaded any time
+            if (this.userData.getHistory("ads_avaliable")) {
+
+                // if user is elegible to watch a ads.
+                if (!this.userData.getHistory("watched") ||
+                    this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
+
+                    // if ads is loaded
+                    if (Cocoon.Ad.interstitial["loaded"]) {
+                        this.finishMenu.showWhatchVideoButton();
+                    }
+
+                    //if it is not loaded, so load it
+                    else {
+                        Cocoon.Ad.loadInterstitial();
+
+                        // show loading
+                        this.finishMenu.showGiftLoading();
+                        var timeOut = 10;
+
+                        var interval = setInterval(() => {
+                            timeOut--;
+                            console.log("timeout " + timeOut);
+
+                            // if is loaded and is on time
+                            if (Cocoon.Ad.interstitial["loaded"]) {
+                                this.finishMenu.showWhatchVideoButton();
+                                clearInterval(interval);
+                            }
+                            // if timeout show error
+                            if (timeOut <= 0) {
+                                clearInterval(interval);
+                                this.finishMenu.showGiftLoadingError();
+                            }
+                        }, 1000);
+                        return;
+                    }
+                }
+
+                // or else it is not on time yet
+                else {
+                    // if it is not on time, thwn show share
+                    if (!this.showShare())
+                        //if there is no share. show timeout countdow
+                        this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000))
+                }// ads avaliable
+
+            // simply show share, if there is no ads avaliable
+            } else this.showShare();
+        }
+
+   
+
+        private showShare() {
             // if user does not share yet.
             if (!JoinJelly.userData.getHistory("shared") && JoinJelly.FBSocialService) {
                 this.finishMenu.showShareButton();
                 console.log("share shown");
-                return;
+                return true;
             }
-
-            // if user already share, show ads. if ads already been loaded any time
-            if (this.userData.getHistory("ads_avaliable")) {
-
-                // if user is elegible to watch a ads.
-                if (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
-
-                    // if is loaded and is on time
-                    if (Cocoon.Ad.interstitial["loaded"]) {
-                        this.finishMenu.showWhatchVideoButton();
-                        console.log("watch shown")
-                    }
-
-                    // if is not lodaded yet
-                    else {
-                        this.finishMenu.showGiftLoading();
-                        // try show offer again after 1 sec
-                        setTimeout(() => { this.showSpecialOffer() }, 1000);
-                    }
-                    return;
-                }
-
-                // or else it is not on time yet
-                else 
-                    this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000))
-                
-            }
+            return false;
         }
 
         // update current level

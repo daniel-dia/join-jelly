@@ -1184,6 +1184,9 @@ var joinjelly;
             this.rating.y = defaultHeight / 2;
             gameui.AudiosManager.playMusic("musicIntro");
             this.rating.show();
+            this.onback = function () {
+                Cocoon.App.exit();
+            };
         }
         MainScreen.prototype.createContent = function () {
             var lobby = new joinjelly.menus.view.JellyLobby(this.userData.getLastJelly());
@@ -1638,7 +1641,7 @@ var joinjelly;
                     error: function (errorMessage) {
                         _this.showError();
                     }
-                });
+                }, { once: true });
                 Cocoon.Store.on("purchase", {
                     started: function (productId) {
                         _this.getProductListItem(productId).setPurchasing();
@@ -1660,7 +1663,7 @@ var joinjelly;
                         _this.getProductListItem(productId).setNormal();
                         _this.unlockUI();
                     }
-                });
+                }, { once: true });
                 Cocoon.Store.initialize({ sandbox: true, managed: true });
                 var products = [];
                 for (var p in productsData)
@@ -2697,6 +2700,13 @@ var joinjelly;
                     this.addChild(bt);
                     this.specialOffer = bt;
                 };
+                FinishMenu.prototype.showGiftLoadingError = function () {
+                    this.hideSpecialOffer();
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.error, "debussy", "", function () { }).set({ x: defaultWidth / 2, y: 2050 });
+                    bt.mouseEnabled = false;
+                    this.addChild(bt);
+                    this.specialOffer = bt;
+                };
                 FinishMenu.prototype.hideSpecialOffer = function () {
                     if (this.specialOffer) {
                         this.removeChild(this.specialOffer);
@@ -3212,8 +3222,8 @@ var joinjelly;
                     joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
                 }
                 joinjelly.JoinJelly.userData.history("firstPlay");
-                console.log("start loading ad");
-                Cocoon.Ad.loadInterstitial();
+                if (Cocoon.Ad.interstitial["loaded"])
+                    Cocoon.Ad.loadInterstitial();
                 console.log("loading ad");
             }
             GamePlayScreen.prototype.createEffects = function () {
@@ -3328,20 +3338,20 @@ var joinjelly;
                     });
                 });
                 this.finishMenu.addEventListener("watch", function () {
-                    var items = [joinjelly.Items.CLEAN, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.FAST, joinjelly.Items.TIME, joinjelly.Items.TIME, joinjelly.Items.REVIVE];
-                    var item = items[Math.floor(Math.random() * items.length)];
-                    joinjelly.JoinJelly.itemData.increaseItemAmmount(item, 1);
-                    _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
                     _this.updateFooter();
                     _this.finishMenu.hideSpecialOffer();
                     console.log("watched");
                     _this.userData.history("watched", Date.now());
-                    gameui.AudiosManager.playSound("Interface Sound-11");
-                    setTimeout(function () {
-                        Cocoon.Ad.showInterstitial();
-                        Cocoon.Ad.interstitial["loaded"] = false;
-                        _this.showSpecialOffer();
-                    }, 1000);
+                    Cocoon.Ad.showInterstitial();
+                    Cocoon.Ad.interstitial["loaded"] = false;
+                    Cocoon.Ad.interstitial.on("hidden", function () {
+                        gameui.AudiosManager.playSound("Interface Sound-11");
+                        var items = [joinjelly.Items.CLEAN, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.FAST, joinjelly.Items.TIME, joinjelly.Items.TIME, joinjelly.Items.REVIVE];
+                        var item = items[Math.floor(Math.random() * items.length)];
+                        joinjelly.JoinJelly.itemData.increaseItemAmmount(item, 1);
+                        _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
+                    }, { once: true });
+                    _this.showSpecialOffer();
                 });
                 this.gameHeader.addEventListener("pause", function () {
                     _this.pauseGame();
@@ -3515,28 +3525,47 @@ var joinjelly;
             };
             GamePlayScreen.prototype.showSpecialOffer = function () {
                 var _this = this;
-                return;
-                var minutes = 30;
+                var minutes = 1;
+                if (this.userData.getHistory("ads_avaliable")) {
+                    if (!this.userData.getHistory("watched") ||
+                        this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
+                        if (Cocoon.Ad.interstitial["loaded"]) {
+                            this.finishMenu.showWhatchVideoButton();
+                        }
+                        else {
+                            Cocoon.Ad.loadInterstitial();
+                            this.finishMenu.showGiftLoading();
+                            var timeOut = 10;
+                            var interval = setInterval(function () {
+                                timeOut--;
+                                console.log("timeout " + timeOut);
+                                if (Cocoon.Ad.interstitial["loaded"]) {
+                                    _this.finishMenu.showWhatchVideoButton();
+                                    clearInterval(interval);
+                                }
+                                if (timeOut <= 0) {
+                                    clearInterval(interval);
+                                    _this.finishMenu.showGiftLoadingError();
+                                }
+                            }, 1000);
+                            return;
+                        }
+                    }
+                    else {
+                        if (!this.showShare())
+                            this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000));
+                    }
+                }
+                else
+                    this.showShare();
+            };
+            GamePlayScreen.prototype.showShare = function () {
                 if (!joinjelly.JoinJelly.userData.getHistory("shared") && joinjelly.JoinJelly.FBSocialService) {
                     this.finishMenu.showShareButton();
                     console.log("share shown");
-                    return;
+                    return true;
                 }
-                if (this.userData.getHistory("ads_avaliable")) {
-                    if (!this.userData.getHistory("watched") || this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
-                        if (Cocoon.Ad.interstitial["loaded"]) {
-                            this.finishMenu.showWhatchVideoButton();
-                            console.log("watch shown");
-                        }
-                        else {
-                            this.finishMenu.showGiftLoading();
-                            setTimeout(function () { _this.showSpecialOffer(); }, 1000);
-                        }
-                        return;
-                    }
-                    else
-                        this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000));
-                }
+                return false;
             };
             GamePlayScreen.prototype.updateCurrentLevel = function () {
                 var newLevel = this.getLevelByMoves(this.matches);
@@ -4443,10 +4472,7 @@ var joinjelly;
                 }
                 else {
                     var loadedGame = _this.userData.loadGame();
-                    if (loadedGame)
-                        JoinJelly.startLevel();
-                    else
-                        JoinJelly.showMainMenu();
+                    JoinJelly.showMainMenu();
                 }
             };
         };
@@ -4465,7 +4491,6 @@ var joinjelly;
             Cocoon.Ad.interstitial.on("ready", function () {
                 Cocoon.Ad.interstitial["loaded"] = true;
                 _this.userData.history("ads_avaliable");
-                alert("AD LOADED");
                 console.log("ads loaded");
             });
         };

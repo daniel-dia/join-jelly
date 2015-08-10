@@ -17,7 +17,7 @@
         export function removeProduct(productI: string);
         export function removePurchase(transactionId: string);
         export function restore();
-        export function on(event: string, callbacks: any);
+        export function on(event: string, callbacks: any,params?:any);
 
         export interface InitializatoinParameters {
             sandbox: boolean;
@@ -317,10 +317,10 @@
         function showInterstitial();
 
         module interstitial {
-            function on(event: string, callback: () => void);
+            function on(event: string, callback: () => void, params?:any);
         }
         module banner {
-            function on(event: string, callback: () => void);
+            function on(event: string, callback: () => void, params?: any);
         }
 
         enum BannerLayout {

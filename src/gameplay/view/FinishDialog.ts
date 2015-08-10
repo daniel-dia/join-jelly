@@ -157,6 +157,14 @@
             this.specialOffer = bt;
         }
 
+        public showGiftLoadingError() {
+            this.hideSpecialOffer();
+            var bt = new gameui.BitmapTextButton(StringResources.menus.error, "debussy", "", () => { }).set({ x: defaultWidth / 2, y: 2050 });
+            bt.mouseEnabled = false;
+            this.addChild(bt)
+            this.specialOffer = bt;
+        }
+
         public hideSpecialOffer() {
             if (this.specialOffer) {
                 this.removeChild(this.specialOffer);
