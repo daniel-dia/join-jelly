@@ -89,11 +89,7 @@ module joinjelly {
             gs.selfPeformanceTest(false);
         }
 
-        public static showTestScreen() {
-              this.gameScreen.switchScreen(new joinjelly.TestScreen());
-        }
-
-
+    
         public static showMainScreen() {
             var transition = { type: "fade", time: 600 };
             if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };

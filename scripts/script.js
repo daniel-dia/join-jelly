@@ -3766,7 +3766,7 @@ var joinjelly;
                 }
                 itemDO.alpha = 0;
                 createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(function () {
-                    _this.content.removeChild(itemDO);
+                    _this.overlay.removeChild(itemDO);
                     _this.updateFooter();
                 });
                 this.overlay.addChild(itemDO);
@@ -4506,9 +4506,6 @@ var joinjelly;
             this.gameScreen.switchScreen(gs);
             gs.selfPeformanceTest(false);
         };
-        JoinJelly.showTestScreen = function () {
-            this.gameScreen.switchScreen(new joinjelly.TestScreen());
-        };
         JoinJelly.showMainScreen = function () {
             var transition = { type: "fade", time: 600 };
             if (this.gameScreen.currentScreen instanceof joinjelly.gameplay.GamePlayScreen)
@@ -4702,24 +4699,6 @@ var joinjelly;
             view.RandomItemSelector = RandomItemSelector;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var TestScreen = (function (_super) {
-        __extends(TestScreen, _super);
-        function TestScreen() {
-            _super.call(this);
-            this.timeStep = 2;
-            this.boardSize = 5;
-            var t = new joinjelly.gameplay.view.RandomItemSelector();
-            this.content.addChild(t);
-            t.x = defaultWidth / 2;
-            t.y = defaultHeight / 2;
-            t.random();
-        }
-        return TestScreen;
-    })(gameui.ScreenState);
-    joinjelly.TestScreen = TestScreen;
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
