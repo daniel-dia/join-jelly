@@ -1066,7 +1066,7 @@ var joinjelly;
                 if (_this.okButtonAction)
                     _this.okButtonAction();
                 else
-                    joinjelly.JoinJelly.showMainMenu();
+                    joinjelly.JoinJelly.showMainScreen();
             };
         }
         ScrollablePage.prototype.addBackground = function (title) {
@@ -1116,7 +1116,7 @@ var joinjelly;
                 if (_this.okButtonAction)
                     _this.okButtonAction();
                 else
-                    joinjelly.JoinJelly.showMainMenu();
+                    joinjelly.JoinJelly.showMainScreen();
             });
             okButton.x = defaultWidth * 3 / 4;
             okButton.y = defaultHeight - 200;
@@ -1736,7 +1736,7 @@ var joinjelly;
                     }, function (accepted) {
                         if (accepted) {
                             joinjelly.JoinJelly.userData.resetAll();
-                            joinjelly.JoinJelly.showMainMenu();
+                            joinjelly.JoinJelly.showMainScreen();
                         }
                         else { }
                     });
@@ -1774,7 +1774,7 @@ var joinjelly;
             logo.y = defaultHeight / 2;
             this.content.addChild(logo);
             var okButton = new gameui.ImageButton("BtOk", function () {
-                joinjelly.JoinJelly.showMainMenu();
+                joinjelly.JoinJelly.showMainScreen();
             });
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
@@ -2602,6 +2602,8 @@ var joinjelly;
                     this.addPoints();
                     this.addLastJelly();
                     this.addButtons();
+                    this.specialOffer = new createjs.Container().set({ x: defaultWidth / 2, y: 2050 });
+                    this.addChild(this.specialOffer);
                 }
                 FinishMenu.prototype.addButtons = function () {
                     var _this = this;
@@ -2662,57 +2664,6 @@ var joinjelly;
                     container.y += 200;
                     return container;
                 };
-                FinishMenu.prototype.showShareButton = function () {
-                    var _this = this;
-                    this.hideSpecialOffer();
-                    var bt = new gameui.BitmapTextButton(StringResources.menus.share, "debussy", "BtTextBgBlue", function () {
-                        _this.dispatchEvent("share");
-                    }).set({ x: defaultWidth / 2, y: 2050 });
-                    bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
-                    bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
-                    this.addChild(bt);
-                    this.specialOffer = bt;
-                };
-                FinishMenu.prototype.showWhatchVideoButton = function () {
-                    var _this = this;
-                    this.hideSpecialOffer();
-                    var bt = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", function () {
-                        _this.dispatchEvent("watch");
-                    });
-                    bt.set({ x: defaultWidth / 2, y: 2050 });
-                    bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
-                    bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
-                    bt.bitmapText.set({ scaleX: 0.9 });
-                    this.addChild(bt);
-                    this.specialOffer = bt;
-                };
-                FinishMenu.prototype.showGiftTimeout = function (minutes) {
-                    this.hideSpecialOffer();
-                    var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", function () { }).set({ x: defaultWidth / 2, y: 2050 });
-                    bt.mouseEnabled = false;
-                    this.addChild(bt);
-                    this.specialOffer = bt;
-                };
-                FinishMenu.prototype.showGiftLoading = function () {
-                    this.hideSpecialOffer();
-                    var bt = new gameui.BitmapTextButton(StringResources.menus.loading, "debussy", "", function () { }).set({ x: defaultWidth / 2, y: 2050 });
-                    bt.mouseEnabled = false;
-                    this.addChild(bt);
-                    this.specialOffer = bt;
-                };
-                FinishMenu.prototype.showGiftLoadingError = function () {
-                    this.hideSpecialOffer();
-                    var bt = new gameui.BitmapTextButton(StringResources.menus.error, "debussy", "", function () { }).set({ x: defaultWidth / 2, y: 2050 });
-                    bt.mouseEnabled = false;
-                    this.addChild(bt);
-                    this.specialOffer = bt;
-                };
-                FinishMenu.prototype.hideSpecialOffer = function () {
-                    if (this.specialOffer) {
-                        this.removeChild(this.specialOffer);
-                        this.specialOffer = null;
-                    }
-                };
                 FinishMenu.prototype.setValues = function (score, highScore, jelly, title) {
                     var _this = this;
                     if (jelly > joinjelly.JoinJelly.maxJelly)
@@ -2732,6 +2683,57 @@ var joinjelly;
                     this.jellyText.text = StringResources.jellies[jelly].name;
                     if (this.jellyText.getBounds())
                         this.jellyText.regX = this.jellyText.getBounds().width / 2;
+                };
+                FinishMenu.prototype.showShareButton = function () {
+                    var _this = this;
+                    this.ClearSpecialOffer();
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.share, "debussy", "BtTextBgBlue", function () {
+                        _this.dispatchEvent("share");
+                    });
+                    bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+                    bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+                    this.specialOffer.addChild(bt);
+                };
+                FinishMenu.prototype.showWhatchVideoButton = function () {
+                    var _this = this;
+                    this.ClearSpecialOffer();
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", function () {
+                        _this.dispatchEvent("watch");
+                    });
+                    bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+                    bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+                    bt.bitmapText.set({ scaleX: 0.9 });
+                    this.specialOffer.addChild(bt);
+                };
+                FinishMenu.prototype.showGiftTimeout = function (minutes) {
+                    this.ClearSpecialOffer();
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", function () { });
+                    bt.mouseEnabled = false;
+                    this.specialOffer.addChild(bt);
+                };
+                FinishMenu.prototype.showGiftLoading = function () {
+                    this.ClearSpecialOffer();
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.loading, "debussy", "", function () { });
+                    bt.mouseEnabled = false;
+                    this.specialOffer.addChild(bt);
+                };
+                FinishMenu.prototype.showGiftLoadingError = function () {
+                    this.ClearSpecialOffer();
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.error, "debussy", "", function () { });
+                    bt.mouseEnabled = false;
+                    this.specialOffer.addChild(bt);
+                };
+                FinishMenu.prototype.ClearSpecialOffer = function () {
+                    this.specialOffer.removeAllChildren();
+                };
+                FinishMenu.prototype.showRandomItem = function (callback) {
+                    this.ClearSpecialOffer();
+                    var randomItem = new view.RandomItemSelector();
+                    this.specialOffer.addChild(randomItem);
+                    randomItem.random();
+                    randomItem.onComplete = function (item) {
+                        callback(item);
+                    };
                 };
                 return FinishMenu;
             })(joinjelly.menus.view.FlyOutMenu);
@@ -3222,9 +3224,10 @@ var joinjelly;
                     joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
                 }
                 joinjelly.JoinJelly.userData.history("firstPlay");
-                if (Cocoon.Ad.interstitial["loaded"])
+                if (Cocoon.Ad.interstitial["loaded"]) {
                     Cocoon.Ad.loadInterstitial();
-                console.log("loading ad");
+                    console.log("loading ad");
+                }
             }
             GamePlayScreen.prototype.createEffects = function () {
                 this.freezeEffect = gameui.AssetsManager.getBitmap("freezeEffect");
@@ -3304,7 +3307,7 @@ var joinjelly;
                     if (_this.userData)
                         _this.userData.deleteSaveGame();
                     joinjelly.JoinJelly.userData.setScore(Math.max(_this.score, joinjelly.JoinJelly.userData.getHighScore()));
-                    joinjelly.JoinJelly.showMainMenu();
+                    joinjelly.JoinJelly.showMainScreen();
                 });
                 this.finishMenu.addEventListener("minimize", function () {
                     _this.finishMenu.hide();
@@ -3327,7 +3330,7 @@ var joinjelly;
                             joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.FAST, 1);
                             joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.TIME, 1);
                             that.updateFooter();
-                            that.finishMenu.hideSpecialOffer();
+                            that.finishMenu.ClearSpecialOffer();
                             console.log("shareded");
                             that.showSpecialOffer();
                             setTimeout(function () {
@@ -3339,19 +3342,21 @@ var joinjelly;
                 });
                 this.finishMenu.addEventListener("watch", function () {
                     _this.updateFooter();
-                    _this.finishMenu.hideSpecialOffer();
+                    _this.finishMenu.ClearSpecialOffer();
                     console.log("watched");
                     _this.userData.history("watched", Date.now());
                     Cocoon.Ad.showInterstitial();
                     Cocoon.Ad.interstitial["loaded"] = false;
                     Cocoon.Ad.interstitial.on("hidden", function () {
-                        gameui.AudiosManager.playSound("Interface Sound-11");
-                        var items = [joinjelly.Items.CLEAN, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.FAST, joinjelly.Items.TIME, joinjelly.Items.TIME, joinjelly.Items.REVIVE];
-                        var item = items[Math.floor(Math.random() * items.length)];
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(item, 1);
-                        _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
+                        _this.finishMenu.showRandomItem(function (item) {
+                            gameui.AudiosManager.playSound("Interface Sound-11");
+                            joinjelly.JoinJelly.itemData.increaseItemAmmount(item, 1);
+                            _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
+                            setTimeout(function () {
+                                _this.showSpecialOffer();
+                            }, 1000);
+                        });
                     }, { once: true });
-                    _this.showSpecialOffer();
                 });
                 this.gameHeader.addEventListener("pause", function () {
                     _this.pauseGame();
@@ -3373,7 +3378,7 @@ var joinjelly;
                     joinjelly.JoinJelly.userData.setScore(Math.max(_this.score, joinjelly.JoinJelly.userData.getHighScore()));
                     if (_this.userData)
                         _this.userData.deleteSaveGame();
-                    setTimeout(function () { joinjelly.JoinJelly.showMainMenu(); }, 200);
+                    setTimeout(function () { joinjelly.JoinJelly.showMainScreen(); }, 200);
                 });
                 this.gameHeader.addEventListener("restart", function () {
                     _this.pauseMenuOverlay.hide();
@@ -3525,7 +3530,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.showSpecialOffer = function () {
                 var _this = this;
-                var minutes = 1;
+                var minutes = 30;
                 if (this.userData.getHistory("ads_avaliable")) {
                     if (!this.userData.getHistory("watched") ||
                         this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
@@ -3535,7 +3540,7 @@ var joinjelly;
                         else {
                             Cocoon.Ad.loadInterstitial();
                             this.finishMenu.showGiftLoading();
-                            var timeOut = 10;
+                            var timeOut = 20;
                             var interval = setInterval(function () {
                                 timeOut--;
                                 console.log("timeout " + timeOut);
@@ -4466,13 +4471,14 @@ var joinjelly;
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             loadingScreen.loaded = function () {
+                //JoinJelly.showTestScreen();return;
                 _this.initializeAds();
                 if (window.location.search == "?test") {
                     _this.startTest();
                 }
                 else {
                     var loadedGame = _this.userData.loadGame();
-                    JoinJelly.showMainMenu();
+                    JoinJelly.showMainScreen();
                 }
             };
         };
@@ -4493,13 +4499,17 @@ var joinjelly;
                 _this.userData.history("ads_avaliable");
                 console.log("ads loaded");
             });
+            Cocoon.Ad.loadInterstitial();
         };
         JoinJelly.startTest = function () {
             var gs = new joinjelly.gameplay.GamePlayScreen(this.userData);
             this.gameScreen.switchScreen(gs);
             gs.selfPeformanceTest(false);
         };
-        JoinJelly.showMainMenu = function () {
+        JoinJelly.showTestScreen = function () {
+            this.gameScreen.switchScreen(new joinjelly.TestScreen());
+        };
+        JoinJelly.showMainScreen = function () {
             var transition = { type: "fade", time: 600 };
             if (this.gameScreen.currentScreen instanceof joinjelly.gameplay.GamePlayScreen)
                 transition = { type: "top", time: 500 };
@@ -4623,6 +4633,94 @@ var joinjelly;
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 //module gameui {
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var RandomItemSelector = (function (_super) {
+                __extends(RandomItemSelector, _super);
+                function RandomItemSelector() {
+                    _super.call(this);
+                    this.speedFactor = 30;
+                    this.distance = 230;
+                    this.totalDistante = 500;
+                    this.itemsDO = [];
+                    this.addChild(gameui.AssetsManager.getBitmap("FlyGroup").set({ regX: 1056 / 2, regY: 250 / 2 }));
+                    var items = [joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.TIME, joinjelly.Items.REVIVE];
+                    for (var i in items) {
+                        var ido = gameui.AssetsManager.getBitmap("item" + items[i]).set({ x: this.distance * i, regX: 150, regY: 150, name: items[i], scaleX: 0.7, scaleY: 0.7 });
+                        this.itemsDO.push(ido);
+                        this.addChild(ido);
+                    }
+                }
+                RandomItemSelector.prototype.random = function () {
+                    var _this = this;
+                    var total = this.itemsDO.length;
+                    this.listener = function () { _this.tick(); };
+                    createjs.Ticker.addEventListener("tick", this.listener);
+                    this.timeStart = Date.now();
+                    this.currentSpeed = (Math.random() + 0.5) * this.speedFactor;
+                };
+                RandomItemSelector.prototype.tick = function () {
+                    var diff = Date.now() - this.timeStart;
+                    for (var i in this.itemsDO) {
+                        var item = this.itemsDO[i];
+                        item.x -= this.currentSpeed;
+                        item.scaleX = item.scaleY = (this.totalDistante - Math.abs(item.x)) / this.totalDistante * 1.2;
+                        if (item.x < -this.totalDistante)
+                            item.x += this.totalDistante * 2;
+                        if (item.x < 0 && item.x + this.currentSpeed > 0)
+                            gameui.AudiosManager.playSound("Interface Sound-12");
+                    }
+                    this.currentSpeed -= 0.1;
+                    if (this.currentSpeed < 0)
+                        this.end();
+                };
+                RandomItemSelector.prototype.end = function () {
+                    var _this = this;
+                    createjs.Ticker.removeEventListener("tick", this.listener);
+                    var closerObj;
+                    for (var i in this.itemsDO)
+                        if (!closerObj || Math.abs(this.itemsDO[i].x) < Math.abs(closerObj.x))
+                            closerObj = this.itemsDO[i];
+                    for (var i in this.itemsDO) {
+                        if (this.itemsDO[i] == closerObj)
+                            createjs.Tween.get(this.itemsDO[i]).to({ x: 0, scaleX: 1.2, scaleY: 1.2, alpha: 1 }, 400, createjs.Ease.quadInOut);
+                        else
+                            createjs.Tween.get(this.itemsDO[i]).to({ scaleX: 0, scaleY: 0, alpha: 0 }, 400, createjs.Ease.quadInOut);
+                    }
+                    setTimeout(function () {
+                        _this.fadeOut();
+                        if (_this.onComplete)
+                            _this.onComplete(closerObj.name);
+                    }, 500);
+                };
+                return RandomItemSelector;
+            })(gameui.UIItem);
+            view.RandomItemSelector = RandomItemSelector;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var TestScreen = (function (_super) {
+        __extends(TestScreen, _super);
+        function TestScreen() {
+            _super.call(this);
+            this.timeStep = 2;
+            this.boardSize = 5;
+            var t = new joinjelly.gameplay.view.RandomItemSelector();
+            this.content.addChild(t);
+            t.x = defaultWidth / 2;
+            t.y = defaultHeight / 2;
+            t.random();
+        }
+        return TestScreen;
+    })(gameui.ScreenState);
+    joinjelly.TestScreen = TestScreen;
+})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var menus;

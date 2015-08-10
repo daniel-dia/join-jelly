@@ -64,9 +64,10 @@ module joinjelly.gameplay {
 
             JoinJelly.userData.history("firstPlay")
 
-            if (Cocoon.Ad.interstitial["loaded"])
-            Cocoon.Ad.loadInterstitial();
-            console.log("loading ad");
+            if (Cocoon.Ad.interstitial["loaded"]) {
+                Cocoon.Ad.loadInterstitial();
+                console.log("loading ad");
+            }
              
 
         }
@@ -186,7 +187,7 @@ module joinjelly.gameplay {
                 if (this.userData) this.userData.deleteSaveGame();
                 // save high score
                 JoinJelly.userData.setScore(Math.max(this.score, JoinJelly.userData.getHighScore()));
-                JoinJelly.showMainMenu();
+                JoinJelly.showMainScreen();
 
             });
 
@@ -219,7 +220,7 @@ module joinjelly.gameplay {
                         JoinJelly.itemData.increaseItemAmmount(Items.FAST, 1);
                         JoinJelly.itemData.increaseItemAmmount(Items.TIME, 1);
                         that.updateFooter();
-                        that.finishMenu.hideSpecialOffer();
+                        that.finishMenu.ClearSpecialOffer();
                         console.log("shareded");
                         that.showSpecialOffer() 
 
@@ -240,7 +241,7 @@ module joinjelly.gameplay {
 
                 // update interface
                 this.updateFooter();
-                this.finishMenu.hideSpecialOffer();
+                this.finishMenu.ClearSpecialOffer();
                 console.log("watched");
                 this.userData.history("watched", Date.now());
                 
@@ -248,21 +249,21 @@ module joinjelly.gameplay {
                 Cocoon.Ad.interstitial["loaded"] = false;
                 Cocoon.Ad.interstitial.on("hidden", () => {
 
-                    // give random item to player
-                    gameui.AudiosManager.playSound("Interface Sound-11");
-                    // select a random item
-                    var items = [Items.CLEAN, Items.CLEAN, Items.FAST, Items.FAST, Items.TIME, Items.TIME, Items.REVIVE]
-                    var item = items[Math.floor(Math.random() * items.length)];
-                
-                    // increase item ammout
-                    JoinJelly.itemData.increaseItemAmmount(item, 1);
+                    this.finishMenu.showRandomItem((item) => {
+                        gameui.AudiosManager.playSound("Interface Sound-11");
+                        JoinJelly.itemData.increaseItemAmmount(item, 1);
+                        // shows which item the user has won
+                        this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
 
-                    // shows which item the user has won
-                    this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
-
+                        setTimeout(() => {
+                            this.showSpecialOffer();
+                        }
+                        ,1000);
+                    })
+                    
                 },{once: true });
 
-                this.showSpecialOffer();                
+                        
             })
 
             this.gameHeader.addEventListener("pause", () => {
@@ -289,7 +290,7 @@ module joinjelly.gameplay {
                 this.pauseMenuOverlay.hide();
                 JoinJelly.userData.setScore(Math.max(this.score, JoinJelly.userData.getHighScore()));
                 if (this.userData) this.userData.deleteSaveGame();
-                setTimeout(() => { joinjelly.JoinJelly.showMainMenu(); }, 200);
+                setTimeout(() => { joinjelly.JoinJelly.showMainScreen(); }, 200);
             });
 
             this.gameHeader.addEventListener("restart", () => {
@@ -548,8 +549,7 @@ module joinjelly.gameplay {
         // show special offer in the finish menu.
         private showSpecialOffer() { 
 
-            var minutes = 1;
-
+            var minutes = 30;
 
             // if ads already been loaded any time
             if (this.userData.getHistory("ads_avaliable")) {
@@ -569,7 +569,7 @@ module joinjelly.gameplay {
 
                         // show loading
                         this.finishMenu.showGiftLoading();
-                        var timeOut = 10;
+                        var timeOut = 20;
 
                         var interval = setInterval(() => {
                             timeOut--;

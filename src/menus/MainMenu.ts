@@ -36,7 +36,7 @@
                 }, function (accepted) {
                         if (accepted) {
                             JoinJelly.userData.resetAll();
-                            JoinJelly.showMainMenu()
+                            JoinJelly.showMainScreen()
                         } else { }
                     });
             });

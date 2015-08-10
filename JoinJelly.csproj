@@ -596,6 +596,7 @@
     <TypeScriptCompile Include="gameui\WpAudioManager.ts" />
     <TypeScriptCompile Include="gameui\AudioManager.ts" />
     <TypeScriptCompile Include="src\gameplay\view\RandomItemSelector.ts" />
+    <TypeScriptCompile Include="src\menus\TestScreen.ts" />
     <TypeScriptCompile Include="src\menus\view\RatingMenu.ts" />
     <TypeScriptCompile Include="src\GameServices.ts" />
     <TypeScriptCompile Include="src\gameplay\view\CountDown.ts" />

@@ -35,7 +35,7 @@
             // add ok button
             var okButton = new gameui.ImageButton("BtOk", () => {
 
-                joinjelly.JoinJelly.showMainMenu()
+                joinjelly.JoinJelly.showMainScreen()
             });
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;

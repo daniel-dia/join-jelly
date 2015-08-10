@@ -44,13 +44,16 @@ module joinjelly {
 
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
+
+                //JoinJelly.showTestScreen();return;
+
                 this.initializeAds();
 
                 if (window.location.search == "?test") {
                     this.startTest();
                 } else {
                     var loadedGame = this.userData.loadGame();
-                        JoinJelly.showMainMenu();
+                        JoinJelly.showMainScreen();
                 }
             }
         }
@@ -76,6 +79,8 @@ module joinjelly {
                 this.userData.history("ads_avaliable");
                 console.log("ads loaded");
             })
+
+            Cocoon.Ad.loadInterstitial();
         }
 
         public static startTest() {
@@ -84,7 +89,12 @@ module joinjelly {
             gs.selfPeformanceTest(false);
         }
 
-        public static showMainMenu() {
+        public static showTestScreen() {
+              this.gameScreen.switchScreen(new joinjelly.TestScreen());
+        }
+
+
+        public static showMainScreen() {
             var transition = { type: "fade", time: 600 };
             if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };
             if (this.gameScreen.currentScreen instanceof Jellypedia) transition = { type: "right", time: 500 };

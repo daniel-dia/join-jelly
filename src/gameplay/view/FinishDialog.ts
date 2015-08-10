@@ -6,7 +6,7 @@
         private jelly: view.Jelly;
         private scoreText: createjs.BitmapText;
         private highScoreText: createjs.BitmapText;
-        private specialOffer: createjs.DisplayObject;
+        private specialOffer: createjs.Container; 
 
         constructor() {
             super(StringResources.menus.gameOver, 1250);
@@ -15,6 +15,8 @@
             this.addLastJelly();
             this.addButtons();
 
+            this.specialOffer = new createjs.Container().set({ x: defaultWidth / 2, y: 2050 });
+            this.addChild(this.specialOffer);
         }
 
         // creates buttons controls
@@ -26,13 +28,6 @@
             }));
             close.set({ x: 1350, y: 660 });
             this.addChild(close);
-
-            ////add showBoard button
-            //var share = new gameui.ImageButton("BtShare", (() => {
-            //    this.dispatchEvent("share")
-            //}));
-            //share.set({ x: 1240, y: 1020 });
-            //this.addChild(share);
 
             //add home button;
             var home = new gameui.ImageButton("BtMenu", (() => {
@@ -116,62 +111,6 @@
             return container;
         }
 
-        public showShareButton() {
-            this.hideSpecialOffer();
-            var bt = new gameui.BitmapTextButton(StringResources.menus.share, "debussy", "BtTextBgBlue", () => {
-                this.dispatchEvent("share");
-            }).set({ x: defaultWidth / 2, y: 2050 });
-            bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
-            bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
-            this.addChild(bt);
-            this.specialOffer = bt;
-        }
-
-
-        public showWhatchVideoButton() {
-            this.hideSpecialOffer();
-            var bt: gameui.BitmapTextButton = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", () => {
-                this.dispatchEvent("watch");
-            });
-            bt.set({ x: defaultWidth / 2, y: 2050 });
-            bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
-            bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
-            bt.bitmapText.set({ scaleX: 0.9 })
-            this.addChild(bt)
-            this.specialOffer = bt;
-        }
-
-        public showGiftTimeout(minutes: number) {
-            this.hideSpecialOffer();
-            var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", () => { }).set({ x: defaultWidth / 2, y: 2050 });
-            bt.mouseEnabled = false;
-            this.addChild(bt)
-            this.specialOffer = bt;
-        }
-
-        public showGiftLoading() {
-            this.hideSpecialOffer();
-            var bt = new gameui.BitmapTextButton(StringResources.menus.loading, "debussy", "", () => { }).set({ x: defaultWidth / 2, y: 2050 });
-            bt.mouseEnabled = false;
-            this.addChild(bt)
-            this.specialOffer = bt;
-        }
-
-        public showGiftLoadingError() {
-            this.hideSpecialOffer();
-            var bt = new gameui.BitmapTextButton(StringResources.menus.error, "debussy", "", () => { }).set({ x: defaultWidth / 2, y: 2050 });
-            bt.mouseEnabled = false;
-            this.addChild(bt)
-            this.specialOffer = bt;
-        }
-
-        public hideSpecialOffer() {
-            if (this.specialOffer) {
-                this.removeChild(this.specialOffer);
-                this.specialOffer = null
-            }
-        }
-
         // set values
         public setValues(score: number, highScore: number, jelly?: number, title?: string) {
             if (jelly > JoinJelly.maxJelly) jelly = JoinJelly.maxJelly;
@@ -197,5 +136,67 @@
                 this.jellyText.regX = this.jellyText.getBounds().width / 2;
 
         }
+
+        // #region  Special Offer
+
+
+        public showShareButton() {
+            this.ClearSpecialOffer();
+            var bt = new gameui.BitmapTextButton(StringResources.menus.share, "debussy", "BtTextBgBlue", () => {
+                this.dispatchEvent("share");
+            });
+            bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+            bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+            this.specialOffer.addChild(bt);
+
+        }
+
+        public showWhatchVideoButton() {
+            this.ClearSpecialOffer();
+            var bt: gameui.BitmapTextButton = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", () => {
+                this.dispatchEvent("watch");
+            }); 
+            bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+            bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+            bt.bitmapText.set({ scaleX: 0.9 })
+            this.specialOffer.addChild(bt);
+        }
+
+        public showGiftTimeout(minutes: number) {
+            this.ClearSpecialOffer();
+            var bt = new gameui.BitmapTextButton(StringResources.menus.gift.replace("@", minutes.toString()), "debussy", "", () => { });
+            bt.mouseEnabled = false;
+            this.specialOffer.addChild(bt);
+        }
+
+        public showGiftLoading() {
+            this.ClearSpecialOffer();
+            var bt = new gameui.BitmapTextButton(StringResources.menus.loading, "debussy", "", () => { });
+            bt.mouseEnabled = false;
+            this.specialOffer.addChild(bt);
+        }
+
+        public showGiftLoadingError() {
+            this.ClearSpecialOffer();
+            var bt = new gameui.BitmapTextButton(StringResources.menus.error, "debussy", "", () => { });
+            bt.mouseEnabled = false;
+            this.specialOffer.addChild(bt);
+        }
+
+        public ClearSpecialOffer() {
+            this.specialOffer.removeAllChildren();
+        }
+
+        public showRandomItem(callback:(item:string)=>void) {
+            this.ClearSpecialOffer();
+            var randomItem = new RandomItemSelector();
+            this.specialOffer.addChild(randomItem);
+            randomItem.random();
+            randomItem.onComplete = (item) => {
+                callback(item);
+            }
+        }
+
+        // #endregion
     }
 }

@@ -16,7 +16,7 @@
                 if (this.okButtonAction)
                     this.okButtonAction();
                 else
-                    joinjelly.JoinJelly.showMainMenu()
+                    joinjelly.JoinJelly.showMainScreen()
             }
         }
 
@@ -75,7 +75,7 @@
             var okButton = new gameui.ImageButton("BtOk", () => {
                 if (this.okButtonAction) this.okButtonAction();
                 else
-                    joinjelly.JoinJelly.showMainMenu()
+                    joinjelly.JoinJelly.showMainScreen()
             });
             okButton.x = defaultWidth * 3 / 4;
             okButton.y = defaultHeight - 200;
