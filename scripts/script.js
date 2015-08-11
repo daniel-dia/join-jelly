@@ -1779,7 +1779,7 @@ var joinjelly;
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
-            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.343", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
+            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.345", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
         }
         return About;
     })(gameui.ScreenState);
@@ -3326,11 +3326,11 @@ var joinjelly;
                         if (error)
                             sucess = false;
                         if (sucess) {
-                            this.userData.history("shared");
-                            this.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 1);
-                            this.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 1);
-                            this.itemData.increaseItemAmmount(joinjelly.Items.FAST, 1);
-                            this.itemData.increaseItemAmmount(joinjelly.Items.TIME, 1);
+                            that.userData.history("shared");
+                            that.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 1);
+                            that.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 1);
+                            that.itemData.increaseItemAmmount(joinjelly.Items.FAST, 1);
+                            that.itemData.increaseItemAmmount(joinjelly.Items.TIME, 1);
                             that.updateFooter();
                             that.finishMenu.ClearSpecialOffer();
                             console.log("shareded");

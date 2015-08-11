@@ -214,11 +214,11 @@ module joinjelly.gameplay {
                     console.log(JSON.stringify(error));
                     if (error) sucess = false;
                     if (sucess) {
-                        this.userData.history("shared");
-                        this.itemData.increaseItemAmmount(Items.REVIVE, 1);
-                        this.itemData.increaseItemAmmount(Items.CLEAN, 1);
-                        this.itemData.increaseItemAmmount(Items.FAST, 1);
-                        this.itemData.increaseItemAmmount(Items.TIME, 1);
+                        that.userData.history("shared");
+                        that.itemData.increaseItemAmmount(Items.REVIVE, 1);
+                        that.itemData.increaseItemAmmount(Items.CLEAN, 1);
+                        that.itemData.increaseItemAmmount(Items.FAST, 1);
+                        that.itemData.increaseItemAmmount(Items.TIME, 1);
                         that.updateFooter();
                         that.finishMenu.ClearSpecialOffer();
                         console.log("shareded");

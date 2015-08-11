@@ -42,7 +42,7 @@
             this.content.addChild(okButton);
 
             // add version
-            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.344","debussy").set({x:30,y:-100,scaleX:0.7,scaleY:0.7}))
+            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.345","debussy").set({x:30,y:-100,scaleX:0.7,scaleY:0.7}))
         }
     }
 }
