@@ -3226,7 +3226,7 @@ var joinjelly;
                     this.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
                     this.userData.history("firstPlay");
                 }
-                if (Cocoon.Ad.interstitial["loaded"]) {
+                if (!Cocoon.Ad.interstitial["loaded"]) {
                     Cocoon.Ad.loadInterstitial();
                     console.log("loading ad");
                 }
@@ -3560,6 +3560,7 @@ var joinjelly;
                         }
                     }
                     else {
+                        console.log("timeout or share");
                         if (!this.showShare()) {
                             var minutes = Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000);
                             this.finishMenu.showGiftTimeout(minutes);
@@ -4504,6 +4505,7 @@ var joinjelly;
                 _this.userData.history("ads_avaliable");
                 console.log("ads loaded");
             });
+            console.log("ads initialized");
             Cocoon.Ad.loadInterstitial();
         };
         JoinJelly.startTest = function () {

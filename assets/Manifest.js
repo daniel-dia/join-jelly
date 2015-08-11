@@ -74,7 +74,6 @@
        { id: "j512", src: "j512.png" },
        { id: "j64", src: "j64.png" },
        { id: "j8", src: "j8.png" },
-       { id: "time_border", src: "time_border.png" },
        { id: "shadow", src: "shadow.png" },
        { id: "particle", src: "Particle.png" },
 

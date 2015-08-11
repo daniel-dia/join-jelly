@@ -71,7 +71,7 @@ module joinjelly {
         }
 
         public static initializeAds() {
-
+            
             Cocoon.Ad.interstitial.on("ready", () => {
                 // tells that a ads s loaded
                 Cocoon.Ad.interstitial["loaded"] = true;
@@ -80,6 +80,7 @@ module joinjelly {
                 console.log("ads loaded");
             })
 
+            console.log("ads initialized");
             Cocoon.Ad.loadInterstitial();
         }
 

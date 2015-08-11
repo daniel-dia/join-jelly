@@ -66,7 +66,7 @@ module joinjelly.gameplay {
                 this.userData.history("firstPlay")
             }           
 
-            if (Cocoon.Ad.interstitial["loaded"]) {
+            if (!Cocoon.Ad.interstitial["loaded"]) {
                 Cocoon.Ad.loadInterstitial();
                 console.log("loading ad");
             }
@@ -592,6 +592,7 @@ module joinjelly.gameplay {
 
                 // or else it is not on time yet
                 else {
+                    console.log("timeout or share");
                     // if it is not on time, thwn show share
                     if (!this.showShare()) {
                         //if there is no share. show timeout countdow
