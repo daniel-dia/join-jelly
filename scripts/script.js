@@ -1779,6 +1779,7 @@ var joinjelly;
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
+            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.343", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
         }
         return About;
     })(gameui.ScreenState);

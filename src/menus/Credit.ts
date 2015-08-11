@@ -40,6 +40,9 @@
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
+
+            // add version
+            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.344","debussy").set({x:30,y:-100,scaleX:0.7,scaleY:0.7}))
         }
     }
 }
