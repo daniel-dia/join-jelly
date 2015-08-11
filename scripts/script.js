@@ -3557,8 +3557,11 @@ var joinjelly;
                         }
                     }
                     else {
-                        if (!this.showShare())
-                            this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000));
+                        if (!this.showShare()) {
+                            var minutes = Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000);
+                            this.finishMenu.showGiftTimeout(minutes);
+                            setTimeout(function () { _this.showSpecialOffer(); }, 60000);
+                        }
                     }
                 }
                 else

@@ -593,9 +593,12 @@ module joinjelly.gameplay {
                 // or else it is not on time yet
                 else {
                     // if it is not on time, thwn show share
-                    if (!this.showShare())
+                    if (!this.showShare()) {
                         //if there is no share. show timeout countdow
-                        this.finishMenu.showGiftTimeout(Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000))
+                        var minutes = Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000);
+                        this.finishMenu.showGiftTimeout(minutes)
+                        setTimeout(() => { this.showSpecialOffer(); }, 60000);
+                    }
                 }// ads avaliable
 
             // simply show share, if there is no ads avaliable

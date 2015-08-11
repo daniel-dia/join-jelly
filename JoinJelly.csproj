@@ -573,17 +573,6 @@
     <Content Include="scripts_tools\MobileServices.Web-1.2.5.min.js" />
     <Content Include="scripts\movieclip-0.8.1.min.js" />
     <Content Include="scripts\Plataform.js" />
-    <Content Include="scripts\templates\achievements.html" />
-    <Content Include="scripts\templates\assets\css\main.css" />
-    <Content Include="scripts\templates\assets\css\page_achivements.css" />
-    <Content Include="scripts\templates\assets\css\page_leaderboards.css" />
-    <Content Include="scripts\templates\assets\css\style.css" />
-    <Content Include="scripts\templates\assets\images\achivement_locked.png" />
-    <Content Include="scripts\templates\assets\images\close.png" />
-    <Content Include="scripts\templates\assets\images\loading.gif" />
-    <Content Include="scripts\templates\assets\js\jquery-1.8.3.min.js" />
-    <Content Include="scripts\templates\assets\js\jquery.equalheights.js" />
-    <Content Include="scripts\templates\leaderboards.html" />
     <Content Include="teste2.html" />
     <Content Include="Vídeo_geleias.html" />
     <Content Include="Vídeo_Titulo.html" />
