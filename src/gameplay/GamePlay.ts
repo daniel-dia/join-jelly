@@ -13,6 +13,7 @@ module joinjelly.gameplay {
         private score: number;
         private matches: number = 0;
         private userData: UserData;
+        private itemData: ItemsData;
 
         // interface
         protected board: Board;
@@ -33,10 +34,11 @@ module joinjelly.gameplay {
  
         // #region =================================== initialization ================================================
 
-        constructor(userData: UserData) {
+        constructor(userData: UserData, itemData: ItemsData) {
             super();
 
             this.userData = userData;
+            this.itemData = itemData;
 
             // set score to zero
             this.score = 0;
@@ -53,23 +55,21 @@ module joinjelly.gameplay {
             // try to load a saved Game
             this.loadGame();
 
+            
             //if is first time then give some items.
-            if (!JoinJelly.userData.getHistory("firstPlay")) {
-                JoinJelly.itemData.setItemAmmount(Items.REVIVE, 1)
-                JoinJelly.itemData.setItemAmmount(Items.TIME, 2)
-                JoinJelly.itemData.setItemAmmount(Items.FAST, 2)
-                JoinJelly.itemData.setItemAmmount(Items.CLEAN, 2)
-                JoinJelly.itemData.setItemAmmount(Items.LUCKY, 0)
-            }
-
-            JoinJelly.userData.history("firstPlay")
+            if (this.userData &&!this.userData.getHistory("firstPlay")) {
+                this.itemData.setItemAmmount(Items.REVIVE, 1)
+                this.itemData.setItemAmmount(Items.TIME, 2)
+                this.itemData.setItemAmmount(Items.FAST, 2)
+                this.itemData.setItemAmmount(Items.CLEAN, 2)
+                this.itemData.setItemAmmount(Items.LUCKY, 0)
+                this.userData.history("firstPlay")
+            }           
 
             if (Cocoon.Ad.interstitial["loaded"]) {
                 Cocoon.Ad.loadInterstitial();
                 console.log("loading ad");
             }
-             
-
         }
 
         // create game effects
@@ -186,7 +186,7 @@ module joinjelly.gameplay {
             this.finishMenu.addEventListener("home", () => {
                 if (this.userData) this.userData.deleteSaveGame();
                 // save high score
-                JoinJelly.userData.setScore(Math.max(this.score, JoinJelly.userData.getHighScore()));
+                this.userData.setScore(Math.max(this.score, this.userData.getHighScore()));
                 JoinJelly.showMainScreen();
 
             });
@@ -214,11 +214,11 @@ module joinjelly.gameplay {
                     console.log(JSON.stringify(error));
                     if (error) sucess = false;
                     if (sucess) {
-                        JoinJelly.userData.history("shared");
-                        JoinJelly.itemData.increaseItemAmmount(Items.REVIVE, 1);
-                        JoinJelly.itemData.increaseItemAmmount(Items.CLEAN, 1);
-                        JoinJelly.itemData.increaseItemAmmount(Items.FAST, 1);
-                        JoinJelly.itemData.increaseItemAmmount(Items.TIME, 1);
+                        this.userData.history("shared");
+                        this.itemData.increaseItemAmmount(Items.REVIVE, 1);
+                        this.itemData.increaseItemAmmount(Items.CLEAN, 1);
+                        this.itemData.increaseItemAmmount(Items.FAST, 1);
+                        this.itemData.increaseItemAmmount(Items.TIME, 1);
                         that.updateFooter();
                         that.finishMenu.ClearSpecialOffer();
                         console.log("shareded");
@@ -251,7 +251,7 @@ module joinjelly.gameplay {
 
                     this.finishMenu.showRandomItem((item) => {
                         gameui.AudiosManager.playSound("Interface Sound-11");
-                        JoinJelly.itemData.increaseItemAmmount(item, 1);
+                        this.itemData.increaseItemAmmount(item, 1);
                         // shows which item the user has won
                         this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
 
@@ -288,7 +288,7 @@ module joinjelly.gameplay {
 
             this.pauseMenuOverlay.addEventListener("home", () => {
                 this.pauseMenuOverlay.hide();
-                JoinJelly.userData.setScore(Math.max(this.score, JoinJelly.userData.getHighScore()));
+                this.userData.setScore(Math.max(this.score, this.userData.getHighScore()));
                 if (this.userData) this.userData.deleteSaveGame();
                 setTimeout(() => { joinjelly.JoinJelly.showMainScreen(); }, 200);
             });
@@ -397,7 +397,7 @@ module joinjelly.gameplay {
             JoinJelly.analytics.logGameStart();
 
             // set one more time played
-            JoinJelly.userData.addOneMorePlay();
+            if (this.userData)this.userData.addOneMorePlay();
 
             // set first achievement (jelly 1)
             this.highJellySave(1);
@@ -483,7 +483,7 @@ module joinjelly.gameplay {
             this.gamestate = GameState.standBy;
 
             var score = this.score;
-            var highScore = JoinJelly.userData.getHighScore();
+            var highScore = this.userData.getHighScore();
             var highJelly = this.board.getHighestTileValue();
 
             // disable mouse interaction
@@ -524,14 +524,14 @@ module joinjelly.gameplay {
                 createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
 
                 // save high score
-                JoinJelly.userData.setScore(Math.max(score, JoinJelly.userData.getHighScore()));
+                this.userData.setScore(Math.max(score, this.userData.getHighScore()));
 				
                 // submit score to Game Services
                 JoinJelly.gameServices.submitScore(score);
 
 
             }, 1200);
-            this.finishMenu.setValues(score, JoinJelly.userData.getHighScore(), highJelly, message);
+            this.finishMenu.setValues(score, this.userData.getHighScore(), highJelly, message);
 
             // log event
             if (win)
@@ -609,7 +609,7 @@ module joinjelly.gameplay {
 
         private showShare() {
             // if user does not share yet.
-            if (!JoinJelly.userData.getHistory("shared") && JoinJelly.FBSocialService) {
+            if (!this.userData.getHistory("shared") && JoinJelly.FBSocialService) {
                 this.finishMenu.showShareButton();
                 console.log("share shown");
                 return true;
@@ -870,7 +870,7 @@ module joinjelly.gameplay {
         protected giveItemChance(items: Array<string>): string {
 
             var item = null;
-            var lucky = JoinJelly.itemData.getItemAmmount(Items.LUCKY) ? 2 : 1;
+            var lucky = this.itemData.getItemAmmount(Items.LUCKY) ? 2 : 1;
 
             // calculate random change to win a item
             var goodChance: boolean = (Math.random() < itemProbability * lucky);
@@ -880,7 +880,7 @@ module joinjelly.gameplay {
                 item = items[Math.floor(Math.random() * items.length)];
 
                 // give item to user (user data)
-                JoinJelly.itemData.increaseItemAmmount(item);
+                this.itemData.increaseItemAmmount(item);
 
             }
             return item;
@@ -946,7 +946,7 @@ module joinjelly.gameplay {
         // #region =================================== Items =========================================================
 
         protected useItem(item: string) {
-            if (JoinJelly.itemData.getItemAmmount(item) > 0) {
+            if (this.itemData.getItemAmmount(item) > 0) {
 
                 var sucess: boolean = false;
 
@@ -970,7 +970,7 @@ module joinjelly.gameplay {
 
                 if (sucess) {
                     // decrease item quantity
-                    JoinJelly.itemData.decreaseItemAmmount(item);
+                    this.itemData.decreaseItemAmmount(item);
                     //notify utem used
                     if (this.itemNotify) this.itemNotify();
 
@@ -1221,7 +1221,7 @@ module joinjelly.gameplay {
         protected updateFooter() {
             var items = ItemsData.items;
             for (var i in items)
-                this.gameFooter.setItemAmmount(items[i], JoinJelly.itemData.getItemAmmount(items[i]));
+                this.gameFooter.setItemAmmount(items[i], this.itemData.getItemAmmount(items[i]));
         }
 
         // #endregion

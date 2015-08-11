@@ -84,7 +84,7 @@ module joinjelly {
         }
 
         public static startTest() {
-            var gs = new gameplay.GamePlayScreen(this.userData);
+            var gs = new gameplay.GamePlayScreen(this.userData, this.itemData);
             this.gameScreen.switchScreen(gs);
             gs.selfPeformanceTest(false);
         }
@@ -103,11 +103,11 @@ module joinjelly {
             var transition;
             if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "bottom", time: 500 };
             else transition = { type: "fade", time: 600 };
-            this.gameScreen.switchScreen(new gameplay.GamePlayScreen(this.userData), null, transition);
+            this.gameScreen.switchScreen(new gameplay.GamePlayScreen(this.userData, this.itemData), null, transition);
         }
 
         public static startLevelDirectaly() {
-            this.gameScreen.switchScreen(new gameplay.GamePlayScreen(this.userData));
+            this.gameScreen.switchScreen(new gameplay.GamePlayScreen(this.userData, this.itemData));
         }
 
         public static startTutorial() {

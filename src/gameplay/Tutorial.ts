@@ -28,7 +28,7 @@
         private messageNotify: () => void;
 
         constructor() {
-            super(null);
+            super(null,null);
 
         }
 
@@ -299,8 +299,6 @@
             }
 
             if (sucess) {
-                // decrease item quantity
-                JoinJelly.itemData.decreaseItemAmmount(item);
                 //notify utem used
                 if (this.itemNotify) this.itemNotify();
 

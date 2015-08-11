@@ -3205,10 +3205,11 @@ var joinjelly;
     (function (gameplay) {
         var GamePlayScreen = (function (_super) {
             __extends(GamePlayScreen, _super);
-            function GamePlayScreen(userData) {
+            function GamePlayScreen(userData, itemData) {
                 _super.call(this);
                 this.matches = 0;
                 this.userData = userData;
+                this.itemData = itemData;
                 this.score = 0;
                 this.createBackground();
                 this.createBoard();
@@ -3216,14 +3217,14 @@ var joinjelly;
                 this.createEffects();
                 this.start();
                 this.loadGame();
-                if (!joinjelly.JoinJelly.userData.getHistory("firstPlay")) {
-                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.REVIVE, 1);
-                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.TIME, 2);
-                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.FAST, 2);
-                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.CLEAN, 2);
-                    joinjelly.JoinJelly.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
+                if (this.userData && !this.userData.getHistory("firstPlay")) {
+                    this.itemData.setItemAmmount(joinjelly.Items.REVIVE, 1);
+                    this.itemData.setItemAmmount(joinjelly.Items.TIME, 2);
+                    this.itemData.setItemAmmount(joinjelly.Items.FAST, 2);
+                    this.itemData.setItemAmmount(joinjelly.Items.CLEAN, 2);
+                    this.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
+                    this.userData.history("firstPlay");
                 }
-                joinjelly.JoinJelly.userData.history("firstPlay");
                 if (Cocoon.Ad.interstitial["loaded"]) {
                     Cocoon.Ad.loadInterstitial();
                     console.log("loading ad");
@@ -3306,7 +3307,7 @@ var joinjelly;
                 this.finishMenu.addEventListener("home", function () {
                     if (_this.userData)
                         _this.userData.deleteSaveGame();
-                    joinjelly.JoinJelly.userData.setScore(Math.max(_this.score, joinjelly.JoinJelly.userData.getHighScore()));
+                    _this.userData.setScore(Math.max(_this.score, _this.userData.getHighScore()));
                     joinjelly.JoinJelly.showMainScreen();
                 });
                 this.finishMenu.addEventListener("minimize", function () {
@@ -3324,11 +3325,11 @@ var joinjelly;
                         if (error)
                             sucess = false;
                         if (sucess) {
-                            joinjelly.JoinJelly.userData.history("shared");
-                            joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 1);
-                            joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 1);
-                            joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.FAST, 1);
-                            joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.TIME, 1);
+                            this.userData.history("shared");
+                            this.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 1);
+                            this.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 1);
+                            this.itemData.increaseItemAmmount(joinjelly.Items.FAST, 1);
+                            this.itemData.increaseItemAmmount(joinjelly.Items.TIME, 1);
                             that.updateFooter();
                             that.finishMenu.ClearSpecialOffer();
                             console.log("shareded");
@@ -3350,7 +3351,7 @@ var joinjelly;
                     Cocoon.Ad.interstitial.on("hidden", function () {
                         _this.finishMenu.showRandomItem(function (item) {
                             gameui.AudiosManager.playSound("Interface Sound-11");
-                            joinjelly.JoinJelly.itemData.increaseItemAmmount(item, 1);
+                            _this.itemData.increaseItemAmmount(item, 1);
                             _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
                             setTimeout(function () {
                                 _this.showSpecialOffer();
@@ -3375,7 +3376,7 @@ var joinjelly;
                 });
                 this.pauseMenuOverlay.addEventListener("home", function () {
                     _this.pauseMenuOverlay.hide();
-                    joinjelly.JoinJelly.userData.setScore(Math.max(_this.score, joinjelly.JoinJelly.userData.getHighScore()));
+                    _this.userData.setScore(Math.max(_this.score, _this.userData.getHighScore()));
                     if (_this.userData)
                         _this.userData.deleteSaveGame();
                     setTimeout(function () { joinjelly.JoinJelly.showMainScreen(); }, 200);
@@ -3441,7 +3442,8 @@ var joinjelly;
                 this.gamestate = GameState.playing;
                 this.step(500);
                 joinjelly.JoinJelly.analytics.logGameStart();
-                joinjelly.JoinJelly.userData.addOneMorePlay();
+                if (this.userData)
+                    this.userData.addOneMorePlay();
                 this.highJellySave(1);
             };
             GamePlayScreen.prototype.step = function (timeout) {
@@ -3493,7 +3495,7 @@ var joinjelly;
                 this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
                 this.gamestate = GameState.standBy;
                 var score = this.score;
-                var highScore = joinjelly.JoinJelly.userData.getHighScore();
+                var highScore = this.userData.getHighScore();
                 var highJelly = this.board.getHighestTileValue();
                 this.pauseMenuOverlay.hide();
                 this.board.lock();
@@ -3517,10 +3519,10 @@ var joinjelly;
                     _this.gameFooter.highlight(joinjelly.Items.REVIVE);
                     _this.updateFooter();
                     createjs.Tween.get(_this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
-                    joinjelly.JoinJelly.userData.setScore(Math.max(score, joinjelly.JoinJelly.userData.getHighScore()));
+                    _this.userData.setScore(Math.max(score, _this.userData.getHighScore()));
                     joinjelly.JoinJelly.gameServices.submitScore(score);
                 }, 1200);
-                this.finishMenu.setValues(score, joinjelly.JoinJelly.userData.getHighScore(), highJelly, message);
+                this.finishMenu.setValues(score, this.userData.getHighScore(), highJelly, message);
                 if (win)
                     joinjelly.JoinJelly.analytics.logWinGame(this.level, highJelly, this.matches, Date.now() - this.time);
                 else
@@ -3568,7 +3570,7 @@ var joinjelly;
                     this.showShare();
             };
             GamePlayScreen.prototype.showShare = function () {
-                if (!joinjelly.JoinJelly.userData.getHistory("shared") && joinjelly.JoinJelly.FBSocialService) {
+                if (!this.userData.getHistory("shared") && joinjelly.JoinJelly.FBSocialService) {
                     this.finishMenu.showShareButton();
                     console.log("share shown");
                     return true;
@@ -3738,11 +3740,11 @@ var joinjelly;
             };
             GamePlayScreen.prototype.giveItemChance = function (items) {
                 var item = null;
-                var lucky = joinjelly.JoinJelly.itemData.getItemAmmount(joinjelly.Items.LUCKY) ? 2 : 1;
+                var lucky = this.itemData.getItemAmmount(joinjelly.Items.LUCKY) ? 2 : 1;
                 var goodChance = (Math.random() < gameplay.itemProbability * lucky);
                 if (goodChance) {
                     item = items[Math.floor(Math.random() * items.length)];
-                    joinjelly.JoinJelly.itemData.increaseItemAmmount(item);
+                    this.itemData.increaseItemAmmount(item);
                 }
                 return item;
             };
@@ -3788,7 +3790,7 @@ var joinjelly;
                 this.content.addChild(textDO);
             };
             GamePlayScreen.prototype.useItem = function (item) {
-                if (joinjelly.JoinJelly.itemData.getItemAmmount(item) > 0) {
+                if (this.itemData.getItemAmmount(item) > 0) {
                     var sucess = false;
                     switch (item) {
                         case joinjelly.Items.TIME:
@@ -3808,7 +3810,7 @@ var joinjelly;
                             break;
                     }
                     if (sucess) {
-                        joinjelly.JoinJelly.itemData.decreaseItemAmmount(item);
+                        this.itemData.decreaseItemAmmount(item);
                         if (this.itemNotify)
                             this.itemNotify();
                     }
@@ -3978,7 +3980,7 @@ var joinjelly;
             GamePlayScreen.prototype.updateFooter = function () {
                 var items = joinjelly.ItemsData.items;
                 for (var i in items)
-                    this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
+                    this.gameFooter.setItemAmmount(items[i], this.itemData.getItemAmmount(items[i]));
             };
             GamePlayScreen.prototype.saveGame = function () {
                 var sg = {
@@ -4043,7 +4045,7 @@ var joinjelly;
         var Tutorial = (function (_super) {
             __extends(Tutorial, _super);
             function Tutorial() {
-                _super.call(this, null);
+                _super.call(this, null, null);
                 this.currentTutorialStep = 0;
             }
             Tutorial.prototype.createGUI = function () {
@@ -4270,7 +4272,6 @@ var joinjelly;
                         break;
                 }
                 if (sucess) {
-                    joinjelly.JoinJelly.itemData.decreaseItemAmmount(item);
                     if (this.itemNotify)
                         this.itemNotify();
                 }
@@ -4505,7 +4506,7 @@ var joinjelly;
             Cocoon.Ad.loadInterstitial();
         };
         JoinJelly.startTest = function () {
-            var gs = new joinjelly.gameplay.GamePlayScreen(this.userData);
+            var gs = new joinjelly.gameplay.GamePlayScreen(this.userData, this.itemData);
             this.gameScreen.switchScreen(gs);
             gs.selfPeformanceTest(false);
         };
@@ -4527,10 +4528,10 @@ var joinjelly;
                 transition = { type: "bottom", time: 500 };
             else
                 transition = { type: "fade", time: 600 };
-            this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData), null, transition);
+            this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData, this.itemData), null, transition);
         };
         JoinJelly.startLevelDirectaly = function () {
-            this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData));
+            this.gameScreen.switchScreen(new joinjelly.gameplay.GamePlayScreen(this.userData, this.itemData));
         };
         JoinJelly.startTutorial = function () {
             this.gameScreen.switchScreen(new joinjelly.gameplay.Tutorial());
