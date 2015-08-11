@@ -3543,7 +3543,7 @@ var joinjelly;
                         else {
                             Cocoon.Ad.loadInterstitial();
                             this.finishMenu.showGiftLoading();
-                            var timeOut = 20;
+                            var timeOut = 30;
                             var interval = setInterval(function () {
                                 timeOut--;
                                 console.log("timeout " + timeOut);

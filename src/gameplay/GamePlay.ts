@@ -569,7 +569,7 @@ module joinjelly.gameplay {
 
                         // show loading
                         this.finishMenu.showGiftLoading();
-                        var timeOut = 20;
+                        var timeOut = 30;
 
                         var interval = setInterval(() => {
                             timeOut--;
