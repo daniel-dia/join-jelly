@@ -760,6 +760,7 @@ var StringResources = {
         playerName: "Player Name",
         playerNameDesc: "Type your name for the leaderboards.",
         error: "Sorry, Something went wrong",
+        errorAds: "Can't load Ads, try again",
         rating: "Rate us",
         ratingDesc: "Are you enjoying?\nPlease rate us",
         like: "Like us",
@@ -864,6 +865,7 @@ var StringResources_pt = {
         playerName: "Nome do Jogador",
         playerNameDesc: "Digite seu nome para aparecer no placar dos melhores",
         error: "Desculpe, algo deu errado.",
+        errorAds: "Tente de novo",
         rating: "Avaliação",
         ratingDesc: "Está gostando? \nNos Ajude. Dê sua avaliação",
         like: "Curtir",
@@ -1779,7 +1781,7 @@ var joinjelly;
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
-            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.347", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
+            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.348", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
         }
         return About;
     })(gameui.ScreenState);
@@ -2719,8 +2721,9 @@ var joinjelly;
                     this.specialOffer.addChild(bt);
                 };
                 FinishMenu.prototype.showGiftLoadingError = function () {
+                    var _this = this;
                     this.ClearSpecialOffer();
-                    var bt = new gameui.BitmapTextButton(StringResources.menus.error, "debussy", "", function () { });
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.errorAds, "debussy", "", function () { _this.dispatchEvent("reload"); });
                     bt.mouseEnabled = false;
                     this.specialOffer.addChild(bt);
                 };
@@ -3359,6 +3362,9 @@ var joinjelly;
                             }, 1000);
                         });
                     }, { once: true });
+                });
+                this.finishMenu.addEventListener("reloadAds", function () {
+                    _this.showSpecialOffer();
                 });
                 this.gameHeader.addEventListener("pause", function () {
                     _this.pauseGame();

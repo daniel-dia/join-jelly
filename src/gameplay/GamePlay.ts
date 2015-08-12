@@ -265,6 +265,9 @@ module joinjelly.gameplay {
 
                         
             })
+            this.finishMenu.addEventListener("reloadAds", () => {
+                this.showSpecialOffer();
+            })
 
             this.gameHeader.addEventListener("pause", () => {
                 this.pauseGame();

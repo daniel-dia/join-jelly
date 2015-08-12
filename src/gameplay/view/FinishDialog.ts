@@ -178,7 +178,7 @@
 
         public showGiftLoadingError() {
             this.ClearSpecialOffer();
-            var bt = new gameui.BitmapTextButton(StringResources.menus.error, "debussy", "", () => { });
+            var bt = new gameui.BitmapTextButton(StringResources.menus.errorAds, "debussy", "", () => { this.dispatchEvent("reload"); });
             bt.mouseEnabled = false;
             this.specialOffer.addChild(bt);
         }
