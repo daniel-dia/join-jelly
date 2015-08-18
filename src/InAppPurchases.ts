@@ -1,5 +1,5 @@
 ﻿var productsData = {
-    "pack1x": { icon: "Item Pack", consumable: false, share: true },
+    "pack1x": { icon: "Item Pack",        consumable: false, share: true },
     "time5x"  :{ icon: "5x Snow",         consumable:true },
     "fast5x"  :{ icon: "5x Magnet",       consumable:true },
     "revive5x":{ icon: "5x Revive",       consumable:true },
