@@ -755,6 +755,8 @@ var StringResources = {
         about: "About",
         aboutText: "Develop by",
         aboutURL: "www.dia-studio.com",
+        fbURL: "http://www.facebook.com/diastd",
+        fbActionURL: "fb://page/diastd",
         tutorial: "Tutorial",
         shop: "shop",
         playerName: "Player Name",
@@ -860,6 +862,8 @@ var StringResources_pt = {
         about: "Sobre",
         aboutText: "Desenvolvido por",
         aboutURL: "www.dia-studio.com",
+        fbURL: "http://www.facebook.com/diastd",
+        fbActionURL: "fb://page/diastd",
         tutorial: "Tutorial",
         shop: "Compras",
         playerName: "Nome do Jogador",
@@ -1922,7 +1926,7 @@ var joinjelly;
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
-            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.348", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
+            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.35", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
         }
         return About;
     })(gameui.ScreenState);
@@ -2838,6 +2842,16 @@ var joinjelly;
                     bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
                     this.specialOffer.addChild(bt);
                 };
+                FinishMenu.prototype.showLikeButton = function () {
+                    var _this = this;
+                    this.ClearSpecialOffer();
+                    var bt = new gameui.BitmapTextButton(StringResources.menus.like, "debussy", "BtTextBgBlue", function () {
+                        _this.dispatchEvent("like");
+                    });
+                    bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+                    bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+                    this.specialOffer.addChild(bt);
+                };
                 FinishMenu.prototype.showWhatchVideoButton = function () {
                     var _this = this;
                     this.ClearSpecialOffer();
@@ -3486,6 +3500,24 @@ var joinjelly;
                         }
                     });
                 });
+                this.finishMenu.addEventListener("like", function () {
+                    Cocoon.App.openURL(StringResources.menus.fbURL);
+                    _this.userData.history("shared");
+                    _this.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 1);
+                    _this.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 1);
+                    _this.itemData.increaseItemAmmount(joinjelly.Items.FAST, 1);
+                    _this.itemData.increaseItemAmmount(joinjelly.Items.TIME, 1);
+                    _this.updateFooter();
+                    _this.finishMenu.ClearSpecialOffer();
+                    console.log("shareded");
+                    setTimeout(function () {
+                        _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack");
+                        gameui.AudiosManager.playSound("Interface Sound-11");
+                    }, 1000);
+                    setTimeout(function () {
+                        _this.showSpecialOffer();
+                    }, 4000);
+                });
                 this.finishMenu.addEventListener("watch", function () {
                     _this.updateFooter();
                     _this.finishMenu.ClearSpecialOffer();
@@ -3708,7 +3740,7 @@ var joinjelly;
                     }
                     else {
                         console.log("timeout or share");
-                        if (!this.showShare()) {
+                        if (!this.showShareOrLike()) {
                             var minutes = Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000);
                             this.finishMenu.showGiftTimeout(minutes);
                             setTimeout(function () { _this.showSpecialOffer(); }, 60000);
@@ -3716,9 +3748,14 @@ var joinjelly;
                     }
                 }
                 else
-                    this.showShare();
+                    this.showShareOrLike();
             };
-            GamePlayScreen.prototype.showShare = function () {
+            GamePlayScreen.prototype.showShareOrLike = function () {
+                if (!this.userData.getHistory("liked")) {
+                    this.finishMenu.showLikeButton();
+                    console.log("like shown");
+                    return true;
+                }
                 if (!this.userData.getHistory("shared") && joinjelly.JoinJelly.FBSocialService) {
                     this.finishMenu.showShareButton();
                     console.log("share shown");

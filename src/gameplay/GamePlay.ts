@@ -230,10 +230,34 @@ module joinjelly.gameplay {
                             gameui.AudiosManager.playSound("Interface Sound-11");
 
                         }, 1000);
-
-      
                     }
                 });
+            });
+
+            this.finishMenu.addEventListener("like", () => {
+                Cocoon.App.openURL(StringResources.menus.fbURL);
+                
+
+                this.userData.history("shared");
+                this.itemData.increaseItemAmmount(Items.REVIVE, 1);
+                this.itemData.increaseItemAmmount(Items.CLEAN, 1);
+                this.itemData.increaseItemAmmount(Items.FAST, 1);
+                this.itemData.increaseItemAmmount(Items.TIME, 1);
+                this.updateFooter();
+                this.finishMenu.ClearSpecialOffer();
+                console.log("shareded");
+ 
+
+                // shows which item the user has won
+                setTimeout(() => {
+                    this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack")
+                    gameui.AudiosManager.playSound("Interface Sound-11");
+
+                }, 1000);
+
+                setTimeout(() => {
+                    this.showSpecialOffer();
+                }, 4000);
             });
 
             // when user watches a video
@@ -550,8 +574,7 @@ module joinjelly.gameplay {
         }
 
         // show special offer in the finish menu.
-        private showSpecialOffer() { 
-
+        private showSpecialOffer() {
             var minutes = 30;
 
             // if ads already been loaded any time
@@ -597,7 +620,7 @@ module joinjelly.gameplay {
                 else {
                     console.log("timeout or share");
                     // if it is not on time, thwn show share
-                    if (!this.showShare()) {
+                    if (!this.showShareOrLike()) {
                         //if there is no share. show timeout countdow
                         var minutes = Math.floor((this.userData.getHistory("watched") + minutes * 1000 * 60 - Date.now()) / 60000);
                         this.finishMenu.showGiftTimeout(minutes)
@@ -606,18 +629,26 @@ module joinjelly.gameplay {
                 }// ads avaliable
 
             // simply show share, if there is no ads avaliable
-            } else this.showShare();
+            } else this.showShareOrLike();
         }
 
    
 
-        private showShare() {
-            // if user does not share yet.
+        private showShareOrLike() {
+             
+            if (!this.userData.getHistory("liked")) {
+                this.finishMenu.showLikeButton();
+                console.log("like shown");
+                return true;
+            } 
+
+          
             if (!this.userData.getHistory("shared") && JoinJelly.FBSocialService) {
                 this.finishMenu.showShareButton();
                 console.log("share shown");
                 return true;
-            }
+            } 
+            
             return false;
         }
 

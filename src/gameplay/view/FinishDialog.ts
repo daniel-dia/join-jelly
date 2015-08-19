@@ -151,6 +151,17 @@
 
         }
 
+        public showLikeButton() {
+            this.ClearSpecialOffer();
+            var bt = new gameui.BitmapTextButton(StringResources.menus.like, "debussy", "BtTextBgBlue", () => {
+                this.dispatchEvent("like");
+            });
+            bt.addChild(gameui.AssetsManager.getBitmap("itemPack").set({ x: -400, y: -50, regX: 307 / 2, regY: 274 / 2, scaleX: 0.6, scaleY: 0.6 }));
+            bt.addChild(gameui.AssetsManager.getBitmap("BtPlusMini").set({ x: -500, y: -100, regX: 63 / 2, regY: 66 / 2, scaleX: 1.5, scaleY: 1.5 }));
+            this.specialOffer.addChild(bt);
+
+        }
+
         public showWhatchVideoButton() {
             this.ClearSpecialOffer();
             var bt: gameui.BitmapTextButton = new gameui.BitmapTextButton(StringResources.menus.watchVideo, "debussy", "BtTextBgBlue", () => {
