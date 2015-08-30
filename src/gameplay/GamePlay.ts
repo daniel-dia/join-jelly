@@ -274,11 +274,12 @@ module joinjelly.gameplay {
                 Cocoon.Ad.interstitial.on("hidden", () => {
 
                     this.finishMenu.showRandomItem((item) => {
-                        gameui.AudiosManager.playSound("Interface Sound-11");
-                        this.itemData.increaseItemAmmount(item, 1);
-                        // shows which item the user has won
-                        this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
-
+                        if (item) {
+                            gameui.AudiosManager.playSound("Interface Sound-11");
+                            this.itemData.increaseItemAmmount(item, 1);
+                            // shows which item the user has won
+                            this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
+                        }
                         setTimeout(() => {
                             this.showSpecialOffer();
                         }

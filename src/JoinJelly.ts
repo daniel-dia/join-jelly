@@ -53,21 +53,26 @@ module joinjelly {
                     this.startTest();
                 } else {
                     var loadedGame = this.userData.loadGame();
-                        JoinJelly.showMainScreen();
+                    //this.gameScreen.switchScreen(new menus.DevTest());
+                    JoinJelly.showMainScreen();
                 }
             }
         }
 
         public static initializeSocial() {
-            var os = "web"
-            if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
+            try {
+                var os = "web"
+                if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
 
-            if (os == "windows" ) return;
+                if (os == "windows") return;
 
-            //initialize the Facebook Service the same way as the Official JS SDK
-            var fb = Cocoon.Social.Facebook;
-            fb.init({ appId: fbAppId });
-            this.FBSocialService = fb.getSocialInterface();
+                //initialize the Facebook Service the same way as the Official JS SDK
+                if (navigator.onLine) {
+                    var fb = Cocoon.Social.Facebook;
+                    fb.init({ appId: fbAppId });
+                    this.FBSocialService = fb.getSocialInterface();
+                }
+            } catch (e){ }
         }
 
         public static initializeAds() {

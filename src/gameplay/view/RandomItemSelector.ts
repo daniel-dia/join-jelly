@@ -4,13 +4,19 @@
         public onComplete: (string) => void;
 
         private itemsDO: Array<createjs.DisplayObject>;
-        private speedFactor=30;
-        private distance = 230;
-        private totalDistante = 500;
+        private items: Array<string>
 
+        private distance = 250;
+        private totalDistante = 625;
+
+        private totalTime = 5000;
+
+        private finalPosition: number;
+        private initialPosition: number;
+        private previousOffset: number = 0;
         private timeStart;
-        private currentSpeed;
         private itemOffset;
+
 
         private listener;
         constructor() {
@@ -18,46 +24,67 @@
 
             this.itemsDO = [];
             this.addChild(gameui.AssetsManager.getBitmap("FlyGroup").set({regX:1056/2, regY:250/2}));
-            var items = [Items.CLEAN, Items.FAST, Items.TIME, Items.REVIVE]
+            this.items = [Items.CLEAN, Items.FAST, Items.TIME, Items.REVIVE, "loose"]
 
-            for (var i in items) {
-                var ido = gameui.AssetsManager.getBitmap("item" + items[i]).set({ x: this.distance * i, regX: 150, regY: 150, name: items[i],scaleX:0.7, scaleY:0.7 });
+            for (var i in this.items) {
+                if (this.items[i] == "loose") 
+                    var ido = <createjs.DisplayObject> new gameplay.view.Jelly(-1).set({y:50})
+                else
+                    var ido = gameui.AssetsManager.getBitmap("item" + this.items[i]).set({ x: this.distance * i, regX: 150, regY: 150, name: this.items[i], scaleX: 0.7, scaleY: 0.7 });
+
                 this.itemsDO.push(ido);
                 this.addChild(ido)
             }
+            this.visible=false;
         }
 
         // random
         public random() {
-            var total = this.itemsDO.length;
-            this.listener = () => { this.tick(); }
+
+            this.fadeIn();
+            
+            // ramdomly selects a itemId
+            var chances = [0, 0, 1, 1, 2, 2, 3, 3, 4];
+            var itemId= chances[Math.floor(Math.random() * chances.length)];
+
+            // set position to obj
+            this.finalPosition = itemId * this.distance;
+            this.initialPosition = (Math.random() + 6) * this.distance * this.items.length;
+
+            // add listener
+            this.listener = () => { this.tick();}
             createjs.Ticker.addEventListener("tick", this.listener);
             this.timeStart = Date.now();
-            this.currentSpeed = (Math.random() + 0.5) * this.speedFactor;
-            //this.itemOffset = Math.floor(Math.random() * 2 * total) + total * 4;
+
         }
        
         // moves it
         private tick() {
 
-            var diff = Date.now() - this.timeStart;
+            var p = ((this.timeStart + this.totalTime) - Date.now()) / this.totalTime;
+            var offset = Math.pow(p, 2) * this.initialPosition + (1 - Math.pow(p, 2)) * this.finalPosition;
 
             for (var i in this.itemsDO) {
                 var item = this.itemsDO[i];
-                item.x -= this.currentSpeed;
-                item.scaleX = item.scaleY = (this.totalDistante - Math.abs(item.x)) / this.totalDistante * 1.2;
-                if (item.x < -this.totalDistante)
-                    item.x += this.totalDistante * 2;
-                if (item.x < 0 && item.x + this.currentSpeed > 0)
-                    gameui.AudiosManager.playSound("Interface Sound-12");
-            }
+                var itemOffset = this.distance * i + offset;
 
-            this.currentSpeed-=0.1;
-            if (this.currentSpeed < 0)
-                this.end();
+                item.x = (itemOffset + this.totalDistante) % (this.totalDistante * 2) - this.totalDistante
+                item.scaleX = item.scaleY = (this.totalDistante - (Math.abs(item.x))) / this.totalDistante * 1.2;
+                item.alpha = (this.totalDistante - (Math.abs(item.x))) / this.totalDistante * 2;
+            }
+            //plays sound
+
+            if (offset % this.distance > this.previousOffset % this.distance) {
+                gameui.AudiosManager.playSound("Interface Sound-12", true);
+                console.log(offset);
+            }
+            this.previousOffset = offset;
+
+            if (p <= 0) this.end();
         }
 
         private end() {
+
             createjs.Ticker.removeEventListener("tick", this.listener);
             var closerObj: createjs.DisplayObject;
             for (var i in this.itemsDO) 
@@ -75,7 +102,7 @@
                 this.fadeOut();
                 if (this.onComplete)
                     this.onComplete(closerObj.name);
-            }, 500);
+            }, 700);
         }
 
        

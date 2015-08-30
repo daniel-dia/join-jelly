@@ -116,7 +116,7 @@
             this.shadowContainer.skewX = this.shadowContainer.skewY = 0;
         }
 
-        private executeIdle() { 
+        public executeIdle() { 
 
             if (this.state == "idle") return;
             this.state = "idle";

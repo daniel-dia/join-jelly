@@ -1926,7 +1926,7 @@ var joinjelly;
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
-            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.41", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
+            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.42", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
         }
         return About;
     })(gameui.ScreenState);
@@ -3527,9 +3527,11 @@ var joinjelly;
                     Cocoon.Ad.interstitial["loaded"] = false;
                     Cocoon.Ad.interstitial.on("hidden", function () {
                         _this.finishMenu.showRandomItem(function (item) {
-                            gameui.AudiosManager.playSound("Interface Sound-11");
-                            _this.itemData.increaseItemAmmount(item, 1);
-                            _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
+                            if (item) {
+                                gameui.AudiosManager.playSound("Interface Sound-11");
+                                _this.itemData.increaseItemAmmount(item, 1);
+                                _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
+                            }
                             setTimeout(function () {
                                 _this.showSpecialOffer();
                             }, 1000);
@@ -4673,14 +4675,19 @@ var joinjelly;
             };
         };
         JoinJelly.initializeSocial = function () {
-            var os = "web";
-            if (Cocoon.Device.getDeviceInfo())
-                os = Cocoon.Device.getDeviceInfo().os;
-            if (os == "windows")
-                return;
-            var fb = Cocoon.Social.Facebook;
-            fb.init({ appId: fbAppId });
-            this.FBSocialService = fb.getSocialInterface();
+            try {
+                var os = "web";
+                if (Cocoon.Device.getDeviceInfo())
+                    os = Cocoon.Device.getDeviceInfo().os;
+                if (os == "windows")
+                    return;
+                if (navigator.onLine) {
+                    var fb = Cocoon.Social.Facebook;
+                    fb.init({ appId: fbAppId });
+                    this.FBSocialService = fb.getSocialInterface();
+                }
+            }
+            catch (e) { }
         };
         JoinJelly.initializeAds = function () {
             var _this = this;
@@ -5038,39 +5045,50 @@ var joinjelly;
                 __extends(RandomItemSelector, _super);
                 function RandomItemSelector() {
                     _super.call(this);
-                    this.speedFactor = 30;
-                    this.distance = 230;
-                    this.totalDistante = 500;
+                    this.distance = 250;
+                    this.totalDistante = 625;
+                    this.totalTime = 5000;
+                    this.previousOffset = 0;
                     this.itemsDO = [];
                     this.addChild(gameui.AssetsManager.getBitmap("FlyGroup").set({ regX: 1056 / 2, regY: 250 / 2 }));
-                    var items = [joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.TIME, joinjelly.Items.REVIVE];
-                    for (var i in items) {
-                        var ido = gameui.AssetsManager.getBitmap("item" + items[i]).set({ x: this.distance * i, regX: 150, regY: 150, name: items[i], scaleX: 0.7, scaleY: 0.7 });
+                    this.items = [joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.TIME, joinjelly.Items.REVIVE, "loose"];
+                    for (var i in this.items) {
+                        if (this.items[i] == "loose")
+                            var ido = new gameplay.view.Jelly(-1).set({ y: 50 });
+                        else
+                            var ido = gameui.AssetsManager.getBitmap("item" + this.items[i]).set({ x: this.distance * i, regX: 150, regY: 150, name: this.items[i], scaleX: 0.7, scaleY: 0.7 });
                         this.itemsDO.push(ido);
                         this.addChild(ido);
                     }
+                    this.visible = false;
                 }
                 RandomItemSelector.prototype.random = function () {
                     var _this = this;
-                    var total = this.itemsDO.length;
+                    this.fadeIn();
+                    var chances = [0, 0, 1, 1, 2, 2, 3, 3, 4];
+                    var itemId = chances[Math.floor(Math.random() * chances.length)];
+                    this.finalPosition = itemId * this.distance;
+                    this.initialPosition = (Math.random() + 6) * this.distance * this.items.length;
                     this.listener = function () { _this.tick(); };
                     createjs.Ticker.addEventListener("tick", this.listener);
                     this.timeStart = Date.now();
-                    this.currentSpeed = (Math.random() + 0.5) * this.speedFactor;
                 };
                 RandomItemSelector.prototype.tick = function () {
-                    var diff = Date.now() - this.timeStart;
+                    var p = ((this.timeStart + this.totalTime) - Date.now()) / this.totalTime;
+                    var offset = Math.pow(p, 2) * this.initialPosition + (1 - Math.pow(p, 2)) * this.finalPosition;
                     for (var i in this.itemsDO) {
                         var item = this.itemsDO[i];
-                        item.x -= this.currentSpeed;
-                        item.scaleX = item.scaleY = (this.totalDistante - Math.abs(item.x)) / this.totalDistante * 1.2;
-                        if (item.x < -this.totalDistante)
-                            item.x += this.totalDistante * 2;
-                        if (item.x < 0 && item.x + this.currentSpeed > 0)
-                            gameui.AudiosManager.playSound("Interface Sound-12");
+                        var itemOffset = this.distance * i + offset;
+                        item.x = (itemOffset + this.totalDistante) % (this.totalDistante * 2) - this.totalDistante;
+                        item.scaleX = item.scaleY = (this.totalDistante - (Math.abs(item.x))) / this.totalDistante * 1.2;
+                        item.alpha = (this.totalDistante - (Math.abs(item.x))) / this.totalDistante * 2;
                     }
-                    this.currentSpeed -= 0.1;
-                    if (this.currentSpeed < 0)
+                    if (offset % this.distance > this.previousOffset % this.distance) {
+                        gameui.AudiosManager.playSound("Interface Sound-12", true);
+                        console.log(offset);
+                    }
+                    this.previousOffset = offset;
+                    if (p <= 0)
                         this.end();
                 };
                 RandomItemSelector.prototype.end = function () {
@@ -5090,7 +5108,7 @@ var joinjelly;
                         _this.fadeOut();
                         if (_this.onComplete)
                             _this.onComplete(closerObj.name);
-                    }, 500);
+                    }, 700);
                 };
                 return RandomItemSelector;
             })(gameui.UIItem);
@@ -5252,6 +5270,25 @@ var joinjelly;
         return AzureLeaderBoards;
     })();
     joinjelly.AzureLeaderBoards = AzureLeaderBoards;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var DevTest = (function (_super) {
+            __extends(DevTest, _super);
+            function DevTest() {
+                _super.call(this);
+                var ri = new joinjelly.gameplay.view.RandomItemSelector();
+                this.content.addChild(ri);
+                ri.x = defaultWidth / 2;
+                ri.y = defaultHeight / 2;
+                setTimeout(function () { ri.random(); }, 1000);
+            }
+            return DevTest;
+        })(gameui.ScreenState);
+        menus.DevTest = DevTest;
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
