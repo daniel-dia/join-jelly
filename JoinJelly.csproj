@@ -584,6 +584,7 @@
     <TypeScriptCompile Include="gameui\WpAudioManager.ts" />
     <TypeScriptCompile Include="gameui\AudioManager.ts" />
     <TypeScriptCompile Include="src\gameplay\view\RandomItemSelector.ts" />
+    <TypeScriptCompile Include="src\menus\DevTest.ts" />
     <TypeScriptCompile Include="src\menus\view\RatingMenu.ts" />
     <TypeScriptCompile Include="src\GameServices.ts" />
     <TypeScriptCompile Include="src\gameplay\view\CountDown.ts" />
@@ -628,7 +629,6 @@
     <TypeScriptCompile Include="src\ItemsData.ts" />
     <TypeScriptCompile Include="src\menus\ScrollabePage.ts" />
     <TypeScriptCompile Include="src\menus\StoreMenu.ts" />
-    <TypeScriptCompile Include="src\menus\view\ProductListItem.ts" />
     <TypeScriptCompile Include="src\InAppPurchases.ts" />
     <TypeScriptCompile Include="src\StringResources.ts" />
     <TypeScriptCompile Include="src\gameplay\Tutorial.ts" />
