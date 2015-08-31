@@ -651,7 +651,7 @@
     <TypeScriptCompile Include="src\menus\LoadingScreen.ts" />
     <TypeScriptCompile Include="src\menus\MainScreen.ts" />
     <TypeScriptCompile Include="src\menus\view\JellyLobby.ts" />
-    <TypeScriptCompile Include="src\Message.ts" />
+    <TypeScriptCompile Include="src\gameplay\view\Message.ts" />
     <TypeScriptCompile Include="src\UserData.ts" />
     <TypeScriptCompile Include="src\view\LoadingBall.ts" />
   </ItemGroup>
