@@ -97,7 +97,12 @@
             });
 
             //Press Move
+            var deltas = [];
             this.tilesContainer.addEventListener("pressmove", (e: createjs.MouseEvent) => {
+                var delta = Date.now() - deltas[e.pointerID];
+                if (delta < 20) return;
+                deltas[e.pointerID] = Date.now();
+
 
                 //get tile by touch
                 var tile = this.touchDictionary[e.pointerID];

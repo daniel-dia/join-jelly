@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var gameui;
 (function (gameui) {
@@ -3060,7 +3059,12 @@ var joinjelly;
                         gameui.AudiosManager.playSound('soundh_1');
                     }
                 });
+                var deltas = [];
                 this.tilesContainer.addEventListener("pressmove", function (e) {
+                    var delta = Date.now() - deltas[e.pointerID];
+                    if (delta < 20)
+                        return;
+                    deltas[e.pointerID] = Date.now();
                     var tile = _this.touchDictionary[e.pointerID];
                     if (tile) {
                         tile.x = e.localX + touchOffset[e.pointerID].x;
@@ -4471,37 +4475,6 @@ var joinjelly;
         gameplay.Tutorial = Tutorial;
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var Message = (function (_super) {
-                __extends(Message, _super);
-                function Message() {
-                    var _this = this;
-                    _super.call(this);
-                    this.addChild(new createjs.Shape(new createjs.Graphics().beginFill("darkGray").beginStroke("black").drawRect(-200, -60, 400, 120)));
-                    var t = new createjs.Text("", "60px Arial", "white");
-                    t.textAlign = "center";
-                    t.textBaseline = "middle";
-                    this.addChild(t);
-                    this.text = t;
-                    this.addEventListener("click", function () {
-                        _this.fadeOut();
-                    });
-                }
-                Message.prototype.showMessage = function (message) {
-                    this.text.text = message;
-                    this.fadeIn();
-                };
-                return Message;
-            })(gameui.Button);
-            view.Message = Message;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
 var UserData = (function () {
     function UserData() {
         gameui.AudiosManager.setSoundVeolume(this.getSoundVol());
@@ -4864,7 +4837,6 @@ var joinjelly;
         gameplay.boardSize = 5;
         gameplay.itemProbability = 0.003;
         gameplay.timeByLevel = 20000;
-        gameplay.timeoutInterval;
         gameplay.initialInterval = 800;
         gameplay.finalInterval = 300;
         gameplay.easeInterval = 0.98;
@@ -5032,6 +5004,37 @@ var joinjelly;
                 return ItemsFooter;
             })(createjs.Container);
             view.ItemsFooter = ItemsFooter;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var Message = (function (_super) {
+                __extends(Message, _super);
+                function Message() {
+                    var _this = this;
+                    _super.call(this);
+                    this.addChild(new createjs.Shape(new createjs.Graphics().beginFill("darkGray").beginStroke("black").drawRect(-200, -60, 400, 120)));
+                    var t = new createjs.Text("", "60px Arial", "white");
+                    t.textAlign = "center";
+                    t.textBaseline = "middle";
+                    this.addChild(t);
+                    this.text = t;
+                    this.addEventListener("click", function () {
+                        _this.fadeOut();
+                    });
+                }
+                Message.prototype.showMessage = function (message) {
+                    this.text.text = message;
+                    this.fadeIn();
+                };
+                return Message;
+            })(gameui.Button);
+            view.Message = Message;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
