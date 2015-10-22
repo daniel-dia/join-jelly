@@ -1,11 +1,11 @@
 ﻿module joinjelly.gameplay.view {
 
-    export class CountDown extends createjs.Container {
+    export class CountDown extends PIXI.Container {
 
         public countDown(total: number = 3) {
 
             // initialize
-            var ns: Array<createjs.DisplayObject> = []
+            var ns: Array<PIXI.DisplayObject> = []
             var time = 1000;
             var transition = 200;
 
@@ -45,7 +45,7 @@
                     .call(() => { gameui.AudiosManager.playSound("Interface Sound-13"); })
                     .wait(time - transition)
                     .to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn)
-                    .call((obj: createjs.DisplayObject) => { this.removeChild(obj) });
+                    .call((obj: PIXI.DisplayObject) => { this.removeChild(obj) });
             }
 
         }

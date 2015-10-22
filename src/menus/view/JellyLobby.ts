@@ -1,6 +1,6 @@
 ﻿module joinjelly.menus.view {
 
-    export class JellyLobby extends createjs.Container {
+    export class JellyLobby extends PIXI.Container {
 
         constructor(lastJelly: number) {
             super();

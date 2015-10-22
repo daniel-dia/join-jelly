@@ -1,6 +1,6 @@
 ﻿module joinjelly.menus.view {
 
-    export class GameTitle extends createjs.Container {
+    export class GameTitle extends PIXI.Container {
 
         constructor() {
             super();
@@ -43,7 +43,7 @@
 
             for (var char = 1; char <= 5; char++) {
 
-                var image = <createjs.Bitmap>gameui.AssetsManager.getBitmap("title_jelly_" + char);
+                var image = <PIXI.Sprite>gameui.AssetsManager.getBitmap("title_jelly_" + char);
 
                 image.regX = image.getBounds().width / 2;
                 image.regY = image.getBounds().height;

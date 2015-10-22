@@ -4,9 +4,6 @@
        { id: "bonus_border", src: "bonus_border.png" },
 	   { id: "BackMain", src: "BackMain.jpg" },
 
-       { id: "debussy", src: "debussy.png" },
-       { id: "debussyBig", src: "debussyBig.png" },
-
        { src: "DIAStudioLogo.png", id: "DIAStudioLogo" },
 	   { src: "DIAStudioIco.png", id: "DIAStudioIco" },
 
@@ -115,7 +112,7 @@
        { id: "FlyBG", src: "FlyBG.png" },
        { id: "FlyGroup", src: "FlyGroup.png" },
 
-       { id: "footer", src: "footer.png" },
+       
        { id: "itemclean", src: "itemClean.png" },
        { id: "itemevolve", src: "itemEvolve.png" },
        { id: "itemfast", src: "itemFast.png" },

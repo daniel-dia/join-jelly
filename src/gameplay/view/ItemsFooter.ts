@@ -1,8 +1,8 @@
 ﻿module joinjelly.gameplay.view {
-    export class ItemsFooter extends createjs.Container {
+    export class ItemsFooter extends PIXI.Container {
 
         private itemsButtons: Array<ItemButton>
-        private lucky: createjs.DisplayObject;
+        private lucky: PIXI.DisplayObject;
         private itemSize: number = 270;
         private gameMessage: view.TutoralMessage;
 

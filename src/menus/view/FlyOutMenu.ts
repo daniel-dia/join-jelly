@@ -1,8 +1,8 @@
 ﻿module joinjelly.menus.view {
 
-    export class FlyOutMenu extends createjs.Container {
+    export class FlyOutMenu extends PIXI.Container {
 
-        private title: createjs.BitmapText;
+        private title: PIXI.extras.BitmapText;
         protected top: number;
 
         constructor(title: string, height: number = 1022) {
@@ -32,8 +32,8 @@
             dk.x = -defaultWidth / 2;
             dk.y = -defaultHeight / 2;
             dk.mouseEnabled = true;
-            var rec = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 192, 256))
-            dk.hitArea = rec;
+            ///var rec = (new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 192, 256))
+            ///dk.hitArea = rec;
 
             var bg = gameui.AssetsManager.getBitmap("FlyBG");
             bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });

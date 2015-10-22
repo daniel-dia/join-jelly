@@ -18,8 +18,6 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="assets\Debussy.js" />
-    <Content Include="assets\DebussyBig.js" />
     <Content Include="assets\htmlBG.jpg" />
     <Content Include="assets\images\Background.jpg" />
     <Content Include="assets\images\BackMain.jpg" />
@@ -561,28 +559,33 @@
     <Content Include="assets\sounds\sound_s3.mp3" />
     <Content Include="assets\sounds\sound_s3.ogg" />
     <Content Include="assets\style.css" />
-    <Content Include="scripts\script.js" />
+    <Content Include="scripts\BitmapScalePath.js" />
+    <Content Include="scripts\cocoon.js" />
+    <Content Include="scripts\createjs-2015.05.21.min.js" />
+    <Content Include="scripts\fontConverter.js" />
+    <Content Include="scripts\md5.js" />
+    <Content Include="scripts\movieclip-0.8.1.min.js" />
+    <Content Include="scripts\pixi.js" />
+    <Content Include="scripts\PIXIpatch.js" />
+    <Content Include="scripts\Plataform.js" />
+    <Content Include="scripts\Touch.js" />
     <Content Include="Windows\setMobileRealScale.js" />
     <Content Include="Windows\WindowsCocoonjs.js" />
     <Content Include="Windows\WpAudioManager.js" />
+    <TypeScriptCompile Include="gameui\AssetsManager.ts" />
+    <TypeScriptCompile Include="gameui\AudioManager.ts" />
+    <TypeScriptCompile Include="gameui\Button.ts" />
+    <TypeScriptCompile Include="gameui\GameScreen.ts" />
+    <TypeScriptCompile Include="gameui\Grid.ts" />
+    <TypeScriptCompile Include="gameui\ScreenState.ts" />
+    <TypeScriptCompile Include="gameui\Transition.ts" />
+    <TypeScriptCompile Include="gameui\UIItem.ts" />
+    <TypeScriptCompile Include="typings\pixi.js.d.ts" />
     <TypeScriptCompile Include="src\gameplay\parameters.ts" />
-    <Content Include="scripts\cocoon.js" />
-    <Content Include="scripts\createjs-2015.05.21.min.js" />
     <Content Include="scripts_tools\cti.js" />
     <Content Include="scripts_tools\FileSaver.js" />
     <Content Include="scripts_tools\MobileServices.Web-1.2.5.min.js" />
-    <Content Include="scripts\movieclip-0.8.1.min.js" />
-    <Content Include="scripts\Plataform.js" />
-    <Content Include="teste2.html" />
-    <Content Include="Vídeo_geleias.html" />
-    <Content Include="Vídeo_Titulo.html" />
-    <Content Include="test.html" />
     <Content Include="index.html" />
-    <Content Include="scripts\BitmapScalePath.js" />
-    <Content Include="scripts\fontConverter.js" />
-    <Content Include="scripts\md5.js" />
-    <TypeScriptCompile Include="gameui\WpAudioManager.ts" />
-    <TypeScriptCompile Include="gameui\AudioManager.ts" />
     <TypeScriptCompile Include="src\gameplay\view\RandomItemSelector.ts" />
     <TypeScriptCompile Include="src\menus\DevTest.ts" />
     <TypeScriptCompile Include="src\menus\view\RatingMenu.ts" />
@@ -596,24 +599,6 @@
     <TypeScriptCompile Include="src\menus\view\PlayerNameOption.ts" />
     <TypeScriptCompile Include="src\view\Effect.ts" />
     <TypeScriptCompile Include="typings\cocoon.d.ts" />
-    <TypeScriptCompile Include="_references.ts" />
-    <Content Include="web.config">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="gameui\AssetsManager.ts" />
-    <TypeScriptCompile Include="gameui\Button.ts" />
-    <TypeScriptCompile Include="gameui\GameScreen.ts" />
-    <TypeScriptCompile Include="gameui\Grid.ts" />
-    <TypeScriptCompile Include="gameui\Label.ts" />
-    <TypeScriptCompile Include="gameui\MenuContainer.ts" />
-    <TypeScriptCompile Include="gameui\ScreenState.ts" />
-    <TypeScriptCompile Include="gameui\Transition.ts" />
-    <TypeScriptCompile Include="gameui\UIItem.ts" />
-    <TypeScriptCompile Include="src\menus\Credit.ts" />
-    <TypeScriptCompile Include="src\menus\MainMenu.ts" />
-    <TypeScriptCompile Include="src\menus\view\SoundOptions.ts" />
     <TypeScriptCompile Include="typings\createjs-lib\createjs-lib.d.ts" />
     <TypeScriptCompile Include="typings\createjs\createjs.d.ts" />
     <TypeScriptCompile Include="typings\easeljs\easeljs.d.ts" />
@@ -621,6 +606,15 @@
     <TypeScriptCompile Include="typings\preloadjs\preloadjs.d.ts" />
     <TypeScriptCompile Include="typings\soundjs\soundjs.d.ts" />
     <TypeScriptCompile Include="typings\tweenjs\tweenjs.d.ts" />
+    <TypeScriptCompile Include="_references.ts" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="src\menus\Credit.ts" />
+    <TypeScriptCompile Include="src\menus\MainMenu.ts" />
+    <TypeScriptCompile Include="src\menus\view\SoundOptions.ts" />
     <TypeScriptCompile Include="src\Analytics.ts" />
     <TypeScriptCompile Include="src\Constants.ts" />
     <TypeScriptCompile Include="src\JoinJelly.ts" />
@@ -656,6 +650,7 @@
     <TypeScriptCompile Include="src\view\LoadingBall.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="scripts\script.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -2,9 +2,13 @@
 
     export class TutoralMessage extends gameui.Button {
 
-        private bitmapText: createjs.BitmapText;
+        private bitmapText: PIXI.extras.BitmapText;
         constructor() {
-            super();
+            super(() => {
+                this.fadeOut();
+                this.dispatchEvent("closed");
+                gameui.AudiosManager.playSound("Interface Sound-15");
+            });
 
             this.addChild(gameui.AssetsManager.getBitmap("ballon"));
 
@@ -25,15 +29,9 @@
             t.mouseEnabled = false;
 
             // add hitArea
-            this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-this.x + this.regX, -this.y + this.regY, defaultWidth, defaultHeight));
+            ///this.hitArea = (new PIXI.Graphics().beginFill(0xFF0000).drawRect(-this.x + this.regX, -this.y + this.regY, defaultWidth, defaultHeight));
 
-            // add click event
-            this.addEventListener("click", () => {
-                this.fadeOut();
-                this.dispatchEvent("closed");
-
-                gameui.AudiosManager.playSound("Interface Sound-15");
-            })
+ 
         }
 
         // show a text on screen

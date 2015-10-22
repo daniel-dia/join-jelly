@@ -3,7 +3,7 @@
 
         public onComplete: (string) => void;
 
-        private itemsDO: Array<createjs.DisplayObject>;
+        private itemsDO: Array<PIXI.DisplayObject>;
         private items: Array<string>
 
         private distance = 250;
@@ -28,7 +28,7 @@
 
             for (var i in this.items) {
                 if (this.items[i] == "loose") 
-                    var ido = <createjs.DisplayObject> new gameplay.view.Jelly(-1).set({y:50})
+                    var ido = <PIXI.DisplayObject> new gameplay.view.Jelly(-1).set({y:50})
                 else
                     var ido = gameui.AssetsManager.getBitmap("item" + this.items[i]).set({ x: this.distance * i, regX: 150, regY: 150, name: this.items[i], scaleX: 0.7, scaleY: 0.7 });
 
@@ -52,8 +52,8 @@
             this.initialPosition = (Math.random() + 6) * this.distance * this.items.length;
 
             // add listener
-            this.listener = () => { this.tick();}
-            createjs.Ticker.addEventListener("tick", this.listener);
+            this.listener = () => { this.tick(); }
+            PIXI.ticker.Ticker.addEventListener("tick", this.listener);
             this.timeStart = Date.now();
 
         }
@@ -85,8 +85,8 @@
 
         private end() {
 
-            createjs.Ticker.removeEventListener("tick", this.listener);
-            var closerObj: createjs.DisplayObject;
+            PIXI.Ticker.removeEventListener("tick", this.listener);
+            var closerObj: PIXI.DisplayObject;
             for (var i in this.itemsDO) 
                 if (!closerObj || Math.abs(this.itemsDO[i].x) < Math.abs(closerObj.x))
                     closerObj = this.itemsDO[i];

@@ -43,11 +43,11 @@ lib.properties = {
 
 	// Layer 9
 	this.shape = new cjs.Shape();
-	this.shape.graphics.f().s("#000000").ss(1,1,1).p("EiA7izAMDv/AAAMAAAE//Mjv/AAAgEkAnk7cMIBPAAAMAAAJ25MoBPAAAg");
+	this.shape.graphics.beginFill().s("#000000").ss(1,1,1).p("EiA7izAMDv/AAAMAAAE//Mjv/AAAgEkAnk7cMIBPAAAMAAAJ25MoBPAAAg");
 	this.shape.setTransform(825.2,1145.7);
 
 	this.shape_1 = new cjs.Shape();
-	this.shape_1.graphics.f("#000000").s().p("EkAnE7dMAAAp25MIBPAAAMAAAJ25gEiA7CM/MDv/AAAMAAAk//Mjv/AAAg");
+	this.shape_1.graphics.beginFill("#000000").s().p("EkAnE7dMAAAp25MIBPAAAMAAAJ25gEiA7CM/MDv/AAAMAAAk//Mjv/AAAg");
 	this.shape_1.setTransform(825.2,1145.7);
 
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_1},{t:this.shape}]}).to({state:[{t:this.shape_1},{t:this.shape}]},1137).wait(1));
@@ -307,7 +307,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,216,90);
 
 	// Layer 1
 	this.shape = new cjs.Shape();
-	this.shape.graphics.f("#FFFFFF").s().p("EiF7CrfMAAAlW+MEL3AAAMAAAFW+g");
+	this.shape.graphics.beginFill("#FFFFFF").s().p("EiF7CrfMAAAlW+MEL3AAAMAAAFW+g");
 	this.shape.setTransform(857.3,1097.6);
 
 	this.addChild(this.shape);

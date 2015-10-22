@@ -1,7 +1,7 @@
 ﻿module joinjelly.gameplay {
     interface point { x: number; y: number }
 
-    export class Board extends createjs.Container {
+    export class Board extends PIXI.Container {
 
         private boardWidth: number;
         private boardHeight: number;
@@ -11,7 +11,7 @@
         private touchDictionary: Array<Tile> = new Array();
 
         private alarming: boolean = false;
-        private tilesContainer: createjs.Container;
+        private tilesContainer: PIXI.Container;
 
         // #region Initialization ----------------------------------------------------------------------
 
@@ -24,11 +24,11 @@
             this.tileSize = tileSize;
 
             // create tiles container
-            this.tilesContainer = new createjs.Container();
+            this.tilesContainer = new PIXI.Container();
             this.addChild(this.tilesContainer);
 
             //define cache for click
-            this.tilesContainer.hitArea = new createjs.Shape(new createjs.Graphics().f("red").r(0, 0, boardWidth * tileSize, (boardHeight + 0.5) * tileSize));
+            /// this.tilesContainer.hitArea = (new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, boardWidth * tileSize, (boardHeight + 0.5) * tileSize));
 
             // create all tiles
             this.addTiles(boardWidth, boardHeight, tileSize, img);
@@ -76,7 +76,7 @@
         // add mouse board interacion
         private addMouseEvents(tileSize: number) {
             var touchOffset = [];
-            this.tilesContainer.addEventListener("mousedown", (e: createjs.MouseEvent) => {
+            this.tilesContainer.addEventListener("mousedown", (e: PIXI.interaction.InteractionEvent) => {
                 var tile = this.getTileByRawPos(e.localX, e.localY, tileSize);
 
                 if (tile && tile.isUnlocked() && tile.isEnabled()) {
@@ -90,7 +90,7 @@
                     tile.drag();
 
                     //bring to front
-                    this.tilesContainer.setChildIndex(tile, this.tilesContainer.getNumChildren() - 1);
+                    this.tilesContainer.setChildIndex(tile, this.tilesContainer.children.length - 1);
 
                     gameui.AudiosManager.playSound('soundh_1');
                 }
@@ -98,7 +98,7 @@
 
             //Press Move
             var deltas = [];
-            this.tilesContainer.addEventListener("pressmove", (e: createjs.MouseEvent) => {
+            this.tilesContainer.addEventListener("pressmove", (e: PIXI.interaction.InteractionEvent) => {
                 var delta = Date.now() - deltas[e.pointerID];
                 if (delta < 20) return;
                 deltas[e.pointerID] = Date.now();
@@ -117,7 +117,7 @@
                     if (target && target.name.toString() != tile.name) {
                         if (target.isUnlocked()) {
                             var x = { origin: tile, target: target };
-                            var ev = new createjs.Event("dragging", false, false);
+                            var ev = new PIXI.Event("dragging", false, false);
                             ev["originTile"] = tile;
                             ev["targetTile"] = target;
                             this.dispatchEvent(ev);
@@ -127,7 +127,7 @@
             });
 
             //Press Up
-            this.tilesContainer.addEventListener("pressup", (e: createjs.MouseEvent) => {
+            this.tilesContainer.addEventListener("pressup", (e: PIXI.interaction.InteractionEvent) => {
                 var tile = this.touchDictionary[e.pointerID];
                 if (tile) {
                     tile.unlock;
@@ -350,7 +350,7 @@
         // organize all z-order
         private arrangeZOrder() {
             for (var t = 0; t < this.tiles.length; t++)
-                this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.getNumChildren() - 1);
+                this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.children.length - 1);
         }
 
         // match 2 tiles

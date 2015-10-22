@@ -1,7 +1,7 @@
 ﻿module joinjelly.menus {
     export class LeaderBoards extends ScrollablePage {
 
-        protected scrollableContent: createjs.Container;
+        protected scrollableContent: PIXI.Container;
         protected maxScroll: number = 1700;
         public okButtonAction: () => void;
 

@@ -6,7 +6,7 @@
 
         private time: number;
 
-        private scoreText: createjs.BitmapText;
+        private scoreText: PIXI.extras.BitmapText;
 
         private userData: UserData;
 
@@ -46,11 +46,12 @@
             this.content.addChild(lobby);
 
             // play button
+            /// Check tutorial
             var button = new gameui.ImageButton("BtPlay", () => {
-                if (JoinJelly.userData.getHistory(histories.TUTORIAL))
+           //     if (JoinJelly.userData.getHistory(histories.TUTORIAL))
                     JoinJelly.startLevel();
-                else
-                    JoinJelly.showIntro();
+           //     else
+           //         JoinJelly.showIntro();
             });
             button.y = 1168;
             button.x = 768;
@@ -73,6 +74,7 @@
             //add About button
             var settingsBt = new gameui.ImageButton("DIAStudioIco", () => { JoinJelly.showAbout(); });
             settingsBt.y = 165 / 2;
+            settingsBt.skewY = 45;
             settingsBt.x = defaultWidth - 165 / 2;
             this.header.addChild(settingsBt);
 

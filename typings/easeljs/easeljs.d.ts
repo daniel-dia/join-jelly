@@ -175,7 +175,6 @@ declare module createjs {
         getChildAt(index: number): DisplayObject;
         getChildByName(name: string): DisplayObject;
         getChildIndex(child: DisplayObject): number;
-        getNumChildren(): number;
         getObjectsUnderPoint(x: number, y: number): DisplayObject[];
         getObjectUnderPoint(x: number, y: number): DisplayObject;
         removeAllChildren(): void;

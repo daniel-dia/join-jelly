@@ -1,8 +1,8 @@
 ﻿module joinjelly.menus.view {
 
-    export class PlayerNameOptions extends createjs.Container {
+    export class PlayerNameOptions extends PIXI.Container {
 
-        private playerName: createjs.BitmapText;
+        private playerName: PIXI.extras.BitmapText;
 
         constructor() {
             super();

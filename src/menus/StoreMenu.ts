@@ -5,8 +5,8 @@
         private productsListItems: Array<ProductListItem>;
 
         // objects
-        private loadingBall: createjs.DisplayObject;
-        private StatusText: createjs.BitmapText;
+        private loadingBall: PIXI.DisplayObject;
+        private StatusText: PIXI.extras.BitmapText;
 
         // initialize object
         constructor(previousScreen: gameui.ScreenState) {
@@ -83,7 +83,7 @@
             console.log(JSON.stringify(product))
 
             // add function callback
-            productListItem.addEventListener("buy", (event: createjs.Event) => { Cocoon.Store.purchase(event["productId"]); });
+            productListItem.addEventListener("buy", (event: PIXI.Event) => { Cocoon.Store.purchase(event["productId"]); });
 
             
         }
@@ -250,17 +250,17 @@
     }
 
 
-    class ProductListItem extends createjs.Container {
+    class ProductListItem extends PIXI.Container {
 
 
         private purchaseButton: gameui.Button;
-        private purchasedIcon: createjs.DisplayObject;
-        private loadingIcon: createjs.DisplayObject;
+        private purchasedIcon: PIXI.DisplayObject;
+        private loadingIcon: PIXI.DisplayObject;
 
         constructor(productId: string, name: string, description: string, localizedPrice: string) {
             super();
 
-            var tContainer = new createjs.Container();
+            var tContainer = new PIXI.Container();
 
             // Add Background
             var bg = gameui.AssetsManager.getBitmap("FlyGroup")

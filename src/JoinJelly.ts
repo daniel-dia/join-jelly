@@ -1,5 +1,7 @@
 ﻿var testMode;
-
+window.onload = function () {
+    joinjelly.JoinJelly.init("gameCanvas");
+}
 module joinjelly {
     export class JoinJelly {
 
@@ -25,7 +27,7 @@ module joinjelly {
                 case "pt": StringResources = StringResources_pt; break;
             }
 
-            var fps = 60;
+            var fps = 35;
             if (window.location.search == "?test") {
                 fps = 10;
                 testMode = true;
@@ -94,8 +96,7 @@ module joinjelly {
             this.gameScreen.switchScreen(gs);
             gs.selfPeformanceTest(false);
         }
-
-    
+            
         public static showMainScreen() {
             var transition = { type: "fade", time: 600 };
             if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };

@@ -14,30 +14,26 @@
     <script src="scripts/md5.js"></script>
     <script src="scripts/createjs-2015.05.21.min.js"></script>
     <script src="scripts/movieclip-0.8.1.min.js"></script>
+    <script src="scripts/pixi.js"></script>
+    <script src="scripts/PIXIpatch.js"></script>
 
     <!-- Plataform -->
     <script src="scripts/Plataform.js"></script>
 
     <!-- Assets -->
-    <script src="assets/Manifest.js"></script>
-    <script src="assets/Debussy.js"></script>
-    <script src="assets/DebussyBig.js"></script>
+    <script src="assets/Manifest.js"></script> 
     <script src="assets/Intro3.js"></script>
-
-    <!-- tools -->
-    <script src="scripts/BitmapScalePath.js"></script>
-    <script src="scripts/fontConverter.js"></script>
-
+     
     <!-- Script -->
     <script src="scripts/script.js"></script>
 
     <script>
         window.onload = function () {
-            joinjelly.JoinJelly.init("gameCanvas");
+            joinjelly.JoinJelly.init("gameDiv");
         }
     </script>
 </head>
 <body>
-    <canvas id="gameCanvas" screencanvas="true" width="50" height="50"></canvas>
+    <div id="gameDiv"></div>
 </body>
 </html>

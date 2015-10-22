@@ -1,5 +1,5 @@
 ﻿module joinjelly.gameplay.view {
-    export class LevelIndicator extends createjs.Container {
+    export class LevelIndicator extends PIXI.Container {
 
         public showLevel(levelId: number) {
             var text = gameui.AssetsManager.getBitmapText("level", "debussy")

@@ -27,10 +27,10 @@ module joinjelly.gameplay {
         protected gameMessage: view.TutoralMessage;
 
         // effect 
-        private freezeEffect: createjs.DisplayObject;
-        private evolveEffect: createjs.DisplayObject;
-        private reviveEffect: createjs.DisplayObject;
-        private cleanEffect: createjs.DisplayObject;
+        private freezeEffect: PIXI.DisplayObject;
+        private evolveEffect: PIXI.DisplayObject;
+        private reviveEffect: PIXI.DisplayObject;
+        private cleanEffect: PIXI.DisplayObject;
  
         // #region =================================== initialization ================================================
 
@@ -112,7 +112,7 @@ module joinjelly.gameplay {
         // create a new board
         private createBoard() {
             this.board = new Board(boardSize, boardSize, 1536 / 5, true);
-            this.board.addEventListener("dragging", (e: createjs.MouseEvent) => {
+            this.board.addEventListener("dragging", (e: PIXI.interaction.InteractionEvent) => {
 
                 this.dragged(e["originTile"], e["targetTile"]);
             });
@@ -140,7 +140,7 @@ module joinjelly.gameplay {
             this.footer.addChild(this.gameFooter);
             this.updateFooter();
 
-            this.gameFooter.addEventListener("useitem", (e: createjs.Event) => { this.useItem(e.item) });
+            this.gameFooter.addEventListener("useitem", (e) => { this.useItem(e.item) });
     
           
             // creates a end menu
@@ -506,7 +506,7 @@ module joinjelly.gameplay {
         // finishes the game
         private endGame(message?: string, win?: boolean) {
 
-            this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
+            this.view.setChildIndex(this.footer, this.view.children.length - 1);
 
             this.gamestate = GameState.standBy;
 

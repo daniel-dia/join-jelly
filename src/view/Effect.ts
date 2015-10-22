@@ -1,9 +1,9 @@
 ﻿module joinjelly.view {
 
-    export class Effect extends createjs.Container {
+    export class Effect extends PIXI.Container {
 
         public castSimple() {
-            var fxs = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxJoin");
+            var fxs = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxJoin");
             fxs.regX = 100;
             fxs.regY = 100;
             this.addChild(fxs);
@@ -11,7 +11,7 @@
         }
 
         public castSimpleInv() {
-            var fxs = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxJoin");
+            var fxs = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxJoin");
             fxs.regX = 100;
             fxs.regY = 100;
             this.addChild(fxs);
@@ -22,7 +22,7 @@
         }
 
         public castPart() {
-            var fxp = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
+            var fxp = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxPart");
             fxp.regX = 140;
             fxp.regY = 140;
             fxp.scaleX = fxp.scaleY = 0.2;
@@ -33,7 +33,7 @@
         }
 
         public castParts() {
-            var fxp = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
+            var fxp = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxPart");
             fxp.regX = 140;
             fxp.regY = 140;
             fxp.scaleX = fxp.scaleY = 0.4;
@@ -45,7 +45,7 @@
 
 
         public castPartsInv() {
-            var fx = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
+            var fx = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxPart");
             var src = { regX: 140, regY: 140, scaleX: 4, scaleY: 4, rotation: 360 / 16, alpha: 0 }
             var dst = { scaleX: 0.5, scaleY: 0.5, alpha: 2, rotation: 0 };
             fx.set(src);
@@ -60,7 +60,7 @@
 
  
         public castDistroyEffect() {
-            var fx1 = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
+            var fx1 = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxPart");
             var src = { regX: 140 + Math.random() * 40, regY: 140 + Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 }
             var dst = { scaleX: 2, scaleY: 2, rotation: Math.random() * 360 / 16, alpha: 0 }
             this.addChild(fx1);
@@ -68,7 +68,7 @@
             createjs.Tween.get(fx1).to(dst, 250, createjs.Ease.quadIn).call(() => { this.removeChild(fx1) });
 
         
-            var fx2 = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
+            var fx2 = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxPart");
             var src = { regX: 140 + Math.random() * 40, regY: 140 + Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 }
             var dst = { scaleX: 2, scaleY: 2, rotation: Math.random() * 360 / 16, alpha: 0 }
             this.addChild(fx2);
@@ -76,7 +76,7 @@
             createjs.Tween.get(fx2).to(dst, 350, createjs.Ease.quadIn).call(() => { this.removeChild(fx2) });
 
  
-            var fx3 = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxJoin");
+            var fx3 = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxJoin");
             var src = { regX: 140 , regY: 140 , scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 3 }
             var dst = { scaleX: 3, scaleY: 0, rotation: Math.random() * 360 / 16, alpha: 0 }
             this.addChild(fx3);
@@ -89,21 +89,21 @@
 
 
 
-            var fx = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxPart");
+            var fx = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxPart");
             var src = { regX: 140 + Math.random() * 40, regY: 140 + Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 }
             var dst = { scaleX: 10, scaleY: 10, rotation: Math.random() * 360 / 16, alpha: 0 }
             this.addChild(fx);
             fx.set(src);
             createjs.Tween.get(fx).to(dst, 1000, createjs.Ease.quadIn).call(() => { this.removeChild(fx) });
 
-            var fx = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxJoin");
+            var fx = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxJoin");
             var src = { regX: 140 + Math.random() * 40, regY: 140 + Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 }
             var dst = { scaleX: 10, scaleY: 10, rotation: Math.random() * 360 / 16, alpha: 0 }
             this.addChild(fx);
             fx.set(src);
             createjs.Tween.get(fx).to(dst, 1400, createjs.Ease.quadOut).call(() => { this.removeChild(fx) });
 
-            var fx = <createjs.Bitmap>gameui.AssetsManager.getBitmap("fxJoin");
+            var fx = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxJoin");
             var src = { regX: 140 -Math.random() * 40, regY: 140 - Math.random() * 40, scaleX: 1, scaleY: 1, rotation: 360 / 16, alpha: 4 }
             var dst = { scaleX: 10, scaleY: 10, rotation: Math.random() * 360 / 16, alpha: 0 }
             this.addChild(fx);

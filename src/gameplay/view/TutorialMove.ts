@@ -1,6 +1,6 @@
 ﻿module joinjelly.gameplay.view {
 
-    export class TutorialMove extends createjs.Container {
+    export class TutorialMove extends PIXI.Container {
 
         private fingerUp;
         private fingerDown;

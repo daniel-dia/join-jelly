@@ -1,6 +1,6 @@
 ﻿module joinjelly.menus.view {
 
-    export class JellyPediaItem extends createjs.Container {
+    export class JellyPediaItem extends PIXI.Container {
         constructor(value: number, title: string, description: string) {
             super();
 
@@ -9,7 +9,7 @@
             this.addChild(bg);
 
             // Add Texts
-            var tContainer = new createjs.Container();
+            var tContainer = new PIXI.Container();
             var titleObj = gameui.AssetsManager.getBitmapText(title, "debussyBig");
             var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
             titleObj.y = 30;

@@ -13,8 +13,8 @@ var gameui;
             this.animating = false;
         }
         UIItem.prototype.centralize = function () {
-            this.regX = this.width / 2;
-            this.regY = this.height / 2;
+            this.pivot.x = this.width / 2;
+            this.pivot.y = this.height / 2;
             this.centered = true;
         };
         UIItem.prototype.fadeOut = function (scaleX, scaleY) {
@@ -22,12 +22,12 @@ var gameui;
             if (scaleX === void 0) { scaleX = 0.5; }
             if (scaleY === void 0) { scaleY = 0.5; }
             this.resetFade();
-            if (!this.scaleX)
-                this.scaleX = 1;
-            if (!this.scaleY)
-                this.scaleY = 1;
-            this.oldScaleX = this.scaleX;
-            this.oldScaleY = this.scaleY;
+            if (!this.scale.x)
+                this.scale.x = 1;
+            if (!this.scale.y)
+                this.scale.y = 1;
+            this.oldScaleX = this.scale.x;
+            this.oldScaleY = this.scale.y;
             createjs.Tween.get(this).to({
                 scaleX: scaleX,
                 scaleY: scaleY,
@@ -38,11 +38,11 @@ var gameui;
                 _this.visible = false;
                 _this.x = _this.antX;
                 _this.y = _this.antY;
-                _this.scaleX = _this.oldScaleX;
-                _this.scaleY = _this.oldScaleY;
+                _this.scale.x = _this.oldScaleX;
+                _this.scale.y = _this.oldScaleY;
                 _this.alpha = 1;
                 _this.animating = false;
-                _this.mouseEnabled = true;
+                _this.interactive = true;
                 ;
             });
         };
@@ -50,9 +50,9 @@ var gameui;
             this.animating = true;
             this.antX = this.x;
             this.antY = this.y;
-            this.scaleX = this.oldScaleX;
-            this.scaleY = this.oldScaleY;
-            this.mouseEnabled = false;
+            this.scale.x = this.oldScaleX;
+            this.scale.y = this.oldScaleY;
+            this.interactive = false;
             createjs.Tween.removeTweens(this);
         };
         UIItem.prototype.fadeIn = function (scaleX, scaleY) {
@@ -61,24 +61,24 @@ var gameui;
             if (scaleY === void 0) { scaleY = 0.5; }
             if (this.visible = true)
                 this.antX = null;
-            if (!this.scaleX)
-                this.scaleX = 1;
-            if (!this.scaleY)
-                this.scaleY = 1;
-            this.oldScaleX = this.scaleX;
-            this.oldScaleY = this.scaleY;
+            if (!this.scale.x)
+                this.scale.x = 1;
+            if (!this.scale.y)
+                this.scale.y = 1;
+            this.oldScaleX = this.scale.x;
+            this.oldScaleY = this.scale.y;
             this.visible = true;
             this.animating = true;
             if (this.antX == null) {
                 this.antX = this.x;
                 this.antY = this.y;
             }
-            this.scaleX = scaleX,
-                this.scaleY = scaleY,
+            this.scale.x = scaleX,
+                this.scale.y = scaleY,
                 this.alpha = 0,
                 this.x = this.x;
             this.y = this.y;
-            this.mouseEnabled = false;
+            this.interactive = false;
             createjs.Tween.removeTweens(this);
             createjs.Tween.get(this).to({
                 scaleX: this.oldScaleX,
@@ -88,19 +88,14 @@ var gameui;
                 y: this.antY,
             }, 400, createjs.Ease.quadOut)
                 .call(function () {
-                _this.mouseEnabled = true;
+                _this.interactive = true;
                 _this.animating = false;
             });
         };
         UIItem.prototype.createHitArea = function () {
-            var hit = new createjs.Shape();
-            var b = this.getBounds();
-            if (b)
-                hit.graphics.beginFill("#000").drawRect(b.x, b.y, b.width, b.height);
-            this.hitArea = hit;
         };
         return UIItem;
-    })(createjs.Container);
+    })(PIXI.Container);
     gameui.UIItem = UIItem;
 })(gameui || (gameui = {}));
 var gameui;
@@ -113,7 +108,7 @@ var gameui;
                 this.currentMusic.volume = volume;
             this.musicVolue = volume;
         };
-        AudiosManager.setSoundVeolume = function (volume) {
+        AudiosManager.setSoundVolume = function (volume) {
             this.soundVolume = volume;
         };
         AudiosManager.getMusicVolume = function () {
@@ -129,7 +124,7 @@ var gameui;
         AudiosManager.playMusic = function (name, volume) {
             if (volume === void 0) { volume = 1; }
             if (this.currentMusic) {
-                this.currentMusic.setVolume(volume * this.getMusicVolume());
+                this.currentMusic.setVolume(volume * this.getMusicVolume() * 0.6);
                 if (this.currentMusicName == name)
                     return;
                 this.currentMusic.stop();
@@ -158,28 +153,39 @@ var gameui;
             var _this = this;
             if (path === void 0) { path = ""; }
             this.spriteSheets = spriteSheets ? spriteSheets : new Array();
-            this.bitmapFontSpriteSheetDataArray = this.bitmapFontSpriteSheetDataArray ? this.bitmapFontSpriteSheetDataArray : new Array();
             this.assetsManifest = manifest;
             if (!images)
                 images = new Array();
             if (!this.loader) {
-                this.loader = new createjs.LoadQueue(false);
-                this.loader.installPlugin(createjs.Sound);
-                createjs.Sound.alternateExtensions = ["mp3"];
-                this.loader.addEventListener("complete", function (evt) { if (_this.onComplete)
-                    _this.onComplete(); });
-                this.loader.addEventListener("progress", function (evt) { if (_this.onProgress)
+                this.loader = new PIXI.loaders.Loader(path);
+                this.loader.on("error ", function (evt) { console.log("error " + evt.item.src); });
+                this.loader.on("fileerror ", function (evt) { console.log("ferror " + evt.item.src); });
+                this.loader.on("progress", function (evt) { if (_this.onProgress)
                     _this.onProgress(evt.progress); });
-                this.loader.addEventListener("fileload", function (evt) {
+                this.loader.on("fileload", function (evt) {
                     if (evt.item.type == "image")
                         images[evt.item.id] = evt.result;
                     return true;
                 });
+                this.loader.once("complete", function (loader, resources) {
+                    for (var r in resources)
+                        images[r] = resources[r].texture;
+                    if (_this.onComplete)
+                        _this.onComplete();
+                });
             }
-            this.loader.loadManifest(manifest, true, path);
+            for (var m in manifest) {
+                this.loader.add(manifest[m].id, manifest[m].src);
+            }
         };
-        AssetsManager.loadFontSpriteSheet = function (id, spritesheetData) {
-            this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
+        AssetsManager.load = function () {
+            this.loader.load();
+        };
+        AssetsManager.loadFontSpriteSheet = function (id, fontFile) {
+            this.loader.add(id, fontFile);
+        };
+        AssetsManager.loadSpriteSheet = function (id, fontFile) {
+            this.loader.add(id, fontFile);
         };
         AssetsManager.cleanAssets = function () {
             if (images)
@@ -195,41 +201,44 @@ var gameui;
             return images;
         };
         AssetsManager.getBitmap = function (name) {
-            if (this.spriteSheets)
-                if (this.spriteSheets[name])
-                    return this.getSprite(name, false);
-            var image = this.getLoadedImage(name);
-            if (image) {
-                var imgobj = new createjs.Bitmap(image);
-                imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
+            var texture = this.getLoadedImage(name);
+            if (texture) {
+                var imgobj = new PIXI.Sprite(texture);
+                imgobj.texture.resolution = assetscale;
+                imgobj.interactive = AssetsManager.defaultMouseEnabled;
                 return imgobj;
             }
-            var imgobj = new createjs.Bitmap(name);
-            imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
+            var imgobj = PIXI.Sprite.fromImage(name);
+            imgobj.interactive = AssetsManager.defaultMouseEnabled;
+            imgobj.texture.resolution = assetscale;
             return imgobj;
         };
         AssetsManager.getBitmapText = function (text, bitmapFontId) {
-            var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
-            bitmapText.lineHeight = 100;
-            bitmapText.mouseEnabled = AssetsManager.defaultMouseEnabled;
+            var bitmapText = new PIXI.extras.BitmapText(text, { font: bitmapFontId });
+            bitmapText.maxLineHeight = 100;
+            bitmapText.interactiveChildren = AssetsManager.defaultMouseEnabled;
             return bitmapText;
         };
         AssetsManager.getLoadedImage = function (name) {
             if (this.loader)
-                return this.loader.getResult(name);
+                if (!this.loader.resources[name])
+                    return null;
+            return this.loader.resources[name].texture;
             return null;
         };
-        AssetsManager.getSprite = function (name, play) {
-            if (play === void 0) { play = true; }
-            var data = this.spriteSheets[name];
-            for (var i in data.images)
-                if (typeof data.images[i] == "string")
-                    data.images[i] = this.getLoadedImage(data.images[i]);
-            var spritesheet = new createjs.SpriteSheet(data);
-            var sprite = new createjs.Sprite(spritesheet);
-            if (play)
-                sprite.play();
-            return sprite;
+        AssetsManager.getMovieClip = function (name) {
+            var textures = [];
+            var n2 = function (n) { return n > 9 ? "" + n : "0" + n; };
+            for (var i = 0; i < 999; i++) {
+                var id = name + n2(i);
+                if (!PIXI.utils.TextureCache[id])
+                    break;
+                var texture = PIXI.Texture.fromFrame(id);
+                textures.push(texture);
+            }
+            var mc = new PIXI.extras.MovieClip(textures);
+            mc.play();
+            return mc;
         };
         AssetsManager.defaultMouseEnabled = false;
         return AssetsManager;
@@ -238,32 +247,34 @@ var gameui;
 })(gameui || (gameui = {}));
 var gameui;
 (function (gameui) {
+    var PIXIrenderer;
+    var PIXIstage;
+    var updateFn;
     var GameScreen = (function () {
-        function GameScreen(canvasId, gameWidth, gameHeight, fps, showFps) {
+        function GameScreen(divId, gameWidth, gameHeight, fps, showFps) {
             var _this = this;
             if (fps === void 0) { fps = 60; }
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
-            this.stage = new createjs.Stage(canvasId);
-            createjs.Touch.enable(this.stage);
-            var x = 0;
-            createjs.Ticker.addEventListener("tick", function () { _this.stage.update(); });
+            PIXIstage = new PIXI.Container();
+            PIXIrenderer = PIXI.autoDetectRenderer(gameWidth, gameHeight, { backgroundColor: 0 });
+            var interactionManager = new PIXI.interaction.InteractionManager(PIXIrenderer, { interactionFrequency: 1000 });
             createjs.Ticker.setFPS(fps);
-            this.screenContainer = new createjs.Container();
-            this.stage.addChild(this.screenContainer);
-            if (showFps) {
-                var fpsMeter = new createjs.Text("FPS", " 18px Arial ", "#000");
-                fpsMeter.mouseEnabled = false;
-                fpsMeter.x = 0;
-                fpsMeter.y = 0;
-                this.stage.addChild(fpsMeter);
-                createjs.Ticker.addEventListener("tick", function () {
-                    fpsMeter.text = Math.floor(createjs.Ticker.getMeasuredFPS()) + " FPS";
-                });
-            }
+            document.getElementById(divId).appendChild(PIXIrenderer.view);
+            var x = 0;
+            this.screenContainer = new PIXI.Container();
+            PIXIstage.addChild(this.screenContainer);
             this.resizeGameScreen(window.innerWidth, window.innerHeight);
             window.onresize = function () { _this.resizeGameScreen(window.innerWidth, window.innerHeight); };
+            updateFn = this.update;
+            setInterval(function () {
+                PIXIrenderer.render(PIXIstage);
+            }, 33);
         }
+        GameScreen.prototype.update = function () {
+            PIXIrenderer.render(PIXIstage);
+            requestAnimationFrame(updateFn);
+        };
         GameScreen.prototype.switchScreen = function (newScreen, parameters, transition) {
             var _this = this;
             var oldScreen = this.currentScreen;
@@ -294,16 +305,20 @@ var gameui;
                         break;
                 }
                 if (transition.type && transition.type != "none") {
-                    newScreen.view.mouseEnabled = false;
-                    oldScreen.view.mouseEnabled = false;
-                    newScreen.view.set({ alpha: alpha, x: -x, y: -y });
-                    oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
+                    newScreen.view.interactive = false;
+                    oldScreen.view.interactive = false;
+                    newScreen.view.alpha = alpha;
+                    newScreen.view.x = -x;
+                    newScreen.view.y = -y;
+                    oldScreen.view.alpha = 1;
+                    oldScreen.view.x = 0;
+                    oldScreen.view.y = 0;
                     createjs.Tween.get(oldScreen.view).to({ alpha: 1, x: x, y: y }, transition.time, createjs.Ease.quadInOut);
                     createjs.Tween.get(newScreen.view).to({ alpha: 1, x: 0, y: 0 }, transition.time, createjs.Ease.quadInOut).call(function () {
-                        oldScreen.view.set({ 1: alpha, x: 0, y: 0 });
-                        newScreen.view.set({ 1: alpha, x: 0, y: 0 });
-                        newScreen.view.mouseEnabled = true;
-                        oldScreen.view.mouseEnabled = true;
+                        oldScreen.view.set({ alpha: 0, x: 0, y: 0 });
+                        newScreen.view.set({ alpha: 1, x: 0, y: 0 });
+                        newScreen.view.interactive = true;
+                        oldScreen.view.interactive = true;
                         _this.removeOldScreen(oldScreen);
                         oldScreen = null;
                     });
@@ -332,8 +347,7 @@ var gameui;
                     deviceWidth = this.defaultWidth * s;
                 }
             }
-            this.stage.canvas.width = deviceWidth;
-            this.stage.canvas.height = deviceHeight;
+            PIXIrenderer.resize(deviceWidth, deviceHeight);
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
         };
         GameScreen.prototype.sendBackButtonEvent = function () {
@@ -420,68 +434,14 @@ var gameui;
 })(gameui || (gameui = {}));
 var gameui;
 (function (gameui) {
-    var Label = (function (_super) {
-        __extends(Label, _super);
-        function Label(text, font, color) {
-            if (text === void 0) { text = ""; }
-            if (font === void 0) { font = "600 90px Myriad Pro"; }
-            if (color === void 0) { color = "#82e790"; }
-            _super.call(this);
-            text = text.toUpperCase();
-            this.textField = new createjs.Text(text, font, color);
-            this.textField.textBaseline = "middle";
-            this.textField.textAlign = "center";
-            this.addChild(this.textField);
-        }
-        return Label;
-    })(gameui.UIItem);
-    gameui.Label = Label;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
-    var MenuContainer = (function (_super) {
-        __extends(MenuContainer, _super);
-        function MenuContainer(width, height, flowHorizontal) {
-            if (width === void 0) { width = null; }
-            if (height === void 0) { height = null; }
-            if (flowHorizontal === void 0) { flowHorizontal = false; }
-            if (!flowHorizontal)
-                _super.call(this, 1, 0, width, height, 0, flowHorizontal);
-            else
-                _super.call(this, 0, 1, width, height, 0, flowHorizontal);
-        }
-        MenuContainer.prototype.addLabel = function (text) {
-            var textObj;
-            textObj = new gameui.Label(text);
-            this.addObject(textObj);
-            return textObj.textField;
-        };
-        MenuContainer.prototype.addButton = function (text, event) {
-            if (event === void 0) { event = null; }
-            var buttonObj = new gameui.TextButton(text, null, null, null, event);
-            this.addObject(buttonObj);
-            return buttonObj;
-        };
-        MenuContainer.prototype.addOutButton = function (text, event) {
-            if (event === void 0) { event = null; }
-            var buttonObj = new gameui.TextButton(text, null, null, null, event);
-            this.addObject(buttonObj);
-            return buttonObj;
-        };
-        return MenuContainer;
-    })(gameui.Grid);
-    gameui.MenuContainer = MenuContainer;
-})(gameui || (gameui = {}));
-var gameui;
-(function (gameui) {
     var ScreenState = (function () {
         function ScreenState() {
-            this.view = new createjs.Container();
-            this.content = new createjs.Container();
-            this.overlay = new createjs.Container();
-            this.header = new createjs.Container();
-            this.footer = new createjs.Container();
-            this.background = new createjs.Container();
+            this.view = new PIXI.Container();
+            this.content = new PIXI.Container();
+            this.overlay = new PIXI.Container();
+            this.header = new PIXI.Container();
+            this.footer = new PIXI.Container();
+            this.background = new PIXI.Container();
             this.view.addChild(this.background);
             this.view.addChild(this.content);
             this.view.addChild(this.footer);
@@ -511,18 +471,13 @@ var gameui;
                 this.background.y = headerY;
                 if (false) {
                     this.background.x = -(width * scale - width) / 2;
-                    this.background.scaleX = this.background.scaleY = scale;
+                    this.background.scale.x = this.background.scale.y = scale;
                 }
                 else {
                     this.background.x = 0;
                     this.background.scaleY = scale;
                 }
             }
-            var mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, -(heigth - defaultHeight) / 2, width, heigth));
-            this.background.mask = mask;
-            this.footer.mask = mask;
-            this.header.mask = mask;
-            this.content.mask = mask;
         };
         return ScreenState;
     })();
@@ -543,42 +498,53 @@ var gameui;
 (function (gameui) {
     var Button = (function (_super) {
         __extends(Button, _super);
-        function Button(soundId) {
+        function Button(event, soundId) {
             var _this = this;
             _super.call(this);
             this.enableAnimation = true;
-            this.mouse = false;
-            this.addEventListener("mousedown", function (event) { _this.onPress(event); });
-            this.addEventListener("pressup", function (event) { _this.onPressUp(event); });
-            this.addEventListener("mouseover", function () { _this.mouse = true; });
-            this.addEventListener("mouseout", function () { _this.mouse = false; });
+            this.pressed = false;
+            this.event = event;
+            this.interactive = true;
+            this.interactiveChildren = true;
+            if (event) {
+                this.on("click", this.event);
+                this.on("tap", this.event);
+            }
+            this.on("mousedown", function (event) { _this.onPress(event); });
+            this.on("touchstart", function (event) { _this.onPress(event); });
+            this.on("touchend", function (event) { _this.onOut(event); });
+            this.on("mouseup", function (event) { _this.onOut(event); });
+            this.on("mouseupoutside", function (event) { _this.onOut(event); });
+            this.on("touchendoutside", function (event) { _this.onOut(event); });
             this.soundId = soundId;
         }
         Button.setDefaultSoundId = function (soundId) {
             this.DefaultSoundId = soundId;
         };
         Button.prototype.returnStatus = function () {
-            if (!this.mouse) {
-                this.scaleX = this.originalScaleX;
-                this.scaleY = this.originalScaleY;
+            if (!this.pressed) {
+                this.scale.x = this.originalScaleX;
+                this.scale.y = this.originalScaleY;
             }
         };
-        Button.prototype.onPressUp = function (Event) {
-            this.mouse = false;
-            this.set({ scaleX: this.originalScaleX * 1.1, scaleY: this.originalScaleY * 1.1 });
-            createjs.Tween.get(this).to({ scaleX: this.originalScaleX, scaleY: this.originalScaleY }, 200, createjs.Ease.backOut);
+        Button.prototype.onOut = function (Event) {
+            if (this.pressed) {
+                this.pressed = false;
+                this.set({ scaleX: this.originalScaleX * 1.1, scaleY: this.originalScaleY * 1.1 });
+                createjs.Tween.get(this).to({ scaleX: this.originalScaleX, scaleY: this.originalScaleY }, 200, createjs.Ease.backOut);
+            }
         };
         Button.prototype.onPress = function (Event) {
             var _this = this;
+            this.pressed = true;
             if (!this.enableAnimation)
                 return;
-            this.mouse = true;
             if (this.originalScaleX == null) {
                 this.originalScaleX = this.scaleX;
                 this.originalScaleY = this.scaleY;
             }
             createjs.Tween.get(this).to({ scaleX: this.originalScaleX * 1.1, scaleY: this.originalScaleY * 1.1 }, 500, createjs.Ease.elasticOut).call(function () {
-                if (!_this.mouse) {
+                if (!_this.pressed) {
                     createjs.Tween.get(_this).to({ scaleX: _this.originalScaleX, scaleY: _this.originalScaleY }, 300, createjs.Ease.backOut);
                 }
             });
@@ -597,9 +563,7 @@ var gameui;
         __extends(ImageButton, _super);
         function ImageButton(image, event, soundId) {
             var _this = this;
-            _super.call(this, soundId);
-            if (event != null)
-                this.addEventListener("click", event);
+            _super.call(this, event, soundId);
             if (image != null) {
                 this.background = gameui.AssetsManager.getBitmap(image);
                 this.addChildAt(this.background, 0);
@@ -614,8 +578,8 @@ var gameui;
         ImageButton.prototype.centralizeImage = function () {
             this.width = this.background.getBounds().width;
             this.height = this.background.getBounds().height;
-            this.background.regX = this.width / 2;
-            this.background.regY = this.height / 2;
+            this.background.pivot.x = this.width / 2;
+            this.background.pivot.y = this.height / 2;
             this.centered = true;
         };
         return ImageButton;
@@ -627,12 +591,10 @@ var gameui;
             if (text === void 0) { text = ""; }
             _super.call(this, background, event, soundId);
             text = text.toUpperCase();
-            this.text = new createjs.Text(text, font, color);
-            this.text.textBaseline = "middle";
-            this.text.textAlign = "center";
+            this.text = new PIXI.Text(text, { font: font, fill: color, align: "center", textBaseline: "middle" });
             if (background == null) {
-                this.width = this.text.getMeasuredWidth() * 1.5;
-                this.height = this.text.getMeasuredHeight() * 1.5;
+                this.width = this.text.getBounds().width * 1.5;
+                this.height = this.text.getBounds().height * 1.5;
             }
             this.addChild(this.text);
             this.createHitArea();
@@ -648,46 +610,105 @@ var gameui;
             text = text.toUpperCase();
             this.bitmapText = gameui.AssetsManager.getBitmapText(text, bitmapFontId);
             this.addChild(this.bitmapText);
-            this.bitmapText.regX = this.bitmapText.getBounds().width / 2;
-            this.bitmapText.regY = this.bitmapText.lineHeight / 2;
+            this.bitmapText.pivot.x = this.bitmapText.textWidth / 2;
+            this.bitmapText.pivot.y = this.bitmapText.textHeight / 2;
             this.createHitArea();
         }
         return BitmapTextButton;
     })(ImageButton);
     gameui.BitmapTextButton = BitmapTextButton;
-    var IconButton = (function (_super) {
-        __extends(IconButton, _super);
-        function IconButton(icon, text, font, color, background, event, soundId) {
+    var IconTextButton = (function (_super) {
+        __extends(IconTextButton, _super);
+        function IconTextButton(icon, text, font, color, background, event, soundId, align) {
             var _this = this;
             if (icon === void 0) { icon = ""; }
             if (text === void 0) { text = ""; }
             if (font === void 0) { font = null; }
-            if (text != "")
-                text = " " + text;
+            if (align === void 0) { align = "center"; }
+            this.align = align;
             _super.call(this, text, font, color, background, event, soundId);
             this.icon = gameui.AssetsManager.getBitmap(icon);
             this.addChild(this.icon);
-            this.text.textAlign = "left";
+            this.text.style.align = "left";
             if (this.icon.getBounds())
-                this.icon.regY = this.icon.getBounds().height / 2;
+                this.icon.pivot.y = this.icon.getBounds().height / 2;
             else if (this.icon["image"])
                 this.icon["image"].onload = function () {
-                    _this.icon.regY = _this.icon.getBounds().height / 2;
+                    _this.icon.pivot.y = _this.icon.getBounds().height / 2;
                 };
             this.updateLabel(text);
             this.createHitArea();
         }
-        IconButton.prototype.updateLabel = function (value) {
+        IconTextButton.prototype.updateLabel = function (value) {
             this.text.text = value;
-            if (this.icon.getBounds()) {
-                this.icon.x = -(this.icon.getBounds().width + 10 + this.text.getMeasuredWidth()) / 2;
-                this.text.x = this.icon.x + this.icon.getBounds().width + 10;
+            if (!this.icon.getBounds())
+                return;
+            switch (this.align) {
+                case "center":
+                    this.icon.x = -(this.icon.getBounds().width + 10 + this.text.getBounds().width) / 2;
+                    this.text.x = this.icon.x + this.icon.getBounds().width + 10;
+                    break;
+                case "left":
+                    this.icon.x = -this.width / 2 + 80;
+                    this.text.x = -this.width / 2 + 80 + this.icon.getBounds().width + 100;
+                    break;
             }
         };
-        IconButton.prototype.centralizeIcon = function () {
+        IconTextButton.prototype.centralizeIcon = function () {
         };
-        return IconButton;
+        return IconTextButton;
     })(TextButton);
+    gameui.IconTextButton = IconTextButton;
+    var IconBitmapTextButton = (function (_super) {
+        __extends(IconBitmapTextButton, _super);
+        function IconBitmapTextButton(icon, text, font, background, event, soundId, align) {
+            var _this = this;
+            if (icon === void 0) { icon = ""; }
+            if (text === void 0) { text = ""; }
+            if (font === void 0) { font = null; }
+            if (align === void 0) { align = "center"; }
+            this.align = align;
+            _super.call(this, text, font, background, event, soundId);
+            this.icon = gameui.AssetsManager.getBitmap(icon);
+            this.addChild(this.icon);
+            if (this.icon.getBounds())
+                this.icon.pivot.y = this.icon.getBounds().height / 2;
+            else if (this.icon["image"])
+                this.icon["image"].onload = function () {
+                    _this.icon.pivot.y = _this.icon.getBounds().height / 2;
+                };
+            this.updateLabel(text);
+            this.createHitArea();
+        }
+        IconBitmapTextButton.prototype.updateLabel = function (value) {
+            this.bitmapText.text = value;
+            if (!this.icon.getBounds())
+                return;
+            switch (this.align) {
+                case "center":
+                    this.icon.x = -(this.icon.getBounds().width + 10 + this.bitmapText.getBounds().width) / 2;
+                    this.bitmapText.x = this.icon.x + this.icon.getBounds().width + 10;
+                    break;
+                case "left":
+                    this.icon.x = -this.width / 2 + 80;
+                    this.bitmapText.pivot.x = 0;
+                    this.bitmapText.x = -this.width / 2 + 80 + this.icon.getBounds().width + 100;
+                    break;
+            }
+        };
+        IconBitmapTextButton.prototype.centralizeIcon = function () {
+        };
+        return IconBitmapTextButton;
+    })(BitmapTextButton);
+    gameui.IconBitmapTextButton = IconBitmapTextButton;
+    var IconButton = (function (_super) {
+        __extends(IconButton, _super);
+        function IconButton(icon, background, event, soundId) {
+            if (icon === void 0) { icon = ""; }
+            _super.call(this, icon, "", "", 0xFFFFFF, background, event, soundId);
+        }
+        return IconButton;
+    })(IconTextButton);
     gameui.IconButton = IconButton;
 })(gameui || (gameui = {}));
 var joinjelly;
@@ -1089,13 +1110,11 @@ var joinjelly;
         };
         ScrollablePage.prototype.addScrollableArea = function () {
             var _this = this;
-            var scrollContent = new createjs.Container();
-            var ScrollArea = new createjs.Container();
+            var scrollContent = new PIXI.Container();
+            var ScrollArea = new PIXI.Container();
             this.content.addChild(ScrollArea);
             ScrollArea.addChild(scrollContent);
             this.scrollableContent = scrollContent;
-            var mask = new createjs.Shape(new createjs.Graphics().f("rgb(254,254,254)").p("EALkCFSYAAomAAocAAomYAAgUAKgUAAgUYAAjwgKjwAKj6YAKi+AKi+AAi+YAKjwAKjmAKjwYAKiMAKiWAKiMYAylUB4lADIkiYEYmaFykEH0hQYDcgeDcgeDcgeYAKAAAAAAAKAAYAAAogKAoAAAoYAABuAKBkgKBuYgKC0AACqAAC0YgKCMA8BuBuBaYBkBQB4AUB4AAcArmAAAArmAAAArmAAAYAUAAAKAAAUAAYEOgKC+i+gKkOYAAiCAAh4AAh4YgKi+gKi+AAi+YAeAAAeAAAeAAYAKAAAKAKAUAAYDSAUDIAeDSAoYFUA8EiCgDwDwYCgCqCCDIBkDcYBuDmBGDwAUEEYAKCCAKB4AACCYAKDwAKDwAUDwYAABQgKBQAUBQYAAA8AAAyAAA8YgKAyAAA8AAAyYgKIIAKH+gKIIYAACqAACqAAC0YgKD6gKD6AAD6YgKC0AAC0AAC0YgUGQgKGGgKGQYgKC+gKDIAAC+YgUEigKEsgKEiYgKCqgKCqgKCqYgKD6gKDwgKD6YgKDcgUDcgKDmYgKDSgKDSgKDSYgKDcgUDcgKDcYgKC+gKDIgKC+YgKCWAACWgyCMYgoB4geB4gyB4YiWFKjIEYkYDcYjSCgjmBukYAKYi0AKi+AKi+AKYjSAKjSAAjSAKYiMAKiMgKiMAKYi0AKi0AAi0AAYnCAAnCAUnMgKYhaAAhQAAhaAAYgUAAgUAAgUAKYywAAy6AAywAAYgUAAgKgKgUAAYlyAAlyAAlygKYiCAAiCAAiCgKYkEAAkOgKkEgKYiqgKigAAiqgKYg8AAhGgKhGgUYjwg8i+iCi0igYiWiMhuiWhuigYiMjmhaj6g8kEYgeh4AKh4gKh4YgKjSgKjSgKjSYgUjmgKjwgKjmYgKkEgKj6gKkEYgKk2gUk2gKk2YgKjmAAjcgKjmYgKmkgUmkgKmkYgKlKAAlKgKlUYAAj6gKkEAAj6YAAjSAAjcAAjSYAAgUgKgKAAgU").cp().ef());
-            ScrollArea.mask = mask;
             var targetY = 0;
             var last;
             this.content.addEventListener("pressmove", function (evt) {
@@ -1140,34 +1159,59 @@ var joinjelly;
             function Loading() {
                 var _this = this;
                 _super.call(this);
-                var audioPath = "assets/sounds/";
-                var imagePath = "assets/images/";
+                PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(fnt))$/;
                 assetscale = 1;
                 if (window.innerWidth <= 1070)
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
-                imagePath = "assets/images_" + assetscale + "x/";
-                if (!testMode && typeof WPAudioManager == 'undefined') {
-                    createjs.Sound.alternateExtensions = ["mp3"];
-                    createjs.Sound.registerSounds(audioManifest, audioPath);
-                }
+                var imagePath = "assets/images@" + assetscale + "x/";
+                var audioPath = "assets/sound/";
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
-                gameui.AssetsManager.loadFontSpriteSheet("debussy", createSpriteSheetFromFont(debussyFont, imagePath));
-                gameui.AssetsManager.loadFontSpriteSheet("debussyBig", createSpriteSheetFromFont(debussyFontBig, imagePath));
-                gameui.AssetsManager.onProgress = function (progress) { loadinBar.update(progress); };
-                gameui.AssetsManager.onComplete = function () { if (_this.loaded)
-                    _this.loaded(); };
-                this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
+                gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig.fnt");
+                gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy.fnt");
+                gameui.AssetsManager.load();
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
-                var loadinBar = new menus.view.LoadingBar(imagePath);
+                var loadinBar = new LoadingBar(imagePath);
                 this.content.addChild(loadinBar);
                 loadinBar.x = defaultWidth / 2;
                 loadinBar.y = defaultHeight / 2;
+                gameui.AssetsManager.onProgress = function (progress) {
+                    loadinBar.update(progress);
+                };
+                gameui.AssetsManager.onComplete = function () {
+                    if (_this.loaded)
+                        _this.loaded();
+                };
+                this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
             }
             return Loading;
         })(gameui.ScreenState);
         menus.Loading = Loading;
+        var LoadingBar = (function (_super) {
+            __extends(LoadingBar, _super);
+            function LoadingBar(imagePath) {
+                _super.call(this);
+                var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
+                var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
+                this.addChild(bg);
+                this.addChild(bar);
+                var w = 795;
+                var h = 104;
+                bar.pivot.x = Math.floor(bg.pivot.x = w / 2);
+                bar.pivot.y = Math.floor(bg.pivot.y = h / 2);
+                this.barMask = new PIXI.Graphics().beginFill(0xFF0000, 1).drawRect(0, -h / 2, w, h).endFill();
+                ;
+                this.barMask.x = -w / 2;
+                bar.mask = this.barMask;
+                this.addChild(this.barMask);
+                this.update(0);
+            }
+            LoadingBar.prototype.update = function (value) {
+                this.barMask.scale.x = value / 100;
+            };
+            return LoadingBar;
+        })(PIXI.Container);
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
@@ -1199,10 +1243,7 @@ var joinjelly;
             lobby.y = 1000;
             this.content.addChild(lobby);
             var button = new gameui.ImageButton("BtPlay", function () {
-                if (joinjelly.JoinJelly.userData.getHistory(histories.TUTORIAL))
-                    joinjelly.JoinJelly.startLevel();
-                else
-                    joinjelly.JoinJelly.showIntro();
+                joinjelly.JoinJelly.startLevel();
             });
             button.y = 1168;
             button.x = 768;
@@ -1221,6 +1262,7 @@ var joinjelly;
             var space = 250;
             var settingsBt = new gameui.ImageButton("DIAStudioIco", function () { joinjelly.JoinJelly.showAbout(); });
             settingsBt.y = 165 / 2;
+            settingsBt.skewY = 45;
             settingsBt.x = defaultWidth - 165 / 2;
             this.header.addChild(settingsBt);
             var settingsBt = new gameui.ImageButton("BtMenu", function () {
@@ -1268,18 +1310,25 @@ var joinjelly;
         __extends(Jellypedia, _super);
         function Jellypedia(userData, jellyInfos) {
             _super.call(this, StringResources.menus.jellypedia);
-            var itensContainer = new createjs.Container();
+            var itensContainer = new PIXI.Container();
             this.scrollableContent.addChild(itensContainer);
             itensContainer.y = 400;
             var index = 0;
             for (var j = 1; j <= joinjelly.JoinJelly.maxJelly; j *= 2) {
-                if (j <= Math.max(1, userData.getLastJelly()))
+                if (j <= Math.max(1, userData.getLastJelly())) {
                     var pi = new joinjelly.menus.view.JellyPediaItem(j, jellyInfos[j].name, jellyInfos[j].description);
-                else
+                    itensContainer.addChild(pi);
+                    pi.mouseEnabled = false;
+                    pi.y = 500 * index;
+                    pi.x = 150;
+                }
+                else {
                     var pi = new joinjelly.menus.view.JellyPediaItem(0, "?", "");
-                itensContainer.addChild(pi);
-                pi.y = 500 * index;
-                pi.x = 150;
+                    itensContainer.addChild(pi);
+                    pi.mouseEnabled = false;
+                    pi.y = 500 * index;
+                    pi.x = 150;
+                }
                 index++;
             }
             this.maxScroll = 7300;
@@ -1337,7 +1386,7 @@ var joinjelly;
                     }
                 };
                 return GameTitle;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.GameTitle = GameTitle;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
@@ -1402,7 +1451,7 @@ var joinjelly;
                     gameui.AudiosManager.playSound('sound_s' + (Math.floor(Math.random() * 3) + 1), null, 400);
                 };
                 return JellyLobby;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.JellyLobby = JellyLobby;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
@@ -1437,8 +1486,6 @@ var joinjelly;
                     dk.x = -defaultWidth / 2;
                     dk.y = -defaultHeight / 2;
                     dk.mouseEnabled = true;
-                    var rec = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 192, 256));
-                    dk.hitArea = rec;
                     var bg = gameui.AssetsManager.getBitmap("FlyBG");
                     bg.set({ x: defaultWidth / 2, y: 557, regX: 1305 / 2 });
                     bg.scaleY = heigth / 1022;
@@ -1480,7 +1527,7 @@ var joinjelly;
                     gameui.AudiosManager.playSound("Interface Sound-15");
                 };
                 return FlyOutMenu;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.FlyOutMenu = FlyOutMenu;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
@@ -1497,7 +1544,7 @@ var joinjelly;
                     _super.call(this);
                     var bg = gameui.AssetsManager.getBitmap("pediaItem");
                     this.addChild(bg);
-                    var tContainer = new createjs.Container();
+                    var tContainer = new PIXI.Container();
                     var titleObj = gameui.AssetsManager.getBitmapText(title, "debussyBig");
                     var descriptionObj = gameui.AssetsManager.getBitmapText(description, "debussy");
                     titleObj.y = 30;
@@ -1515,7 +1562,7 @@ var joinjelly;
                     this.addChild(j);
                 }
                 return JellyPediaItem;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.JellyPediaItem = JellyPediaItem;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
@@ -1717,7 +1764,7 @@ var joinjelly;
             function ProductListItem(productId, name, description, localizedPrice) {
                 var _this = this;
                 _super.call(this);
-                var tContainer = new createjs.Container();
+                var tContainer = new PIXI.Container();
                 var bg = gameui.AssetsManager.getBitmap("FlyGroup");
                 bg.x = 232;
                 bg.y = 27;
@@ -1852,7 +1899,7 @@ var joinjelly;
                 this.purchaseButton.fadeOut();
             };
             return ProductListItem;
-        })(createjs.Container);
+        })(PIXI.Container);
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
@@ -1995,10 +2042,10 @@ var joinjelly;
                         this.soundBtOff.fadeIn();
                     }
                     joinjelly.JoinJelly.userData.setSoundVol(value);
-                    gameui.AudiosManager.setSoundVeolume(value ? 1 : 0);
+                    gameui.AudiosManager.setSoundVolume(value ? 1 : 0);
                 };
                 return SoundOptions;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.SoundOptions = SoundOptions;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
@@ -2011,8 +2058,8 @@ var joinjelly;
             __extends(JellyContainer, _super);
             function JellyContainer() {
                 _super.call(this);
-                this.shadowContainer = new createjs.Container();
-                this.imageContainer = new createjs.Container();
+                this.shadowContainer = new PIXI.Container();
+                this.imageContainer = new PIXI.Container();
                 this.addChild(this.shadowContainer);
                 this.addChild(this.imageContainer);
             }
@@ -2190,7 +2237,7 @@ var joinjelly;
                 });
             };
             return JellyContainer;
-        })(createjs.Container);
+        })(PIXI.Container);
         view.JellyContainer = JellyContainer;
     })(view = joinjelly.view || (joinjelly.view = {}));
 })(joinjelly || (joinjelly = {}));
@@ -2228,7 +2275,7 @@ var joinjelly;
                 });
             }
             return LoadingBall;
-        })(createjs.Container);
+        })(PIXI.Container);
         view.LoadingBall = LoadingBall;
     })(view = joinjelly.view || (joinjelly.view = {}));
 })(joinjelly || (joinjelly = {}));
@@ -2260,7 +2307,7 @@ var joinjelly;
                     var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
                     levelBar.x = 372;
                     levelBar.y = 207;
-                    levelBar.mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 939, 57));
+                    levelBar.mask = (new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 939, 57));
                     levelBar.mask.x = 372;
                     levelBar.mask.y = 207;
                     this.levelBar = levelBar;
@@ -2342,7 +2389,7 @@ var joinjelly;
                     createjs.Tween.get(this.levelIcon).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
                 };
                 return GameHeader;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.GameHeader = GameHeader;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
@@ -2382,7 +2429,7 @@ var joinjelly;
                     this.imageContainer.addChild(img);
                 };
                 Jelly.prototype.createEyes = function (value) {
-                    var eye = new createjs.Container();
+                    var eye = new PIXI.Container();
                     var eyeImg = gameui.AssetsManager.getBitmap("e" + this.getAssetIdByValue(value));
                     eyeImg.regY = 20;
                     createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
@@ -2512,7 +2559,7 @@ var joinjelly;
                     ;
                 };
                 return LevelIndicator;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.LevelIndicator = LevelIndicator;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
@@ -2695,7 +2742,7 @@ var joinjelly;
                     this.initializeObjects();
                 }
                 TimeBar.prototype.initializeObjects = function () {
-                    var percentBar = new createjs.Container();
+                    var percentBar = new PIXI.Container();
                     var bar = gameui.AssetsManager.getBitmap("time_bar");
                     var bright = gameui.AssetsManager.getBitmap("time_bar_bright");
                     var red = gameui.AssetsManager.getBitmap("time_bar_red");
@@ -2707,8 +2754,8 @@ var joinjelly;
                     this.addChild(red);
                     percentBar.addChild(bright);
                     this.addChild(percentBar);
-                    var shape = new createjs.Shape();
-                    shape.graphics.beginFill("red").drawRect(0, 0, 991, 35);
+                    var shape = new PIXI.Graphics();
+                    shape.beginFill(0xFF0000).drawRect(0, 0, 991, 35);
                     this.percentBarMask = shape;
                     percentBar.mask = this.percentBarMask;
                 };
@@ -2730,7 +2777,7 @@ var joinjelly;
                 TimeBar.prototype.setAlarmOn = function () { this.redFx.visible = true; };
                 TimeBar.prototype.setAlarmOff = function () { this.redFx.visible = false; };
                 return TimeBar;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.TimeBar = TimeBar;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
@@ -2749,7 +2796,8 @@ var joinjelly;
                     this.addPoints();
                     this.addLastJelly();
                     this.addButtons();
-                    this.specialOffer = new createjs.Container().set({ x: defaultWidth / 2, y: 2050 });
+                    this.specialOffer = new PIXI.Container();
+                    this.specialOffer.set({ x: defaultWidth / 2, y: 2050 });
                     this.addChild(this.specialOffer);
                 }
                 FinishMenu.prototype.addButtons = function () {
@@ -2771,7 +2819,7 @@ var joinjelly;
                     this.addChild(restart);
                 };
                 FinishMenu.prototype.addPoints = function () {
-                    var container = new createjs.Container();
+                    var container = new PIXI.Container();
                     var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
                     bg.set({ x: defaultWidth / 2, y: 565, regX: 1056 / 2 });
                     container.addChild(bg);
@@ -2789,7 +2837,7 @@ var joinjelly;
                     return container;
                 };
                 FinishMenu.prototype.addLastJelly = function () {
-                    var container = new createjs.Container();
+                    var container = new PIXI.Container();
                     this.addChild(container);
                     var bg = gameui.AssetsManager.getBitmap("GameOverBgJelly");
                     bg.set({ x: defaultWidth / 2, y: 951, regX: 797 / 2 });
@@ -2956,7 +3004,7 @@ var joinjelly;
                     this.visible = false;
                 };
                 return TutorialMove;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.TutorialMove = TutorialMove;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
@@ -2971,7 +3019,11 @@ var joinjelly;
                 __extends(TutoralMessage, _super);
                 function TutoralMessage() {
                     var _this = this;
-                    _super.call(this);
+                    _super.call(this, function () {
+                        _this.fadeOut();
+                        _this.dispatchEvent("closed");
+                        gameui.AudiosManager.playSound("Interface Sound-15");
+                    });
                     this.addChild(gameui.AssetsManager.getBitmap("ballon"));
                     this.visible = false;
                     this.regX = 316;
@@ -2985,12 +3037,6 @@ var joinjelly;
                     t.y = 50;
                     this.bitmapText = t;
                     t.mouseEnabled = false;
-                    this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(-this.x + this.regX, -this.y + this.regY, defaultWidth, defaultHeight));
-                    this.addEventListener("click", function () {
-                        _this.fadeOut();
-                        _this.dispatchEvent("closed");
-                        gameui.AudiosManager.playSound("Interface Sound-15");
-                    });
                 }
                 TutoralMessage.prototype.show = function (text) {
                     this.bitmapText.text = text;
@@ -3017,9 +3063,8 @@ var joinjelly;
                 this.boardHeight = boardHeight;
                 this.boardWidth = boardWidth;
                 this.tileSize = tileSize;
-                this.tilesContainer = new createjs.Container();
+                this.tilesContainer = new PIXI.Container();
                 this.addChild(this.tilesContainer);
-                this.tilesContainer.hitArea = new createjs.Shape(new createjs.Graphics().f("red").r(0, 0, boardWidth * tileSize, (boardHeight + 0.5) * tileSize));
                 this.addTiles(boardWidth, boardHeight, tileSize, img);
                 this.addMouseEvents(tileSize);
                 this.regX = (boardWidth * tileSize / 2);
@@ -3055,7 +3100,7 @@ var joinjelly;
                         _this.touchDictionary[e.pointerID] = tile;
                         touchOffset[e.pointerID] = { x: tile.x - e.localX, y: tile.y - e.localY };
                         tile.drag();
-                        _this.tilesContainer.setChildIndex(tile, _this.tilesContainer.getNumChildren() - 1);
+                        _this.tilesContainer.setChildIndex(tile, _this.tilesContainer.children.length - 1);
                         gameui.AudiosManager.playSound('soundh_1');
                     }
                 });
@@ -3074,7 +3119,7 @@ var joinjelly;
                         if (target && target.name.toString() != tile.name) {
                             if (target.isUnlocked()) {
                                 var x = { origin: tile, target: target };
-                                var ev = new createjs.Event("dragging", false, false);
+                                var ev = new PIXI.Event("dragging", false, false);
                                 ev["originTile"] = tile;
                                 ev["targetTile"] = target;
                                 _this.dispatchEvent(ev);
@@ -3229,7 +3274,7 @@ var joinjelly;
             Board.prototype.unlock = function () { this.tilesContainer.mouseEnabled = true; };
             Board.prototype.arrangeZOrder = function () {
                 for (var t = 0; t < this.tiles.length; t++)
-                    this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.getNumChildren() - 1);
+                    this.tilesContainer.setChildIndex(this.tiles[t], this.tilesContainer.children.length - 1);
             };
             Board.prototype.match = function (origin, target) {
                 this.releaseDrag(origin, true, target);
@@ -3297,7 +3342,7 @@ var joinjelly;
                 this.alarming = alarm;
             };
             return Board;
-        })(createjs.Container);
+        })(PIXI.Container);
         gameplay.Board = Board;
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
@@ -3318,7 +3363,6 @@ var joinjelly;
                 this.jelly.y = tileSize;
                 this.jelly.scaleX = this.jelly.scaleY = this.tileSize / (450);
                 this.addChild(this.jelly);
-                this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("000").drawRect(0, 0, tileSize, tileSize));
             }
             Tile.prototype.release = function () {
                 this.jelly.executeAimationRelease();
@@ -3358,7 +3402,7 @@ var joinjelly;
                 return (this.value == 0);
             };
             return Tile;
-        })(createjs.Container);
+        })(PIXI.Container);
         gameplay.Tile = Tile;
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
@@ -3678,7 +3722,7 @@ var joinjelly;
             };
             GamePlayScreen.prototype.endGame = function (message, win) {
                 var _this = this;
-                this.view.setChildIndex(this.footer, this.view.getNumChildren() - 1);
+                this.view.setChildIndex(this.footer, this.view.children.length - 1);
                 this.gamestate = GameState.standBy;
                 var score = this.score;
                 var highScore = this.userData.getHighScore();
@@ -4477,7 +4521,7 @@ var joinjelly;
 })(joinjelly || (joinjelly = {}));
 var UserData = (function () {
     function UserData() {
-        gameui.AudiosManager.setSoundVeolume(this.getSoundVol());
+        gameui.AudiosManager.setSoundVolume(this.getSoundVol());
         gameui.AudiosManager.setMusicVolume(this.getMusicVol());
     }
     UserData.prototype.setScore = function (score) {
@@ -4606,6 +4650,9 @@ var histories = (function () {
     return histories;
 })();
 var testMode;
+window.onload = function () {
+    joinjelly.JoinJelly.init("gameCanvas");
+};
 var joinjelly;
 (function (joinjelly) {
     var JoinJelly = (function () {
@@ -4624,7 +4671,7 @@ var joinjelly;
                     StringResources = StringResources_pt;
                     break;
             }
-            var fps = 60;
+            var fps = 35;
             if (window.location.search == "?test") {
                 fps = 10;
                 testMode = true;
@@ -4783,7 +4830,6 @@ var joinjelly;
 /// <reference path="src/Message.ts" />
 /// <reference path="src/UserData.ts" />
 /// <reference path="src/JoinJelly.ts" /> 
-//module gameui {
 var defaultWidth = 768 * 2;
 var defaultHeight = 1024 * 2;
 var fbAppId = "1416523228649363";
@@ -4894,7 +4940,7 @@ var joinjelly;
                     }
                 };
                 return CountDown;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.CountDown = CountDown;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
@@ -5002,39 +5048,8 @@ var joinjelly;
                         this.itemsButtons[b].unlock();
                 };
                 return ItemsFooter;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.ItemsFooter = ItemsFooter;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var Message = (function (_super) {
-                __extends(Message, _super);
-                function Message() {
-                    var _this = this;
-                    _super.call(this);
-                    this.addChild(new createjs.Shape(new createjs.Graphics().beginFill("darkGray").beginStroke("black").drawRect(-200, -60, 400, 120)));
-                    var t = new createjs.Text("", "60px Arial", "white");
-                    t.textAlign = "center";
-                    t.textBaseline = "middle";
-                    this.addChild(t);
-                    this.text = t;
-                    this.addEventListener("click", function () {
-                        _this.fadeOut();
-                    });
-                }
-                Message.prototype.showMessage = function (message) {
-                    this.text.text = message;
-                    this.fadeIn();
-                };
-                return Message;
-            })(gameui.Button);
-            view.Message = Message;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
@@ -5073,7 +5088,7 @@ var joinjelly;
                     this.finalPosition = itemId * this.distance;
                     this.initialPosition = (Math.random() + 6) * this.distance * this.items.length;
                     this.listener = function () { _this.tick(); };
-                    createjs.Ticker.addEventListener("tick", this.listener);
+                    PIXI.ticker.Ticker.addEventListener("tick", this.listener);
                     this.timeStart = Date.now();
                 };
                 RandomItemSelector.prototype.tick = function () {
@@ -5096,7 +5111,7 @@ var joinjelly;
                 };
                 RandomItemSelector.prototype.end = function () {
                     var _this = this;
-                    createjs.Ticker.removeEventListener("tick", this.listener);
+                    PIXI.Ticker.removeEventListener("tick", this.listener);
                     var closerObj;
                     for (var i in this.itemsDO)
                         if (!closerObj || Math.abs(this.itemsDO[i].x) < Math.abs(closerObj.x))
@@ -5383,7 +5398,7 @@ var joinjelly;
                     var bg = gameui.AssetsManager.getBitmap("FlyGroup");
                     bg.scaleY = 0.65;
                     this.addChild(bg);
-                    var tContainer = new createjs.Container();
+                    var tContainer = new PIXI.Container();
                     var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
                     var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
                     var scoreObj = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
@@ -5400,42 +5415,8 @@ var joinjelly;
                     this.addChild(tContainer);
                 }
                 return LeaderBoardItem;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.LeaderBoardItem = LeaderBoardItem;
-        })(view = menus.view || (menus.view = {}));
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var view;
-        (function (view) {
-            var LoadingBar = (function (_super) {
-                __extends(LoadingBar, _super);
-                function LoadingBar(imagePath) {
-                    _super.call(this);
-                    var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
-                    var text = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
-                    var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
-                    this.addChild(bg);
-                    this.addChild(text);
-                    this.addChild(bar);
-                    text.regX = text.getBounds().width / 2;
-                    bar.x = -939 / 2 - 40;
-                    bg.regX = 1131 / 2;
-                    text.y = -100;
-                    bar.y = 85;
-                    this.barMask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, bar.y, 939, 57));
-                    this.barMask.x = bar.x;
-                    bar.mask = this.barMask;
-                }
-                LoadingBar.prototype.update = function (value) {
-                    this.barMask.scaleX = value;
-                };
-                return LoadingBar;
-            })(createjs.Container);
-            view.LoadingBar = LoadingBar;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
@@ -5477,7 +5458,7 @@ var joinjelly;
                     playerNameEdit.x = 400;
                 };
                 return PlayerNameOptions;
-            })(createjs.Container);
+            })(PIXI.Container);
             view.PlayerNameOptions = PlayerNameOptions;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
@@ -5743,7 +5724,7 @@ var joinjelly;
                 createjs.Tween.get(fx).to(dst, 1000, createjs.Ease.quadOut).call(function () { _this.removeChild(fx); });
             };
             return Effect;
-        })(createjs.Container);
+        })(PIXI.Container);
         view.Effect = Effect;
     })(view = joinjelly.view || (joinjelly.view = {}));
 })(joinjelly || (joinjelly = {}));

@@ -2,10 +2,10 @@
 
     export class Jelly extends joinjelly.view.JellyContainer {
 
-        private ajoinFx: createjs.DisplayObject;
+        private ajoinFx: PIXI.DisplayObject;
         private effect: joinjelly.view.Effect;
         private currentValue: number;
-        private eyeImg: createjs.DisplayObject;
+        private eyeImg: PIXI.DisplayObject;
 
         private static jellies = [
             "1",
@@ -48,7 +48,7 @@
         }
 
         private createJelly(value: number) {
-            var img = <createjs.Bitmap>gameui.AssetsManager.getBitmap("j" + this.getAssetIdByValue(value));
+            var img = <PIXI.Sprite>gameui.AssetsManager.getBitmap("j" + this.getAssetIdByValue(value));
 
             //centralize
 
@@ -67,8 +67,8 @@
         private createEyes(value: number) {
 
             //add Eyes
-            var eye = new createjs.Container();
-            var eyeImg = <createjs.Bitmap>gameui.AssetsManager.getBitmap("e" + this.getAssetIdByValue(value));
+            var eye = new PIXI.Container();
+            var eyeImg = <PIXI.Sprite>gameui.AssetsManager.getBitmap("e" + this.getAssetIdByValue(value));
             eyeImg.regY = 20;
             createjs.Tween.get(eyeImg, { loop: true }).wait(3000 + Math.random() * 1000).to({ scaleY: 0.2 }, 100).to({ scaleY: 1 }, 100);
             eye.addChild(eyeImg);

@@ -1,7 +1,7 @@
 ﻿module joinjelly {
     export class About extends gameui.ScreenState {
 
-        protected scrollableContent: createjs.Container;
+        protected scrollableContent: PIXI.Container;
         protected maxScroll: number = 1700;
         public okButtonAction: () => void;
 

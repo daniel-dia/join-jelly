@@ -1,20 +1,22 @@
 ﻿module joinjelly.view {
-    export class JellyContainer extends createjs.Container {
+    export class JellyContainer extends PIXI.Container {
 
-        public shadowContainer: createjs.Container;
-        public imageContainer: createjs.Container;
+        public shadowContainer: PIXI.Container;
+        public imageContainer: PIXI.Container;
 
         private state: string;
 
         constructor() {
             super();
-            this.shadowContainer = new createjs.Container();
-            this.imageContainer = new createjs.Container();
+            this.shadowContainer = new PIXI.Container();
+            this.imageContainer = new PIXI.Container();
 
             this.addChild(this.shadowContainer);
             this.addChild(this.imageContainer);
 
         }
+
+     
 
         //#region animations =============================================
 

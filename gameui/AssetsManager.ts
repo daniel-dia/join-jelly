@@ -5,9 +5,8 @@ module gameui {
     // Class
     export class AssetsManager{
 
-        private static loader: createjs.LoadQueue;
+        private static loader: PIXI.loaders.Loader;
         private static spriteSheets: Array<any>;
-        private static bitmapFontSpriteSheetDataArray: Array<createjs.SpriteSheet>;
         private static assetsManifest: Array<any>;
         private static defaultMouseEnabled: boolean = false;
 
@@ -15,14 +14,10 @@ module gameui {
         public static onComplete: () => void;
 
         //load assets
-        public static loadAssets(
-            manifest: Array<any>,
-            path: string= "", 
-            spriteSheets?: Array<any>){
+        public static loadAssets(manifest: Array<any>,path: string= "", spriteSheets?: Array<any>){
 
             // initialize objects
             this.spriteSheets = spriteSheets ? spriteSheets : new Array();
-            this.bitmapFontSpriteSheetDataArray = this.bitmapFontSpriteSheetDataArray ? this.bitmapFontSpriteSheetDataArray: new Array();
             this.assetsManifest = manifest;
 
 
@@ -30,34 +25,53 @@ module gameui {
 		
             if (!this.loader) {
                 //creates a preload queue
-                this.loader = new createjs.LoadQueue(false);
+                this.loader = new PIXI.loaders.Loader(path);
 
-				//install sound plug-in for sounds format
-                this.loader.installPlugin(createjs.Sound);
-				createjs.Sound.alternateExtensions = ["mp3"];
+			///Check	//install sound plug-in for sounds format
+                ///this.loader.installPlugin(createjs.Sound);
+				///createjs.Sound.alternateExtensions = ["mp3"];
 
                 
                 // Adds callbacks
                 //this.loader.addEventListener("filestart", (evt: any) => { console.log("loading " + evt.item.src) })
-                //this.loader.addEventListener("fileload", (evt: any) => { console.log("loaded " + evt.item.src) })
-                this.loader.addEventListener("complete", (evt: any) => { if (this.onComplete) this.onComplete(); })
-                this.loader.addEventListener("progress", (evt: any) => { if (this.onProgress) this.onProgress(evt.progress) })
-                this.loader.addEventListener("fileload", (evt: any): boolean => {
+                this.loader.on("error ", (evt: any) => { console.log("error " + evt.item.src) })
+                this.loader.on("fileerror ", (evt: any) => { console.log("ferror " + evt.item.src) })
+                this.loader.on("progress", (evt: any) => { if (this.onProgress) this.onProgress(evt.progress) })
+                this.loader.on("fileload", (evt: any): boolean => {
                     if (evt.item.type == "image")
                         images[evt.item.id] = <HTMLImageElement>evt.result;
                     return true;
                 });
  
-            }
+                this.loader.once("complete", (loader, resources) => {
+                    for (var r in resources) images[r] = resources[r].texture;
+                    if (this.onComplete) this.onComplete();
+                    })
+                }
 
             //loads entire manifest 
-            this.loader.loadManifest(manifest, true, path); 
+            for (var m in manifest) {
+                this.loader.add(manifest[m].id, manifest[m].src);
+            }
+          
+             
         }
         
-        // load a font spritesheet
-        public static loadFontSpriteSheet(id:string,spritesheetData: any) {
-            this.bitmapFontSpriteSheetDataArray[id] = new createjs.SpriteSheet(spritesheetData);
+        public static load() {
+            this.loader.load();
+
         }
+        // load a font spritesheet
+        public static loadFontSpriteSheet(id: string, fontFile: string) {
+            this.loader.add(id, fontFile)
+            
+        }
+
+        public static loadSpriteSheet(id: string, fontFile: string) {
+            this.loader.add(id, fontFile)
+             
+        }
+
 
         // cleans all sprites in the bitmap array;
         public static cleanAssets() {
@@ -75,59 +89,65 @@ module gameui {
         }
 
         //gets a image from assets
-        public static getBitmap(name: string): createjs.DisplayObject {
+        public static getBitmap(name: string): PIXI.DisplayObject {
 
-            //if image id is described in spritesheets
-            if (this.spriteSheets)
-            if (this.spriteSheets[name])
-                return this.getSprite(name, false);
-
-            //if image is preloaded
-            var image = this.getLoadedImage(name);
-            if (image) {
-                var imgobj = new createjs.Bitmap(image);
-                imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled; 
+          //if image is preloaded
+            var texture = this.getLoadedImage(name);
+            if (texture) {
+                var imgobj = new PIXI.Sprite(texture);
+                imgobj.texture.resolution = assetscale;
+                imgobj.interactive = AssetsManager.defaultMouseEnabled; 
                 return imgobj;
             }
 
             //or else try grab by filename
-            var imgobj = new createjs.Bitmap(name);
-            imgobj.mouseEnabled = AssetsManager.defaultMouseEnabled;
+            var imgobj = PIXI.Sprite.fromImage(name);
+            imgobj.interactive = AssetsManager.defaultMouseEnabled;
+            imgobj.texture.resolution = assetscale;
             return imgobj;
 
         }
 
         //get a bitmap Text
-        public static getBitmapText(text:string, bitmapFontId:string):createjs.BitmapText { 
-            var bitmapText = new createjs.BitmapText(text, this.bitmapFontSpriteSheetDataArray[bitmapFontId]);
-            bitmapText.lineHeight = 100;
-            bitmapText.mouseEnabled = AssetsManager.defaultMouseEnabled;
+        public static getBitmapText(text: string, bitmapFontId: string): PIXI.extras.BitmapText { 
+            var bitmapText = new PIXI.extras.BitmapText(text, { font: bitmapFontId });
+            bitmapText.maxLineHeight = 100;
+            ///CHECK bitmapText.letterSpacing = 7;
+            bitmapText.interactiveChildren = AssetsManager.defaultMouseEnabled;
             return bitmapText;
             
         }
 
         //Get a preloaded Image from assets
-        private static getLoadedImage(name: string): HTMLImageElement {
+        private static getLoadedImage(name: string): PIXI.Texture{
             if (this.loader)
-                return <HTMLImageElement>this.loader.getResult(name);
+                if (!this.loader.resources[name]) return null;
+                return this.loader.resources[name].texture;
             return null;
         }
         
         //return a sprite according to the image
-        public static getSprite (name: string, play:boolean=true): createjs.Sprite {
-            var data = this.spriteSheets[name];
-            for (var i in data.images) if (typeof data.images[i] == "string") data.images[i] = this.getLoadedImage(data.images[i]);
+        public static getMovieClip(name: string): PIXI.extras.MovieClip {
+            var textures = [];
+            var n2 = function (n) { return n > 9 ? "" + n : "0" + n; }
 
-            var spritesheet = new createjs.SpriteSheet(data);
+            for (var i = 0; i < 999; i++) {
 
-            var sprite = new createjs.Sprite(spritesheet);
-            if (play) sprite.play();
-            return sprite;
+                var id = name + n2(i);
+                if (!PIXI.utils.TextureCache[id]) break;
+                var texture = PIXI.Texture.fromFrame(id);
+                textures.push(texture);
+            }
+
+            var mc = new PIXI.extras.MovieClip(textures);
+
+            mc.play();
+            return mc
+
+            
         }
 
 
-
-      
 
         // #endregion
     }

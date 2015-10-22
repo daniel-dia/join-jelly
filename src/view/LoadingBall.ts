@@ -1,5 +1,5 @@
 ﻿module joinjelly.view {
-    export class LoadingBall extends createjs.Container {
+    export class LoadingBall extends PIXI.Container {
 
         constructor() {
 

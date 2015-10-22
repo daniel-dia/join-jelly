@@ -1,6 +1,6 @@
 ﻿module joinjelly.menus.view {
 
-    export class SoundOptions extends createjs.Container {
+    export class SoundOptions extends PIXI.Container {
 
 
         private soundBtOn: gameui.Button;
@@ -77,7 +77,7 @@
             }
 
             JoinJelly.userData.setSoundVol(value);
-            gameui.AudiosManager.setSoundVeolume(value ? 1 : 0);
+            gameui.AudiosManager.setSoundVolume(value ? 1 : 0);
         }
 
     }

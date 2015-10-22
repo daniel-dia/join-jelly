@@ -1,6 +1,6 @@
 ﻿module joinjelly.menus.view {
 
-    export class LeaderBoardItem extends createjs.Container {
+    export class LeaderBoardItem extends PIXI.Container {
         constructor(score: number, name: string, position: number = 1) {
             super();
 
@@ -11,7 +11,7 @@
             this.addChild(bg);
 
             // Add Texts
-            var tContainer = new createjs.Container();
+            var tContainer = new PIXI.Container();
             var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
             var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
             var scoreObj = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");

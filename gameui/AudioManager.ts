@@ -2,8 +2,7 @@
 
     // Class
     export class AudiosManager {
-
-        private static loader: createjs.LoadQueue;
+         
 
         private static currentMusicName: string;
         private static currentMusic: createjs.SoundInstance
@@ -15,7 +14,7 @@
             this.musicVolue = volume;
         }
 
-        public static setSoundVeolume(volume: number) {
+        public static setSoundVolume(volume: number) {
 
             this.soundVolume = volume;
         }
@@ -32,7 +31,7 @@
 
         public static playMusic(name: string, volume: number= 1) {
             if (this.currentMusic) {
-                this.currentMusic.setVolume(volume * this.getMusicVolume());
+                this.currentMusic.setVolume(volume * this.getMusicVolume()*0.6);
                 if (this.currentMusicName == name) return;
 
                 this.currentMusic.stop();

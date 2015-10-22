@@ -1,15 +1,15 @@
 ﻿module joinjelly.gameplay.view {
-    export class GameHeader extends createjs.Container {
+    export class GameHeader extends PIXI.Container {
 
-        private scoreText: createjs.BitmapText;
-        private levelText: createjs.BitmapText;
+        private scoreText: PIXI.extras.BitmapText;
+        private levelText: PIXI.extras.BitmapText;
 
         private lastScore: number;
         private lastLevel: number;
 
-        public levelIcon: createjs.DisplayObject;
-        private levelBar: createjs.DisplayObject;
-        private levelTip: createjs.DisplayObject;
+        public levelIcon: PIXI.DisplayObject;
+        private levelBar: PIXI.DisplayObject;
+        private levelTip: PIXI.DisplayObject;
 
         private effect: joinjelly.view.Effect;
 
@@ -42,7 +42,7 @@
             var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
             levelBar.x = 372;
             levelBar.y = 207;
-            levelBar.mask = new createjs.Shape(new createjs.Graphics().beginFill("red").drawRect(0, 0, 939, 57));
+            levelBar.mask = (new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 939, 57));
             levelBar.mask.x = 372;
             levelBar.mask.y = 207;
             this.levelBar = levelBar;

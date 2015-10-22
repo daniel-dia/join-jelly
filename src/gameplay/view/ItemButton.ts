@@ -1,10 +1,10 @@
 ﻿module joinjelly.gameplay.view {
     export class ItemButton extends gameui.Button {
 
-        private text: createjs.BitmapText;
-        private addBt: createjs.DisplayObject;
+        private text: PIXI.extras.BitmapText;
+        private addBt: PIXI.DisplayObject;
         public item: string;
-        public disabled: createjs.DisplayObject;
+        public disabled: PIXI.DisplayObject;
         public ammount: number = 0;
         private locked: boolean = false;
 

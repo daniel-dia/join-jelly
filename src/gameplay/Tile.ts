@@ -1,6 +1,6 @@
 ﻿module joinjelly.gameplay {
 
-    export class Tile extends createjs.Container {
+    export class Tile extends PIXI.Container {
 
         private tileSize: number;
         public posx: number;
@@ -8,7 +8,7 @@
         private locked: boolean;
         private enabled: boolean;
         private dragging: boolean;
-        public background: createjs.DisplayObject;
+        public background: PIXI.DisplayObject;
 
         private value: number;
 
@@ -35,7 +35,7 @@
             this.addChild(this.jelly);
 
             //creates hitArea for the tile
-            this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill("000").drawRect(0, 0, tileSize, tileSize));
+            ///this.hitArea = (new PIXI.Graphics().beginFill(000).drawRect(0, 0, tileSize, tileSize));
 
         }
 

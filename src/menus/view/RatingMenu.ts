@@ -3,9 +3,9 @@ module joinjelly.menus.view {
 
     export class RatingFlyOut extends FlyOutMenu {
 
-        private jellyText: createjs.BitmapText; 
-        private scoreText: createjs.BitmapText;
-        private highScoreText: createjs.BitmapText;
+        private jellyText: PIXI.extras.BitmapText; 
+        private scoreText: PIXI.extras.BitmapText;
+        private highScoreText: PIXI.extras.BitmapText;
         
         constructor() {
             super(StringResources.menus.rating, 1250);

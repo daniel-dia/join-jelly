@@ -1,12 +1,12 @@
 ﻿module joinjelly.gameplay.view {
 
-    export class TimeBar extends createjs.Container {
+    export class TimeBar extends PIXI.Container {
 
         private value: number
-        private percentBarMask: createjs.Shape;
+        private percentBarMask: PIXI.Graphics;
 
-        private redFx: createjs.DisplayObject;
-        private brightFx: createjs.DisplayObject;
+        private redFx: PIXI.DisplayObject;
+        private brightFx: PIXI.DisplayObject;
 
         constructor() {
             super();
@@ -16,7 +16,7 @@
 
         private initializeObjects() {
 
-            var percentBar = new createjs.Container();
+            var percentBar = new PIXI.Container();
 
             var bar = gameui.AssetsManager.getBitmap("time_bar");
             var bright = gameui.AssetsManager.getBitmap("time_bar_bright");
@@ -34,8 +34,8 @@
             this.addChild(percentBar);
 
 
-            var shape = new createjs.Shape();
-            shape.graphics.beginFill("red").drawRect(0, 0, 991, 35)
+            var shape = new PIXI.Graphics();
+            shape.beginFill(0xFF0000).drawRect(0, 0, 991, 35)
 
 
             this.percentBarMask = shape;

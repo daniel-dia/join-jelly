@@ -1,7 +1,7 @@
 ﻿module joinjelly.gameplay.view {
 
     export class PauseMenuOverlay extends gameui.UIItem {
-        private title: createjs.BitmapText;
+        private title: PIXI.extras.BitmapText;
 
         constructor() {
             super();

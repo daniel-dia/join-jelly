@@ -2,11 +2,11 @@
 
     export class FinishMenu extends joinjelly.menus.view.FlyOutMenu {
 
-        private jellyText: createjs.BitmapText;
+        private jellyText: PIXI.extras.BitmapText;
         private jelly: view.Jelly;
-        private scoreText: createjs.BitmapText;
-        private highScoreText: createjs.BitmapText;
-        private specialOffer: createjs.Container; 
+        private scoreText: PIXI.extras.BitmapText;
+        private highScoreText: PIXI.extras.BitmapText;
+        private specialOffer: PIXI.Container; 
 
         constructor() {
             super(StringResources.menus.gameOver, 1250);
@@ -15,7 +15,9 @@
             this.addLastJelly();
             this.addButtons();
 
-            this.specialOffer = new createjs.Container().set({ x: defaultWidth / 2, y: 2050 });
+            this.specialOffer = new PIXI.Container();
+            this.specialOffer.set({ x: defaultWidth / 2, y: 2050 });
+
             this.addChild(this.specialOffer);
         }
 
@@ -45,9 +47,9 @@
         }
 
         // create points control
-        private addPoints(): createjs.DisplayObject {
+        private addPoints(): PIXI.DisplayObject {
 
-            var container = new createjs.Container();
+            var container = new PIXI.Container();
             
             // creates points Bg
             var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
@@ -75,9 +77,9 @@
         }
 
         // creates last jelly control
-        private addLastJelly(): createjs.DisplayObject {
+        private addLastJelly(): PIXI.DisplayObject {
 
-            var container = new createjs.Container();
+            var container = new PIXI.Container();
             this.addChild(container);
 
             //add background
