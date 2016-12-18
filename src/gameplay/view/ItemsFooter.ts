@@ -25,11 +25,11 @@
             if (!items) return;
 
             // add all items
-            for (var i in items)
+            for (var i = 0; i < items.length; i++)
                 this.addItem(items[i], i);
 
             // set button positions
-            for (var i in items) {
+            for (var i = 0; i < items.length; i++){
                 //set button position
                 this.itemsButtons[items[i]].y = -150;
                 this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
@@ -74,7 +74,7 @@
 
             //add event listener
             bt.addEventListener("click", () => {
-                this.dispatchEvent({ type: "useitem", item: item });
+                this.emit(  "useitem", {item: item });
             });
 
         }

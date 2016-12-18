@@ -12,7 +12,9 @@
             super();
 
             this.item = item;
-            this.addEventListener("click", () => { this.dispatchEvent({ type: "useitem", item: item }); });
+            this.addEventListener("click", () => {
+                this.emit("useitem", { item: item });
+            });
 
             //create Item
             var bg = gameui.AssetsManager.getBitmap("itemBG");
@@ -47,7 +49,7 @@
             name.scaleX = name.scaleY = 0.6;
             name.y = 30;
             name.x = 0;
-            name.regX = name.getBounds().width / 2;
+            name.align = "right";
             name.name = 'value';
 
             add.y = 0;

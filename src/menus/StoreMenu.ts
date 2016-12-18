@@ -66,7 +66,7 @@
             this.productsListItems = <Array<ProductListItem>>dic;
             this.showLoaded();
 
-            for (var p in productList)
+            for (var p = 0; p < productList.length; p ++)
                 this.addProduct(productList[p], p);
 
         }
@@ -83,8 +83,7 @@
             console.log(JSON.stringify(product))
 
             // add function callback
-            productListItem.addEventListener("buy", (event: PIXI.Event) => { Cocoon.Store.purchase(event["productId"]); });
-
+            productListItem.on("buy", (event: any) => { Cocoon.Store.purchase(event["productId"]); });
             
         }
 
@@ -345,12 +344,12 @@
             if (localizedPrice == "share") {
                 var button = new gameui.ImageButton("BtShare", () => {
                     this.setPurchasing();
-                    this.dispatchEvent({ type: "share", productId: productId });
+                    this.dispatchEvent("share", {productId: productId });
                 });
             } else {
                 var button = new gameui.ImageButton("BtStore", () => {
                     this.setPurchasing();
-                    this.dispatchEvent({ type: "buy", productId: productId });
+                    this.emit("buy", { productId: productId })
                 });
             }
 
@@ -360,7 +359,7 @@
             this.addChild(button);
 
             this.addChild(tContainer);
-            tContainer.cache(100, 27, 1250, 300);
+            ///tContainer.cache(100, 27, 1250, 300);
         }
 
         public setPurchasing() {

@@ -265,7 +265,7 @@
         }
 
         private showTutorialItem(itemId: string) {
-            var source = this.gameFooter.getItemButton(itemId).localToLocal(0, 0, this.footer);
+            var source = this.gameFooter.getItemButton(itemId).toLocal(new PIXI.Point(0, 0), this.footer);
             this.tutorialItemFinger.showClick(source.x, source.y - 100);
             this.gameFooter.lockAll();
             this.gameFooter.unlockItem(itemId);

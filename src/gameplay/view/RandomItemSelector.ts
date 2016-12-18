@@ -26,11 +26,14 @@
             this.addChild(gameui.AssetsManager.getBitmap("FlyGroup").set({regX:1056/2, regY:250/2}));
             this.items = [Items.CLEAN, Items.FAST, Items.TIME, Items.REVIVE, "loose"]
 
-            for (var i in this.items) {
+            for (var i = 0; i < this.items.length; i++) {
+
+                var ido;
+
                 if (this.items[i] == "loose") 
-                    var ido = <PIXI.DisplayObject> new gameplay.view.Jelly(-1).set({y:50})
+                    ido = <PIXI.DisplayObject> new gameplay.view.Jelly(-1).set({y:50})
                 else
-                    var ido = gameui.AssetsManager.getBitmap("item" + this.items[i]).set({ x: this.distance * i, regX: 150, regY: 150, name: this.items[i], scaleX: 0.7, scaleY: 0.7 });
+                    ido = gameui.AssetsManager.getBitmap("item" + this.items[i]).set({ x: this.distance * i, regX: 150, regY: 150, name: this.items[i], scaleX: 0.7, scaleY: 0.7 });
 
                 this.itemsDO.push(ido);
                 this.addChild(ido)
@@ -53,7 +56,7 @@
 
             // add listener
             this.listener = () => { this.tick(); }
-            PIXI.ticker.Ticker.addEventListener("tick", this.listener);
+            PIXI.ticker.shared.add(this.listener);
             this.timeStart = Date.now();
 
         }
@@ -64,7 +67,7 @@
             var p = ((this.timeStart + this.totalTime) - Date.now()) / this.totalTime;
             var offset = Math.pow(p, 2) * this.initialPosition + (1 - Math.pow(p, 2)) * this.finalPosition;
 
-            for (var i in this.itemsDO) {
+            for (var i = 0; i < this.itemsDO.length; i++){
                 var item = this.itemsDO[i];
                 var itemOffset = this.distance * i + offset;
 
@@ -85,7 +88,7 @@
 
         private end() {
 
-            PIXI.Ticker.removeEventListener("tick", this.listener);
+            PIXI.ticker.shared.remove(this.listener);
             var closerObj: PIXI.DisplayObject;
             for (var i in this.itemsDO) 
                 if (!closerObj || Math.abs(this.itemsDO[i].x) < Math.abs(closerObj.x))

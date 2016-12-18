@@ -33,7 +33,7 @@ module joinjelly.menus {
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
             gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig.fnt");
             gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy.fnt"); 
-            gameui.AssetsManager.load();
+            //gameui.AssetsManager.load();
 
             // set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";

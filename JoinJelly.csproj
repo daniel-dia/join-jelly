@@ -9,7 +9,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -565,6 +565,7 @@
     <Content Include="scripts\fontConverter.js" />
     <Content Include="scripts\md5.js" />
     <Content Include="scripts\movieclip-0.8.1.min.js" />
+    <Content Include="scripts\pixi - Copy.js" />
     <Content Include="scripts\pixi.js" />
     <Content Include="scripts\PIXIpatch.js" />
     <Content Include="scripts\Plataform.js" />
@@ -580,6 +581,7 @@
     <TypeScriptCompile Include="gameui\ScreenState.ts" />
     <TypeScriptCompile Include="gameui\Transition.ts" />
     <TypeScriptCompile Include="gameui\UIItem.ts" />
+    <TypeScriptCompile Include="typings\pixi-filters.d.ts" />
     <TypeScriptCompile Include="typings\pixi.js.d.ts" />
     <TypeScriptCompile Include="src\gameplay\parameters.ts" />
     <Content Include="scripts_tools\cti.js" />
@@ -603,6 +605,7 @@
     <TypeScriptCompile Include="typings\createjs\createjs.d.ts" />
     <TypeScriptCompile Include="typings\easeljs\easeljs.d.ts" />
     <TypeScriptCompile Include="typings\ParticleEmitterJS.d.ts" />
+    <TypeScriptCompile Include="typings\pixi.patch.d.ts" />
     <TypeScriptCompile Include="typings\preloadjs\preloadjs.d.ts" />
     <TypeScriptCompile Include="typings\soundjs\soundjs.d.ts" />
     <TypeScriptCompile Include="typings\tweenjs\tweenjs.d.ts" />

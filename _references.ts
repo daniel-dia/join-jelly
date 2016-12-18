@@ -5,8 +5,6 @@
 /// <reference path="gameui/GameScreen.ts" />
 /// <reference path="gameui/UIItem.ts" />
 /// <reference path="gameui/Grid.ts" />
-/// <reference path="gameui/Label.ts" />
-/// <reference path="gameui/MenuContainer.ts" />
 /// <reference path="gameui/ScreenState.ts" />
 /// <reference path="gameui/Transition.ts" />
 /// <reference path="gameui/Button.ts" />
@@ -47,6 +45,5 @@
 /// <reference path="src/gameplay/GamePlay.ts" /> 
 /// <reference path="src/gameplay/Tutorial.ts" />
 
-/// <reference path="src/Message.ts" />
 /// <reference path="src/UserData.ts" />
 /// <reference path="src/JoinJelly.ts" />

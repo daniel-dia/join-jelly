@@ -2,7 +2,7 @@
 module joinjelly.gameplay {
 
     export class GamePlayScreen extends gameui.ScreenState {
-        
+
         // gameplay Control
         protected matchNotify: () => void;
         protected itemNotify: () => void;
@@ -31,7 +31,7 @@ module joinjelly.gameplay {
         private evolveEffect: PIXI.DisplayObject;
         private reviveEffect: PIXI.DisplayObject;
         private cleanEffect: PIXI.DisplayObject;
- 
+
         // #region =================================== initialization ================================================
 
         constructor(userData: UserData, itemData: ItemsData) {
@@ -48,23 +48,23 @@ module joinjelly.gameplay {
             this.createBoard();
             this.createGUI();
             this.createEffects();
-            
+
             // start game        
             this.start();
-            
+
             // try to load a saved Game
             this.loadGame();
 
-            
+
             //if is first time then give some items.
-            if (this.userData &&!this.userData.getHistory("firstPlay")) {
+            if (this.userData && !this.userData.getHistory("firstPlay")) {
                 this.itemData.setItemAmmount(Items.REVIVE, 1)
                 this.itemData.setItemAmmount(Items.TIME, 2)
                 this.itemData.setItemAmmount(Items.FAST, 2)
                 this.itemData.setItemAmmount(Items.CLEAN, 2)
                 this.itemData.setItemAmmount(Items.LUCKY, 0)
                 this.userData.history("firstPlay")
-            }           
+            }
 
             if (!Cocoon.Ad.interstitial["loaded"]) {
                 Cocoon.Ad.loadInterstitial();
@@ -141,8 +141,8 @@ module joinjelly.gameplay {
             this.updateFooter();
 
             this.gameFooter.addEventListener("useitem", (e) => { this.useItem(e.item) });
-    
-          
+
+
             // creates a end menu
             this.finishMenu = new view.FinishMenu();
             this.overlay.addChild(this.finishMenu);
@@ -222,7 +222,7 @@ module joinjelly.gameplay {
                         that.updateFooter();
                         that.finishMenu.ClearSpecialOffer();
                         console.log("shareded");
-                        that.showSpecialOffer() 
+                        that.showSpecialOffer()
 
                         // shows which item the user has won
                         setTimeout(() => {
@@ -236,7 +236,7 @@ module joinjelly.gameplay {
 
             this.finishMenu.addEventListener("like", () => {
                 Cocoon.App.openURL(StringResources.menus.fbURL);
-                
+
 
                 this.userData.history("shared");
                 this.itemData.increaseItemAmmount(Items.REVIVE, 1);
@@ -246,7 +246,7 @@ module joinjelly.gameplay {
                 this.updateFooter();
                 this.finishMenu.ClearSpecialOffer();
                 console.log("shareded");
- 
+
 
                 // shows which item the user has won
                 setTimeout(() => {
@@ -268,7 +268,7 @@ module joinjelly.gameplay {
                 this.finishMenu.ClearSpecialOffer();
                 console.log("watched");
                 this.userData.history("watched", Date.now());
-                
+
                 Cocoon.Ad.showInterstitial();
                 Cocoon.Ad.interstitial["loaded"] = false;
                 Cocoon.Ad.interstitial.on("hidden", () => {
@@ -283,12 +283,12 @@ module joinjelly.gameplay {
                         setTimeout(() => {
                             this.showSpecialOffer();
                         }
-                        ,1000);
+                            , 1000);
                     })
-                    
-                },{once: true });
 
-                        
+                }, { once: true });
+
+
             })
             this.finishMenu.addEventListener("reloadAds", () => {
                 this.showSpecialOffer();
@@ -425,7 +425,7 @@ module joinjelly.gameplay {
             JoinJelly.analytics.logGameStart();
 
             // set one more time played
-            if (this.userData)this.userData.addOneMorePlay();
+            if (this.userData) this.userData.addOneMorePlay();
 
             // set first achievement (jelly 1)
             this.highJellySave(1);
@@ -501,7 +501,7 @@ module joinjelly.gameplay {
 
         }
 
- 
+
 
         // finishes the game
         private endGame(message?: string, win?: boolean) {
@@ -529,7 +529,7 @@ module joinjelly.gameplay {
             this.gameHeader.hide();
             this.gameHeader.hideButtons();
             createjs.Tween.get(this.gameFooter).to({ y: +300 }, 200, createjs.Ease.quadIn);
-        
+
             // show special offer
             this.showSpecialOffer();
 
@@ -553,7 +553,7 @@ module joinjelly.gameplay {
 
                 // save high score
                 this.userData.setScore(Math.max(score, this.userData.getHighScore()));
-				
+
                 // submit score to Game Services
                 JoinJelly.gameServices.submitScore(score);
 
@@ -569,7 +569,7 @@ module joinjelly.gameplay {
 
             // play end soud
             gameui.AudiosManager.playSound("end");
-			
+
             // play end game effect
             this.board.endGameEffect();
         }
@@ -629,27 +629,27 @@ module joinjelly.gameplay {
                     }
                 }// ads avaliable
 
-            // simply show share, if there is no ads avaliable
+                // simply show share, if there is no ads avaliable
             } else this.showShareOrLike();
         }
 
-   
+
 
         private showShareOrLike() {
-             
+
             if (!this.userData.getHistory("liked")) {
                 this.finishMenu.showLikeButton();
                 console.log("like shown");
                 return true;
-            } 
+            }
 
-          
+
             if (!this.userData.getHistory("shared") && JoinJelly.FBSocialService) {
                 this.finishMenu.showShareButton();
                 console.log("share shown");
                 return true;
-            } 
-            
+            }
+
             return false;
         }
 
@@ -717,10 +717,10 @@ module joinjelly.gameplay {
 
             return false;
         }
-		
+
         // add a random jelly with value 1 on board
         private addRandomJellyOnBoard(JellyValue: number) {
-			
+
             // select a random value to add for higher levels.
             for (var i = 10; i < this.level; i++)
                 if (Math.random() < increasingJellyValuePerLevel)
@@ -752,7 +752,7 @@ module joinjelly.gameplay {
                 tile.setNumber(value);
             }
         }
-		
+
         // clean all dirty in the board
         public cleanAllDirty() {
             var tiles = this.board.getAllTiles();
@@ -773,7 +773,7 @@ module joinjelly.gameplay {
             //try to match the tiles
             this.match(origin, target);
         }
-    
+
         // verifies if 2 tiles can match
         protected canMatch(origin: Tile, target: Tile): boolean {
             return (origin.getNumber() != 0 && target != origin && target.getNumber() == origin.getNumber() && target.isUnlocked());
@@ -809,7 +809,7 @@ module joinjelly.gameplay {
 
             // adds match count
             this.matches++;
-            
+
             // animate the mach
             this.board.match(origin, target);
 
@@ -817,14 +817,14 @@ module joinjelly.gameplay {
             var sum = newValue * 10 + Math.floor(Math.random() * newValue * 10);
             this.score += sum;
             this.animateScoreFromTile(target, sum); // animate a score number
-            
+
             // reset the previous tile
             origin.setNumber(0);
 
             // chance to win a item
             var item = this.giveItemChance([Items.CLEAN, Items.REVIVE, Items.TIME, Items.FAST]);
             if (item) this.animateItemFromTile(target, item);
-     
+
             // update score
             if (this.userData)
                 this.userData.setLastJelly(newValue);
@@ -843,7 +843,7 @@ module joinjelly.gameplay {
                 this.winGame(target);
             else
                 target.setNumber(newValue);
-                
+
             // update currentLevel
             this.updateCurrentLevel()
 
@@ -852,7 +852,7 @@ module joinjelly.gameplay {
 
             // verifies if it can move, make it a little more faster
             if (!this.canMove()) this.step(0);
-            
+
             // clean near Dirties
             this.cleanNearDirty(target);
 
@@ -889,7 +889,7 @@ module joinjelly.gameplay {
         // saves the high valueable jelly to the score
         private highJellySave(newValue) {
             if (this.highJelly < newValue) {
-                
+
                 // log HighJelly Event
                 joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time)
 
@@ -910,7 +910,7 @@ module joinjelly.gameplay {
 
             // calculate random change to win a item
             var goodChance: boolean = (Math.random() < itemProbability * lucky);
-            
+
             // if true
             if (goodChance) {
                 item = items[Math.floor(Math.random() * items.length)];
@@ -924,8 +924,8 @@ module joinjelly.gameplay {
 
         // animate a item moving from tile to the footer
         private animateItemFromTile(tile: Tile, item: string) {
-            var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
-            var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
+            var xi = this.board.toLocal(new PIXI.Point(tile.x, tile.y), this.content).x;
+            var yi = this.board.toLocal(new PIXI.Point(tile.x, tile.y), this.content).y;
             this.animateItemFromPos(xi, xi, item);
         }
 
@@ -946,8 +946,8 @@ module joinjelly.gameplay {
 
             var footerItem = this.gameFooter.getItemButton(item)
             if (footerItem) {
-                xf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).x;
-                yf = this.gameFooter.localToLocal(footerItem.x, footerItem.y, this.content).y;
+                xf = this.gameFooter.toLocal(new PIXI.Point(footerItem.x, footerItem.y), this.content).x;
+                yf = this.gameFooter.toLocal(new PIXI.Point(footerItem.x, footerItem.y), this.content).y;
             }
             itemDO.alpha = 0;
             createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(() => {
@@ -967,8 +967,8 @@ module joinjelly.gameplay {
             textDO.mouseEnabled = false;
 
 
-            var xi = this.board.localToLocal(tile.x, tile.y, this.content).x;
-            var yi = this.board.localToLocal(tile.x, tile.y, this.content).y;
+            var xi = this.board.toLocal(new PIXI.Point(tile.x, tile.y), this.content).x;
+            var yi = this.board.toLocal(new PIXI.Point(tile.x, tile.y), this.content).y;
             textDO.alpha = 0;
             createjs.Tween.get(textDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 170, alpha: 1 }, 400, createjs.Ease.quadOut).to({ alpha: 0 }, 400).call(() => {
                 this.content.removeChild(textDO);
@@ -976,7 +976,7 @@ module joinjelly.gameplay {
 
             this.content.addChild(textDO);
         }
-		
+
         // #endregion
 
         // #region =================================== Items =========================================================
@@ -1184,8 +1184,8 @@ module joinjelly.gameplay {
             // cast a thunder effects 
             gameui.AudiosManager.playSound("sounditemfast");
 
-            var pt = tile.jelly.localToLocal(0, 0, this.evolveEffect.parent);
-            var po = this.gameHeader.localToLocal(1394, 211, this.evolveEffect.parent);
+            var pt = tile.jelly.toLocal(new PIXI.Point(0, 0), this.evolveEffect.parent);
+            var po = this.gameHeader.toLocal(new PIXI.Point(1394, 211), this.evolveEffect.parent);
 
             this.evolveEffect.visible = true;
             this.evolveEffect.set({ alpha: 1, scaleX: 0.5, x: po.x, y: po.y });
@@ -1210,7 +1210,7 @@ module joinjelly.gameplay {
             if (this.gamestate == GameState.ended) return;
             var tiles = this.board.getAllTiles();
             var matches = [];
-            
+
             // try to match every tile
             for (var t in tiles) {
 

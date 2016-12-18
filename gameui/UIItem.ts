@@ -63,7 +63,9 @@ module gameui {
             createjs.Tween.removeTweens(this);
         }
 
-        public fadeIn(scaleX: number= 0.5, scaleY: number= 0.5) {
+        public fadeIn(scaleX: number = 0.5, scaleY: number = 0.5) {
+
+            this.resetFade()
             if (this.visible = true) this.antX = null;
 
             if (!this.scale.x) this.scale.x = 1;
@@ -92,7 +94,7 @@ module gameui {
                 scaleX: this.oldScaleX, 
                 scaleY: this.oldScaleY,   
                 alpha: 1,
-                x: this.antX,
+                x: this.antX, 
                 y: this.antY,
             }, 400, createjs.Ease.quadOut)
 
@@ -105,20 +107,18 @@ module gameui {
 
         //calcula
         createHitArea(): void {
-         //   
-         //   var hit = ();
-         //
-         //   var b = this.getBounds();
-         //
-         //   if (b)
-         //       if (this.hitPadding)
-         //           hit.beginFill("#000").drawRect(b.x - this.hitPadding, b.y - this.hitPadding, b.width + this.hitPadding, b.height + this.hitPadding);
-         //       else
-         //           hit.beginFill("#000").drawRect(b.x, b.y, b.width, b.height);
-         //   //TODO. se for texto colocar uma sobra. !
-         //
-         //   this.hitArea = hit;
-         //
+            
+          
+            var b = this.getLocalBounds();
+            //if (b)
+            //    if (this.hitPadding)
+            //        hit.beginFill("#000").drawRect(b.x - this.hitPadding, b.y - this.hitPadding, b.width + this.hitPadding, b.height + this.hitPadding);
+            //    else
+            //         hit.beginFill("#000").drawRect(b.x, b.y, b.width, b.height);
+            //TODO. se for texto colocar uma sobra. !
+
+            this.hitArea = new PIXI.Rectangle(b.x, b.y, b.width, b.height);
+         
         }
     }
 }

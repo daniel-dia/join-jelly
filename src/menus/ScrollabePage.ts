@@ -54,11 +54,12 @@
             var last;
 
             this.content.addEventListener("pressmove", (evt: PIXI.interaction.InteractionEvent) => {
-                if (!last) last = evt.localY;
-                targetY += (evt.localY - last) * 1.3;
+                var localY = evt.data.getLocalPosition(evt.target).y;
+                if (!last) last = localY;
+                targetY += (localY - last) * 1.3;
                 if (targetY > 400) targetY = 400;
                 if (targetY < -this.maxScroll) targetY = -this.maxScroll;
-                last = evt.localY;
+                last = localY;
             });
 
             this.content.addEventListener("pressup", (evt: PIXI.interaction.InteractionEvent) => {

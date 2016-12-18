@@ -19,20 +19,14 @@ module gameui {
             // initialize objects
             this.spriteSheets = spriteSheets ? spriteSheets : new Array();
             this.assetsManifest = manifest;
-
-
-            if (!images) images = new Array();
+            
+            if (!images) images = images ? images : new Array();
 		
             if (!this.loader) {
                 //creates a preload queue
                 this.loader = new PIXI.loaders.Loader(path);
 
-			///Check	//install sound plug-in for sounds format
-                ///this.loader.installPlugin(createjs.Sound);
-				///createjs.Sound.alternateExtensions = ["mp3"];
-
-                
-                // Adds callbacks
+		        // Adds callbacks
                 //this.loader.addEventListener("filestart", (evt: any) => { console.log("loading " + evt.item.src) })
                 this.loader.on("error ", (evt: any) => { console.log("error " + evt.item.src) })
                 this.loader.on("fileerror ", (evt: any) => { console.log("ferror " + evt.item.src) })
@@ -43,8 +37,9 @@ module gameui {
                     return true;
                 });
  
-                this.loader.once("complete", (loader, resources) => {
+                this.loader.on("complete", (loader, resources) => {
                     for (var r in resources) images[r] = resources[r].texture;
+
                     if (this.onComplete) this.onComplete();
                     })
                 }
@@ -53,29 +48,28 @@ module gameui {
             for (var m in manifest) {
                 this.loader.add(manifest[m].id, manifest[m].src);
             }
-          
-             
+            this.loader.load();
+            
+        }
+
+        public static reset() {
+            this.loader.reset();
         }
         
-        public static load() {
-            this.loader.load();
-
-        }
         // load a font spritesheet
         public static loadFontSpriteSheet(id: string, fontFile: string) {
             this.loader.add(id, fontFile)
-            
+            this.loader.load(); 
         }
 
         public static loadSpriteSheet(id: string, fontFile: string) {
             this.loader.add(id, fontFile)
-             
+            this.loader.load();
         }
-
-
+        
         // cleans all sprites in the bitmap array;
         public static cleanAssets() {
-            if (images);
+            if (images)
             for (var i in images) {
                 var img = <any>images[i]
                 if (img.dispose)img.dispose();
@@ -89,13 +83,14 @@ module gameui {
         }
 
         //gets a image from assets
-        public static getBitmap(name: string): PIXI.DisplayObject {
+        public static getBitmap(name: string): PIXI.Sprite {
 
           //if image is preloaded
             var texture = this.getLoadedImage(name);
+            
             if (texture) {
                 var imgobj = new PIXI.Sprite(texture);
-                imgobj.texture.resolution = assetscale;
+                //imgobj.texture.resolution = assetscale;
                 imgobj.interactive = AssetsManager.defaultMouseEnabled; 
                 return imgobj;
             }
@@ -103,27 +98,26 @@ module gameui {
             //or else try grab by filename
             var imgobj = PIXI.Sprite.fromImage(name);
             imgobj.interactive = AssetsManager.defaultMouseEnabled;
-            imgobj.texture.resolution = assetscale;
+            //imgobj.texture.resolution = assetscale;
             return imgobj;
 
         }
 
         //get a bitmap Text
-        public static getBitmapText(text: string, bitmapFontId: string): PIXI.extras.BitmapText { 
+        public static getBitmapText(text: string, bitmapFontId: string, color:number= 0xffffff, size:number=1): PIXI.extras.BitmapText { 
             var bitmapText = new PIXI.extras.BitmapText(text, { font: bitmapFontId });
+            bitmapText.tint = color;
             bitmapText.maxLineHeight = 100;
-            ///CHECK bitmapText.letterSpacing = 7;
             bitmapText.interactiveChildren = AssetsManager.defaultMouseEnabled;
+            bitmapText.scaleX = bitmapText.scaleY = size;
             return bitmapText;
-            
         }
 
         //Get a preloaded Image from assets
-        private static getLoadedImage(name: string): PIXI.Texture{
+        public static getLoadedImage(name: string): PIXI.Texture{
             if (this.loader)
                 if (!this.loader.resources[name]) return null;
                 return this.loader.resources[name].texture;
-            return null;
         }
         
         //return a sprite according to the image
@@ -141,14 +135,10 @@ module gameui {
 
             var mc = new PIXI.extras.MovieClip(textures);
 
-            mc.play();
-            return mc
-
-            
+            //mc.play();
+            return mc;
         }
 
-
-
-        // #endregion
+        // #endregion 
     }
 }

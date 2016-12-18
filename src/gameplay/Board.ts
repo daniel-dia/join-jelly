@@ -35,8 +35,8 @@
             this.addMouseEvents(tileSize);
 
             //set pivot
-            this.regX = (boardWidth * tileSize / 2);
-            this.regY = (boardHeight * tileSize / 2);
+            this.pivot.x = (boardWidth * tileSize / 2);
+            this.pivot.y = (boardHeight * tileSize / 2);
 
         }
 
@@ -55,8 +55,8 @@
 
             var bg = gameui.AssetsManager.getBitmap("hex");
             this.tilesContainer.addChild(bg);
-            bg.regX = 358 / 2;
-            bg.regY = 0;
+            bg.pivot.x = 358 / 2;
+            bg.pivot.y = 0;
             bg.alpha = 0.15;
             bg.set(this.getTilePositionByCoords(x, y, tileSize, 0));
 
@@ -76,17 +76,21 @@
         // add mouse board interacion
         private addMouseEvents(tileSize: number) {
             var touchOffset = [];
-            this.tilesContainer.addEventListener("mousedown", (e: PIXI.interaction.InteractionEvent) => {
-                var tile = this.getTileByRawPos(e.localX, e.localY, tileSize);
+            this.tilesContainer.on("pointerdown", (e: PIXI.interaction.InteractionEvent) => {
+
+                var pid = (<any>e.data.originalEvent).pointerId;
+                var pos = e.data.getLocalPosition(this);
+                console.log("start pid: " + pid)
+                var tile = this.getTileByRawPos(pos.x, pos.y, tileSize);
 
                 if (tile && tile.isUnlocked() && tile.isEnabled()) {
 
                     tile.lock();
 
-                    this.touchDictionary[e.pointerID] = tile;
+                    this.touchDictionary[pid] = tile;
 
                     //store offset mouse position
-                    touchOffset[e.pointerID] = { x: tile.x - e.localX, y: tile.y - e.localY };
+                    touchOffset[pid] = { x: tile.x - pos.x, y: tile.y - pos.y };
                     tile.drag();
 
                     //bring to front
@@ -98,37 +102,44 @@
 
             //Press Move
             var deltas = [];
-            this.tilesContainer.addEventListener("pressmove", (e: PIXI.interaction.InteractionEvent) => {
-                var delta = Date.now() - deltas[e.pointerID];
+            this.tilesContainer.on("pointermove", (e: PIXI.interaction.InteractionEvent) => {
+
+                var pid = (<any>e.data.originalEvent).pointerId;
+                console.log("move pid: " + pid)
+                var pos = e.data.getLocalPosition(this);
+
+                var delta = Date.now() - deltas[pid];
                 if (delta < 20) return;
-                deltas[e.pointerID] = Date.now();
+                deltas[pid] = Date.now();
 
 
                 //get tile by touch
-                var tile = this.touchDictionary[e.pointerID];
+                var tile = this.touchDictionary[pid];
                 if (tile) {
 
-                    tile.x = e.localX + touchOffset[e.pointerID].x;
-                    tile.y = e.localY + touchOffset[e.pointerID].y;
+                    tile.x = e.data.getLocalPosition(this).x + touchOffset[pid].x;
+                    tile.y = e.data.getLocalPosition(this).y + touchOffset[pid].y;
                     tile.lock();
                     
                     //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
-                    var target = this.getTileByRawPos(e.localX, e.localY, tileSize);
+                    var target = this.getTileByRawPos(pos.x, pos.y, tileSize);
                     if (target && target.name.toString() != tile.name) {
                         if (target.isUnlocked()) {
                             var x = { origin: tile, target: target };
-                            var ev = new PIXI.Event("dragging", false, false);
-                            ev["originTile"] = tile;
-                            ev["targetTile"] = target;
-                            this.dispatchEvent(ev);
+                            
+                            this.emit("dragging", { originTile: tile, targetTile: target });
+                            
+                            
                         }
                     }
                 }
             });
 
             //Press Up
-            this.tilesContainer.addEventListener("pressup", (e: PIXI.interaction.InteractionEvent) => {
-                var tile = this.touchDictionary[e.pointerID];
+            this.tilesContainer.addEventListener("pointerup", (e: PIXI.interaction.InteractionEvent) => {
+                var pid = (<any>e.data.originalEvent).pointerId;
+                console.log("end pid: " + pid)
+                var tile = this.touchDictionary[pid];
                 if (tile) {
                     tile.unlock;
                     this.releaseDrag(tile, false);
@@ -143,7 +154,7 @@
 
         public setTiles(tiles: Array<number>) {
             this.unlock();
-            for (var t in tiles) {
+            for (var t = 0; t < tiles.length; t++) {
 
                 this.setTileValue(t, tiles[t]);
                 this.getTileById(t).unlock();
@@ -312,7 +323,7 @@
             delete this.touchDictionary[index];
 
             createjs.Tween.removeTweens(tile);
-            tile.scaleY = tile.scaleX = 1;
+            tile.scale.y = tile.scale.x = 1;
 
             //if tiles match
             if (match && target) {
@@ -339,9 +350,9 @@
             return highestTile;
         }
 
-        public lock() { this.tilesContainer.mouseEnabled = false; }
+        public lock() { this.tilesContainer.interactive = false; }
 
-        public unlock() { this.tilesContainer.mouseEnabled = true; }
+        public unlock() { this.tilesContainer.interactive = true; }
 
         // #endregion
 
@@ -387,7 +398,7 @@
             var currentTile = 0;
 
             // for each tile
-            for (var t in this.tiles) {
+            for (var t = 0; t < this.tiles.length; t++) {
 
                 // set timeout for the animation. each tile by time interval
                 setTimeout(() => {
@@ -421,7 +432,7 @@
             var currentTile = 0;
 
             // for each tile
-            for (var t in this.tiles) {
+            for (var t = 0; t < this.tiles.length; t++) {
 
                 // set timeout for the animation. each tile by time interval
                 setTimeout(() => {

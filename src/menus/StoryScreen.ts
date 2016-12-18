@@ -7,7 +7,7 @@ module joinjelly {
             super();
             var intro: createjs.MovieClip = <createjs.MovieClip>new lib.Intro3();
 
-            this.content.addChild(intro);
+            //this.content.addChild(intro);
             intro.play();
             intro.loop = false;
             intro.addEventListener("click", () => {
