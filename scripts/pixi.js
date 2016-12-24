@@ -5271,6 +5271,9 @@ Loader.prototype.load = function (cb) {
  * @return {string} The prepared url.
  */
 Loader.prototype._prepareUrl = function (url) {
+
+    if (url.charAt(0) == '/') return url;
+
     var parsedUrl = parseUri(url, { strictMode: true });
 
     // absolute url, just use it as is.
@@ -5285,7 +5288,7 @@ Loader.prototype._prepareUrl = function (url) {
     ) {
         return this.baseUrl + '/' + url;
     }
-
+        
     return this.baseUrl + url;
 };
 

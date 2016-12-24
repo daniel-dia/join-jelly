@@ -90,7 +90,7 @@ module gameui {
             
             if (texture) {
                 var imgobj = new PIXI.Sprite(texture);
-                //imgobj.texture.resolution = assetscale;
+                imgobj.texture["resolution"] = assetscale;
                 imgobj.interactive = AssetsManager.defaultMouseEnabled; 
                 return imgobj;
             }
@@ -98,14 +98,14 @@ module gameui {
             //or else try grab by filename
             var imgobj = PIXI.Sprite.fromImage(name);
             imgobj.interactive = AssetsManager.defaultMouseEnabled;
-            //imgobj.texture.resolution = assetscale;
+            imgobj.texture["resolution"] = assetscale;
             return imgobj;
 
         }
 
         //get a bitmap Text
         public static getBitmapText(text: string, bitmapFontId: string, color:number= 0xffffff, size:number=1): PIXI.extras.BitmapText { 
-            var bitmapText = new PIXI.extras.BitmapText(text, { font: bitmapFontId });
+            var bitmapText = new PIXI.extras.BitmapText(text, { font: bitmapFontId, align: 'right' });
             bitmapText.tint = color;
             bitmapText.maxLineHeight = 100;
             bitmapText.interactiveChildren = AssetsManager.defaultMouseEnabled;
