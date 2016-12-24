@@ -3191,9 +3191,8 @@ var joinjelly;
                 this.tilesContainer.addEventListener("mouseup", this.boardTouchEnd, this);
             };
             Board.prototype.boardTouchStart = function (e) {
-                var pid = e.data.originalEvent.pointerId;
+                var pid = this.getPointerId(e);
                 var pos = e.data.getLocalPosition(this);
-                console.log("start pid: " + pid);
                 var tile = this.getTileByRawPos(pos.x, pos.y, this.tileSize);
                 if (tile && tile.isUnlocked() && tile.isEnabled()) {
                     tile.lock();
@@ -3205,8 +3204,7 @@ var joinjelly;
                 }
             };
             Board.prototype.boardTouchMove = function (e) {
-                var pid = e.data.originalEvent.pointerId;
-                console.log("move pid: " + pid);
+                var pid = this.getPointerId(e);
                 var pos = e.data.getLocalPosition(this);
                 var delta = Date.now() - this.touchDeltas[pid];
                 if (delta < 20)
@@ -3226,8 +3224,7 @@ var joinjelly;
                 }
             };
             Board.prototype.boardTouchEnd = function (e) {
-                var pid = e.data.originalEvent.pointerId;
-                console.log("end pid: " + pid);
+                var pid = this.getPointerId(e);
                 var tile = this.touchDictionary[pid];
                 if (tile) {
                     tile.unlock;
@@ -3235,6 +3232,7 @@ var joinjelly;
                     tile.release();
                 }
             };
+            Board.prototype.getPointerId = function (e) { return 0; };
             Board.prototype.setTiles = function (tiles) {
                 this.unlock();
                 for (var t = 0; t < tiles.length; t++) {

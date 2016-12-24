@@ -127,8 +127,9 @@ PIXI.Container.prototype.addChild = function (child) {
 
     return this.Container_addChild(child)
 };
-PIXI.Container.prototype.removeAllChildren = function () {
 
+PIXI.Container.prototype.removeAllChildren = function () {
+    this.removeChildren();
 }
 //createjs.Container =    PIXI.Container;
 //createjs.Bitmap =       PIXI.Sprite;

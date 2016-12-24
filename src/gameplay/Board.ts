@@ -16,7 +16,7 @@
         private touchOffset: Array<point>;
         private touchDeltas: Array<number>;
 
-        // #region Initialization ----------------------------------------------------------------------
+        // #region Initialization ------------------------------------------------------------------------
 
         constructor(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
             super();
@@ -95,12 +95,12 @@
             this.tilesContainer.addEventListener("mouseup", this.boardTouchEnd, this);
         }
 
+        // callback to the event start
         private boardTouchStart(e: PIXI.interaction.InteractionEvent) {
 
-            var pid = (<any>e.data.originalEvent).pointerId;
+            var pid = this.getPointerId(e);
             var pos = e.data.getLocalPosition(this);
-            console.log("start pid: " + pid)
-
+            
             var tile = this.getTileByRawPos(pos.x, pos.y, this.tileSize);
 
             if (tile && tile.isUnlocked() && tile.isEnabled()) {
@@ -120,16 +120,16 @@
             }
 
         }
+
+        // callback to the a pointer move event
         private boardTouchMove(e: PIXI.interaction.InteractionEvent) {
-            var pid = (<any>e.data.originalEvent).pointerId;
-            console.log("move pid: " + pid)
+            var pid = this.getPointerId(e)
             var pos = e.data.getLocalPosition(this);
 
             var delta = Date.now() - this.touchDeltas[pid];
             if (delta < 20) return;
             this.touchDeltas[pid] = Date.now();
-
-
+            
             //get tile by touch
             var tile = this.touchDictionary[pid];
             if (tile) {
@@ -145,16 +145,22 @@
                         this.emit("dragging", { originTile: tile, targetTile: target });
                     }
                 }
-            }}
+            }
+        }
+
+        // callback to the event end
         private boardTouchEnd(e: PIXI.interaction.InteractionEvent) {
-            var pid = (<any>e.data.originalEvent).pointerId;
-            console.log("end pid: " + pid)
+            var pid = this.getPointerId(e)
             var tile = this.touchDictionary[pid];
             if (tile) {
                 tile.unlock;
                 this.releaseDrag(tile, false);
                 tile.release();
             }}
+
+        // gets a pointer id based on the interaction event
+        private getPointerId(e: PIXI.interaction.InteractionEvent) { return 0; }
+
         // #endregion
 
         // #region Tile manager ------------------------------------------------------------------------
