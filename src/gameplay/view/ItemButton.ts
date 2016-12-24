@@ -41,15 +41,18 @@
             img.regY = img.getBounds().height / 2;
             img.scaleX = img.scaleY = 0.4;
             img.y = -25;
+
             text.scaleX = text.scaleY = 0.7;
             text.y = -110;
             text.x = -80;
+            text.align = "center";
             text.name = 'value';
 
             name.scaleX = name.scaleY = 0.6;
             name.y = 30;
             name.x = 0;
-            name.align = "right";
+            name.pivot.x = name.getLocalBounds().width / 2;
+            name.align = "center";
             name.name = 'value';
 
             add.y = 0;
