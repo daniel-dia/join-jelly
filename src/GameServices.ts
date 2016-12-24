@@ -2,9 +2,10 @@
     export class GameServices {
 
         private socialService: Cocoon.Social.Interface;
-        constructor() {
-            return;
 
+        constructor() {
+            /*
+            
             if (!navigator.onLine) return;
 
             // get device os info
@@ -59,7 +60,9 @@
                         else if (!loggedIn) console.log("login cancelled");
                     });
                 }
-            }, 10000); 
+            }, 10000);
+
+            */
         }
 
         // show native leaderboards
