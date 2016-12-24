@@ -83,16 +83,25 @@
             this.touchDeltas = new Array<number>();
 
             // pess Start
-            this.tilesContainer.on("touchstart", this.boardTouchStart, this);
-            this.tilesContainer.on("mousedown", this.boardTouchStart, this);
+            //this.tilesContainer.on("touchstart", this.boardTouchStart, this);
+            //this.tilesContainer.on("mousedown", this.boardTouchStart, this);
+            //
+            //// Press Move
+            //this.tilesContainer.on("touchmove", this.boardTouchMove, this);
+            //this.tilesContainer.on("mousemove", this.boardTouchMove, this);
+            //
+            //// Press Up
+            //this.tilesContainer.addEventListener("touchend", this.boardTouchEnd, this);
+            //this.tilesContainer.addEventListener("mouseup", this.boardTouchEnd, this);
 
+            // pess Start
+            this.tilesContainer.on("pointerdown", this.boardTouchStart, this);
+           
             // Press Move
-            this.tilesContainer.on("touchmove", this.boardTouchMove, this);
-            this.tilesContainer.on("mousemove", this.boardTouchMove, this);
+            this.tilesContainer.on("pointermove", this.boardTouchMove, this); 
 
             // Press Up
-            this.tilesContainer.addEventListener("touchend", this.boardTouchEnd, this);
-            this.tilesContainer.addEventListener("mouseup", this.boardTouchEnd, this);
+            this.tilesContainer.addEventListener("pointerup", this.boardTouchEnd, this);
         }
 
         // callback to the event start
@@ -160,9 +169,8 @@
 
         // gets a pointer id based on the interaction event
         private getPointerId(e: PIXI.interaction.InteractionEvent) {
-            if (e.type.indexOf("mouse") >= 0) return 0;
-            if (e.type.indexOf("touch") >= 0) return 0;
-            if (e.type.indexOf("pointer") >= 0) return 0;
+            var pid = e.data["identifier"] || e.data.originalEvent["pointerId"] || 0;
+            return pid;
         }
 
         // #endregion
