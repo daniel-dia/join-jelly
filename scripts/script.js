@@ -3235,7 +3235,14 @@ var joinjelly;
                     tile.release();
                 }
             };
-            Board.prototype.getPointerId = function (e) { return 0; };
+            Board.prototype.getPointerId = function (e) {
+                if (e.type.indexOf("mouse") >= 0)
+                    return 0;
+                if (e.type.indexOf("touch") >= 0)
+                    return 0;
+                if (e.type.indexOf("pointer") >= 0)
+                    return 0;
+            };
             Board.prototype.setTiles = function (tiles) {
                 this.unlock();
                 for (var t = 0; t < tiles.length; t++) {

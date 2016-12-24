@@ -159,7 +159,11 @@
             }}
 
         // gets a pointer id based on the interaction event
-        private getPointerId(e: PIXI.interaction.InteractionEvent) { return 0; }
+        private getPointerId(e: PIXI.interaction.InteractionEvent) {
+            if (e.type.indexOf("mouse") >= 0) return 0;
+            if (e.type.indexOf("touch") >= 0) return 0;
+            if (e.type.indexOf("pointer") >= 0) return 0;
+        }
 
         // #endregion
 
