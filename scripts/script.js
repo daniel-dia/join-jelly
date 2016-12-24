@@ -2948,6 +2948,7 @@ var joinjelly;
                     tx.scaleX = tx.scaleY = 0.9;
                     this.jellyText = tx;
                     container.addChild(tx);
+                    tx.pivot.x = tx.getLocalBounds().width / 2;
                     container.y += 200;
                     return container;
                 };
@@ -2961,7 +2962,7 @@ var joinjelly;
                     createjs.Tween.get(t).to({ value: 1 }, 3000, createjs.Ease.quadOut);
                     var interval = setInterval(function () {
                         _this.scoreText.text = Math.floor(t.value * score).toString();
-                        _this.scoreText.regX = _this.scoreText.getBounds().width / 2;
+                        _this.scoreText.regX = _this.scoreText.getLocalBounds().width / 2;
                         if (t.value >= 1)
                             clearInterval(interval);
                     }, 30);
