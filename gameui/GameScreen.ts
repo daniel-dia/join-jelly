@@ -65,7 +65,9 @@ module gameui {
             if (!window["Cocoon"]) win = true;
             updateFn = this.update
             createjs.Tween["_inited"] = true;
-            requestAnimationFrame(updateFn);
+
+
+            updateFn();
         }
 
 
@@ -78,11 +80,15 @@ module gameui {
             createjs.Tween.tick(delta, false);
             PIXIrenderer.render(PIXIstage);
 
-            // gambiarra para o edge dar prioridade pros toques no Windows Mobile 10
-            if (win) setTimeout(function () { setTimeout(function () { requestAnimationFrame(updateFn); }, 0); }, 0);
-
-
-            else requestAnimationFrame(updateFn);
+            //// gambiarra para o edge dar prioridade pros toques no Windows Mobile 10
+            //if (win) setTimeout(function () {
+            //    setTimeout(function () {
+            //        requestAnimationFrame(updateFn);
+            //    }, 0);
+            //}, 0);
+            //
+            //else 
+                requestAnimationFrame(updateFn);
 
         }
 

@@ -569,6 +569,7 @@
     <Content Include="scripts\pixi.js" />
     <Content Include="scripts\PIXIpatch.js" />
     <Content Include="scripts\Plataform.js" />
+    <Content Include="scripts\script.js" />
     <Content Include="scripts\Touch.js" />
     <Content Include="Windows\setMobileRealScale.js" />
     <Content Include="Windows\WindowsCocoonjs.js" />

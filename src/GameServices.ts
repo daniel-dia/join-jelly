@@ -3,6 +3,7 @@
 
         private socialService: Cocoon.Social.Interface;
         constructor() {
+            return;
 
             if (!navigator.onLine) return;
 
@@ -63,10 +64,7 @@
 
         // show native leaderboards
         public showLeaderboard() {
-
             
-
-
             if (!navigator.onLine) return;
             if (!this.socialService) return;
             try {

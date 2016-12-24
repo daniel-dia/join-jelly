@@ -13,6 +13,9 @@
         private alarming: boolean = false;
         private tilesContainer: PIXI.Container;
 
+        private touchOffset: Array<point>;
+        private touchDeltas: Array<number>;
+
         // #region Initialization ----------------------------------------------------------------------
 
         constructor(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
@@ -32,7 +35,7 @@
 
             // create all tiles
             this.addTiles(boardWidth, boardHeight, tileSize, img);
-            this.addMouseEvents(tileSize);
+            this.addMouseEvents();
 
             //set pivot
             this.pivot.x = (boardWidth * tileSize / 2);
@@ -74,80 +77,84 @@
         }
 
         // add mouse board interacion
-        private addMouseEvents(tileSize: number) {
-            var touchOffset = [];
-            this.tilesContainer.on("pointerdown", (e: PIXI.interaction.InteractionEvent) => {
+        private addMouseEvents() {
 
-                var pid = (<any>e.data.originalEvent).pointerId;
-                var pos = e.data.getLocalPosition(this);
-                console.log("start pid: " + pid)
-                var tile = this.getTileByRawPos(pos.x, pos.y, tileSize);
+            this.touchOffset = new Array<point>();
+            this.touchDeltas = new Array<number>();
 
-                if (tile && tile.isUnlocked() && tile.isEnabled()) {
+            // pess Start
+            this.tilesContainer.on("touchstart", this.boardTouchStart, this);
+            this.tilesContainer.on("mousedown", this.boardTouchStart, this);
 
-                    tile.lock();
+            // Press Move
+            this.tilesContainer.on("touchmove", this.boardTouchMove, this);
+            this.tilesContainer.on("mousemove", this.boardTouchMove, this);
 
-                    this.touchDictionary[pid] = tile;
-
-                    //store offset mouse position
-                    touchOffset[pid] = { x: tile.x - pos.x, y: tile.y - pos.y };
-                    tile.drag();
-
-                    //bring to front
-                    this.tilesContainer.setChildIndex(tile, this.tilesContainer.children.length - 1);
-
-                    gameui.AudiosManager.playSound('soundh_1');
-                }
-            });
-
-            //Press Move
-            var deltas = [];
-            this.tilesContainer.on("pointermove", (e: PIXI.interaction.InteractionEvent) => {
-
-                var pid = (<any>e.data.originalEvent).pointerId;
-                console.log("move pid: " + pid)
-                var pos = e.data.getLocalPosition(this);
-
-                var delta = Date.now() - deltas[pid];
-                if (delta < 20) return;
-                deltas[pid] = Date.now();
-
-
-                //get tile by touch
-                var tile = this.touchDictionary[pid];
-                if (tile) {
-
-                    tile.x = e.data.getLocalPosition(this).x + touchOffset[pid].x;
-                    tile.y = e.data.getLocalPosition(this).y + touchOffset[pid].y;
-                    tile.lock();
-                    
-                    //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
-                    var target = this.getTileByRawPos(pos.x, pos.y, tileSize);
-                    if (target && target.name.toString() != tile.name) {
-                        if (target.isUnlocked()) {
-                            var x = { origin: tile, target: target };
-                            
-                            this.emit("dragging", { originTile: tile, targetTile: target });
-                            
-                            
-                        }
-                    }
-                }
-            });
-
-            //Press Up
-            this.tilesContainer.addEventListener("pointerup", (e: PIXI.interaction.InteractionEvent) => {
-                var pid = (<any>e.data.originalEvent).pointerId;
-                console.log("end pid: " + pid)
-                var tile = this.touchDictionary[pid];
-                if (tile) {
-                    tile.unlock;
-                    this.releaseDrag(tile, false);
-                    tile.release();
-                }
-            });
+            // Press Up
+            this.tilesContainer.addEventListener("touchend", this.boardTouchEnd, this);
+            this.tilesContainer.addEventListener("mouseup", this.boardTouchEnd, this);
         }
 
+        private boardTouchStart(e: PIXI.interaction.InteractionEvent) {
+
+            var pid = (<any>e.data.originalEvent).pointerId;
+            var pos = e.data.getLocalPosition(this);
+            console.log("start pid: " + pid)
+
+            var tile = this.getTileByRawPos(pos.x, pos.y, this.tileSize);
+
+            if (tile && tile.isUnlocked() && tile.isEnabled()) {
+
+                tile.lock();
+
+                this.touchDictionary[pid] = tile;
+
+                //store offset mouse position
+                this.touchOffset[pid] = { x: tile.x - pos.x, y: tile.y - pos.y };
+                tile.drag();
+
+                //bring to front
+                this.tilesContainer.setChildIndex(tile, this.tilesContainer.children.length - 1);
+
+                gameui.AudiosManager.playSound('soundh_1');
+            }
+
+        }
+        private boardTouchMove(e: PIXI.interaction.InteractionEvent) {
+            var pid = (<any>e.data.originalEvent).pointerId;
+            console.log("move pid: " + pid)
+            var pos = e.data.getLocalPosition(this);
+
+            var delta = Date.now() - this.touchDeltas[pid];
+            if (delta < 20) return;
+            this.touchDeltas[pid] = Date.now();
+
+
+            //get tile by touch
+            var tile = this.touchDictionary[pid];
+            if (tile) {
+
+                tile.x = e.data.getLocalPosition(this).x + this.touchOffset[pid].x;
+                tile.y = e.data.getLocalPosition(this).y + this.touchOffset[pid].y;
+                tile.lock();
+
+                //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
+                var target = this.getTileByRawPos(pos.x, pos.y, this.tileSize);
+                if (target && target.name.toString() != tile.name) {
+                    if (target.isUnlocked()) {
+                        this.emit("dragging", { originTile: tile, targetTile: target });
+                    }
+                }
+            }}
+        private boardTouchEnd(e: PIXI.interaction.InteractionEvent) {
+            var pid = (<any>e.data.originalEvent).pointerId;
+            console.log("end pid: " + pid)
+            var tile = this.touchDictionary[pid];
+            if (tile) {
+                tile.unlock;
+                this.releaseDrag(tile, false);
+                tile.release();
+            }}
         // #endregion
 
         // #region Tile manager ------------------------------------------------------------------------

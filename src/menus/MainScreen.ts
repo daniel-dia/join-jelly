@@ -35,7 +35,6 @@
             this.onback = () => {
                 Cocoon.App.exit();
             }
-
         }
 
         private createContent() {
@@ -74,7 +73,6 @@
             //add About button
             var settingsBt = new gameui.ImageButton("DIAStudioIco", () => { JoinJelly.showAbout(); });
             settingsBt.y = 165 / 2;
-            settingsBt.skewY = 45;
             settingsBt.x = defaultWidth - 165 / 2;
             this.header.addChild(settingsBt);
 
