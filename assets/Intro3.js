@@ -841,7 +841,7 @@ p.nominalBounds = new cjs.Rectangle(-1762.2,-2698.5,3616.8,4819.2);
 	this.instance_3.alpha = 0.129;
 	this.instance_3._off = true;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(9).to({_off:false},0).to({scaleX:1.03,scaleY:1.03,rotation:10,alpha:0.441},10,cjs.Ease.get(0.99)).to({regY:-4.9,scaleX:1.91,scaleY:1.91,rotation:28.5,x:7,alpha:1},41).wait(1));
+	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(9).to({_off:false},0).to({scaleX:1.03,scaleY:1.03,rotation_d:10,alpha:0.441},10,cjs.Ease.get(0.99)).to({regY:-4.9,scaleX:1.91,scaleY:1.91,rotation_d:28.5,x:7,alpha:1},41).wait(1));
 
 	// Layer 4
 	this.instance_4 = new lib.S6J1("synched",0);

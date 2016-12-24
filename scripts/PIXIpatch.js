@@ -108,10 +108,8 @@ PIXI.DisplayObject.prototype.setTransform = function (x, y, scaleX, scaleY, rota
     this.scale.x = scaleX == null ? 1 : scaleX;
     this.scale.y = scaleY == null ? 1 : scaleY;
     this.rotation_d = rotation || 0;
-
-    /// Do something with this
-    //this.skewX = skewX || 0;
-    //this.skewY = skewY || 0;
+    this.skewX = skewX || 0;
+    this.skewY = skewY || 0;
 }
 PIXI.Container.prototype.Container_addChild = PIXI.Container.prototype.addChild;
 PIXI.Container.prototype.addChild = function (child) {
