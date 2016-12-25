@@ -1,6 +1,6 @@
 /*!
  * pixi.js - v4.3.0
- * Compiled Sat, 24 Dec 2016 20:37:41 UTC
+ * Compiled Sat, 24 Dec 2016 22:27:05 UTC
  *
  * pixi.js is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -32159,7 +32159,8 @@ exports.default = function () {
             xmlUrl += '/';
         }
 
-        var textureUrl = xmlUrl + resource.data.getElementsByTagName('page')[0].getAttribute('file');
+        //const textureUrl = xmlUrl + resource.data.getElementsByTagName('page')[0].getAttribute('file');
+        var textureUrl = resource.data.getElementsByTagName('page')[0].getAttribute('file');
 
         if (_core.utils.TextureCache[textureUrl]) {
             // reuse existing texture
