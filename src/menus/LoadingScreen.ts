@@ -90,7 +90,7 @@ module joinjelly.menus {
             //text.y = -100;
             //text.y = -200;
             
-            this.barMask = new PIXI.Graphics().beginFill(0xFF0000, 1).drawRect(0, 0, w, h).endFill();;
+            this.barMask = new PIXI.Graphics().beginFill(0xFF0000, 1).drawRect(0, 0, w, h).endFill();
 
             this.barMask.x = bar.x;
             this.barMask.y = bar.y;

@@ -42,11 +42,12 @@
             var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
             levelBar.x = 372;
             levelBar.y = 207;
-            levelBar.mask = (new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 939, 57));
+            levelBar.mask = new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 939, 57).endFill();
             levelBar.mask.x = 372;
             levelBar.mask.y = 207;
             this.levelBar = levelBar;
             this.addChild(levelBar);
+            this.addChild(levelBar.mask);
 
             var levelTip = gameui.AssetsManager.getBitmap("powerTip");
             levelTip.x = 372;

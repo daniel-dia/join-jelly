@@ -28,25 +28,24 @@
             createjs.Tween.get(this.redFx, { loop: true }).to({ alpha: 0 }, 500);
 
             percentBar.addChild(bar);
-            this.addChild(red);
             percentBar.addChild(bright);
+            percentBar.addChild(red);
 
             this.addChild(percentBar);
 
 
-            var shape = new PIXI.Graphics();
-            shape.beginFill(0xFF0000).drawRect(0, 0, 991, 35)
-
-
-            this.percentBarMask = shape;
-            percentBar.mask = this.percentBarMask;
+            //var shape = new PIXI.Graphics().beginFill(0xFF0000, 1).drawRect(0, 0, 991, 35).endFill();
+            //shape.position = percentBar.position;
+            //this.addChild(shape);
+            //this.percentBarMask = shape;
+            //percentBar.mask = this.percentBarMask;
         }
 
         public setPercent(percent: number, alarm?: boolean) {
 
             //if value is greater, do a animation for increasing
             if (this.value < percent)
-                this.incrasePercent();
+                this.incrasePercentEffect();
 
             this.value = percent;
 
@@ -63,9 +62,8 @@
 
         // #region animations
 
-        private incrasePercent() {
-            this.brightFx.alpha = 1;
-            createjs.Tween.get(this.brightFx).to({ alpha: 0 }, 300);
+        private incrasePercentEffect() {
+            createjs.Tween.get(this.brightFx).to({ alpha:1}).to({ alpha: 0 }, 300);
         }
 
         private setAlarmOn() { this.redFx.visible = true; }

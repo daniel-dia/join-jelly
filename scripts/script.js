@@ -1293,7 +1293,6 @@ var joinjelly;
                 bar.y = 87;
                 bg.pivot.x = 1131 / 2;
                 this.barMask = new PIXI.Graphics().beginFill(0xFF0000, 1).drawRect(0, 0, w, h).endFill();
-                ;
                 this.barMask.x = bar.x;
                 this.barMask.y = bar.y;
                 bar.mask = this.barMask;
@@ -2396,11 +2395,12 @@ var joinjelly;
                     var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
                     levelBar.x = 372;
                     levelBar.y = 207;
-                    levelBar.mask = (new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 939, 57));
+                    levelBar.mask = new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 939, 57).endFill();
                     levelBar.mask.x = 372;
                     levelBar.mask.y = 207;
                     this.levelBar = levelBar;
                     this.addChild(levelBar);
+                    this.addChild(levelBar.mask);
                     var levelTip = gameui.AssetsManager.getBitmap("powerTip");
                     levelTip.x = 372;
                     levelTip.y = 207;
@@ -2843,17 +2843,13 @@ var joinjelly;
                     this.brightFx = bright;
                     createjs.Tween.get(this.redFx, { loop: true }).to({ alpha: 0 }, 500);
                     percentBar.addChild(bar);
-                    this.addChild(red);
                     percentBar.addChild(bright);
+                    percentBar.addChild(red);
                     this.addChild(percentBar);
-                    var shape = new PIXI.Graphics();
-                    shape.beginFill(0xFF0000).drawRect(0, 0, 991, 35);
-                    this.percentBarMask = shape;
-                    percentBar.mask = this.percentBarMask;
                 };
                 TimeBar.prototype.setPercent = function (percent, alarm) {
                     if (this.value < percent)
-                        this.incrasePercent();
+                        this.incrasePercentEffect();
                     this.value = percent;
                     createjs.Tween.removeTweens(this.percentBarMask);
                     createjs.Tween.get(this.percentBarMask).to({ scaleX: percent }, 200, createjs.Ease.quadInOut);
@@ -2862,9 +2858,8 @@ var joinjelly;
                     else
                         this.setAlarmOff();
                 };
-                TimeBar.prototype.incrasePercent = function () {
-                    this.brightFx.alpha = 1;
-                    createjs.Tween.get(this.brightFx).to({ alpha: 0 }, 300);
+                TimeBar.prototype.incrasePercentEffect = function () {
+                    createjs.Tween.get(this.brightFx).to({ alpha: 1 }).to({ alpha: 0 }, 300);
                 };
                 TimeBar.prototype.setAlarmOn = function () { this.redFx.visible = true; };
                 TimeBar.prototype.setAlarmOff = function () { this.redFx.visible = false; };
