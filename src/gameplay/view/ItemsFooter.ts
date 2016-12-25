@@ -74,7 +74,10 @@
 
             //add event listener
             bt.addEventListener("click", () => {
-                this.emit(  "useitem", {item: item });
+                this.emit("useitem", { item: item });
+            });
+            bt.addEventListener("tap", () => {
+                this.emit("useitem", { item: item });
             });
 
         }
