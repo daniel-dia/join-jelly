@@ -4088,9 +4088,8 @@ var joinjelly;
                 return item;
             };
             GamePlayScreen.prototype.animateItemFromTile = function (tile, item) {
-                var xi = this.board.toLocal(new PIXI.Point(tile.x, tile.y), this.content).x;
-                var yi = this.board.toLocal(new PIXI.Point(tile.x, tile.y), this.content).y;
-                this.animateItemFromPos(xi, xi, item);
+                var point = this.content.toLocal(new PIXI.Point(tile.x, tile.y), this.board);
+                this.animateItemFromPos(point.x, point.y, item);
             };
             GamePlayScreen.prototype.animateItemFromPos = function (xi, yi, item) {
                 var _this = this;
@@ -4105,8 +4104,8 @@ var joinjelly;
                 ;
                 var footerItem = this.gameFooter.getItemButton(item);
                 if (footerItem) {
-                    xf = this.gameFooter.toLocal(new PIXI.Point(footerItem.x, footerItem.y), this.content).x;
-                    yf = this.gameFooter.toLocal(new PIXI.Point(footerItem.x, footerItem.y), this.content).y;
+                    xf = this.content.toLocal(new PIXI.Point(footerItem.x, footerItem.y), this.gameFooter).x;
+                    yf = this.content.toLocal(new PIXI.Point(footerItem.x, footerItem.y), this.gameFooter).y;
                 }
                 itemDO.alpha = 0;
                 createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(function () {
@@ -4120,8 +4119,8 @@ var joinjelly;
                 var textDO = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
                 textDO.regX = textDO.getBounds().width / 2;
                 textDO.mouseEnabled = false;
-                var xi = this.board.toLocal(new PIXI.Point(tile.x, tile.y), this.content).x;
-                var yi = this.board.toLocal(new PIXI.Point(tile.x, tile.y), this.content).y;
+                var xi = this.content.toLocal(new PIXI.Point(tile.x, tile.y), this.board).x;
+                var yi = this.content.toLocal(new PIXI.Point(tile.x, tile.y), this.board).y;
                 textDO.alpha = 0;
                 createjs.Tween.get(textDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 170, alpha: 1 }, 400, createjs.Ease.quadOut).to({ alpha: 0 }, 400).call(function () {
                     _this.content.removeChild(textDO);
@@ -4264,13 +4263,13 @@ var joinjelly;
                 tile.jelly.playThunder();
                 setTimeout(function () { tile.unlock(); gameui.AudiosManager.playSound("evolve"); }, 1000);
                 gameui.AudiosManager.playSound("sounditemfast");
-                var pt = tile.jelly.toLocal(new PIXI.Point(0, 0), this.evolveEffect.parent);
+                var pt = this.evolveEffect.parent.toLocal(new PIXI.Point(0, 0), tile.jelly);
                 var po = this.gameHeader.toLocal(new PIXI.Point(1394, 211), this.evolveEffect.parent);
                 this.evolveEffect.visible = true;
                 this.evolveEffect.set({ alpha: 1, scaleX: 0.5, x: po.x, y: po.y });
-                var angleDeg = Math.atan2(pt.y - po.y - 50, pt.x - po.x) * 180 / Math.PI - 90;
+                var angle = Math.atan2(pt.y - po.y - 50, pt.x - po.x) - Math.PI / 2;
                 var scale = Math.sqrt(Math.pow(pt.y - 50 - po.y, 2) + Math.pow(pt.x - po.x, 2)) / 300;
-                this.evolveEffect.rotation;
+                this.evolveEffect.rotation = angle;
                 this.evolveEffect.scaleY = 0;
                 createjs.Tween.removeTweens(this.evolveEffect);
                 createjs.Tween.get(this.evolveEffect).to({ scaleY: scale }, 200);
