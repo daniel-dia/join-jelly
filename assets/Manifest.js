@@ -128,7 +128,8 @@
        { id: "ballon", src: "ballon.png" },
        { id: "pediaItem", src: "pediaItem.png" },
        { id: "BigBG", src: "BigBG.png" },
-
+       { id: "ScrollMask", src: "ScrollMask.png" },
+       
 
        { id: "freezeEffect", src: "freezeEffect.png" },
        { id: "fastEffect", src: "fastEffect.png" },

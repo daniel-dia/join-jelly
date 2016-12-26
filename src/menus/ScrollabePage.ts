@@ -5,8 +5,13 @@
         protected maxScroll: number = 1700;
         public okButtonAction: () => void;
 
+        private targetY: number = 0;
+        private last: number;
+        private ScrollArea: PIXI.Container;
+        private scrolling: boolean = false;
+
         constructor(title: string) {
-            super(); 
+            super();
             this.addBackground(title);
             this.addScrollableArea();
             this.addButton();
@@ -38,38 +43,62 @@
         }
 
         private addScrollableArea() {
-            var scrollContent = new PIXI.Container();
-            var ScrollArea = new PIXI.Container();
-            this.content.addChild(ScrollArea);
-            ScrollArea.addChild(scrollContent);
+            this.scrollableContent = new PIXI.Container();
+            this.ScrollArea = new PIXI.Container();
+            this.content.addChild(this.ScrollArea);
+            this.ScrollArea.addChild(this.scrollableContent);
+       
+            var mask = gameui.AssetsManager.getBitmap('ScrollMask');
+            this.ScrollArea.addChild(mask);
+            mask.scaleX = mask.scaleY = 2;
+            mask.interactive = false;
+            mask.interactiveChildren = false;
+      
+            mask.x = (defaultWidth - 1463) / 2;
+            mask.y = (defaultHeight - 1788) / 2;
 
-            this.scrollableContent = scrollContent;
-
-            //var mask = (new PIXI.Graphics().beginFill(0).drawPolygon("EALkCFSYAAomAAocAAomYAAgUAKgUAAgUYAAjwgKjwAKj6YAKi+AKi+AAi+YAKjwAKjmAKjwYAKiMAKiWAKiMYAylUB4lADIkiYEYmaFykEH0hQYDcgeDcgeDcgeYAKAAAAAAAKAAYAAAogKAoAAAoYAABuAKBkgKBuYgKC0AACqAAC0YgKCMA8BuBuBaYBkBQB4AUB4AAcArmAAAArmAAAArmAAAYAUAAAKAAAUAAYEOgKC+i+gKkOYAAiCAAh4AAh4YgKi+gKi+AAi+YAeAAAeAAAeAAYAKAAAKAKAUAAYDSAUDIAeDSAoYFUA8EiCgDwDwYCgCqCCDIBkDcYBuDmBGDwAUEEYAKCCAKB4AACCYAKDwAKDwAUDwYAABQgKBQAUBQYAAA8AAAyAAA8YgKAyAAA8AAAyYgKIIAKH+gKIIYAACqAACqAAC0YgKD6gKD6AAD6YgKC0AAC0AAC0YgUGQgKGGgKGQYgKC+gKDIAAC+YgUEigKEsgKEiYgKCqgKCqgKCqYgKD6gKDwgKD6YgKDcgUDcgKDmYgKDSgKDSgKDSYgKDcgUDcgKDcYgKC+gKDIgKC+YgKCWAACWgyCMYgoB4geB4gyB4YiWFKjIEYkYDcYjSCgjmBukYAKYi0AKi+AKi+AKYjSAKjSAAjSAKYiMAKiMgKiMAKYi0AKi0AAi0AAYnCAAnCAUnMgKYhaAAhQAAhaAAYgUAAgUAAgUAKYywAAy6AAywAAYgUAAgKgKgUAAYlyAAlyAAlygKYiCAAiCAAiCgKYkEAAkOgKkEgKYiqgKigAAiqgKYg8AAhGgKhGgUYjwg8i+iCi0igYiWiMhuiWhuigYiMjmhaj6g8kEYgeh4AKh4gKh4YgKjSgKjSgKjSYgUjmgKjwgKjmYgKkEgKj6gKkEYgKk2gUk2gKk2YgKjmAAjcgKjmYgKmkgUmkgKmkYgKlKAAlKgKlUYAAj6gKkEAAj6YAAjSAAjcAAjSYAAgUgKgKAAgU").cp().ef());
-            //ScrollArea.mask = mask;
-            
+            this.ScrollArea.mask = mask;
 
             // add scroll event
-            var targetY = 0;
-            var last;
+            this.ScrollArea.addEventListener("touchmove", this.pressMoveScroll, this);
+            this.ScrollArea.addEventListener("touchend", this.pressUpScroll, this);
+            this.ScrollArea.addEventListener("touchstart", this.pressDownScroll, this);
+            this.ScrollArea.addEventListener("mousemove", this.pressMoveScroll, this);
+            this.ScrollArea.addEventListener("mouseup", this.pressUpScroll, this);
+            this.ScrollArea.addEventListener("mouseout", this.pressUpScroll, this);
+            this.ScrollArea.addEventListener("mousedown", this.pressDownScroll, this);
+            
+            this.ScrollArea.interactive = true;
+            this.ScrollArea.hitArea = new PIXI.Rectangle(0, 0, defaultWidth, defaultHeight);
 
-            this.content.addEventListener("pressmove", (evt: PIXI.interaction.InteractionEvent) => {
-                var localY = evt.data.getLocalPosition(evt.target).y;
-                if (!last) last = localY;
-                targetY += (localY - last) * 1.3;
-                if (targetY > 400) targetY = 400;
-                if (targetY < -this.maxScroll) targetY = -this.maxScroll;
-                last = localY;
-            });
-
-            this.content.addEventListener("pressup", (evt: PIXI.interaction.InteractionEvent) => {
-                last = null;
-            });
-
-            this.content.addEventListener("tick", () => {
-                ScrollArea.y = (ScrollArea.y * 2 + targetY) / 3;
-            })
         }
+
+        private pressDownScroll(evt) {
+            this.scrolling = true;
+            this.last = null;
+        }
+
+        private pressMoveScroll(evt: PIXI.interaction.InteractionEvent) {
+            if (!this.scrolling) return;
+
+            var localY = evt.data.getLocalPosition(evt.target).y;
+            if (!this.last) this.last = localY;
+            this.targetY += (localY - this.last) * 1.3;
+            if (this.targetY > 400) this.targetY = 400;
+            if (this.targetY < -this.maxScroll) this.targetY = -this.maxScroll;
+            this.last = localY;
+            
+        }
+
+        private pressUpScroll(evt) {
+            this.scrolling = false;
+            this.last = null;
+        }
+
+        private scrollTick(evt) {
+            this.scrollableContent.y = (this.scrollableContent.y * 2 + this.targetY) / 3;
+        }
+
 
         private addButton() {
             // add ok button
@@ -83,5 +112,20 @@
             this.content.addChild(okButton);
 
         }
+
+
+        public activate(parameters?: any) {
+            super.activate(parameters);
+            PIXI.ticker.shared.add(this.scrollTick, this);
+
+        }
+
+        public desactivate(parameters?: any) {
+            super.desactivate(parameters);
+            PIXI.ticker.shared.remove(this.scrollTick, this);
+
+        }
+
+
     }
 }

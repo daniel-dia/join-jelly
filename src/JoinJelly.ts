@@ -35,14 +35,14 @@ module joinjelly {
 
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
 
-            // add back button callback
-            Cocoon.App.exitCallback(() => {
-                return this.gameScreen.sendBackButtonEvent()
-            })
+            //// add back button callback
+            //Cocoon.App.exitCallback(() => {
+            //    return this.gameScreen.sendBackButtonEvent()
+            //})
 
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
-            
+
 
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
@@ -74,21 +74,22 @@ module joinjelly {
                     fb.init({ appId: fbAppId });
                     this.FBSocialService = fb.getSocialInterface();
                 }
-            } catch (e){ }
+            } catch (e) { }
         }
 
         public static initializeAds() {
-            
-            Cocoon.Ad.interstitial.on("ready", () => {
-                // tells that a ads s loaded
-                Cocoon.Ad.interstitial["loaded"] = true;
-                // once a ads is loaded so it is avaliable for this app.
-                this.userData.history("ads_avaliable");
-                console.log("ads loaded");
-            })
+            try {
+                Cocoon.Ad.interstitial.on("ready", () => {
+                    // tells that a ads s loaded
+                    Cocoon.Ad.interstitial["loaded"] = true;
+                    // once a ads is loaded so it is avaliable for this app.
+                    this.userData.history("ads_avaliable");
+                    console.log("ads loaded");
+                })
 
-            console.log("ads initialized");
-            Cocoon.Ad.loadInterstitial();
+                console.log("ads initialized");
+                Cocoon.Ad.loadInterstitial();
+            } catch (e) { }
         }
 
         public static startTest() {
@@ -96,7 +97,7 @@ module joinjelly {
             this.gameScreen.switchScreen(gs);
             gs.selfPeformanceTest(false);
         }
-            
+
         public static showMainScreen() {
             var transition = { type: "fade", time: 600 };
             if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };

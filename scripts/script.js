@@ -1180,6 +1180,8 @@ var joinjelly;
             var _this = this;
             _super.call(this);
             this.maxScroll = 1700;
+            this.targetY = 0;
+            this.scrolling = false;
             this.addBackground(title);
             this.addScrollableArea();
             this.addButton();
@@ -1204,31 +1206,51 @@ var joinjelly;
             titleObj.regX = titleObj.getBounds().width / 2;
         };
         ScrollablePage.prototype.addScrollableArea = function () {
-            var _this = this;
-            var scrollContent = new PIXI.Container();
-            var ScrollArea = new PIXI.Container();
-            this.content.addChild(ScrollArea);
-            ScrollArea.addChild(scrollContent);
-            this.scrollableContent = scrollContent;
-            var targetY = 0;
-            var last;
-            this.content.addEventListener("pressmove", function (evt) {
-                var localY = evt.data.getLocalPosition(evt.target).y;
-                if (!last)
-                    last = localY;
-                targetY += (localY - last) * 1.3;
-                if (targetY > 400)
-                    targetY = 400;
-                if (targetY < -_this.maxScroll)
-                    targetY = -_this.maxScroll;
-                last = localY;
-            });
-            this.content.addEventListener("pressup", function (evt) {
-                last = null;
-            });
-            this.content.addEventListener("tick", function () {
-                ScrollArea.y = (ScrollArea.y * 2 + targetY) / 3;
-            });
+            this.scrollableContent = new PIXI.Container();
+            this.ScrollArea = new PIXI.Container();
+            this.content.addChild(this.ScrollArea);
+            this.ScrollArea.addChild(this.scrollableContent);
+            var mask = gameui.AssetsManager.getBitmap('ScrollMask');
+            this.ScrollArea.addChild(mask);
+            mask.scaleX = mask.scaleY = 2;
+            mask.interactive = false;
+            mask.interactiveChildren = false;
+            mask.x = (defaultWidth - 1463) / 2;
+            mask.y = (defaultHeight - 1788) / 2;
+            this.ScrollArea.mask = mask;
+            this.ScrollArea.addEventListener("touchmove", this.pressMoveScroll, this);
+            this.ScrollArea.addEventListener("touchend", this.pressUpScroll, this);
+            this.ScrollArea.addEventListener("touchstart", this.pressDownScroll, this);
+            this.ScrollArea.addEventListener("mousemove", this.pressMoveScroll, this);
+            this.ScrollArea.addEventListener("mouseup", this.pressUpScroll, this);
+            this.ScrollArea.addEventListener("mouseout", this.pressUpScroll, this);
+            this.ScrollArea.addEventListener("mousedown", this.pressDownScroll, this);
+            this.ScrollArea.interactive = true;
+            this.ScrollArea.hitArea = new PIXI.Rectangle(0, 0, defaultWidth, defaultHeight);
+        };
+        ScrollablePage.prototype.pressDownScroll = function (evt) {
+            this.scrolling = true;
+            this.last = null;
+        };
+        ScrollablePage.prototype.pressMoveScroll = function (evt) {
+            if (!this.scrolling)
+                return;
+            var localY = evt.data.getLocalPosition(evt.target).y;
+            if (!this.last)
+                this.last = localY;
+            this.targetY += (localY - this.last) * 1.3;
+            if (this.targetY > 400)
+                this.targetY = 400;
+            if (this.targetY < -this.maxScroll)
+                this.targetY = -this.maxScroll;
+            this.last = localY;
+        };
+        ScrollablePage.prototype.pressUpScroll = function (evt) {
+            this.scrolling = false;
+            this.last = null;
+        };
+        ScrollablePage.prototype.scrollTick = function (evt) {
+            this.scrollableContent.y = (this.scrollableContent.y * 2 + this.targetY) / 3;
         };
         ScrollablePage.prototype.addButton = function () {
             var _this = this;
@@ -1241,6 +1263,14 @@ var joinjelly;
             okButton.x = defaultWidth * 3 / 4;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
+        };
+        ScrollablePage.prototype.activate = function (parameters) {
+            _super.prototype.activate.call(this, parameters);
+            PIXI.ticker.shared.add(this.scrollTick, this);
+        };
+        ScrollablePage.prototype.desactivate = function (parameters) {
+            _super.prototype.desactivate.call(this, parameters);
+            PIXI.ticker.shared.remove(this.scrollTick, this);
         };
         return ScrollablePage;
     }(gameui.ScreenState));
@@ -4774,9 +4804,6 @@ var joinjelly;
                 testMode = true;
             }
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
-            Cocoon.App.exitCallback(function () {
-                return _this.gameScreen.sendBackButtonEvent();
-            });
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             loadingScreen.loaded = function () {
@@ -4807,13 +4834,16 @@ var joinjelly;
         };
         JoinJelly.initializeAds = function () {
             var _this = this;
-            Cocoon.Ad.interstitial.on("ready", function () {
-                Cocoon.Ad.interstitial["loaded"] = true;
-                _this.userData.history("ads_avaliable");
-                console.log("ads loaded");
-            });
-            console.log("ads initialized");
-            Cocoon.Ad.loadInterstitial();
+            try {
+                Cocoon.Ad.interstitial.on("ready", function () {
+                    Cocoon.Ad.interstitial["loaded"] = true;
+                    _this.userData.history("ads_avaliable");
+                    console.log("ads loaded");
+                });
+                console.log("ads initialized");
+                Cocoon.Ad.loadInterstitial();
+            }
+            catch (e) { }
         };
         JoinJelly.startTest = function () {
             var gs = new joinjelly.gameplay.GamePlayScreen(this.userData, this.itemData);
