@@ -81,7 +81,7 @@
         private pressMoveScroll(evt: PIXI.interaction.InteractionEvent) {
             if (!this.scrolling) return;
 
-            var localY = evt.data.getLocalPosition(evt.target).y;
+            var localY = evt.data.getLocalPosition(evt.currentTarget).y;
             if (!this.last) this.last = localY;
             this.targetY += (localY - this.last) * 1.3;
             if (this.targetY > 400) this.targetY = 400;

@@ -1235,7 +1235,7 @@ var joinjelly;
         ScrollablePage.prototype.pressMoveScroll = function (evt) {
             if (!this.scrolling)
                 return;
-            var localY = evt.data.getLocalPosition(evt.target).y;
+            var localY = evt.data.getLocalPosition(evt.currentTarget).y;
             if (!this.last)
                 this.last = localY;
             this.targetY += (localY - this.last) * 1.3;
