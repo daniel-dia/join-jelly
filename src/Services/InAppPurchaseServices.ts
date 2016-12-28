@@ -1,9 +1,10 @@
-﻿/*declare var WindowsInappsService: any;
-declare var Cocoon: any;
+﻿class InAppPurchaseServices {
 
+    private static Cocoon: any;
+    private static initialized: boolean = false;
+    private static WindowsInappsService: any;
 
-class InAppPurchaseServices {
-
+    /* 
     private products: any;
     private productsIds: Array<string>;
     private inappsService;
@@ -85,24 +86,22 @@ class InAppPurchaseServices {
     private updateProductsAvaliability() {
 
     }
+    */
 }
 
+module InAppPurchaseServices {
+    interface ProductListItem {
 
+        constructor(productId: string, name: string, description: string, localizedPrice: string);
 
+        setPurchasing();
+        setPurchased(timeOut: boolean);
+        setNotAvaliable();
+        setNormal();
+        setAvaliable();
 
-interface ProductListItem {
-
-    constructor(productId: string, name: string, description: string, localizedPrice: string);
-
-    setPurchasing();
-    setPurchased(timeOut: boolean);
-    setNotAvaliable();
-    setNormal();
-    setAvaliable();
-
-    loading();
-    enable();
-    disable();
+        loading();
+        enable();
+        disable();
+    }
 }
-
-*/

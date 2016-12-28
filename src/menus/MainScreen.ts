@@ -32,9 +32,8 @@
 
             this.rating.show();
 
-            this.onback = () => {
-                Cocoon.App.exit();
-            }
+            this.onback = DeviceServices.exit;
+            
         }
 
         private createContent() {

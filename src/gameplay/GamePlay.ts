@@ -66,10 +66,8 @@ module joinjelly.gameplay {
                 this.userData.history("firstPlay")
             }
 
-            if (!Cocoon.Ad.interstitial["loaded"]) {
-                Cocoon.Ad.loadInterstitial();
-                console.log("loading ad");
-            }
+            // Load Ads
+            AdsServices.load();
         }
 
         // create game effects
@@ -198,45 +196,47 @@ module joinjelly.gameplay {
             });
 
             this.finishMenu.addEventListener("share", () => {
-
-                // mediaURL, linkURL, linkText, linkCaption
-                var message = new Cocoon.Social.Message(
-                    StringResources.social.shareDescription,
-                    gameWebsiteIcon,
-                    gameWebsite,
-                    StringResources.social.shareTitle,
-                    StringResources.social.shareCaption);
-                var that = this;
-
-                JoinJelly.FBSocialService.publishMessageWithDialog(message, function (error) {
+                var callback = (error) => {
                     console.log("share callback");
                     var sucess = true;
                     console.log(JSON.stringify(error));
                     if (error) sucess = false;
                     if (sucess) {
-                        that.userData.history("shared");
-                        that.itemData.increaseItemAmmount(Items.REVIVE, 1);
-                        that.itemData.increaseItemAmmount(Items.CLEAN, 1);
-                        that.itemData.increaseItemAmmount(Items.FAST, 1);
-                        that.itemData.increaseItemAmmount(Items.TIME, 1);
-                        that.updateFooter();
-                        that.finishMenu.ClearSpecialOffer();
+                        this.userData.history("shared");
+                        this.itemData.increaseItemAmmount(Items.REVIVE, 1);
+                        this.itemData.increaseItemAmmount(Items.CLEAN, 1);
+                        this.itemData.increaseItemAmmount(Items.FAST, 1);
+                        this.itemData.increaseItemAmmount(Items.TIME, 1);
+                        this.updateFooter();
+                        this.finishMenu.ClearSpecialOffer();
                         console.log("shareded");
-                        that.showSpecialOffer()
+                        this.showSpecialOffer()
 
                         // shows which item the user has won
                         setTimeout(() => {
-                            that.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack")
+                            this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack")
                             gameui.AudiosManager.playSound("Interface Sound-11");
 
                         }, 1000);
                     }
-                });
+                };
+
+
+                var message = {
+                    shareDescription: StringResources.social.shareDescription,
+                    gameWebsiteIcon: gameWebsiteIcon,
+                    gameWebsite: gameWebsite,
+                    shareTitle: StringResources.social.shareTitle,
+                    shareCaption: StringResources.social.shareCaption
+                }
+
+
+                SocialServices.sendMessage(message, callback);
+
             });
 
             this.finishMenu.addEventListener("like", () => {
-                Cocoon.App.openURL(StringResources.menus.fbURL);
-
+                DeviceServices.openURL(StringResources.menus.fbURL);
 
                 this.userData.history("shared");
                 this.itemData.increaseItemAmmount(Items.REVIVE, 1);
@@ -269,27 +269,19 @@ module joinjelly.gameplay {
                 console.log("watched");
                 this.userData.history("watched", Date.now());
 
-                Cocoon.Ad.showInterstitial();
-                Cocoon.Ad.interstitial["loaded"] = false;
-                Cocoon.Ad.interstitial.on("hidden", () => {
-
-                    this.finishMenu.showRandomItem((item) => {
-                        if (item) {
-                            gameui.AudiosManager.playSound("Interface Sound-11");
-                            this.itemData.increaseItemAmmount(item, 1);
-                            // shows which item the user has won
-                            this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
-                        }
-                        setTimeout(() => {
-                            this.showSpecialOffer();
-                        }
-                            , 1000);
-                    })
-
-                }, { once: true });
-
-
+                AdsServices.show(() => {
+                     this.finishMenu.showRandomItem((item) => {
+                         if (item) {
+                             gameui.AudiosManager.playSound("Interface Sound-11");
+                             this.itemData.increaseItemAmmount(item, 1);
+                             // shows which item the user has won
+                             this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
+                         }
+                         setTimeout(() => {this.showSpecialOffer();}, 1000);
+                     })
+                 });
             })
+
             this.finishMenu.addEventListener("reloadAds", () => {
                 this.showSpecialOffer();
             })
@@ -501,8 +493,6 @@ module joinjelly.gameplay {
 
         }
 
-
-
         // finishes the game
         private endGame(message?: string, win?: boolean) {
 
@@ -578,32 +568,33 @@ module joinjelly.gameplay {
         private showSpecialOffer() {
             var minutes = 30;
 
+             
             // if ads already been loaded any time
             if (this.userData.getHistory("ads_avaliable")) {
-
+        
                 // if user is elegible to watch a ads.
                 if (!this.userData.getHistory("watched") ||
                     this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
-
+        
                     // if ads is loaded
-                    if (Cocoon.Ad.interstitial["loaded"]) {
+                    if (AdsServices.isReady()) {
                         this.finishMenu.showWhatchVideoButton();
                     }
-
+        
                     //if it is not loaded, so load it
                     else {
-                        Cocoon.Ad.loadInterstitial();
-
+                        AdsServices.load();
+                                
                         // show loading
                         this.finishMenu.showGiftLoading();
                         var timeOut = 30;
-
+        
                         var interval = setInterval(() => {
                             timeOut--;
                             console.log("timeout " + timeOut);
-
+        
                             // if is loaded and is on time
-                            if (Cocoon.Ad.interstitial["loaded"]) {
+                            if (AdsServices.isReady()) {
                                 this.finishMenu.showWhatchVideoButton();
                                 clearInterval(interval);
                             }
@@ -616,7 +607,7 @@ module joinjelly.gameplay {
                         return;
                     }
                 }
-
+        
                 // or else it is not on time yet
                 else {
                     console.log("timeout or share");
@@ -628,9 +619,10 @@ module joinjelly.gameplay {
                         setTimeout(() => { this.showSpecialOffer(); }, 60000);
                     }
                 }// ads avaliable
-
+        
                 // simply show share, if there is no ads avaliable
             } else this.showShareOrLike();
+             
         }
 
 
@@ -644,7 +636,7 @@ module joinjelly.gameplay {
             }
 
 
-            if (!this.userData.getHistory("shared") && JoinJelly.FBSocialService) {
+            if (!this.userData.getHistory("shared") && SocialServices.isAvaliable()) {
                 this.finishMenu.showShareButton();
                 console.log("share shown");
                 return true;
@@ -945,8 +937,8 @@ module joinjelly.gameplay {
 
             var footerItem = this.gameFooter.getItemButton(item)
             if (footerItem) {
-                xf = this.content.toLocal(new PIXI.Point(footerItem.x, footerItem.y),this.gameFooter).x;
-                yf = this.content.toLocal(new PIXI.Point(footerItem.x, footerItem.y),this.gameFooter).y;
+                xf = this.content.toLocal(new PIXI.Point(footerItem.x, footerItem.y), this.gameFooter).x;
+                yf = this.content.toLocal(new PIXI.Point(footerItem.x, footerItem.y), this.gameFooter).y;
             }
             itemDO.alpha = 0;
             createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(() => {
@@ -1189,9 +1181,9 @@ module joinjelly.gameplay {
             this.evolveEffect.visible = true;
             this.evolveEffect.set({ alpha: 1, scaleX: 0.5, x: po.x, y: po.y });
 
-            var angle = Math.atan2(pt.y - po.y - 50, pt.x - po.x) -  Math.PI /2;
+            var angle = Math.atan2(pt.y - po.y - 50, pt.x - po.x) - Math.PI / 2;
             var scale = Math.sqrt(Math.pow(pt.y - 50 - po.y, 2) + Math.pow(pt.x - po.x, 2)) / 300;
-            this.evolveEffect.rotation = angle  ;
+            this.evolveEffect.rotation = angle;
             this.evolveEffect.scaleY = 0;
 
             createjs.Tween.removeTweens(this.evolveEffect);

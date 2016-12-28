@@ -1,6 +1,4 @@
-﻿declare var Cocoon: any;
-declare function initSocialServices();
-
+﻿declare function initSocialServices();
 
 class GameServices {
 
@@ -52,23 +50,23 @@ class GameServices {
     // submit an achievement
     public submitAchievent(achievementId: string) {
 
-        if (!navigator.onLine) return;
-        if (!this.socialService) return;
-
-        var id = "";
-        if (Cocoon.getPlatform() === 'ios') {
-            id = constantsiOS[achievementId];
-        } else if (Cocoon.getPlatform() === 'android') {
-            id = contantsAndroid[achievementId];
-        }
-
-        if (id)
-            this.socialService.submitAchievement(id, function (error) {
-                if (error)
-                    console.error("submitAchievement error: " + error.message);
-                else
-                    console.error("submited");
-            });
+        //if (!navigator.onLine) return;
+        //if (!this.socialService) return;
+        //
+        //var id = "";
+        //if (Cocoon.getPlatform() === 'ios') {
+        //    id = constantsiOS[achievementId];
+        //} else if (Cocoon.getPlatform() === 'android') {
+        //    id = contantsAndroid[achievementId];
+        //}
+        //
+        //if (id)
+        //    this.socialService.submitAchievement(id, function (error) {
+        //        if (error)
+        //            console.error("submitAchievement error: " + error.message);
+        //        else
+        //            console.error("submited");
+        //    });
 
     }
 }

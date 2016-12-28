@@ -43,7 +43,8 @@
     }
 
     public promptPlayerName(callback?: () => void) {
-        Cocoon.Dialog.prompt({
+
+        DeviceServices.prompt({
             title: StringResources.menus.playerName,
             message: StringResources.menus.playerNameDesc,
             text: this.getPlayerName(),

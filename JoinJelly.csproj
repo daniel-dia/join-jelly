@@ -578,7 +578,10 @@
     <TypeScriptCompile Include="gameui\ScreenState.ts" />
     <TypeScriptCompile Include="gameui\Transition.ts" />
     <TypeScriptCompile Include="gameui\UIItem.ts" />
-    <TypeScriptCompile Include="src\InAppPurchaseServices.ts" />
+    <TypeScriptCompile Include="src\Services\AdsService.ts" />
+    <TypeScriptCompile Include="src\Services\DeviceServices.ts" />
+    <TypeScriptCompile Include="src\Services\InAppPurchaseServices.ts" />
+    <TypeScriptCompile Include="src\Services\SocialServices.ts" />
     <TypeScriptCompile Include="typings\pixi-filters.d.ts" />
     <TypeScriptCompile Include="typings\pixi.js.d.ts" />
     <TypeScriptCompile Include="src\gameplay\parameters.ts" />
@@ -589,10 +592,8 @@
     <TypeScriptCompile Include="src\gameplay\view\RandomItemSelector.ts" />
     <TypeScriptCompile Include="src\menus\DevTest.ts" />
     <TypeScriptCompile Include="src\menus\view\RatingMenu.ts" />
-    <TypeScriptCompile Include="src\GameServices.ts" />
+    <TypeScriptCompile Include="src\Services\GameServices.ts" />
     <TypeScriptCompile Include="src\gameplay\view\CountDown.ts" />
-    <TypeScriptCompile Include="src\menus\LeaderBoards.ts" />
-    <TypeScriptCompile Include="src\LeaderBoards.ts" />
     <TypeScriptCompile Include="src\menus\StoryScreen.ts" />
     <TypeScriptCompile Include="src\menus\view\LeaderBoardItem.ts" />
     <TypeScriptCompile Include="src\menus\view\LoadingBar.ts" />
@@ -623,7 +624,7 @@
     <TypeScriptCompile Include="src\ItemsData.ts" />
     <TypeScriptCompile Include="src\menus\ScrollabePage.ts" />
     <TypeScriptCompile Include="src\menus\StoreMenu.ts" />
-    <TypeScriptCompile Include="src\InAppPurchases.ts" />
+    <TypeScriptCompile Include="src\productsData.ts" />
     <TypeScriptCompile Include="src\StringResources.ts" />
     <TypeScriptCompile Include="src\gameplay\Tutorial.ts" />
     <TypeScriptCompile Include="src\gameplay\Board.ts" />

@@ -11,7 +11,7 @@ module joinjelly {
         public static analytics: Analytics;
         public static itemData: ItemsData;
         public static gameServices: GameServices;
-        public static FBSocialService: any;
+
 
         public static init(canvasName: string) {
 
@@ -19,7 +19,8 @@ module joinjelly {
             this.analytics = new Analytics();
             this.itemData = new ItemsData();
             this.gameServices = new GameServices();
-            this.initializeSocial();
+
+            SocialServices.initialize();
 
             // define language
             var lang = (window.navigator["userLanguage"] || window.navigator.language).substr(0, 2).toLowerCase();
@@ -35,11 +36,9 @@ module joinjelly {
 
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
 
-            //// add back button callback
-            //Cocoon.App.exitCallback(() => {
-            //    return this.gameScreen.sendBackButtonEvent()
-            //})
-
+            // add back button callback
+            DeviceServices.registerBackButton(() => {return this.gameScreen.sendBackButtonEvent()})
+            
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
 
@@ -47,51 +46,20 @@ module joinjelly {
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
 
-                //JoinJelly.showTestScreen();return;
+                AdsServices.initialize();
 
-                this.initializeAds();
+                var loadedGame = this.userData.loadGame();
+                JoinJelly.showMainScreen();
 
-                if (window.location.search == "?test") {
-                    this.startTest();
-                } else {
-                    var loadedGame = this.userData.loadGame();
-                    //this.gameScreen.switchScreen(new menus.DevTest());
-                    JoinJelly.showMainScreen();
-                }
+                // if (window.location.search == "?test") {
+                //     //JoinJelly.showTestScreen();return;
+                //     //this.gameScreen.switchScreen(new menus.DevTest());
+                //     // this.startTest();
+                // }
+                
             }
         }
-
-        public static initializeSocial() {
-            try {
-                var os = "web"
-                if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
-
-                if (os == "windows") return;
-
-                //initialize the Facebook Service the same way as the Official JS SDK
-                if (navigator.onLine) {
-                    var fb = Cocoon.Social.Facebook;
-                    fb.init({ appId: fbAppId });
-                    this.FBSocialService = fb.getSocialInterface();
-                }
-            } catch (e) { }
-        }
-
-        public static initializeAds() {
-            try {
-                Cocoon.Ad.interstitial.on("ready", () => {
-                    // tells that a ads s loaded
-                    Cocoon.Ad.interstitial["loaded"] = true;
-                    // once a ads is loaded so it is avaliable for this app.
-                    this.userData.history("ads_avaliable");
-                    console.log("ads loaded");
-                })
-
-                console.log("ads initialized");
-                Cocoon.Ad.loadInterstitial();
-            } catch (e) { }
-        }
-
+        
         public static startTest() {
             var gs = new gameplay.GamePlayScreen(this.userData, this.itemData);
             this.gameScreen.switchScreen(gs);
@@ -130,12 +98,6 @@ module joinjelly {
 
         public static showIntro() {
             this.gameScreen.switchScreen(new joinjelly.StoryScreen());
-        }
-
-        public static showLeaderboards() {
-            var transition;
-            if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "right", time: 500 };
-            this.gameScreen.switchScreen(new menus.LeaderBoards(), null, transition);
         }
 
         public static showPedia() {

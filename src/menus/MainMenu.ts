@@ -30,7 +30,7 @@
 
             // add Reset Button
             var reset = new gameui.BitmapTextButton(StringResources.menus.reset, "debussy", "BtTextBg", () => {
-                Cocoon.Dialog.confirm({
+                DeviceServices.confirm({
                     title: StringResources.menus.reset,
                     message: StringResources.menus.resetWarning
                 }, function (accepted) {
@@ -42,11 +42,6 @@
             });
             reset.y = y += space;
             this.scrollableContent.addChild(reset);
-
-
-
         }
-
-
     }
 }

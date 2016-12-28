@@ -128,8 +128,7 @@ module joinjelly.menus.view {
             var ANDROID_RATING_URL = "market://details?id=com.diastudio.joinjelly";
             var ratingURL = null;
 
-            var os = "web"
-            if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
+            var os = DeviceServices.getOs();
 
             if (os == "web") return;
             else if (os == "ios") return;
@@ -143,7 +142,7 @@ module joinjelly.menus.view {
                 return;
             }
 
-            Cocoon.App.openURL(ratingURL);
+            DeviceServices.openURL(ratingURL);
 
         }
     }

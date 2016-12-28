@@ -26,7 +26,7 @@
 
             // add icon
             var logo = new gameui.ImageButton("DIAStudioLogo", () => {
-                Cocoon.App.openURL("http://" + StringResources.menus.aboutURL);
+                DeviceServices.openURL("http://" + StringResources.menus.aboutURL);
             });
 
             logo.x = defaultWidth / 2;

@@ -1,6 +1,4 @@
-﻿declare var Cocoon: any;
-
-module joinjelly.menus {
+﻿module joinjelly.menus {
     export class StoreMenu extends ScrollablePage {
         private previousScreen: gameui.ScreenState;
         private gameFooter: gameplay.view.ItemsFooter;
@@ -12,7 +10,10 @@ module joinjelly.menus {
 
         // initialize object
         constructor(previousScreen: gameui.ScreenState) {
+           
             super(StringResources.store.title);
+
+             /*
             this.previousScreen = previousScreen;
 
             // add loading info
@@ -51,30 +52,32 @@ module joinjelly.menus {
                     title: StringResources.menus.restore,
                     message: StringResources.menus.restoreWarning
                 }, function (accepted) {
-                        if (accepted)
-                            Cocoon.Store.restore();
-                    });
+                    if (accepted)
+                        Cocoon.Store.restore();
+                });
             });
             restore.x = defaultWidth * 1 / 3;
             restore.y = defaultHeight - 200;
             this.content.addChild(restore);
+            */
         }
+        /*
 
         //#region Interface =====================================================================================
-        
+
         // add all products in the list
-        private fillProducts(productList: Array<Cocoon.Store.ProductInfo>) {
+        private fillProducts(productList: Array<ProductInfo>) {
             var dic = {};
             this.productsListItems = <Array<ProductListItem>>dic;
             this.showLoaded();
 
-            for (var p = 0; p < productList.length; p ++)
+            for (var p = 0; p < productList.length; p++)
                 this.addProduct(productList[p], p);
 
         }
 
         // add a single product in the list
-        private addProduct(product: Cocoon.Store.ProductInfo, p: number) {
+        private addProduct(product: ProductInfo, p: number) {
 
             var productListItem = new ProductListItem(product.productId, product.title.replace("(Join Jelly)", ""), product.description, product.localizedPrice);
             this.productsListItems[product.productId] = productListItem;
@@ -86,7 +89,7 @@ module joinjelly.menus {
 
             // add function callback
             productListItem.on("buy", (event: any) => { Cocoon.Store.purchase(event["productId"]); });
-            
+
         }
 
         // show a loading message
@@ -156,23 +159,24 @@ module joinjelly.menus {
         //#endregion 
 
         //#region market =====================================================================================
+        
 
         // initialize product listing
         private initializeStore() {
             //  if (!Cocoon.Store.nativeAvailable) return;
-            
+
             // on loaded products
             Cocoon.Store.on("load", {
                 started: () => {
                     this.showLoading();
                 },
-                success: (products: Array<Cocoon.Store.ProductInfo>) => {
+                success: (products: Array<ProductInfo>) => {
                     this.fillProducts(products);
                 },
                 error: (errorMessage) => {
                     this.showError();
                 }
-            },{once: true })
+            }, { once: true })
 
             // on purchasing products
             Cocoon.Store.on("purchase", {
@@ -202,8 +206,8 @@ module joinjelly.menus {
                     this.getProductListItem(productId).setNormal();
                     this.unlockUI();
                 }
-            }, {once:true});
-        
+            }, { once: true });
+
             // initialize store
             Cocoon.Store.initialize({ sandbox: true, managed: true });
 
@@ -212,7 +216,6 @@ module joinjelly.menus {
             for (var p in productsData) products.push(p);
             Cocoon.Store.loadProducts(products);
         }
-        
 
         // verify product avaliability
         private updateProductsAvaliability() {
@@ -244,10 +247,10 @@ module joinjelly.menus {
 
             return true;
         }
-        
+
         //#endregion 
 
-
+        */
     }
 
 
@@ -346,7 +349,7 @@ module joinjelly.menus {
             if (localizedPrice == "share") {
                 var button = new gameui.ImageButton("BtShare", () => {
                     this.setPurchasing();
-                    this.dispatchEvent("share", {productId: productId });
+                    this.dispatchEvent("share", { productId: productId });
                 });
             } else {
                 var button = new gameui.ImageButton("BtStore", () => {
@@ -395,7 +398,7 @@ module joinjelly.menus {
             this.purchasedIcon.visible = false;
             this.loadingIcon.visible = false;
         }
-        
+
         public enable() {
             this.purchaseButton.fadeIn();
             this.loadingIcon.visible = false;
@@ -406,6 +409,14 @@ module joinjelly.menus {
             this.purchaseButton.fadeOut();
         }
 
+    }
+
+
+    interface ProductInfo {
+        productId: string;
+        title: string;
+        description: string;
+        localizedPrice: string;
     }
 
 }

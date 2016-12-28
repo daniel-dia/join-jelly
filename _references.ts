@@ -11,8 +11,7 @@
 
 /// <reference path="src/ItemsData.ts" />
 /// <reference path="src/StringResources.ts" /> 
-/// <reference path="src/Analytics.ts" />
-/// <reference path="src/InAppPurchases.ts" />
+/// <reference path="src/Analytics.ts" /> 
 
 /// <reference path="src/menus/ScrollabePage.ts" />
 /// <reference path="src/menus/LoadingScreen.ts" />

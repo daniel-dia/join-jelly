@@ -1162,16 +1162,6 @@ var Analytics = (function () {
     };
     return Analytics;
 }());
-var productsData = {
-    "pack1x": { icon: "Item Pack", consumable: false, share: true },
-    "time5x": { icon: "5x Snow", consumable: true },
-    "fast5x": { icon: "5x Magnet", consumable: true },
-    "revive5x": { icon: "5x Revive", consumable: true },
-    "clean5x": { icon: "5x Clean", consumable: true },
-    "pack5x": { icon: "5x Item Pack", consumable: true },
-    "pack10x": { icon: "10x Item Pack", consumable: true },
-    "lucky": { icon: "Lucky Clover", consumable: false },
-};
 var joinjelly;
 (function (joinjelly) {
     var ScrollablePage = (function (_super) {
@@ -1355,9 +1345,7 @@ var joinjelly;
             this.rating.y = defaultHeight / 2;
             gameui.AudiosManager.playMusic("musicIntro");
             this.rating.show();
-            this.onback = function () {
-                Cocoon.App.exit();
-            };
+            this.onback = DeviceServices.exit;
         }
         MainScreen.prototype.createContent = function () {
             var lobby = new joinjelly.menus.view.JellyLobby(this.userData.getLastJelly());
@@ -1695,186 +1683,7 @@ var joinjelly;
             __extends(StoreMenu, _super);
             function StoreMenu(previousScreen) {
                 _super.call(this, StringResources.store.title);
-                this.previousScreen = previousScreen;
-                var statusText = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
-                statusText.y = 500;
-                statusText.x = defaultWidth / 2;
-                statusText.regX = statusText.getBounds().width / 2;
-                this.StatusText = statusText;
-                this.scrollableContent.addChild(statusText);
-                var loadingBall = new joinjelly.view.LoadingBall();
-                loadingBall.y = 800;
-                loadingBall.x = defaultWidth / 2;
-                this.loadingBall = loadingBall;
-                this.scrollableContent.addChild(loadingBall);
-                this.gameFooter = new joinjelly.gameplay.view.ItemsFooter([joinjelly.Items.TIME, joinjelly.Items.CLEAN, joinjelly.Items.FAST, joinjelly.Items.REVIVE]);
-                this.footer.addChild(this.gameFooter);
-                this.gameFooter.mouseEnabled = false;
-                this.updateFooter();
-                this.content.y -= 200;
-                this.okButtonAction = function () { joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen); };
-                this.initializeStore();
-                var restore = new gameui.BitmapTextButton(StringResources.menus.restore, "debussy", "BtTextBg", function () {
-                    Cocoon.Dialog.confirm({
-                        title: StringResources.menus.restore,
-                        message: StringResources.menus.restoreWarning
-                    }, function (accepted) {
-                        if (accepted)
-                            Cocoon.Store.restore();
-                    });
-                });
-                restore.x = defaultWidth * 1 / 3;
-                restore.y = defaultHeight - 200;
-                this.content.addChild(restore);
             }
-            StoreMenu.prototype.fillProducts = function (productList) {
-                var dic = {};
-                this.productsListItems = dic;
-                this.showLoaded();
-                for (var p = 0; p < productList.length; p++)
-                    this.addProduct(productList[p], p);
-            };
-            StoreMenu.prototype.addProduct = function (product, p) {
-                var productListItem = new ProductListItem(product.productId, product.title.replace("(Join Jelly)", ""), product.description, product.localizedPrice);
-                this.productsListItems[product.productId] = productListItem;
-                this.scrollableContent.addChild(productListItem);
-                productListItem.y = p * 380 + 380;
-                productListItem.x = 70;
-                console.log(JSON.stringify(product));
-                productListItem.on("buy", function (event) { Cocoon.Store.purchase(event["productId"]); });
-            };
-            StoreMenu.prototype.showLoading = function () {
-                this.StatusText.text = StringResources.menus.loading;
-                this.loadingBall.visible = true;
-            };
-            StoreMenu.prototype.showLoaded = function () {
-                this.StatusText.visible = false;
-                this.loadingBall.visible = false;
-            };
-            StoreMenu.prototype.showError = function () {
-                this.StatusText.text = StringResources.menus.error;
-                this.loadingBall.visible = false;
-            };
-            StoreMenu.prototype.lockUI = function (timeout) {
-                var _this = this;
-                if (timeout === void 0) { timeout = 5000; }
-                this.content.mouseEnabled = false;
-                setTimeout(function () { _this.unlockUI(); }, timeout);
-            };
-            StoreMenu.prototype.unlockUI = function () {
-                this.content.mouseEnabled = true;
-            };
-            StoreMenu.prototype.updateFooter = function () {
-                var items = joinjelly.ItemsData.items;
-                for (var i in items)
-                    this.gameFooter.setItemAmmount(items[i], joinjelly.JoinJelly.itemData.getItemAmmount(items[i]));
-            };
-            StoreMenu.prototype.getProductListItem = function (productId) {
-                return this.productsListItems[productId];
-            };
-            StoreMenu.prototype.animateItem = function (productId) {
-                switch (productId) {
-                    case "time5x":
-                        this.gameFooter.bounceItem(joinjelly.Items.TIME);
-                        break;
-                    case "fast5x":
-                        this.gameFooter.bounceItem(joinjelly.Items.FAST);
-                        break;
-                    case "clean5x":
-                        this.gameFooter.bounceItem(joinjelly.Items.CLEAN);
-                        break;
-                    case "revive5x":
-                        this.gameFooter.bounceItem(joinjelly.Items.REVIVE);
-                        break;
-                    case "pack5x":
-                        this.gameFooter.bounceItem(joinjelly.Items.TIME);
-                        this.gameFooter.bounceItem(joinjelly.Items.FAST);
-                        this.gameFooter.bounceItem(joinjelly.Items.CLEAN);
-                        this.gameFooter.bounceItem(joinjelly.Items.REVIVE);
-                        break;
-                    case "pack10x":
-                        this.gameFooter.bounceItem(joinjelly.Items.TIME);
-                        this.gameFooter.bounceItem(joinjelly.Items.FAST);
-                        this.gameFooter.bounceItem(joinjelly.Items.CLEAN);
-                        this.gameFooter.bounceItem(joinjelly.Items.REVIVE);
-                        break;
-                }
-            };
-            StoreMenu.prototype.initializeStore = function () {
-                var _this = this;
-                Cocoon.Store.on("load", {
-                    started: function () {
-                        _this.showLoading();
-                    },
-                    success: function (products) {
-                        _this.fillProducts(products);
-                    },
-                    error: function (errorMessage) {
-                        _this.showError();
-                    }
-                }, { once: true });
-                Cocoon.Store.on("purchase", {
-                    started: function (productId) {
-                        _this.getProductListItem(productId).setPurchasing();
-                        _this.lockUI();
-                    },
-                    success: function (purchaseInfo) {
-                        _this.fullFillPurchase(purchaseInfo.productId);
-                        _this.updateFooter();
-                        _this.unlockUI();
-                        _this.animateItem(purchaseInfo.productId);
-                        if (productsData[purchaseInfo.productId].consumable) {
-                            _this.getProductListItem(purchaseInfo.productId).setPurchased(true);
-                            Cocoon.Store.consume(purchaseInfo.transactionId, purchaseInfo.productId);
-                        }
-                        _this.getProductListItem(purchaseInfo.productId).setPurchased();
-                        Cocoon.Store.finish(purchaseInfo.transactionId);
-                    },
-                    error: function (productId, error) {
-                        _this.getProductListItem(productId).setNormal();
-                        _this.unlockUI();
-                    }
-                }, { once: true });
-                Cocoon.Store.initialize({ sandbox: true, managed: true });
-                var products = [];
-                for (var p in productsData)
-                    products.push(p);
-                Cocoon.Store.loadProducts(products);
-            };
-            StoreMenu.prototype.updateProductsAvaliability = function () {
-            };
-            StoreMenu.prototype.fullFillPurchase = function (productId) {
-                switch (productId) {
-                    case "time5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.TIME, 5);
-                        break;
-                    case "fast5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.FAST, 5);
-                        break;
-                    case "clean5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 5);
-                        break;
-                    case "revive5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 5);
-                        break;
-                    case "pack5x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.TIME, 5);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.FAST, 5);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 5);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 5);
-                        break;
-                    case "pack10x":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.TIME, 10);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.FAST, 10);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 10);
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 10);
-                        break;
-                    case "lucky":
-                        joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.LUCKY, 1);
-                        break;
-                }
-                return true;
-            };
             return StoreMenu;
         }(joinjelly.ScrollablePage));
         menus.StoreMenu = StoreMenu;
@@ -2041,7 +1850,7 @@ var joinjelly;
                 tutorial.y = y += space;
                 this.scrollableContent.addChild(tutorial);
                 var reset = new gameui.BitmapTextButton(StringResources.menus.reset, "debussy", "BtTextBg", function () {
-                    Cocoon.Dialog.confirm({
+                    DeviceServices.confirm({
                         title: StringResources.menus.reset,
                         message: StringResources.menus.resetWarning
                     }, function (accepted) {
@@ -2079,7 +1888,7 @@ var joinjelly;
             text.x = defaultWidth / 2;
             text.y = defaultHeight / 2 + 400;
             var logo = new gameui.ImageButton("DIAStudioLogo", function () {
-                Cocoon.App.openURL("http://" + StringResources.menus.aboutURL);
+                DeviceServices.openURL("http://" + StringResources.menus.aboutURL);
             });
             logo.x = defaultWidth / 2;
             logo.y = defaultHeight / 2;
@@ -3560,10 +3369,7 @@ var joinjelly;
                     this.itemData.setItemAmmount(joinjelly.Items.LUCKY, 0);
                     this.userData.history("firstPlay");
                 }
-                if (!Cocoon.Ad.interstitial["loaded"]) {
-                    Cocoon.Ad.loadInterstitial();
-                    console.log("loading ad");
-                }
+                AdsServices.load();
             }
             GamePlayScreen.prototype.createEffects = function () {
                 this.freezeEffect = gameui.AssetsManager.getBitmap("freezeEffect");
@@ -3651,33 +3457,39 @@ var joinjelly;
                     tbt.fadeIn();
                 });
                 this.finishMenu.addEventListener("share", function () {
-                    var message = new Cocoon.Social.Message(StringResources.social.shareDescription, gameWebsiteIcon, gameWebsite, StringResources.social.shareTitle, StringResources.social.shareCaption);
-                    var that = _this;
-                    joinjelly.JoinJelly.FBSocialService.publishMessageWithDialog(message, function (error) {
+                    var callback = function (error) {
                         console.log("share callback");
                         var sucess = true;
                         console.log(JSON.stringify(error));
                         if (error)
                             sucess = false;
                         if (sucess) {
-                            that.userData.history("shared");
-                            that.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 1);
-                            that.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 1);
-                            that.itemData.increaseItemAmmount(joinjelly.Items.FAST, 1);
-                            that.itemData.increaseItemAmmount(joinjelly.Items.TIME, 1);
-                            that.updateFooter();
-                            that.finishMenu.ClearSpecialOffer();
+                            _this.userData.history("shared");
+                            _this.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 1);
+                            _this.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 1);
+                            _this.itemData.increaseItemAmmount(joinjelly.Items.FAST, 1);
+                            _this.itemData.increaseItemAmmount(joinjelly.Items.TIME, 1);
+                            _this.updateFooter();
+                            _this.finishMenu.ClearSpecialOffer();
                             console.log("shareded");
-                            that.showSpecialOffer();
+                            _this.showSpecialOffer();
                             setTimeout(function () {
-                                that.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack");
+                                _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, "Pack");
                                 gameui.AudiosManager.playSound("Interface Sound-11");
                             }, 1000);
                         }
-                    });
+                    };
+                    var message = {
+                        shareDescription: StringResources.social.shareDescription,
+                        gameWebsiteIcon: gameWebsiteIcon,
+                        gameWebsite: gameWebsite,
+                        shareTitle: StringResources.social.shareTitle,
+                        shareCaption: StringResources.social.shareCaption
+                    };
+                    SocialServices.sendMessage(message, callback);
                 });
                 this.finishMenu.addEventListener("like", function () {
-                    Cocoon.App.openURL(StringResources.menus.fbURL);
+                    DeviceServices.openURL(StringResources.menus.fbURL);
                     _this.userData.history("shared");
                     _this.itemData.increaseItemAmmount(joinjelly.Items.REVIVE, 1);
                     _this.itemData.increaseItemAmmount(joinjelly.Items.CLEAN, 1);
@@ -3699,20 +3511,16 @@ var joinjelly;
                     _this.finishMenu.ClearSpecialOffer();
                     console.log("watched");
                     _this.userData.history("watched", Date.now());
-                    Cocoon.Ad.showInterstitial();
-                    Cocoon.Ad.interstitial["loaded"] = false;
-                    Cocoon.Ad.interstitial.on("hidden", function () {
+                    AdsServices.show(function () {
                         _this.finishMenu.showRandomItem(function (item) {
                             if (item) {
                                 gameui.AudiosManager.playSound("Interface Sound-11");
                                 _this.itemData.increaseItemAmmount(item, 1);
                                 _this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item);
                             }
-                            setTimeout(function () {
-                                _this.showSpecialOffer();
-                            }, 1000);
+                            setTimeout(function () { _this.showSpecialOffer(); }, 1000);
                         });
-                    }, { once: true });
+                    });
                 });
                 this.finishMenu.addEventListener("reloadAds", function () {
                     _this.showSpecialOffer();
@@ -3894,17 +3702,17 @@ var joinjelly;
                 if (this.userData.getHistory("ads_avaliable")) {
                     if (!this.userData.getHistory("watched") ||
                         this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
-                        if (Cocoon.Ad.interstitial["loaded"]) {
+                        if (AdsServices.isReady()) {
                             this.finishMenu.showWhatchVideoButton();
                         }
                         else {
-                            Cocoon.Ad.loadInterstitial();
+                            AdsServices.load();
                             this.finishMenu.showGiftLoading();
                             var timeOut = 30;
                             var interval = setInterval(function () {
                                 timeOut--;
                                 console.log("timeout " + timeOut);
-                                if (Cocoon.Ad.interstitial["loaded"]) {
+                                if (AdsServices.isReady()) {
                                     _this.finishMenu.showWhatchVideoButton();
                                     clearInterval(interval);
                                 }
@@ -3934,7 +3742,7 @@ var joinjelly;
                     console.log("like shown");
                     return true;
                 }
-                if (!this.userData.getHistory("shared") && joinjelly.JoinJelly.FBSocialService) {
+                if (!this.userData.getHistory("shared") && SocialServices.isAvaliable()) {
                     this.finishMenu.showShareButton();
                     console.log("share shown");
                     return true;
@@ -4684,7 +4492,7 @@ var UserData = (function () {
     };
     UserData.prototype.promptPlayerName = function (callback) {
         var _this = this;
-        Cocoon.Dialog.prompt({
+        DeviceServices.prompt({
             title: StringResources.menus.playerName,
             message: StringResources.menus.playerNameDesc,
             text: this.getPlayerName(),
@@ -4791,7 +4599,7 @@ var joinjelly;
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
             this.gameServices = new GameServices();
-            this.initializeSocial();
+            SocialServices.initialize();
             var lang = (window.navigator["userLanguage"] || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt":
@@ -4804,46 +4612,14 @@ var joinjelly;
                 testMode = true;
             }
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
+            DeviceServices.registerBackButton(function () { return _this.gameScreen.sendBackButtonEvent(); });
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
             loadingScreen.loaded = function () {
-                _this.initializeAds();
-                if (window.location.search == "?test") {
-                    _this.startTest();
-                }
-                else {
-                    var loadedGame = _this.userData.loadGame();
-                    JoinJelly.showMainScreen();
-                }
+                AdsServices.initialize();
+                var loadedGame = _this.userData.loadGame();
+                JoinJelly.showMainScreen();
             };
-        };
-        JoinJelly.initializeSocial = function () {
-            try {
-                var os = "web";
-                if (Cocoon.Device.getDeviceInfo())
-                    os = Cocoon.Device.getDeviceInfo().os;
-                if (os == "windows")
-                    return;
-                if (navigator.onLine) {
-                    var fb = Cocoon.Social.Facebook;
-                    fb.init({ appId: fbAppId });
-                    this.FBSocialService = fb.getSocialInterface();
-                }
-            }
-            catch (e) { }
-        };
-        JoinJelly.initializeAds = function () {
-            var _this = this;
-            try {
-                Cocoon.Ad.interstitial.on("ready", function () {
-                    Cocoon.Ad.interstitial["loaded"] = true;
-                    _this.userData.history("ads_avaliable");
-                    console.log("ads loaded");
-                });
-                console.log("ads initialized");
-                Cocoon.Ad.loadInterstitial();
-            }
-            catch (e) { }
         };
         JoinJelly.startTest = function () {
             var gs = new joinjelly.gameplay.GamePlayScreen(this.userData, this.itemData);
@@ -4885,12 +4661,6 @@ var joinjelly;
         JoinJelly.showIntro = function () {
             this.gameScreen.switchScreen(new joinjelly.StoryScreen());
         };
-        JoinJelly.showLeaderboards = function () {
-            var transition;
-            if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
-                transition = { type: "right", time: 500 };
-            this.gameScreen.switchScreen(new joinjelly.menus.LeaderBoards(), null, transition);
-        };
         JoinJelly.showPedia = function () {
             var transition;
             if (this.gameScreen.currentScreen instanceof joinjelly.MainScreen)
@@ -4911,52 +4681,185 @@ var joinjelly;
     }());
     joinjelly.JoinJelly = JoinJelly;
 })(joinjelly || (joinjelly = {}));
-var defaultWidth = 768 * 2;
-var defaultHeight = 1024 * 2;
-var fbAppId = "1416523228649363";
-var gameWebsite = "http://www.joinjelly.com";
-var gameWebsiteIcon = "http://www.joinjelly.com/preview.jpg";
-var contantsAndroid = {
-    ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',
-    ACH_JELLY_2: 'CgkI49ztp64KEAIQBQ',
-    ACH_JELLY_3: 'CgkI49ztp64KEAIQBg',
-    ACH_JELLY_4: 'CgkI49ztp64KEAIQBA',
-    ACH_JELLY_5: 'CgkI49ztp64KEAIQBQ',
-    ACH_JELLY_6: 'CgkI49ztp64KEAIQBg',
-    ACH_JELLY_7: 'CgkI49ztp64KEAIQBw',
-    ACH_JELLY_8: 'CgkI49ztp64KEAIQCA',
-    ACH_JELLY_9: 'CgkI49ztp64KEAIQCQ',
-    ACH_JELLY_10: 'CgkI49ztp64KEAIQCg',
-    ACH_JELLY_11: 'CgkI49ztp64KEAIQCw',
-    ACH_JELLY_12: 'CgkI49ztp64KEAIQDA',
-    ACH_JELLY_13: 'CgkI49ztp64KEAIQDQ',
-    ACH_JELLY_14: 'CgkI49ztp64KEAIQDg',
-    ACH_JELLY_15: 'CgkI49ztp64KEAIQDw',
-    ACH_JELLY_16: 'CgkI49ztp64KEAIQEA',
-    ACH_JELLY_17: 'CgkI49ztp64KEAIQEQ',
-    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
-    LEAD_LEADERBOARD: 'CgkI49ztp64KEAIQAg',
-};
-var constantsiOS = {
-    ACH_JELLY_1: 'jelly01',
-    ACH_JELLY_2: 'jelly02',
-    ACH_JELLY_3: 'jelly03',
-    ACH_JELLY_4: 'jelly04',
-    ACH_JELLY_5: 'jelly05',
-    ACH_JELLY_6: 'jelly06',
-    ACH_JELLY_7: 'jelly07',
-    ACH_JELLY_8: 'jelly08',
-    ACH_JELLY_9: 'jelly09',
-    ACH_JELLY_10: 'jelly10',
-    ACH_JELLY_11: 'jelly11',
-    ACH_JELLY_12: 'jelly12',
-    ACH_JELLY_13: 'jelly13',
-    ACH_JELLY_14: 'jelly14',
-    ACH_JELLY_15: 'jelly15',
-    ACH_JELLY_16: 'jelly16',
-    ACH_JELLY_17: 'jelly17',
-    LEAD_LEADERBOARD: 'leaderboards',
-};
+var AdsServices = (function () {
+    function AdsServices() {
+    }
+    AdsServices.initialize = function () {
+        var _this = this;
+        var cocoon = window["Cocoon"];
+        document.addEventListener('deviceready', function () {
+            if (!cocoon || !cocoon.Ad || !cocoon.Ad.MoPub) {
+                _this.debug('Cocoon AdMob plugin not installed');
+                _this.status = AdsServices.STATUS.FAIL;
+                return;
+            }
+            cocoon.Ad.MoPub.configure({
+                ios: { interstitial: "1a895b1b280d48d88ab5ddce11633701" },
+                android: { interstitial: "5c4ca98862a04ee09f2f9a67c5b95d80" }
+            });
+            if (!_this.interstitial)
+                _this.interstitial = cocoon.Ad.MoPub.createInterstitial();
+            _this.setCallbacks();
+            _this.load();
+        }, false);
+    };
+    AdsServices.show = function (callback) {
+        if (!this.interstitial) {
+            if (callback)
+                callback(false, "not_Initialized");
+            return;
+        }
+        if (this.getStatus() == AdsServices.STATUS.READY) {
+            this.debug("show");
+            this.interstitial.on("dismiss", function (e) {
+                if (callback)
+                    callback(true, "displayed");
+            });
+            this.interstitial.show();
+        }
+        else {
+            this.debug("not loaded yet");
+            this.load();
+            if (callback)
+                callback(false, "not_Loaded");
+        }
+    };
+    AdsServices.isReady = function () {
+        return (this.interstitial && this.interstitial.isReady());
+    };
+    AdsServices.getStatus = function () {
+        if (!this.interstitial)
+            return AdsServices.STATUS.NOT_AVALIABLE;
+        if (this.interstitial && this.interstitial.isReady())
+            return AdsServices.STATUS.READY;
+        return this.status;
+    };
+    AdsServices.load = function () {
+        var _this = this;
+        if (!this.interstitial)
+            return;
+        this.debug("loading");
+        this.interstitial.load();
+        this.status = AdsServices.STATUS.LOADING;
+        if (this.ad_timeout)
+            clearTimeout(this.ad_timeout);
+        this.ad_timeout = setTimeout(function () {
+            _this.debug("timeout");
+            _this.status = AdsServices.STATUS.TIMEOUT;
+        }, 15000);
+    };
+    AdsServices.setCallbacks = function () {
+        var _this = this;
+        this.interstitial.on("show", function (e) {
+            _this.debug('music paused');
+        });
+        this.interstitial.on("load", function (e) {
+            _this.debug("Interstitial loaded " + JSON.stringify(e));
+            _this.status = AdsServices.STATUS.READY;
+        });
+        this.interstitial.on("fail", function (e) {
+            if (_this.ad_timeout)
+                clearTimeout(_this.ad_timeout);
+            _this.debug("Interstitial failed " + JSON.stringify(e));
+            _this.status = AdsServices.STATUS.FAIL;
+        });
+        this.interstitial.on("dismiss", function (e) {
+            _this.debug("Interstitial dismissed " + JSON.stringify(e));
+            _this.status = AdsServices.STATUS.NOT_LOADED;
+            _this.load();
+        });
+    };
+    AdsServices.debug = function (text) {
+        console.log("ads " + text);
+    };
+    return AdsServices;
+}());
+var AdsServices;
+(function (AdsServices) {
+    (function (STATUS) {
+        STATUS[STATUS["LOADING"] = 0] = "LOADING";
+        STATUS[STATUS["READY"] = 1] = "READY";
+        STATUS[STATUS["FAIL"] = 2] = "FAIL";
+        STATUS[STATUS["NOT_LOADED"] = 3] = "NOT_LOADED";
+        STATUS[STATUS["TIMEOUT"] = 4] = "TIMEOUT";
+        STATUS[STATUS["NOT_AVALIABLE"] = 5] = "NOT_AVALIABLE";
+    })(AdsServices.STATUS || (AdsServices.STATUS = {}));
+    var STATUS = AdsServices.STATUS;
+})(AdsServices || (AdsServices = {}));
+var DeviceServices = (function () {
+    function DeviceServices() {
+    }
+    DeviceServices.getOs = function () {
+        var os = "windows";
+        if (window["Cocoon"] && Cocoon.Device.getDeviceInfo())
+            os = Cocoon.Device.getDeviceInfo().os;
+        return os;
+    };
+    DeviceServices.openURL = function (url) {
+        if (window["Cocoon"])
+            Cocoon.App.openURL(url);
+        else
+            window.open(url);
+    };
+    DeviceServices.prompt = function (options, callback) {
+        if (window["Cocoon"])
+            return Cocoon.Dialog.prompt(options, callback);
+        else
+            callback(prompt(options.message));
+    };
+    DeviceServices.confirm = function (options, callback) {
+        if (window["Cocoon"])
+            return Cocoon.Dialog.confirm(options, callback);
+        else
+            callback(confirm(options.message));
+    };
+    DeviceServices.registerBackButton = function (callback) {
+        if (window["Cocoon"])
+            Cocoon.App.exitCallback(callback);
+    };
+    DeviceServices.exit = function () {
+        if (window["Cocoon"])
+            Cocoon.App.exit();
+        else
+            ;
+    };
+    DeviceServices.initialized = false;
+    return DeviceServices;
+}());
+var InAppPurchaseServices = (function () {
+    function InAppPurchaseServices() {
+    }
+    InAppPurchaseServices.initialized = false;
+    return InAppPurchaseServices;
+}());
+var SocialServices = (function () {
+    function SocialServices() {
+    }
+    SocialServices.initialize = function () {
+        var os = DeviceServices.getOs();
+        if (navigator.onLine && window["Cocoon"]) {
+            var fb = Cocoon.Social.Facebook;
+            fb.init({ appId: fbAppId });
+            this.FBSocialService = fb.getSocialInterface();
+        }
+    };
+    SocialServices.sendMessage = function (message, callback) {
+        if (!this.isAvaliable())
+            return;
+        this.FBSocialService.publishMessageWithDialog([
+            message.shareDescription,
+            message.gameWebsiteIcon,
+            message.gameWebsite,
+            message.shareTitle,
+            message.shareCaption
+        ], callback);
+    };
+    SocialServices.isAvaliable = function () {
+        return this.FBSocialService ? true : false;
+    };
+    SocialServices.initialized = false;
+    return SocialServices;
+}());
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
@@ -4971,166 +4874,6 @@ var joinjelly;
         gameplay.finalDirtyProbability = 0.5;
         gameplay.easeDirtyProbability = 0.99;
         gameplay.increasingJellyValuePerLevel = 0.008;
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var CountDown = (function (_super) {
-                __extends(CountDown, _super);
-                function CountDown() {
-                    _super.apply(this, arguments);
-                }
-                CountDown.prototype.countDown = function (total) {
-                    var _this = this;
-                    if (total === void 0) { total = 3; }
-                    var ns = [];
-                    var time = 1000;
-                    var transition = 200;
-                    var dk = gameui.AssetsManager.getBitmap("popupdark");
-                    this.addChild(dk);
-                    dk.scaleX = dk.scaleY = 16;
-                    dk.x = -defaultWidth / 2;
-                    dk.y = -defaultHeight;
-                    dk.alpha = 0;
-                    dk.mouseEnabled = false;
-                    createjs.Tween.get(dk).to({ alpha: 1 }, 200);
-                    setTimeout(function () {
-                        createjs.Tween.get(dk).to({ alpha: 0 }, 200).call(function () { _this.removeChild(dk); });
-                    }, time * total + transition);
-                    setTimeout(function () {
-                        gameui.AudiosManager.playSound("Interface Sound-12");
-                    }, time * total + transition);
-                    for (var n = total; n > 0; n--) {
-                        ns[n] = gameui.AssetsManager.getBitmap("n" + n);
-                        this.addChild(ns[n]);
-                        ns[n].regX = ns[n].getBounds().width / 2;
-                        ns[n].regY = ns[n].getBounds().height / 2;
-                        ns[n].mouseEnabled = false;
-                        createjs.Tween.get(ns[n])
-                            .to({ scaleX: 2, scaleY: 2, alpha: 0 })
-                            .wait((total - n) * time)
-                            .to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut)
-                            .call(function () { gameui.AudiosManager.playSound("Interface Sound-13"); })
-                            .wait(time - transition)
-                            .to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn)
-                            .call(function (obj) { _this.removeChild(obj); });
-                    }
-                };
-                return CountDown;
-            }(PIXI.Container));
-            view.CountDown = CountDown;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var ItemsFooter = (function (_super) {
-                __extends(ItemsFooter, _super);
-                function ItemsFooter(items) {
-                    _super.call(this);
-                    this.itemSize = 270;
-                    this.itemsButtons = [];
-                    this.addObjects();
-                    this.setItems(items);
-                }
-                ItemsFooter.prototype.setItems = function (items) {
-                    var itemSize = this.itemSize;
-                    if (items.length >= 5)
-                        itemSize = 200;
-                    this.cleanButtons();
-                    if (!items)
-                        return;
-                    for (var i = 0; i < items.length; i++)
-                        this.addItem(items[i], i);
-                    for (var i = 0; i < items.length; i++) {
-                        this.itemsButtons[items[i]].y = -150;
-                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
-                    }
-                };
-                ItemsFooter.prototype.cleanButtons = function () {
-                    for (var i in this.itemsButtons)
-                        this.removeChild(this.itemsButtons[i]);
-                    this.itemsButtons = [];
-                };
-                ItemsFooter.prototype.addObjects = function () {
-                    var bg = gameui.AssetsManager.getBitmap("footer");
-                    this.addChild(bg);
-                    bg.y = -162;
-                    bg.x = (defaultWidth - 1161) / 2;
-                    var lucky = gameui.AssetsManager.getBitmap("lucky");
-                    this.addChild(lucky);
-                    lucky.y = -210;
-                    lucky.x = (defaultWidth - 250);
-                    lucky.scaleX = lucky.scaleY = 0.5;
-                    this.lucky = lucky;
-                    this.gameMessage = new view.TutoralMessage();
-                    this.addChild(this.gameMessage);
-                };
-                ItemsFooter.prototype.addItem = function (item, pos) {
-                    var _this = this;
-                    var bt = new view.ItemButton(item);
-                    this.addChild(bt);
-                    this.itemsButtons[item] = bt;
-                    bt.addEventListener("click", function () { _this.emit("useitem", { item: item }); });
-                    bt.addEventListener("tap", function () { _this.emit("useitem", { item: item }); });
-                };
-                ItemsFooter.prototype.getItemButton = function (item) {
-                    return this.itemsButtons[item];
-                };
-                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
-                    if (this.itemsButtons[item])
-                        this.itemsButtons[item].setAmmount(ammount);
-                    if (item == "lucky")
-                        this.lucky.visible = (ammount > 0);
-                };
-                ItemsFooter.prototype.showMessage = function (itemId, message) {
-                    this.gameMessage.x = this.getItemButton(itemId).x;
-                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
-                    this.gameMessage.show(message);
-                };
-                ItemsFooter.prototype.hideMessage = function () {
-                    this.gameMessage.fadeOut();
-                };
-                ItemsFooter.prototype.bounceItem = function (item) {
-                    this.getItemButton(item).highLight(false);
-                };
-                ItemsFooter.prototype.highlight = function (item) {
-                    this.unHighlightAll();
-                    this.getItemButton(item).highLight();
-                };
-                ItemsFooter.prototype.unHighlightAll = function () {
-                    for (var i in this.itemsButtons)
-                        this.itemsButtons[i].unHighlight();
-                };
-                ItemsFooter.prototype.lockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    if (b)
-                        b.lock();
-                };
-                ItemsFooter.prototype.unlockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    b.unlock();
-                };
-                ItemsFooter.prototype.lockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].lock();
-                };
-                ItemsFooter.prototype.unlockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].unlock();
-                };
-                return ItemsFooter;
-            }(PIXI.Container));
-            view.ItemsFooter = ItemsFooter;
-        })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
@@ -5215,111 +4958,6 @@ var joinjelly;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
-var GameServices = (function () {
-    function GameServices() {
-        if (!navigator.onLine)
-            return;
-        if (!window["Cocoon"])
-            return;
-        this.socialService = initSocialServices();
-    }
-    GameServices.prototype.showLeaderboard = function () {
-        if (!navigator.onLine)
-            return;
-        if (!this.socialService)
-            return;
-        this.socialService.showLeaderboard(function (error) {
-            if (error)
-                console.error("showLeaderbord error: " + error.message);
-        });
-    };
-    GameServices.prototype.showAchievements = function () {
-        if (!navigator.onLine)
-            return;
-        if (!this.socialService)
-            return;
-        this.socialService.showAchievements(function (error) {
-            if (error)
-                console.error("showAchievements error: " + error.message);
-        });
-    };
-    GameServices.prototype.submitScore = function (score) {
-        if (!this.socialService)
-            return;
-        if (!navigator.onLine)
-            return;
-        this.socialService.submitScore(score.toString(), function (error) {
-            if (error)
-                console.error("submitScore error: " + error.message);
-        });
-    };
-    GameServices.prototype.submitAchievent = function (achievementId) {
-        if (!navigator.onLine)
-            return;
-        if (!this.socialService)
-            return;
-        var id = "";
-        if (Cocoon.getPlatform() === 'ios') {
-            id = constantsiOS[achievementId];
-        }
-        else if (Cocoon.getPlatform() === 'android') {
-            id = contantsAndroid[achievementId];
-        }
-        if (id)
-            this.socialService.submitAchievement(id, function (error) {
-                if (error)
-                    console.error("submitAchievement error: " + error.message);
-                else
-                    console.error("submited");
-            });
-    };
-    return GameServices;
-}());
-var joinjelly;
-(function (joinjelly) {
-    var AzureLeaderBoards = (function () {
-        function AzureLeaderBoards() {
-        }
-        AzureLeaderBoards.init = function () {
-            this.deviceId = localStorage.getItem("deviceId");
-            if (typeof WindowsAzure == 'undefined')
-                return;
-            this.client = new WindowsAzure.MobileServiceClient(this.host, this.key);
-            this.table = this.client.getTable("LeaderBoards");
-        };
-        AzureLeaderBoards.getScoreNames = function (callback, count) {
-            if (!this.table)
-                return;
-            this.table.orderByDescending("score").take(50).where({ gameid: this.gameId }).read().then(function (queryResults) {
-                callback(queryResults);
-            }, function (queryResults) {
-                callback(null);
-            });
-        };
-        AzureLeaderBoards.setScore = function (score, name, newId) {
-            var _this = this;
-            if (newId === void 0) { newId = false; }
-            if (!this.table)
-                return;
-            if (this.deviceId && !newId) {
-                this.table.update({ name: name, score: score, id: this.deviceId, gameid: this.gameId });
-            }
-            else {
-                this.table.insert({ name: name, score: score, gameid: this.gameId }).then(function (result) {
-                    if (result.id) {
-                        _this.deviceId = result.id;
-                        localStorage.setItem("deviceId", _this.deviceId);
-                    }
-                });
-            }
-        };
-        AzureLeaderBoards.host = "https://dialeaderboards.azure-mobile.net";
-        AzureLeaderBoards.key = "GyalJGfVBZeaGMTMGxKuytNMXjjoqC94";
-        AzureLeaderBoards.gameId = "joinjelly";
-        return AzureLeaderBoards;
-    }());
-    joinjelly.AzureLeaderBoards = AzureLeaderBoards;
-})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var menus;
@@ -5337,160 +4975,6 @@ var joinjelly;
             return DevTest;
         }(gameui.ScreenState));
         menus.DevTest = DevTest;
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var LeaderBoards = (function (_super) {
-            __extends(LeaderBoards, _super);
-            function LeaderBoards() {
-                var _this = this;
-                _super.call(this, StringResources.menus.leaderboards);
-                this.maxScroll = 1700;
-                var loading = new joinjelly.view.LoadingBall();
-                this.scrollableContent.addChild(loading);
-                loading.x = defaultWidth / 2;
-                loading.y = 800;
-                var message = gameui.AssetsManager.getBitmapText(StringResources.menus.loading, "debussy");
-                this.scrollableContent.addChild(message);
-                message.regX = message.getBounds().width / 2;
-                message.x = defaultWidth / 2;
-                message.y = 900;
-                message.visible = true;
-                this.loadLeaderBoards(function (results) {
-                    loading.visible = false;
-                    if (results != null) {
-                        _this.fillLeaderBoards(results);
-                        message.visible = false;
-                    }
-                    else {
-                        message.text = StringResources.menus.error;
-                        message.visible = true;
-                        message.regX = message.getBounds().width / 2;
-                    }
-                });
-            }
-            LeaderBoards.prototype.fillLeaderBoards = function (results) {
-                var space = 200;
-                var start = 400;
-                for (var r = 0; r < results.length; r++) {
-                    var i = new menus.view.LeaderBoardItem(results[r].score, results[r].name, r + 1);
-                    i.x = defaultWidth / 2;
-                    i.y = start + space * r;
-                    this.scrollableContent.addChild(i);
-                }
-                this.maxScroll = start + results.length * space;
-            };
-            LeaderBoards.prototype.loadLeaderBoards = function (callback) {
-                joinjelly.AzureLeaderBoards.getScoreNames(callback, 20);
-            };
-            return LeaderBoards;
-        }(joinjelly.ScrollablePage));
-        menus.LeaderBoards = LeaderBoards;
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var StoryScreen = (function (_super) {
-        __extends(StoryScreen, _super);
-        function StoryScreen() {
-            _super.call(this);
-            var intro = new lib.Intro3();
-            intro.play();
-            intro.loop = false;
-            intro.addEventListener("click", function () {
-                intro.stop();
-                joinjelly.JoinJelly.startTutorial();
-            });
-            intro.addEventListener("complete", function () {
-                intro.stop();
-                joinjelly.JoinJelly.startTutorial();
-            });
-        }
-        return StoryScreen;
-    }(gameui.ScreenState));
-    joinjelly.StoryScreen = StoryScreen;
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var view;
-        (function (view) {
-            var LeaderBoardItem = (function (_super) {
-                __extends(LeaderBoardItem, _super);
-                function LeaderBoardItem(score, name, position) {
-                    if (position === void 0) { position = 1; }
-                    _super.call(this);
-                    this.regX = 1056 / 2;
-                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
-                    bg.scaleY = 0.65;
-                    this.addChild(bg);
-                    var tContainer = new PIXI.Container();
-                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
-                    var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
-                    var scoreObj = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
-                    scoreObj.regX = scoreObj.getBounds().width;
-                    positionObj.y = 30;
-                    titleObj.y = 30;
-                    scoreObj.y = 30;
-                    positionObj.x = 30;
-                    titleObj.x = 150;
-                    scoreObj.x = 1000;
-                    tContainer.addChild(titleObj);
-                    tContainer.addChild(scoreObj);
-                    tContainer.addChild(positionObj);
-                    this.addChild(tContainer);
-                }
-                return LeaderBoardItem;
-            }(PIXI.Container));
-            view.LeaderBoardItem = LeaderBoardItem;
-        })(view = menus.view || (menus.view = {}));
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var view;
-        (function (view) {
-            var PlayerNameOptions = (function (_super) {
-                __extends(PlayerNameOptions, _super);
-                function PlayerNameOptions() {
-                    _super.call(this);
-                    this.addObjects();
-                }
-                PlayerNameOptions.prototype.addObjects = function () {
-                    var _this = this;
-                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
-                    bg.y = -130;
-                    bg.regX = bg.getBounds().width / 2;
-                    this.addChild(bg);
-                    var title = gameui.AssetsManager.getBitmapText(StringResources.menus.playerName, "debussy");
-                    title.y = -190;
-                    title.scaleX = title.scaleY = 1.1;
-                    title.regX = title.getBounds().width / 2;
-                    this.addChild(title);
-                    var playerName = gameui.AssetsManager.getBitmapText(joinjelly.JoinJelly.userData.getPlayerName(), "debussy");
-                    this.addChild(playerName);
-                    this.playerName = playerName;
-                    playerName.x = -450;
-                    playerName.y = -60;
-                    var playerNameEdit = new gameui.ImageButton("BtSettings", function () {
-                        joinjelly.JoinJelly.userData.promptPlayerName(function () {
-                            _this.playerName.text = joinjelly.JoinJelly.userData.getPlayerName();
-                            ;
-                        });
-                    });
-                    this.addChild(playerNameEdit);
-                    playerNameEdit.x = 400;
-                };
-                return PlayerNameOptions;
-            }(PIXI.Container));
-            view.PlayerNameOptions = PlayerNameOptions;
-        })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
@@ -5603,9 +5087,7 @@ var joinjelly;
                     var IOS_RATING_URL = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=519623307&onlyLatestVersion=false&type=Purple+Software";
                     var ANDROID_RATING_URL = "market://details?id=com.diastudio.joinjelly";
                     var ratingURL = null;
-                    var os = "web";
-                    if (Cocoon.Device.getDeviceInfo())
-                        os = Cocoon.Device.getDeviceInfo().os;
+                    var os = DeviceServices.getOs();
                     if (os == "web")
                         return;
                     else if (os == "ios")
@@ -5616,7 +5098,7 @@ var joinjelly;
                         Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri("ms-windows-store:REVIEW?PFN=DIAStudio.JoinJelly_gs119xcmtqkqr"));
                         return;
                     }
-                    Cocoon.App.openURL(ratingURL);
+                    DeviceServices.openURL(ratingURL);
                 };
                 return RatingFlyOut;
             }(view.FlyOutMenu));
@@ -5645,6 +5127,203 @@ var joinjelly;
                 };
                 return Star;
             }(gameui.Button));
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var GameServices = (function () {
+    function GameServices() {
+        if (!navigator.onLine)
+            return;
+        if (!window["Cocoon"])
+            return;
+        this.socialService = initSocialServices();
+    }
+    GameServices.prototype.showLeaderboard = function () {
+        if (!navigator.onLine)
+            return;
+        if (!this.socialService)
+            return;
+        this.socialService.showLeaderboard(function (error) {
+            if (error)
+                console.error("showLeaderbord error: " + error.message);
+        });
+    };
+    GameServices.prototype.showAchievements = function () {
+        if (!navigator.onLine)
+            return;
+        if (!this.socialService)
+            return;
+        this.socialService.showAchievements(function (error) {
+            if (error)
+                console.error("showAchievements error: " + error.message);
+        });
+    };
+    GameServices.prototype.submitScore = function (score) {
+        if (!this.socialService)
+            return;
+        if (!navigator.onLine)
+            return;
+        this.socialService.submitScore(score.toString(), function (error) {
+            if (error)
+                console.error("submitScore error: " + error.message);
+        });
+    };
+    GameServices.prototype.submitAchievent = function (achievementId) {
+    };
+    return GameServices;
+}());
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var CountDown = (function (_super) {
+                __extends(CountDown, _super);
+                function CountDown() {
+                    _super.apply(this, arguments);
+                }
+                CountDown.prototype.countDown = function (total) {
+                    var _this = this;
+                    if (total === void 0) { total = 3; }
+                    var ns = [];
+                    var time = 1000;
+                    var transition = 200;
+                    var dk = gameui.AssetsManager.getBitmap("popupdark");
+                    this.addChild(dk);
+                    dk.scaleX = dk.scaleY = 16;
+                    dk.x = -defaultWidth / 2;
+                    dk.y = -defaultHeight;
+                    dk.alpha = 0;
+                    dk.mouseEnabled = false;
+                    createjs.Tween.get(dk).to({ alpha: 1 }, 200);
+                    setTimeout(function () {
+                        createjs.Tween.get(dk).to({ alpha: 0 }, 200).call(function () { _this.removeChild(dk); });
+                    }, time * total + transition);
+                    setTimeout(function () {
+                        gameui.AudiosManager.playSound("Interface Sound-12");
+                    }, time * total + transition);
+                    for (var n = total; n > 0; n--) {
+                        ns[n] = gameui.AssetsManager.getBitmap("n" + n);
+                        this.addChild(ns[n]);
+                        ns[n].regX = ns[n].getBounds().width / 2;
+                        ns[n].regY = ns[n].getBounds().height / 2;
+                        ns[n].mouseEnabled = false;
+                        createjs.Tween.get(ns[n])
+                            .to({ scaleX: 2, scaleY: 2, alpha: 0 })
+                            .wait((total - n) * time)
+                            .to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut)
+                            .call(function () { gameui.AudiosManager.playSound("Interface Sound-13"); })
+                            .wait(time - transition)
+                            .to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn)
+                            .call(function (obj) { _this.removeChild(obj); });
+                    }
+                };
+                return CountDown;
+            }(PIXI.Container));
+            view.CountDown = CountDown;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var StoryScreen = (function (_super) {
+        __extends(StoryScreen, _super);
+        function StoryScreen() {
+            _super.call(this);
+            var intro = new lib.Intro3();
+            intro.play();
+            intro.loop = false;
+            intro.addEventListener("click", function () {
+                intro.stop();
+                joinjelly.JoinJelly.startTutorial();
+            });
+            intro.addEventListener("complete", function () {
+                intro.stop();
+                joinjelly.JoinJelly.startTutorial();
+            });
+        }
+        return StoryScreen;
+    }(gameui.ScreenState));
+    joinjelly.StoryScreen = StoryScreen;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var LeaderBoardItem = (function (_super) {
+                __extends(LeaderBoardItem, _super);
+                function LeaderBoardItem(score, name, position) {
+                    if (position === void 0) { position = 1; }
+                    _super.call(this);
+                    this.regX = 1056 / 2;
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
+                    bg.scaleY = 0.65;
+                    this.addChild(bg);
+                    var tContainer = new PIXI.Container();
+                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
+                    var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
+                    var scoreObj = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
+                    scoreObj.regX = scoreObj.getBounds().width;
+                    positionObj.y = 30;
+                    titleObj.y = 30;
+                    scoreObj.y = 30;
+                    positionObj.x = 30;
+                    titleObj.x = 150;
+                    scoreObj.x = 1000;
+                    tContainer.addChild(titleObj);
+                    tContainer.addChild(scoreObj);
+                    tContainer.addChild(positionObj);
+                    this.addChild(tContainer);
+                }
+                return LeaderBoardItem;
+            }(PIXI.Container));
+            view.LeaderBoardItem = LeaderBoardItem;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var PlayerNameOptions = (function (_super) {
+                __extends(PlayerNameOptions, _super);
+                function PlayerNameOptions() {
+                    _super.call(this);
+                    this.addObjects();
+                }
+                PlayerNameOptions.prototype.addObjects = function () {
+                    var _this = this;
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
+                    bg.y = -130;
+                    bg.regX = bg.getBounds().width / 2;
+                    this.addChild(bg);
+                    var title = gameui.AssetsManager.getBitmapText(StringResources.menus.playerName, "debussy");
+                    title.y = -190;
+                    title.scaleX = title.scaleY = 1.1;
+                    title.regX = title.getBounds().width / 2;
+                    this.addChild(title);
+                    var playerName = gameui.AssetsManager.getBitmapText(joinjelly.JoinJelly.userData.getPlayerName(), "debussy");
+                    this.addChild(playerName);
+                    this.playerName = playerName;
+                    playerName.x = -450;
+                    playerName.y = -60;
+                    var playerNameEdit = new gameui.ImageButton("BtSettings", function () {
+                        joinjelly.JoinJelly.userData.promptPlayerName(function () {
+                            _this.playerName.text = joinjelly.JoinJelly.userData.getPlayerName();
+                            ;
+                        });
+                    });
+                    this.addChild(playerNameEdit);
+                    playerNameEdit.x = 400;
+                };
+                return PlayerNameOptions;
+            }(PIXI.Container));
+            view.PlayerNameOptions = PlayerNameOptions;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
@@ -5758,4 +5437,167 @@ var joinjelly;
         view.Effect = Effect;
     })(view = joinjelly.view || (joinjelly.view = {}));
 })(joinjelly || (joinjelly = {}));
+var defaultWidth = 768 * 2;
+var defaultHeight = 1024 * 2;
+var fbAppId = "1416523228649363";
+var gameWebsite = "http://www.joinjelly.com";
+var gameWebsiteIcon = "http://www.joinjelly.com/preview.jpg";
+var contantsAndroid = {
+    ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',
+    ACH_JELLY_2: 'CgkI49ztp64KEAIQBQ',
+    ACH_JELLY_3: 'CgkI49ztp64KEAIQBg',
+    ACH_JELLY_4: 'CgkI49ztp64KEAIQBA',
+    ACH_JELLY_5: 'CgkI49ztp64KEAIQBQ',
+    ACH_JELLY_6: 'CgkI49ztp64KEAIQBg',
+    ACH_JELLY_7: 'CgkI49ztp64KEAIQBw',
+    ACH_JELLY_8: 'CgkI49ztp64KEAIQCA',
+    ACH_JELLY_9: 'CgkI49ztp64KEAIQCQ',
+    ACH_JELLY_10: 'CgkI49ztp64KEAIQCg',
+    ACH_JELLY_11: 'CgkI49ztp64KEAIQCw',
+    ACH_JELLY_12: 'CgkI49ztp64KEAIQDA',
+    ACH_JELLY_13: 'CgkI49ztp64KEAIQDQ',
+    ACH_JELLY_14: 'CgkI49ztp64KEAIQDg',
+    ACH_JELLY_15: 'CgkI49ztp64KEAIQDw',
+    ACH_JELLY_16: 'CgkI49ztp64KEAIQEA',
+    ACH_JELLY_17: 'CgkI49ztp64KEAIQEQ',
+    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
+    LEAD_LEADERBOARD: 'CgkI49ztp64KEAIQAg',
+};
+var constantsiOS = {
+    ACH_JELLY_1: 'jelly01',
+    ACH_JELLY_2: 'jelly02',
+    ACH_JELLY_3: 'jelly03',
+    ACH_JELLY_4: 'jelly04',
+    ACH_JELLY_5: 'jelly05',
+    ACH_JELLY_6: 'jelly06',
+    ACH_JELLY_7: 'jelly07',
+    ACH_JELLY_8: 'jelly08',
+    ACH_JELLY_9: 'jelly09',
+    ACH_JELLY_10: 'jelly10',
+    ACH_JELLY_11: 'jelly11',
+    ACH_JELLY_12: 'jelly12',
+    ACH_JELLY_13: 'jelly13',
+    ACH_JELLY_14: 'jelly14',
+    ACH_JELLY_15: 'jelly15',
+    ACH_JELLY_16: 'jelly16',
+    ACH_JELLY_17: 'jelly17',
+    LEAD_LEADERBOARD: 'leaderboards',
+};
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var ItemsFooter = (function (_super) {
+                __extends(ItemsFooter, _super);
+                function ItemsFooter(items) {
+                    _super.call(this);
+                    this.itemSize = 270;
+                    this.itemsButtons = [];
+                    this.addObjects();
+                    this.setItems(items);
+                }
+                ItemsFooter.prototype.setItems = function (items) {
+                    var itemSize = this.itemSize;
+                    if (items.length >= 5)
+                        itemSize = 200;
+                    this.cleanButtons();
+                    if (!items)
+                        return;
+                    for (var i = 0; i < items.length; i++)
+                        this.addItem(items[i], i);
+                    for (var i = 0; i < items.length; i++) {
+                        this.itemsButtons[items[i]].y = -150;
+                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
+                    }
+                };
+                ItemsFooter.prototype.cleanButtons = function () {
+                    for (var i in this.itemsButtons)
+                        this.removeChild(this.itemsButtons[i]);
+                    this.itemsButtons = [];
+                };
+                ItemsFooter.prototype.addObjects = function () {
+                    var bg = gameui.AssetsManager.getBitmap("footer");
+                    this.addChild(bg);
+                    bg.y = -162;
+                    bg.x = (defaultWidth - 1161) / 2;
+                    var lucky = gameui.AssetsManager.getBitmap("lucky");
+                    this.addChild(lucky);
+                    lucky.y = -210;
+                    lucky.x = (defaultWidth - 250);
+                    lucky.scaleX = lucky.scaleY = 0.5;
+                    this.lucky = lucky;
+                    this.gameMessage = new view.TutoralMessage();
+                    this.addChild(this.gameMessage);
+                };
+                ItemsFooter.prototype.addItem = function (item, pos) {
+                    var _this = this;
+                    var bt = new view.ItemButton(item);
+                    this.addChild(bt);
+                    this.itemsButtons[item] = bt;
+                    bt.addEventListener("click", function () { _this.emit("useitem", { item: item }); });
+                    bt.addEventListener("tap", function () { _this.emit("useitem", { item: item }); });
+                };
+                ItemsFooter.prototype.getItemButton = function (item) {
+                    return this.itemsButtons[item];
+                };
+                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
+                    if (this.itemsButtons[item])
+                        this.itemsButtons[item].setAmmount(ammount);
+                    if (item == "lucky")
+                        this.lucky.visible = (ammount > 0);
+                };
+                ItemsFooter.prototype.showMessage = function (itemId, message) {
+                    this.gameMessage.x = this.getItemButton(itemId).x;
+                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
+                    this.gameMessage.show(message);
+                };
+                ItemsFooter.prototype.hideMessage = function () {
+                    this.gameMessage.fadeOut();
+                };
+                ItemsFooter.prototype.bounceItem = function (item) {
+                    this.getItemButton(item).highLight(false);
+                };
+                ItemsFooter.prototype.highlight = function (item) {
+                    this.unHighlightAll();
+                    this.getItemButton(item).highLight();
+                };
+                ItemsFooter.prototype.unHighlightAll = function () {
+                    for (var i in this.itemsButtons)
+                        this.itemsButtons[i].unHighlight();
+                };
+                ItemsFooter.prototype.lockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    if (b)
+                        b.lock();
+                };
+                ItemsFooter.prototype.unlockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    b.unlock();
+                };
+                ItemsFooter.prototype.lockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].lock();
+                };
+                ItemsFooter.prototype.unlockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].unlock();
+                };
+                return ItemsFooter;
+            }(PIXI.Container));
+            view.ItemsFooter = ItemsFooter;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var productsData = {
+    "pack1x": { icon: "Item Pack", consumable: false, share: true },
+    "time5x": { icon: "5x Snow", consumable: true },
+    "fast5x": { icon: "5x Magnet", consumable: true },
+    "revive5x": { icon: "5x Revive", consumable: true },
+    "clean5x": { icon: "5x Clean", consumable: true },
+    "pack5x": { icon: "5x Item Pack", consumable: true },
+    "pack10x": { icon: "10x Item Pack", consumable: true },
+    "lucky": { icon: "Lucky Clover", consumable: false },
+};
 //# sourceMappingURL=script.js.map
