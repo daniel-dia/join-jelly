@@ -4094,7 +4094,7 @@ var joinjelly;
                 if (this.highJelly < newValue) {
                     joinjelly.JoinJelly.analytics.logNewJelly(newValue, this.level, Date.now() - this.time);
                     try {
-                        joinjelly.JoinJelly.gameServices.submitJellyAchievent(newValue);
+                        joinjelly.JoinJelly.gameServices.submitAchievent(newValue);
                     }
                     catch (e) {
                         console.log(e);
@@ -4790,7 +4790,7 @@ var joinjelly;
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
-            this.gameServices = new joinjelly.GameServices();
+            this.gameServices = new GameServices();
             this.initializeSocial();
             var lang = (window.navigator["userLanguage"] || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
@@ -5215,76 +5215,66 @@ var joinjelly;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var GameServices = (function () {
-        function GameServices() {
+var GameServices = (function () {
+    function GameServices() {
+        if (!navigator.onLine)
+            return;
+        if (!window["Cocoon"])
+            return;
+        this.socialService = initSocialServices();
+    }
+    GameServices.prototype.showLeaderboard = function () {
+        if (!navigator.onLine)
+            return;
+        if (!this.socialService)
+            return;
+        this.socialService.showLeaderboard(function (error) {
+            if (error)
+                console.error("showLeaderbord error: " + error.message);
+        });
+    };
+    GameServices.prototype.showAchievements = function () {
+        if (!navigator.onLine)
+            return;
+        if (!this.socialService)
+            return;
+        this.socialService.showAchievements(function (error) {
+            if (error)
+                console.error("showAchievements error: " + error.message);
+        });
+    };
+    GameServices.prototype.submitScore = function (score) {
+        if (!this.socialService)
+            return;
+        if (!navigator.onLine)
+            return;
+        this.socialService.submitScore(score.toString(), function (error) {
+            if (error)
+                console.error("submitScore error: " + error.message);
+        });
+    };
+    GameServices.prototype.submitAchievent = function (achievementId) {
+        if (!navigator.onLine)
+            return;
+        if (!this.socialService)
+            return;
+        var id = "";
+        if (Cocoon.getPlatform() === 'ios') {
+            id = constantsiOS[achievementId];
         }
-        GameServices.prototype.showLeaderboard = function () {
-            if (!navigator.onLine)
-                return;
-            if (!this.socialService)
-                return;
-            try {
-                this.socialService.showLeaderboard();
-            }
-            catch (e) { }
-        };
-        GameServices.prototype.showAchievements = function () {
-            if (!navigator.onLine)
-                return;
-            if (!this.socialService)
-                return;
-            try {
-                this.socialService.showAchievements();
-            }
-            catch (e) { }
-        };
-        GameServices.prototype.submitScore = function (score) {
-            if (!this.socialService) {
-                console.error("No social Service");
-                return;
-            }
-            if (!navigator.onLine) {
-                console.error("No social connection");
-                return;
-            }
-            try {
-                var sc;
-                sc = score;
-                if (Cocoon.Device.getDeviceInfo().os == "android")
-                    sc = score.toString();
-                this.socialService.submitScore(sc, function (error) {
-                    if (error)
-                        console.error("score error: " + error.message);
-                    else
-                        console.log("submited score: " + score);
-                });
-            }
-            catch (e) {
-                console.error("error: " + JSON.stringify(e));
-            }
-        };
-        GameServices.prototype.submitJellyAchievent = function (jellyValue) {
-            if (!navigator.onLine)
-                return;
-            if (!this.socialService)
-                return;
-            var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
-            try {
-                this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, function (error) {
-                    if (error)
-                        console.error("submitAchievement error: " + error.message);
-                    else
-                        console.log("submited Achievement: jelly " + jellyNumber);
-                });
-            }
-            catch (e) { }
-        };
-        return GameServices;
-    }());
-    joinjelly.GameServices = GameServices;
-})(joinjelly || (joinjelly = {}));
+        else if (Cocoon.getPlatform() === 'android') {
+            id = contantsAndroid[achievementId];
+        }
+        if (id)
+            this.socialService.submitAchievement(id, function (error) {
+                if (error)
+                    console.error("submitAchievement error: " + error.message);
+                else
+                    console.error("submited");
+            });
+    };
+    return GameServices;
+}());
 var joinjelly;
 (function (joinjelly) {
     var AzureLeaderBoards = (function () {

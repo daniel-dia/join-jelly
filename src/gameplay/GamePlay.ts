@@ -895,7 +895,7 @@ module joinjelly.gameplay {
 
                 try {
                     // submit jelly to Game Services
-                    JoinJelly.gameServices.submitJellyAchievent(newValue);
+                    JoinJelly.gameServices.submitAchievent(newValue);
                 } catch (e) { console.log(e) }
                 // set a new high jelly
                 this.highJelly = newValue;

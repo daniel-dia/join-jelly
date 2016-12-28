@@ -1,130 +1,74 @@
-﻿module joinjelly {
-    export class GameServices {
-
-        private socialService: Cocoon.Social.Interface;
-
-        constructor() {
-            /*
-            
-            if (!navigator.onLine) return;
-
-            // get device os info
-            var os = "web"
-            if (Cocoon.Device.getDeviceInfo()) os = Cocoon.Device.getDeviceInfo().os;
-
-            if (os == "windows" || os == "web") return;
+﻿declare var Cocoon: any;
+declare function initSocialServices();
 
 
-            if (os == "ios") {
-                //initializes game services
-                this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
-                // set achievement Map
-                this.socialService.setAchievementsMap(constantsiOS)
+class GameServices {
 
-            }
+    private socialService: any;
 
-            else if (os == "android") {
-                //initializes game services
-                var gp = Cocoon.Social.GooglePlayGames;
-            
+    constructor() {
+        if (!navigator.onLine) return;
+        if (!window["Cocoon"]) return;
+        this.socialService = initSocialServices();
+    }
 
-                //if (!this.socialService.isLoggedIn()) {
-                gp.init({
-                    defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD
-                });
-                
-                this.socialService = gp.getSocialInterface();
-                // set achievement Map
-                this.socialService.setAchievementsMap(contantsAndroid)
-                //}
+    // show native leaderboards
+    public showLeaderboard() {
+        if (!navigator.onLine) return;
+        if (!this.socialService) return;
 
-            }
-            else if (os == "web") {
-                //initializes game services
-                var gp = Cocoon.Social.GooglePlayGames;
-                gp.init({
-                    clientId: contantsAndroid.CLIENT_ID,
-                    defaultLeaderboard: contantsAndroid.LEAD_LEADERBOARD
-                });
-                this.socialService = gp.getSocialInterface();
-                // set achievement Map
-                this.socialService.setAchievementsMap(contantsAndroid)
-                this.socialService.setTemplates("scripts/templates/leaderboards.html", "scripts/templates/achievements.html");
-            }  
-            
-            // login into game Services
-            setTimeout(() => {  
-                if (this.socialService && !this.socialService.isLoggedIn()) {
-                    this.socialService.login((loggedIn, error) => {
-                        if (error) console.error("login error: " + error.message + " " + error.code);
-                        else if (!loggedIn) console.log("login cancelled");
-                    });
-                }
-            }, 10000);
+        this.socialService.showLeaderboard(function (error) {
+            if (error)
+                console.error("showLeaderbord error: " + error.message);
+        });
 
-            */
+    }
+
+    // show a achievement.
+    public showAchievements() {
+        if (!navigator.onLine) return;
+        if (!this.socialService) return;
+
+        this.socialService.showAchievements(function (error) {
+            if (error)
+                console.error("showAchievements error: " + error.message);
+        });
+
+    }
+
+    // submit a score
+    public submitScore(score: number) {
+
+        if (!this.socialService) return;
+        if (!navigator.onLine) return;
+
+
+        this.socialService.submitScore(score.toString(), function (error) {
+            if (error)
+                console.error("submitScore error: " + error.message);
+        });
+    }
+
+    // submit an achievement
+    public submitAchievent(achievementId: string) {
+
+        if (!navigator.onLine) return;
+        if (!this.socialService) return;
+
+        var id = "";
+        if (Cocoon.getPlatform() === 'ios') {
+            id = constantsiOS[achievementId];
+        } else if (Cocoon.getPlatform() === 'android') {
+            id = contantsAndroid[achievementId];
         }
 
-        // show native leaderboards
-        public showLeaderboard() {
-            
-            if (!navigator.onLine) return;
-            if (!this.socialService) return;
-            try {
-                this.socialService.showLeaderboard();
-            } catch (e) { }
-        }
+        if (id)
+            this.socialService.submitAchievement(id, function (error) {
+                if (error)
+                    console.error("submitAchievement error: " + error.message);
+                else
+                    console.error("submited");
+            });
 
-        // show a achievement.
-        public showAchievements() {
-            if (!navigator.onLine) return;
-            if (!this.socialService) return;
-            try {
-                this.socialService.showAchievements();
-            } catch (e) { }
-        }
-
-        // submit a score
-        public submitScore(score: number) {
-
-            if (!this.socialService) {
-                console.error("No social Service");
-                return;
-            }
-
-            if (!navigator.onLine) {
-                console.error("No social connection");
-                return;
-            }
-             
-            try {
-                var sc;
-                sc = score;
-                if (Cocoon.Device.getDeviceInfo().os == "android") sc = score.toString();
-                this.socialService.submitScore(sc,(error) => {
-                    if (error)
-                        console.error("score error: " + error.message);
-                    else
-                        console.log("submited score: " + score);
-                });
-            } catch (e) {
-                console.error("error: " + JSON.stringify(e));
-            }
-        }
-
-        // submit an achievement
-        public submitJellyAchievent(jellyValue: number) {
-            if (!navigator.onLine) return;
-            if (!this.socialService) return;
-
-            // normalize value to log2 and submit
-            var jellyNumber = Math.floor(Math.log(jellyValue) / Math.log(2)) + 1;
-            try {
-                this.socialService.submitAchievement("ACH_JELLY_" + jellyNumber, (error) => {
-                    if (error) console.error("submitAchievement error: " + error.message);
-                    else console.log("submited Achievement: jelly " + jellyNumber);
-                });
-            } catch (e) { }
-        }
     }
 }

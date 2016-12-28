@@ -566,6 +566,7 @@
     <Content Include="scripts\PIXIpatch.js" />
     <Content Include="scripts\Plataform.js" />
     <Content Include="scripts\script.js" />
+    <Content Include="scripts\WindowsInAppService.js" />
     <Content Include="Windows\setMobileRealScale.js" />
     <Content Include="Windows\WindowsCocoonjs.js" />
     <Content Include="Windows\WpAudioManager.js" />
@@ -577,6 +578,7 @@
     <TypeScriptCompile Include="gameui\ScreenState.ts" />
     <TypeScriptCompile Include="gameui\Transition.ts" />
     <TypeScriptCompile Include="gameui\UIItem.ts" />
+    <TypeScriptCompile Include="src\InAppPurchaseServices.ts" />
     <TypeScriptCompile Include="typings\pixi-filters.d.ts" />
     <TypeScriptCompile Include="typings\pixi.js.d.ts" />
     <TypeScriptCompile Include="src\gameplay\parameters.ts" />
@@ -596,7 +598,6 @@
     <TypeScriptCompile Include="src\menus\view\LoadingBar.ts" />
     <TypeScriptCompile Include="src\menus\view\PlayerNameOption.ts" />
     <TypeScriptCompile Include="src\view\Effect.ts" />
-    <TypeScriptCompile Include="typings\cocoon.d.ts" />
     <TypeScriptCompile Include="typings\createjs-lib\createjs-lib.d.ts" />
     <TypeScriptCompile Include="typings\createjs\createjs.d.ts" />
     <TypeScriptCompile Include="typings\easeljs\easeljs.d.ts" />

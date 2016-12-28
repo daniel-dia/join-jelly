@@ -98,8 +98,7 @@
         private scrollTick(evt) {
             this.scrollableContent.y = (this.scrollableContent.y * 2 + this.targetY) / 3;
         }
-
-
+        
         private addButton() {
             // add ok button
             var okButton = new gameui.ImageButton("BtOk", () => {
@@ -112,8 +111,7 @@
             this.content.addChild(okButton);
 
         }
-
-
+        
         public activate(parameters?: any) {
             super.activate(parameters);
             PIXI.ticker.shared.add(this.scrollTick, this);

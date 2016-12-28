@@ -1,4 +1,6 @@
-﻿module joinjelly.menus {
+﻿declare var Cocoon: any;
+
+module joinjelly.menus {
     export class StoreMenu extends ScrollablePage {
         private previousScreen: gameui.ScreenState;
         private gameFooter: gameplay.view.ItemsFooter;
