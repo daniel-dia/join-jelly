@@ -237,15 +237,15 @@ module joinjelly.gameplay {
 
             this.finishMenu.addEventListener("like", () => {
                 DeviceServices.openURL(StringResources.menus.fbURL);
-
-                this.userData.history("shared");
+                 
+                this.userData.history("liked")
                 this.itemData.increaseItemAmmount(Items.REVIVE, 1);
                 this.itemData.increaseItemAmmount(Items.CLEAN, 1);
                 this.itemData.increaseItemAmmount(Items.FAST, 1);
                 this.itemData.increaseItemAmmount(Items.TIME, 1);
                 this.updateFooter();
                 this.finishMenu.ClearSpecialOffer();
-                console.log("shareded");
+                console.log("liked");
 
 
                 // shows which item the user has won

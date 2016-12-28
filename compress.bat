@@ -1,16 +1,8 @@
+
 @echo off
-del LudeiPackage.zip
+del CocoonPackage.zip
 
-"C:\Program Files\7-Zip\7z" a LudeiPackage.zip index.html assets scripts data
-timeout 2
+"C:\Program Files\7-Zip\7z" a CocoonPackage2.zip index.html assets scripts data
+timeout 1
 echo ------------------------------------------------------
-"C:\Program Files\7-Zip\7z" d LudeiPackage.zip *.mp3 -r
-"C:\Program Files\7-Zip\7z" d LudeiPackage.zip *.xmp -r
-echo ------------------------------------------------------
-"C:\Program Files\7-Zip\7z" d LudeiPackage.zip *.bat -r
-"C:\Program Files\7-Zip\7z" d LudeiPackage.zip *.map -r
-echo ------------------------------------------------------
-"C:\Program Files\7-Zip\7z" d LudeiPackage.zip assets/images
-"C:\Program Files\7-Zip\7z" d LudeiPackage.zip assets/imagens
-
-timeout 10
+"C:\Program Files\7-Zip\7z" d CocoonPackage2.zip assets/imagens assets/images *.map  *.db  *.mp3 *.wav *.xmp  *.tmp *.map *.bat -r
