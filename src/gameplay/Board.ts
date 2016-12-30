@@ -96,15 +96,6 @@
             this.tilesContainer.on("mouseupoutside", this.boardTouchEnd, this);
             this.tilesContainer.on("mouseup", this.boardTouchEnd, this);
             this.tilesContainer.on("mouseout", this.boardTouchEnd, this);
-
-            //// pess Start
-            //this.tilesContainer.on("pointerdown", this.boardTouchStart, this);
-            //
-            //// Press Move
-            //this.tilesContainer.on("pointermove", this.boardTouchMove, this); 
-            //
-            //// Press Up
-            //this.tilesContainer.addEventListener("pointerup", this.boardTouchEnd, this);
         }
 
         // callback to the event start
