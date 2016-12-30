@@ -140,8 +140,7 @@
         }
 
         // #region  Special Offer
-
-
+        
         public showShareButton() {
             this.ClearSpecialOffer();
             var bt = new gameui.BitmapTextButton(StringResources.menus.share, "debussy", "BtTextBgBlue", () => {

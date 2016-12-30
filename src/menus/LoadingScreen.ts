@@ -16,7 +16,7 @@ module joinjelly.menus {
             super();
             PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(fnt))$/;
 
-            assetscale = 1;
+            assetscale = 0.25;
             //if (window.innerWidth <= 1070) assetscale = 0.5;
             //if (window.innerWidth <= 384) assetscale = 0.25;
 

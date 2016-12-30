@@ -223,7 +223,7 @@ module gameui {
             this.bitmapText = AssetsManager.getBitmapText(text, bitmapFontId);
             this.addChild(this.bitmapText);
             this.bitmapText.pivot.x = this.bitmapText.textWidth / 2;
-            this.bitmapText.pivot.y = this.bitmapText.textHeight / 2;
+            this.bitmapText.pivot.y = this.bitmapText.textHeight / 2 + 20;
 
             this.createHitArea();
         }

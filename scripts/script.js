@@ -706,7 +706,7 @@ var gameui;
             this.bitmapText = gameui.AssetsManager.getBitmapText(text, bitmapFontId);
             this.addChild(this.bitmapText);
             this.bitmapText.pivot.x = this.bitmapText.textWidth / 2;
-            this.bitmapText.pivot.y = this.bitmapText.textHeight / 2;
+            this.bitmapText.pivot.y = this.bitmapText.textHeight / 2 + 20;
             this.createHitArea();
         }
         return BitmapTextButton;
@@ -1276,7 +1276,7 @@ var joinjelly;
                 var _this = this;
                 _super.call(this);
                 PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(fnt))$/;
-                assetscale = 1;
+                assetscale = 0.25;
                 var imagePath = "/assets/images@" + assetscale + "x/";
                 var audioPath = "/assets/sound/";
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
