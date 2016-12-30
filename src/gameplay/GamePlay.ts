@@ -568,10 +568,9 @@ module joinjelly.gameplay {
         private showSpecialOffer() {
             var minutes = 30;
 
-             
             // if ads already been loaded any time
-            if (this.userData.getHistory("ads_avaliable")) {
-        
+            if (!this.userData.getHistory("purchased")) {
+
                 // if user is elegible to watch a ads.
                 if (!this.userData.getHistory("watched") ||
                     this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {

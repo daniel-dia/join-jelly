@@ -14,7 +14,7 @@ module joinjelly {
 
 
         public static init(canvasName: string) {
-
+            
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new ItemsData();

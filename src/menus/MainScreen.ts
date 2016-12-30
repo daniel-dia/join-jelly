@@ -99,6 +99,8 @@
             aboutBt.x = x -= space;
             this.footer.addChild(aboutBt);
 
+          
+
 
             //add leaderboards button
             var leaderboardsBt = new gameui.ImageButton("BtTextBg",() => {

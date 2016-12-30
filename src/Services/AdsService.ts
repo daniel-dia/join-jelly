@@ -37,7 +37,7 @@
             return;
         }
 
-        if (this.getStatus() == AdsServices.STATUS.READY) {
+        if (this.isReady()) {
             this.debug("show")
 
             this.interstitial.on("dismiss", (e) => {
@@ -75,7 +75,7 @@
         this.ad_timeout = setTimeout(() => {
             this.debug("timeout");
             this.status = AdsServices.STATUS.TIMEOUT;
-        }, 15000)
+        }, 60000)
 
     }
 
@@ -91,9 +91,9 @@
         });
 
         this.interstitial.on("fail", (e) => {
-            if (this.ad_timeout) clearTimeout(this.ad_timeout);
             this.debug("Interstitial failed " + JSON.stringify(e));
             this.status = AdsServices.STATUS.FAIL;
+            if (this.ad_timeout) clearTimeout(this.ad_timeout);
         });
 
         this.interstitial.on("dismiss", (e) => {

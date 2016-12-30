@@ -245,6 +245,9 @@
                 case "lucky": JoinJelly.itemData.increaseItemAmmount(Items.LUCKY, 1); break;
             }
 
+            JoinJelly.userData.history("purchased")
+
+
             return true;
         }
 

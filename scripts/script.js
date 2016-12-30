@@ -3699,7 +3699,7 @@ var joinjelly;
             GamePlayScreen.prototype.showSpecialOffer = function () {
                 var _this = this;
                 var minutes = 30;
-                if (this.userData.getHistory("ads_avaliable")) {
+                if (!this.userData.getHistory("purchased")) {
                     if (!this.userData.getHistory("watched") ||
                         this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
                         if (AdsServices.isReady()) {
@@ -5297,7 +5297,7 @@ var AdsServices = (function () {
                 callback(false, "not_Initialized");
             return;
         }
-        if (this.getStatus() == AdsServices.STATUS.READY) {
+        if (this.isReady()) {
             this.debug("show");
             this.interstitial.on("dismiss", function (e) {
                 if (callback)
@@ -5334,7 +5334,7 @@ var AdsServices = (function () {
         this.ad_timeout = setTimeout(function () {
             _this.debug("timeout");
             _this.status = AdsServices.STATUS.TIMEOUT;
-        }, 15000);
+        }, 60000);
     };
     AdsServices.setCallbacks = function () {
         var _this = this;
@@ -5346,10 +5346,10 @@ var AdsServices = (function () {
             _this.status = AdsServices.STATUS.READY;
         });
         this.interstitial.on("fail", function (e) {
-            if (_this.ad_timeout)
-                clearTimeout(_this.ad_timeout);
             _this.debug("Interstitial failed " + JSON.stringify(e));
             _this.status = AdsServices.STATUS.FAIL;
+            if (_this.ad_timeout)
+                clearTimeout(_this.ad_timeout);
         });
         this.interstitial.on("dismiss", function (e) {
             _this.debug("Interstitial dismissed " + JSON.stringify(e));
@@ -5416,41 +5416,12 @@ var DeviceServices = (function () {
 }());
 var GameServices = (function () {
     function GameServices() {
-        if (!navigator.onLine)
-            return;
-        if (!window["Cocoon"])
-            return;
-        this.socialService = initSocialServices();
     }
     GameServices.prototype.showLeaderboard = function () {
-        if (!navigator.onLine)
-            return;
-        if (!this.socialService)
-            return;
-        this.socialService.showLeaderboard(function (error) {
-            if (error)
-                console.error("showLeaderbord error: " + error.message);
-        });
     };
     GameServices.prototype.showAchievements = function () {
-        if (!navigator.onLine)
-            return;
-        if (!this.socialService)
-            return;
-        this.socialService.showAchievements(function (error) {
-            if (error)
-                console.error("showAchievements error: " + error.message);
-        });
     };
     GameServices.prototype.submitScore = function (score) {
-        if (!this.socialService)
-            return;
-        if (!navigator.onLine)
-            return;
-        this.socialService.submitScore(score.toString(), function (error) {
-            if (error)
-                console.error("submitScore error: " + error.message);
-        });
     };
     GameServices.prototype.submitAchievent = function (achievementId) {
     };

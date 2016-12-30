@@ -5,46 +5,46 @@ class GameServices {
     private socialService: any;
 
     constructor() {
-        if (!navigator.onLine) return;
-        if (!window["Cocoon"]) return;
-        this.socialService = initSocialServices();
+        //if (!navigator.onLine) return;
+        //if (!window["Cocoon"]) return;
+        //this.socialService = initSocialServices();
     }
 
     // show native leaderboards
     public showLeaderboard() {
-        if (!navigator.onLine) return;
-        if (!this.socialService) return;
-
-        this.socialService.showLeaderboard(function (error) {
-            if (error)
-                console.error("showLeaderbord error: " + error.message);
-        });
+        //if (!navigator.onLine) return;
+        //if (!this.socialService) return;
+        //
+        //this.socialService.showLeaderboard(function (error) {
+        //    if (error)
+        //        console.error("showLeaderbord error: " + error.message);
+        //});
 
     }
 
     // show a achievement.
     public showAchievements() {
-        if (!navigator.onLine) return;
-        if (!this.socialService) return;
-
-        this.socialService.showAchievements(function (error) {
-            if (error)
-                console.error("showAchievements error: " + error.message);
-        });
+       // if (!navigator.onLine) return;
+       // if (!this.socialService) return;
+       //
+       // this.socialService.showAchievements(function (error) {
+       //     if (error)
+       //         console.error("showAchievements error: " + error.message);
+       // });
 
     }
 
     // submit a score
     public submitScore(score: number) {
 
-        if (!this.socialService) return;
-        if (!navigator.onLine) return;
-
-
-        this.socialService.submitScore(score.toString(), function (error) {
-            if (error)
-                console.error("submitScore error: " + error.message);
-        });
+        //if (!this.socialService) return;
+        //if (!navigator.onLine) return;
+        //
+        //
+        //this.socialService.submitScore(score.toString(), function (error) {
+        //    if (error)
+        //        console.error("submitScore error: " + error.message);
+        //});
     }
 
     // submit an achievement
