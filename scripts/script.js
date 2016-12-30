@@ -3024,8 +3024,11 @@ var joinjelly;
                 this.tilesContainer.on("mousedown", this.boardTouchStart, this);
                 this.tilesContainer.on("touchmove", this.boardTouchMove, this);
                 this.tilesContainer.on("mousemove", this.boardTouchMove, this);
-                this.tilesContainer.addEventListener("touchend", this.boardTouchEnd, this);
-                this.tilesContainer.addEventListener("mouseup", this.boardTouchEnd, this);
+                this.tilesContainer.on("touchend", this.boardTouchEnd, this);
+                this.tilesContainer.on("touchendoutside", this.boardTouchEnd, this);
+                this.tilesContainer.on("mouseupoutside", this.boardTouchEnd, this);
+                this.tilesContainer.on("mouseup", this.boardTouchEnd, this);
+                this.tilesContainer.on("mouseout", this.boardTouchEnd, this);
             };
             Board.prototype.boardTouchStart = function (e) {
                 var pid = this.getPointerId(e);
