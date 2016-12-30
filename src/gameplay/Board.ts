@@ -82,7 +82,7 @@
             this.touchOffset = new Array<point>();
             this.touchDeltas = new Array<number>();
 
-            // pess Start
+            // Pess Start
             this.tilesContainer.on("touchstart", this.boardTouchStart, this);
             this.tilesContainer.on("mousedown", this.boardTouchStart, this);
             
