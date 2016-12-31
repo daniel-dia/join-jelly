@@ -4769,7 +4769,8 @@ var joinjelly;
                     dk.x = -defaultWidth / 2;
                     dk.y = -defaultHeight;
                     dk.alpha = 0;
-                    dk.mouseEnabled = false;
+                    dk.interactive = false;
+                    dk.interactiveChildren = false;
                     createjs.Tween.get(dk).to({ alpha: 1 }, 200);
                     setTimeout(function () {
                         createjs.Tween.get(dk).to({ alpha: 0 }, 200).call(function () { _this.removeChild(dk); });
@@ -4782,7 +4783,9 @@ var joinjelly;
                         this.addChild(ns[n]);
                         ns[n].regX = ns[n].getBounds().width / 2;
                         ns[n].regY = ns[n].getBounds().height / 2;
-                        ns[n].mouseEnabled = false;
+                        ns[n].interactiveChildren = false;
+                        ns[n].interactive = false;
+                        ns[n].name = "count_n";
                         createjs.Tween.get(ns[n])
                             .to({ scaleX: 2, scaleY: 2, alpha: 0 })
                             .wait((total - n) * time)
@@ -4790,7 +4793,7 @@ var joinjelly;
                             .call(function () { gameui.AudiosManager.playSound("Interface Sound-13"); })
                             .wait(time - transition)
                             .to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn)
-                            .call(function (obj) { _this.removeChild(obj); });
+                            .call(function (obj) { _this.removeChild(obj.target); });
                     }
                 };
                 return CountDown;
