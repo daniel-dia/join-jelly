@@ -42,6 +42,7 @@
                 ns[n].interactiveChildren = false;
                 ns[n].interactive = false;
                 ns[n].name="count_n"
+
                 //make animation
                 createjs.Tween.get(ns[n])
                     .to({ scaleX: 2, scaleY: 2, alpha: 0 })
