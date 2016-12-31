@@ -20,15 +20,15 @@ module joinjelly.menus {
             //if (window.innerWidth <= 1070) assetscale = 0.5;
             //if (window.innerWidth <= 384) assetscale = 0.25;
 
-            var imagePath = "/assets/images@" + assetscale + "x/";
-            var audioPath = "/assets/sound/";
+            var imagePath = "assets/images@" + assetscale + "x/";
+            var audioPath = "assets/sounds/";
 
 
-            ////load audio
-            //if (!testMode && typeof WPAudioManager== 'undefined') {
-            //    createjs.Sound.alternateExtensions = ["mp3"];
-            //    createjs.Sound.registerSounds(audioManifest, audioPath);
-            //}
+            //load audio
+            if (!testMode && typeof WPAudioManager== 'undefined') {
+                createjs.Sound.alternateExtensions = ["mp3"];
+                createjs.Sound.registerSounds(audioManifest, audioPath);
+            }
 
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
             gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy.fnt");

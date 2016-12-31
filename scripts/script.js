@@ -1279,8 +1279,12 @@ var joinjelly;
                 _super.call(this);
                 PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(fnt))$/;
                 assetscale = 0.25;
-                var imagePath = "/assets/images@" + assetscale + "x/";
-                var audioPath = "/assets/sound/";
+                var imagePath = "assets/images@" + assetscale + "x/";
+                var audioPath = "assets/sounds/";
+                if (!testMode && typeof WPAudioManager == 'undefined') {
+                    createjs.Sound.alternateExtensions = ["mp3"];
+                    createjs.Sound.registerSounds(audioManifest, audioPath);
+                }
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy.fnt");
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig.fnt");
