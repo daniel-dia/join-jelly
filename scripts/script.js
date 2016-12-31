@@ -5131,6 +5131,14 @@ var joinjelly;
                 RatingFlyOut.prototype.show = function () {
                     if (!navigator.onLine)
                         return;
+                    if (joinjelly.JoinJelly.userData.getHistory("rated"))
+                        return;
+                    if (joinjelly.JoinJelly.userData.getHistory("rating_asked"))
+                        return;
+                    if (joinjelly.JoinJelly.userData.getPlays() < 10)
+                        return;
+                    if (joinjelly.JoinJelly.userData.getHighScore() < 5000)
+                        return;
                     joinjelly.JoinJelly.userData.history("rating_asked");
                     _super.prototype.show.call(this);
                 };
@@ -5230,22 +5238,12 @@ var joinjelly;
                 };
                 RatingFlyOut.prototype.gotoStore = function () {
                     var _this = this;
-                    this.hide();
-                    var IOS_RATING_URL = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=981743649&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8";
-                    var ANDROID_RATING_URL = "market://details?id=com.diastudio.joinjelly";
-                    var ratingURL = null;
-                    var os = DeviceServices.getOs();
-                    if (os == "web")
-                        return;
-                    else if (os == "ios")
-                        ratingURL = IOS_RATING_URL;
-                    else if (os == "android")
-                        ratingURL = ANDROID_RATING_URL;
-                    else if (os == "windows") {
-                        Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri("ms-windows-store:REVIEW?PFN=DIAStudio.JoinJelly_gs119xcmtqkqr"));
-                        return;
-                    }
-                    DeviceServices.openURL(ratingURL);
+                    var storeURLs = {
+                        ios: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=981743649&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8",
+                        android: "market://details?id=com.diastudio.joinjelly",
+                        windows: "ms-windows-store:REVIEW?PFN=DIAStudio.JoinJelly_gs119xcmtqkqr"
+                    };
+                    StoreServices.showRating(storeURLs);
                     setTimeout(function () { _this.hide(); }, 1500);
                 };
                 return RatingFlyOut;
@@ -5405,6 +5403,8 @@ var DeviceServices = (function () {
     DeviceServices.openURL = function (url) {
         if (window["Cocoon"])
             Cocoon.App.openURL(url);
+        if (window["Windows"])
+            Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri(url));
         else
             window.open(url);
     };
@@ -5479,6 +5479,25 @@ var SocialServices = (function () {
     };
     SocialServices.initialized = false;
     return SocialServices;
+}());
+var StoreServices = (function () {
+    function StoreServices() {
+    }
+    StoreServices.showRating = function (storeURLs) {
+        var os = DeviceServices.getOs();
+        switch (os) {
+            case "ios":
+                DeviceServices.openURL(storeURLs.ios);
+                break;
+            case "android":
+                DeviceServices.openURL(storeURLs.android);
+                break;
+            case "windows":
+                DeviceServices.openURL(storeURLs.windows);
+                break;
+        }
+    };
+    return StoreServices;
 }());
 var joinjelly;
 (function (joinjelly) {

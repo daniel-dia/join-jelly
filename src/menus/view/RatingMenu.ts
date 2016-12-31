@@ -21,10 +21,10 @@ module joinjelly.menus.view {
         public show() {
             if (!navigator.onLine) return;
 
-            //if (JoinJelly.userData.getHistory("rated")) return;
-            //if (JoinJelly.userData.getHistory("rating_asked")) return;
-            //if (JoinJelly.userData.getPlays() < 10) return;
-            //if (JoinJelly.userData.getHighScore() < 5000) return;
+            if (JoinJelly.userData.getHistory("rated")) return;
+            if (JoinJelly.userData.getHistory("rating_asked")) return;
+            if (JoinJelly.userData.getPlays() < 10) return;
+            if (JoinJelly.userData.getHighScore() < 5000) return;
 
             JoinJelly.userData.history("rating_asked");
 
@@ -146,26 +146,16 @@ module joinjelly.menus.view {
         }
 
         private gotoStore() {
-            this.hide();
-            var IOS_RATING_URL = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=981743649&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8";
-            var ANDROID_RATING_URL = "market://details?id=com.diastudio.joinjelly";
-            var ratingURL = null;
 
-            var os = DeviceServices.getOs();
-
-            if (os == "web") return;
-            else if (os == "ios") ratingURL = IOS_RATING_URL;
-            else if (os == "android") ratingURL = ANDROID_RATING_URL;
-            else if (os == "windows") {
-
-                Windows.System.Launcher.launchUriAsync(
-                    new Windows.Foundation.Uri("ms-windows-store:REVIEW?PFN=DIAStudio.JoinJelly_gs119xcmtqkqr")
-                );
-
-                return;
+            
+            var storeURLs = {
+                ios: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=981743649&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8",
+                android: "market://details?id=com.diastudio.joinjelly",
+                windows: "ms-windows-store:REVIEW?PFN=DIAStudio.JoinJelly_gs119xcmtqkqr"
             }
 
-            DeviceServices.openURL(ratingURL);
+            StoreServices.showRating(storeURLs);
+
             setTimeout(() => { this.hide(); }, 1500)
 
         }
