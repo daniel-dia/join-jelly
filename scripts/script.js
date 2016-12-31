@@ -5131,14 +5131,6 @@ var joinjelly;
                 RatingFlyOut.prototype.show = function () {
                     if (!navigator.onLine)
                         return;
-                    if (joinjelly.JoinJelly.userData.getHistory("rated"))
-                        return;
-                    if (joinjelly.JoinJelly.userData.getHistory("rating_asked"))
-                        return;
-                    if (joinjelly.JoinJelly.userData.getPlays() < 10)
-                        return;
-                    if (joinjelly.JoinJelly.userData.getHighScore() < 5000)
-                        return;
                     joinjelly.JoinJelly.userData.history("rating_asked");
                     _super.prototype.show.call(this);
                 };
@@ -5239,14 +5231,14 @@ var joinjelly;
                 RatingFlyOut.prototype.gotoStore = function () {
                     var _this = this;
                     this.hide();
-                    var IOS_RATING_URL = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=519623307&onlyLatestVersion=false&type=Purple+Software";
+                    var IOS_RATING_URL = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=981743649&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8";
                     var ANDROID_RATING_URL = "market://details?id=com.diastudio.joinjelly";
                     var ratingURL = null;
                     var os = DeviceServices.getOs();
                     if (os == "web")
                         return;
                     else if (os == "ios")
-                        return;
+                        ratingURL = IOS_RATING_URL;
                     else if (os == "android")
                         ratingURL = ANDROID_RATING_URL;
                     else if (os == "windows") {
