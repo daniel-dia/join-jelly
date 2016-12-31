@@ -1275,6 +1275,10 @@ var joinjelly;
                 _super.call(this);
                 PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(fnt))$/;
                 assetscale = 0.25;
+                if (window.innerWidth <= 1070)
+                    assetscale = 0.5;
+                if (window.innerWidth <= 384)
+                    assetscale = 0.25;
                 var imagePath = "assets/images@" + assetscale + "x/";
                 var audioPath = "assets/sounds/";
                 if (!testMode && typeof WPAudioManager == 'undefined') {
@@ -4603,7 +4607,12 @@ var joinjelly;
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
-            document.addEventListener('deviceready', function () { _this.gameServices = new GameServices(); }, false);
+            document.addEventListener('deviceready', function () {
+                _this.gameServices = new GameServices();
+                var score = _this.gameServices.getScore();
+                if (score)
+                    _this.userData.setScore(score);
+            }, false);
             SocialServices.initialize();
             var lang = (window.navigator["userLanguage"] || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
