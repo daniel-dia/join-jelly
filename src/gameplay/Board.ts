@@ -129,10 +129,11 @@
             var pid = this.getPointerId(e)
             var pos = e.data.getLocalPosition(this);
 
+            // touch peformance
             var delta = Date.now() - this.touchDeltas[pid];
-            if (delta < 20) return;
+            if (delta < 15) return;
             this.touchDeltas[pid] = Date.now();
-            
+                        
             //get tile by touch
             var tile = this.touchDictionary[pid];
             if (tile) {

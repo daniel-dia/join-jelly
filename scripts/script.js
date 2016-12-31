@@ -3049,7 +3049,7 @@ var joinjelly;
                 var pid = this.getPointerId(e);
                 var pos = e.data.getLocalPosition(this);
                 var delta = Date.now() - this.touchDeltas[pid];
-                if (delta < 20)
+                if (delta < 15)
                     return;
                 this.touchDeltas[pid] = Date.now();
                 var tile = this.touchDictionary[pid];
