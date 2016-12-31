@@ -147,9 +147,7 @@ module gameui {
                         alpha = 0;
                         break;
                 }
-
-                newScreen.view.interactive = false;
-                oldScreen.view.interactive = false;
+                
                 newScreen.view.interactiveChildren = false;
                 oldScreen.view.interactiveChildren = false;
                 oldScreen.transitioning = true;
@@ -174,9 +172,7 @@ module gameui {
 
                         oldScreen.view.set({ scaleX: 1, scaleY: 1, alpha: 0, x: 0, y: 0 })
                         newScreen.view.set({ scaleX: 1, scaleY: 1, alpha: 1, x: 0, y: 0 })
-
-                        newScreen.view.interactive = true;
-                        oldScreen.view.interactive = true;
+                        
                         newScreen.view.interactiveChildren = true;
                         oldScreen.view.interactiveChildren = true;
                         oldScreen.transitioning = false;
