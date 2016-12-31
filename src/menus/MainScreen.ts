@@ -24,7 +24,7 @@
 
             // rating Menu
             this.rating = new menus.view.RatingFlyOut();
-            this.content.addChild(this.rating);
+            this.overlay.addChild(this.rating);
             this.rating.x = defaultWidth / 2;
             this.rating.y = defaultHeight / 2;
             

@@ -229,7 +229,7 @@ var gameui;
         AssetsManager.getBitmapText = function (text, bitmapFontId, color, size) {
             if (color === void 0) { color = 0xffffff; }
             if (size === void 0) { size = 1; }
-            var bitmapText = new PIXI.extras.BitmapText(text, { font: bitmapFontId, align: 'right' });
+            var bitmapText = new PIXI.extras.BitmapText(text, { font: bitmapFontId, align: 'left' });
             bitmapText.tint = color;
             bitmapText.maxLineHeight = 100;
             bitmapText.interactiveChildren = AssetsManager.defaultMouseEnabled;
@@ -884,6 +884,7 @@ var StringResources = {
         share: "Share",
         watchVideo: "Watch Video",
         gift: "gift in @ minutes",
+        thanks: "Thanks!",
     },
     tutorial: {
         msgheplme: "Help me to evolve\nJoin  2 identical jellies.",
@@ -991,6 +992,7 @@ var StringResources_pt = {
         share: "Compartilhar",
         watchVideo: "Veja um Video",
         gift: "vídeo em @ min",
+        thanks: "Obrigado!",
     },
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
@@ -1340,7 +1342,7 @@ var joinjelly;
             this.createButtons();
             this.createTitle();
             this.rating = new joinjelly.menus.view.RatingFlyOut();
-            this.content.addChild(this.rating);
+            this.overlay.addChild(this.rating);
             this.rating.x = defaultWidth / 2;
             this.rating.y = defaultHeight / 2;
             gameui.AudiosManager.playMusic("musicIntro");
@@ -5123,7 +5125,7 @@ var joinjelly;
                 function RatingFlyOut() {
                     _super.call(this, StringResources.menus.rating, 1250);
                     this.addTexts();
-                    this.addButtons();
+                    this.addCloseButton();
                     this.addStars();
                 }
                 RatingFlyOut.prototype.show = function () {
@@ -5131,19 +5133,23 @@ var joinjelly;
                         return;
                     if (joinjelly.JoinJelly.userData.getHistory("rated"))
                         return;
-                    if (joinjelly.JoinJelly.userData.getPlays() < 3)
+                    if (joinjelly.JoinJelly.userData.getHistory("rating_asked"))
+                        return;
+                    if (joinjelly.JoinJelly.userData.getPlays() < 10)
                         return;
                     if (joinjelly.JoinJelly.userData.getHighScore() < 5000)
                         return;
+                    joinjelly.JoinJelly.userData.history("rating_asked");
                     _super.prototype.show.call(this);
                 };
                 RatingFlyOut.prototype.addTexts = function () {
                     var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.ratingDesc, "debussy");
-                    tx.set({ x: 200, y: 880 });
+                    tx.align = "center";
+                    tx.set({ x: 280, y: 840 });
                     this.addChild(tx);
                     this.scoreText = tx;
                 };
-                RatingFlyOut.prototype.addButtons = function () {
+                RatingFlyOut.prototype.addCloseButton = function () {
                     var _this = this;
                     var close = new gameui.ImageButton("BtClose", (function () {
                         _this.hide();
@@ -5153,71 +5159,85 @@ var joinjelly;
                 };
                 RatingFlyOut.prototype.addStars = function () {
                     var _this = this;
-                    var stars = [];
+                    this.stars = [];
                     for (var i = 0; i < 5; i++) {
                         var star = new Star();
                         this.addChild(star);
-                        star.y = 1300;
+                        star.y = 1150;
                         star.x = 200 * i + (defaultWidth - 800) / 2;
-                        stars[i] = star;
+                        this.stars[i] = star;
                     }
-                    stars[0].addEventListener("click", function () {
-                        stars[0].turnOn();
-                        stars[1].turnOff();
-                        stars[2].turnOff();
-                        stars[3].turnOff();
-                        stars[4].turnOff();
-                        _this.saveRating(1);
-                        _this.askForDetails();
-                    });
-                    stars[1].addEventListener("click", function () {
-                        stars[0].turnOn();
-                        stars[1].turnOn();
-                        stars[2].turnOff();
-                        stars[3].turnOff();
-                        stars[4].turnOff();
-                        _this.saveRating(2);
-                        _this.askForDetails();
-                    });
-                    stars[2].addEventListener("click", function () {
-                        stars[0].turnOn();
-                        stars[1].turnOn();
-                        stars[2].turnOn();
-                        stars[3].turnOff();
-                        stars[4].turnOff();
-                        _this.saveRating(3);
-                        _this.thankUser();
-                    });
-                    stars[3].addEventListener("click", function () {
-                        stars[0].turnOn();
-                        stars[1].turnOn();
-                        stars[2].turnOn();
-                        stars[3].turnOn();
-                        stars[4].turnOff();
-                        _this.saveRating(4);
-                        _this.gotoStore();
-                    });
-                    stars[4].addEventListener("click", function () {
-                        stars[0].turnOn();
-                        stars[1].turnOn();
-                        stars[2].turnOn();
-                        stars[3].turnOn();
-                        stars[4].turnOn();
-                        _this.saveRating(5);
-                        _this.gotoStore();
-                    });
+                    this.stars[0].on("click", function () { _this.rate(1); });
+                    this.stars[1].on("click", function () { _this.rate(2); });
+                    this.stars[2].on("click", function () { _this.rate(3); });
+                    this.stars[3].on("click", function () { _this.rate(4); });
+                    this.stars[4].on("click", function () { _this.rate(5); });
+                    this.stars[0].on("tap", function () { _this.rate(1); });
+                    this.stars[1].on("tap", function () { _this.rate(2); });
+                    this.stars[2].on("tap", function () { _this.rate(3); });
+                    this.stars[3].on("tap", function () { _this.rate(4); });
+                    this.stars[4].on("tap", function () { _this.rate(5); });
+                };
+                RatingFlyOut.prototype.rate = function (value) {
+                    joinjelly.JoinJelly.userData.history("rated");
+                    for (var i = 0; i < value; i++)
+                        this.stars[i].turnOn();
+                    for (var i = value; i < 5; i++)
+                        this.stars[i].turnOff();
+                    for (var i = 0; i < 5; i++)
+                        this.stars[i].interactive = false;
+                    this.saveRating(i);
+                    if (value < 3)
+                        this.askFeedback();
+                    if (value == 3)
+                        this.thankUser();
+                    if (value > 3)
+                        this.thankUserAndAsk();
                 };
                 RatingFlyOut.prototype.saveRating = function (rate) {
                     joinjelly.JoinJelly.userData.history("rated");
                     joinjelly.JoinJelly.analytics.logRating(rate);
                 };
-                RatingFlyOut.prototype.askForDetails = function () {
-                    this.hide();
+                RatingFlyOut.prototype.askFeedback = function () {
+                    var _this = this;
+                    var tx = gameui.AssetsManager.getBitmapText("Would you mind give us\nsome feedback?", "debussy");
+                    tx.set({ x: 280, y: 1300 });
+                    this.addChild(tx);
+                    var ok = new gameui.BitmapTextButton("Ok, sure", "debussy", "BtTextBg", function () { _this.sendEmail(); });
+                    var no = new gameui.BitmapTextButton("No, thanks", "debussy", "BtTextBg", function () { _this.hide(); });
+                    this.addChild(ok);
+                    this.addChild(no);
+                    ok.y = no.y = 1640;
+                    ok.x = defaultWidth / 2 + 400;
+                    no.x = defaultWidth / 2 - 400;
+                };
+                RatingFlyOut.prototype.thankUserAndAsk = function () {
+                    var _this = this;
+                    var tx = gameui.AssetsManager.getBitmapText("Thanks! How about a rating\non App Store, then?", "debussy");
+                    tx.set({ x: 280, y: 1300 });
+                    this.addChild(tx);
+                    var ok = new gameui.BitmapTextButton("Ok, sure", "debussy", "BtTextBg", function () { _this.gotoStore(); });
+                    var no = new gameui.BitmapTextButton("No, thanks", "debussy", "BtTextBg", function () { _this.hide(); });
+                    this.addChild(ok);
+                    this.addChild(no);
+                    ok.y = no.y = 1640;
+                    ok.x = defaultWidth / 2 + 400;
+                    no.x = defaultWidth / 2 - 400;
                 };
                 RatingFlyOut.prototype.thankUser = function () {
-                    this.hide();
+                    var _this = this;
+                    var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.thanks, "debussyBig");
+                    tx.set({ x: 280, y: 1480 });
+                    this.addChild(tx);
+                    setTimeout(function () { _this.hide(); }, 1500);
+                };
+                RatingFlyOut.prototype.sendEmail = function () {
+                    var _this = this;
+                    DeviceServices.openURL("mailto:games@diastudio.com.br");
+                    setTimeout(function () { _this.hide(); }, 1500);
                 };
                 RatingFlyOut.prototype.gotoStore = function () {
+                    var _this = this;
                     this.hide();
                     var IOS_RATING_URL = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=519623307&onlyLatestVersion=false&type=Purple+Software";
                     var ANDROID_RATING_URL = "market://details?id=com.diastudio.joinjelly";
@@ -5234,6 +5254,7 @@ var joinjelly;
                         return;
                     }
                     DeviceServices.openURL(ratingURL);
+                    setTimeout(function () { _this.hide(); }, 1500);
                 };
                 return RatingFlyOut;
             }(view.FlyOutMenu));

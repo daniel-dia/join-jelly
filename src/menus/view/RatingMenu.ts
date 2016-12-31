@@ -3,123 +3,146 @@ module joinjelly.menus.view {
 
     export class RatingFlyOut extends FlyOutMenu {
 
-        private jellyText: PIXI.extras.BitmapText; 
+        private jellyText: PIXI.extras.BitmapText;
         private scoreText: PIXI.extras.BitmapText;
         private highScoreText: PIXI.extras.BitmapText;
-        
+        private stars: Array<Star>;
+
         constructor() {
             super(StringResources.menus.rating, 1250);
 
             this.addTexts();
 
-            this.addButtons();
+            this.addCloseButton();
 
             this.addStars();
         }
 
         public show() {
             if (!navigator.onLine) return;
+
             if (JoinJelly.userData.getHistory("rated")) return;
-            if (JoinJelly.userData.getPlays() < 3) return;
+            if (JoinJelly.userData.getHistory("rating_asked")) return;
+            if (JoinJelly.userData.getPlays() < 10) return;
             if (JoinJelly.userData.getHighScore() < 5000) return;
+
+            JoinJelly.userData.history("rating_asked");
+
             super.show();
         }
 
         private addTexts() {
             // create "points" text
             var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.ratingDesc, "debussy")
-            tx.set({ x: 200, y: 880 });
+            tx.align = "center";
+            tx.set({ x: 280, y: 840 });
             this.addChild(tx);
-            this.scoreText = tx;            
+            this.scoreText = tx;
         }
 
         // creates buttons controls
-        private addButtons() {
+        private addCloseButton() {
 
             //add share button;
-            var close = new gameui.ImageButton("BtClose",(() => {
+            var close = new gameui.ImageButton("BtClose", (() => {
                 this.hide();
             }));
 
             close.set({ x: 1350, y: 660 });
             this.addChild(close);
-
-
         }
 
         private addStars() {
-            var stars: Array<Star> = [];
+            this.stars = [];
             for (var i = 0; i < 5; i++) {
                 var star = new Star();
                 this.addChild(star);
-                star.y = 1300;
+                star.y = 1150;
                 star.x = 200 * i + (defaultWidth - 800) / 2;
-                stars[i] = star;
-                
+                this.stars[i] = star;
+
             }
 
-            stars[0].addEventListener("click",() => {
-                stars[0].turnOn();
-                stars[1].turnOff();
-                stars[2].turnOff();
-                stars[3].turnOff();
-                stars[4].turnOff();
-                this.saveRating(1)
-                this.askForDetails();
-            });
-            stars[1].addEventListener("click",() => {
-                stars[0].turnOn();
-                stars[1].turnOn();
-                stars[2].turnOff();
-                stars[3].turnOff();
-                stars[4].turnOff();
-                this.saveRating(2)
-                this.askForDetails();
+            this.stars[0].on("click", () => { this.rate(1) });
+            this.stars[1].on("click", () => { this.rate(2) });
+            this.stars[2].on("click", () => { this.rate(3) });
+            this.stars[3].on("click", () => { this.rate(4) });
+            this.stars[4].on("click", () => { this.rate(5) });
+            this.stars[0].on("tap", () => { this.rate(1) });
+            this.stars[1].on("tap", () => { this.rate(2) });
+            this.stars[2].on("tap", () => { this.rate(3) });
+            this.stars[3].on("tap", () => { this.rate(4) });
+            this.stars[4].on("tap", () => { this.rate(5) });
+        }
 
-            });
-            stars[2].addEventListener("click",() => {
-                stars[0].turnOn();
-                stars[1].turnOn();
-                stars[2].turnOn();
-                stars[3].turnOff();
-                stars[4].turnOff();
-                this.saveRating(3)
-                this.thankUser();
-                 
-            });
-            stars[3].addEventListener("click",() => {
-                stars[0].turnOn();
-                stars[1].turnOn();
-                stars[2].turnOn();
-                stars[3].turnOn();
-                stars[4].turnOff();
-                this.saveRating(4)
-                this.gotoStore();
-            });
-            stars[4].addEventListener("click",() => {
-                stars[0].turnOn();
-                stars[1].turnOn();
-                stars[2].turnOn();
-                stars[3].turnOn();
-                stars[4].turnOn();
-               
-                this.saveRating(5);
-                this.gotoStore();
-            });
+        private rate(value: number) {
+
+            JoinJelly.userData.history("rated")
+
+            for (var i = 0; i < value; i++) this.stars[i].turnOn();
+            for (var i = value; i < 5; i++) this.stars[i].turnOff();
+            for (var i = 0; i < 5; i++) this.stars[i].interactive = false;
+
+            this.saveRating(i);
+
+            if (value < 3) this.askFeedback();
+            if (value == 3) this.thankUser();
+            if (value > 3) this.thankUserAndAsk();
         }
 
         private saveRating(rate) {
             JoinJelly.userData.history("rated");
-            JoinJelly.analytics.logRating(rate);    
-           
+            JoinJelly.analytics.logRating(rate);
+
         }
 
-        private askForDetails() {
-            this.hide();
+        private askFeedback() {
+
+            var tx = gameui.AssetsManager.getBitmapText("Would you mind give us\nsome feedback?", "debussy")
+            tx.set({ x: 280, y: 1300 });
+            this.addChild(tx);
+
+            var ok = new gameui.BitmapTextButton("Ok, sure", "debussy", "BtTextBg", () => { this.sendEmail(); })
+            var no = new gameui.BitmapTextButton("No, thanks", "debussy", "BtTextBg", () => { this.hide(); })
+
+            this.addChild(ok);
+            this.addChild(no);
+
+            ok.y = no.y = 1640;
+            ok.x = defaultWidth / 2 + 400;
+            no.x = defaultWidth / 2 - 400;
+        }
+
+        private thankUserAndAsk() {
+
+            var tx = gameui.AssetsManager.getBitmapText("Thanks! How about a rating\non App Store, then?", "debussy")
+            tx.set({ x: 280, y: 1300 });
+            this.addChild(tx);
+
+            var ok = new gameui.BitmapTextButton("Ok, sure", "debussy", "BtTextBg", () => { this.gotoStore(); })
+            var no = new gameui.BitmapTextButton("No, thanks", "debussy", "BtTextBg", () => { this.hide(); })
+
+            this.addChild(ok);
+            this.addChild(no);
+
+            ok.y = no.y = 1640;
+            ok.x = defaultWidth / 2 + 400;
+            no.x = defaultWidth / 2 - 400;
         }
 
         private thankUser() {
-            this.hide();
+
+            // create "points" text
+            var tx = gameui.AssetsManager.getBitmapText(StringResources.menus.thanks, "debussyBig")
+            tx.set({ x: 280, y: 1480 });
+            this.addChild(tx);
+            setTimeout(() => { this.hide(); }, 1500)
+
+        }
+
+        private sendEmail() {
+            DeviceServices.openURL("mailto:games@diastudio.com.br");
+            setTimeout(() => { this.hide(); }, 1500)
         }
 
         private gotoStore() {
@@ -134,15 +157,16 @@ module joinjelly.menus.view {
             else if (os == "ios") return;
             else if (os == "android") ratingURL = ANDROID_RATING_URL;
             else if (os == "windows") {
-                
+
                 Windows.System.Launcher.launchUriAsync(
                     new Windows.Foundation.Uri("ms-windows-store:REVIEW?PFN=DIAStudio.JoinJelly_gs119xcmtqkqr")
-                    );
+                );
 
                 return;
             }
 
             DeviceServices.openURL(ratingURL);
+            setTimeout(() => { this.hide(); }, 1500)
 
         }
     }

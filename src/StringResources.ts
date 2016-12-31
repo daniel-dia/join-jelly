@@ -34,6 +34,7 @@
         share: "Share",
         watchVideo: "Watch Video",
         gift: "gift in @ minutes",
+        thanks: "Thanks!",
 
     },
     tutorial: {
@@ -147,6 +148,7 @@ var StringResources_pt = {
         share: "Compartilhar",
         watchVideo: "Veja um Video",
         gift: "vídeo em @ min",
+        thanks: "Obrigado!",
     },
     tutorial: {
         msgheplme: "Me ajude a evoluir\nJunte 2 geleias IGUAIS.",
