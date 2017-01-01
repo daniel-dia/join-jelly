@@ -5697,7 +5697,7 @@ var DeviceServices = (function () {
     DeviceServices.openURL = function (url) {
         if (window["Cocoon"])
             Cocoon.App.openURL(url);
-        if (window["Windows"])
+        else if (window["Windows"])
             Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri(url));
         else
             window.open(url);
