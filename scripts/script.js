@@ -1359,7 +1359,10 @@ var joinjelly;
             lobby.y = 1000;
             this.content.addChild(lobby);
             var button = new gameui.ImageButton("BtPlay", function () {
-                joinjelly.JoinJelly.startLevel();
+                if (joinjelly.JoinJelly.userData.getHistory(histories.TUTORIAL))
+                    joinjelly.JoinJelly.startLevel();
+                else
+                    joinjelly.JoinJelly.startTutorial();
             });
             button.y = 1168;
             button.x = 768;
@@ -3051,8 +3054,8 @@ var joinjelly;
                     this.fingerDown = gameui.AssetsManager.getBitmap("tutorialFingerDown");
                     this.addChild(this.fingerUp);
                     this.addChild(this.fingerDown);
-                    this.fingerDown.y = this.fingerUp.image.height - this.fingerDown.image.height;
-                    this.regX = 80;
+                    this.fingerDown.y = 17;
+                    this.regX = 180;
                     this.mouseEnabled = false;
                     this.visible = false;
                 }

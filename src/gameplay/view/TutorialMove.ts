@@ -13,9 +13,9 @@
             this.addChild(this.fingerUp);
             this.addChild(this.fingerDown);
 
-            this.fingerDown.y = this.fingerUp.image.height - this.fingerDown.image.height;
+            this.fingerDown.y = 17;
 
-            this.regX = 80;
+            this.regX = 180;
             this.mouseEnabled = false;
 
             this.visible = false;

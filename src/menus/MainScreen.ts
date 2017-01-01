@@ -46,10 +46,10 @@
             // play button
             /// Check tutorial
             var button = new gameui.ImageButton("BtPlay", () => {
-           //     if (JoinJelly.userData.getHistory(histories.TUTORIAL))
+                if (JoinJelly.userData.getHistory(histories.TUTORIAL))
                     JoinJelly.startLevel();
-           //     else
-           //         JoinJelly.showIntro();
+                else
+                    JoinJelly.startTutorial();
             });
             button.y = 1168;
             button.x = 768;
