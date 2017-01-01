@@ -88,6 +88,7 @@
         this.interstitial.on("load", (e) => {
             this.debug("Interstitial loaded " + JSON.stringify(e));
             this.status = AdsServices.STATUS.READY;
+            clearTimeout(this.ad_timeout);
         });
 
         this.interstitial.on("fail", (e) => {
