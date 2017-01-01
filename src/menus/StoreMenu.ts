@@ -53,8 +53,7 @@
 
         // show that product is consumed
         private fullFillPurchase(productId: string) {
-            this.showLoaded();
-
+          
             switch (productId) {
                 case "time5x": JoinJelly.itemData.increaseItemAmmount(Items.TIME, 5); break;
                 case "fast5x": JoinJelly.itemData.increaseItemAmmount(Items.FAST, 5); break;
@@ -125,14 +124,19 @@
 
                 this.inAppPurchaseServices.purchaseProduct(event["productId"], 1, (error) => {
                     this.unlockUI();
-                  
+                    productListItem.setPurchasing();
+
+                    
                     console.log(JSON.stringify(event));
                     
-                    if (error)
+                    if (error){
                         console.log("Error: " + JSON.stringify(error));
-                    
+                        productListItem.setNormal()
+
+                    }
                     else {
                         console.log("Successfully purchased");
+                        productListItem.setPurchased()
                         this.fullFillPurchase(productId);
                     }
                 });
@@ -311,7 +315,6 @@
                 });
             } else {
                 var button = new gameui.ImageButton("BtStore", () => {
-                    this.setPurchasing();
                     this.emit("buy", { productId: productId })
                 });
             }

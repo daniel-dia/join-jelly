@@ -76,7 +76,7 @@
             this.header.addChild(settingsBt);
 
             //add Menu button
-            var settingsBt = new gameui.ImageButton("BtMenu", () => {
+            var settingsBt = new gameui.ImageButton("BtSettings", () => {
                 JoinJelly.showSettings();
             });
             settingsBt.y = -150;

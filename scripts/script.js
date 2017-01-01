@@ -1380,7 +1380,7 @@ var joinjelly;
             settingsBt.y = 165 / 2;
             settingsBt.x = defaultWidth - 165 / 2;
             this.header.addChild(settingsBt);
-            var settingsBt = new gameui.ImageButton("BtMenu", function () {
+            var settingsBt = new gameui.ImageButton("BtSettings", function () {
                 joinjelly.JoinJelly.showSettings();
             });
             settingsBt.y = -150;
@@ -1714,7 +1714,6 @@ var joinjelly;
                 this.inAppPurchaseServices.onProductsLoaded = function (products) { _this.fillProducts(products); };
             }
             StoreMenu.prototype.fullFillPurchase = function (productId) {
-                this.showLoaded();
                 switch (productId) {
                     case "time5x":
                         joinjelly.JoinJelly.itemData.increaseItemAmmount(joinjelly.Items.TIME, 5);
@@ -1778,11 +1777,15 @@ var joinjelly;
                     var productId = event["productId"];
                     _this.inAppPurchaseServices.purchaseProduct(event["productId"], 1, function (error) {
                         _this.unlockUI();
+                        productListItem.setPurchasing();
                         console.log(JSON.stringify(event));
-                        if (error)
+                        if (error) {
                             console.log("Error: " + JSON.stringify(error));
+                            productListItem.setNormal();
+                        }
                         else {
                             console.log("Successfully purchased");
+                            productListItem.setPurchased();
                             _this.fullFillPurchase(productId);
                         }
                     });
@@ -1939,7 +1942,6 @@ var joinjelly;
                 }
                 else {
                     var button = new gameui.ImageButton("BtStore", function () {
-                        _this.setPurchasing();
                         _this.emit("buy", { productId: productId });
                     });
                 }
@@ -2778,7 +2780,7 @@ var joinjelly;
                     }));
                     playBt.set({ x: 157, y: 215, scaleX: 0.5, scaleY: 0.5 });
                     this.addChild(playBt);
-                    var home = new gameui.ImageButton("BtMenu", (function () {
+                    var home = new gameui.ImageButton("BtHome", (function () {
                         _this.dispatchEvent("home");
                     }));
                     home.set({ x: 157, y: 215 + 300 });
@@ -2894,7 +2896,7 @@ var joinjelly;
                     }));
                     close.set({ x: 1350, y: 660 });
                     this.addChild(close);
-                    var home = new gameui.ImageButton("BtMenu", (function () {
+                    var home = new gameui.ImageButton("BtHome", (function () {
                         _this.dispatchEvent("home");
                     }));
                     home.set({ x: 353, y: 1780 });

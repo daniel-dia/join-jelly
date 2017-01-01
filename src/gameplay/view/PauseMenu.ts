@@ -25,7 +25,7 @@
             this.addChild(playBt);
 
             //add home button;
-            var home = new gameui.ImageButton("BtMenu",(() => {
+            var home = new gameui.ImageButton("BtHome",(() => {
                 this.dispatchEvent("home")
             }));
             home.set({ x: 157, y: 215 + 300});

@@ -32,7 +32,7 @@
             this.addChild(close);
 
             //add home button;
-            var home = new gameui.ImageButton("BtMenu", (() => {
+            var home = new gameui.ImageButton("BtHome", (() => {
                 this.dispatchEvent("home")
             }));
             home.set({ x: 353, y: 1780 });
