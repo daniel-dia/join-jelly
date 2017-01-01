@@ -178,6 +178,7 @@ interface SaveGame {
     matches: number;
     score: number;
     level: number;
+    reviveCost: number;
 }
 
 

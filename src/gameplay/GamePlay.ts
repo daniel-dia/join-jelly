@@ -32,6 +32,9 @@ module joinjelly.gameplay {
         private reviveEffect: PIXI.DisplayObject;
         private cleanEffect: PIXI.DisplayObject;
 
+        // revive price
+        private reviveCost: number = 1;
+
         // #region =================================== initialization ================================================
 
         constructor(userData: UserData, itemData: ItemsData) {
@@ -136,7 +139,7 @@ module joinjelly.gameplay {
             this.gameFooter = new view.ItemsFooter(items)
             this.gameFooter.lockItem(Items.REVIVE);
             this.footer.addChild(this.gameFooter);
-            this.updateFooter();
+            this.updateItemAmmountOnFooter();
 
             this.gameFooter.addEventListener("useitem", (e) => { this.useItem(e.item) });
 
@@ -207,7 +210,7 @@ module joinjelly.gameplay {
                         this.itemData.increaseItemAmmount(Items.CLEAN, 1);
                         this.itemData.increaseItemAmmount(Items.FAST, 1);
                         this.itemData.increaseItemAmmount(Items.TIME, 1);
-                        this.updateFooter();
+                        this.updateItemAmmountOnFooter();
                         this.finishMenu.ClearSpecialOffer();
                         console.log("shareded");
                         this.showSpecialOffer()
@@ -237,13 +240,13 @@ module joinjelly.gameplay {
 
             this.finishMenu.addEventListener("like", () => {
                 DeviceServices.openURL(StringResources.menus.fbURL);
-                 
+
                 this.userData.history("liked")
                 this.itemData.increaseItemAmmount(Items.REVIVE, 1);
                 this.itemData.increaseItemAmmount(Items.CLEAN, 1);
                 this.itemData.increaseItemAmmount(Items.FAST, 1);
                 this.itemData.increaseItemAmmount(Items.TIME, 1);
-                this.updateFooter();
+                this.updateItemAmmountOnFooter();
                 this.finishMenu.ClearSpecialOffer();
                 console.log("liked");
 
@@ -264,22 +267,22 @@ module joinjelly.gameplay {
             this.finishMenu.addEventListener("watch", () => {
 
                 // update interface
-                this.updateFooter();
+                this.updateItemAmmountOnFooter();
                 this.finishMenu.ClearSpecialOffer();
                 console.log("watched");
                 this.userData.history("watched", Date.now());
 
                 AdsServices.show(() => {
-                     this.finishMenu.showRandomItem((item) => {
-                         if (item) {
-                             gameui.AudiosManager.playSound("Interface Sound-11");
-                             this.itemData.increaseItemAmmount(item, 1);
-                             // shows which item the user has won
-                             this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
-                         }
-                         setTimeout(() => {this.showSpecialOffer();}, 1000);
-                     })
-                 });
+                    this.finishMenu.showRandomItem((item) => {
+                        if (item) {
+                            gameui.AudiosManager.playSound("Interface Sound-11");
+                            this.itemData.increaseItemAmmount(item, 1);
+                            // shows which item the user has won
+                            this.animateItemFromPos(defaultWidth / 2, defaultHeight / 5 * 4, item)
+                        }
+                        setTimeout(() => { this.showSpecialOffer(); }, 1000);
+                    })
+                });
             })
 
             this.finishMenu.addEventListener("reloadAds", () => {
@@ -349,7 +352,7 @@ module joinjelly.gameplay {
         activate(parameters?: any) {
             super.activate(parameters);
             this.gameHeader.show();
-            this.updateFooter();
+            this.updateItemAmmountOnFooter();
         }
 
         //# endregion
@@ -405,6 +408,9 @@ module joinjelly.gameplay {
             // update interfaces
             this.updateInterfaceInfos();
             this.gameHeader.showButtons();
+
+            // update revive price
+            this.reviveCost = 1;
 
             // play music
             gameui.AudiosManager.playMusic("music1");
@@ -531,14 +537,13 @@ module joinjelly.gameplay {
                     this.gamestate = GameState.ended;
 
                 this.finishMenu.show();
+
+                // show revive item on menu
                 this.gameFooter.mouseEnabled = true;
+                this.gameFooter.showContinue(this.reviveCost);
+                this.updateItemAmmountOnFooter();
 
-                // set footer items form revive
-                this.gameFooter.setItems([Items.REVIVE]);
-                this.gameFooter.unlockItem(Items.REVIVE);
-                this.gameFooter.highlight(Items.REVIVE);
-
-                this.updateFooter();
+                // shows game footer
                 createjs.Tween.get(this.gameFooter).to({ y: 0 }, 200, createjs.Ease.quadIn);
 
                 // save high score
@@ -574,24 +579,24 @@ module joinjelly.gameplay {
                 // if user is elegible to watch a ads.
                 if (!this.userData.getHistory("watched") ||
                     this.userData.getHistory("watched") + minutes * 60000 < Date.now()) {
-        
+
                     // if ads is loaded
                     if (AdsServices.isReady()) {
                         this.finishMenu.showWhatchVideoButton();
                     }
-        
+
                     //if it is not loaded, so load it
                     else {
                         AdsServices.load();
-                                
+
                         // show loading
                         this.finishMenu.showGiftLoading();
                         var timeOut = 30;
-        
+
                         var interval = setInterval(() => {
                             timeOut--;
-                            console.log("timeout " + timeOut);
-        
+                            
+
                             // if is loaded and is on time
                             if (AdsServices.isReady()) {
                                 this.finishMenu.showWhatchVideoButton();
@@ -606,7 +611,7 @@ module joinjelly.gameplay {
                         return;
                     }
                 }
-        
+
                 // or else it is not on time yet
                 else {
                     console.log("timeout or share");
@@ -618,14 +623,13 @@ module joinjelly.gameplay {
                         setTimeout(() => { this.showSpecialOffer(); }, 60000);
                     }
                 }// ads avaliable
-        
+
                 // simply show share, if there is no ads avaliable
             } else this.showShareOrLike();
-             
+
         }
 
-
-
+        // show share or like button
         private showShareOrLike() {
 
             if (!this.userData.getHistory("liked")) {
@@ -901,7 +905,7 @@ module joinjelly.gameplay {
 
             // calculate random change to win a item
             var goodChance: boolean = (Math.random() < itemProbability * lucky);
-
+            goodChance = true;
             // if true
             if (goodChance) {
                 item = items[Math.floor(Math.random() * items.length)];
@@ -919,6 +923,7 @@ module joinjelly.gameplay {
             this.animateItemFromPos(point.x, point.y, item);
         }
 
+        // animate a item from a position to item
         private animateItemFromPos(xi: number, yi: number, item: string) {
             // play sound
             gameui.AudiosManager.playSound("Interface Sound-11");
@@ -940,9 +945,9 @@ module joinjelly.gameplay {
                 yf = this.content.toLocal(new PIXI.Point(footerItem.x, footerItem.y), this.gameFooter).y;
             }
             itemDO.alpha = 0;
-            createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).call(() => {
+            createjs.Tween.get(itemDO).to({ x: xi, y: yi, alpha: 0 }).to({ y: yi - 70, alpha: 1 }, 400, createjs.Ease.quadInOut).to({ x: xf, y: yf }, 1000, createjs.Ease.quadInOut).to({ alpha: 0 }, 300).call(() => {
                 this.overlay.removeChild(itemDO);
-                this.updateFooter();
+                this.updateItemAmmountOnFooter();
             });
 
             this.overlay.addChild(itemDO);
@@ -972,7 +977,10 @@ module joinjelly.gameplay {
         // #region =================================== Items =========================================================
 
         protected useItem(item: string) {
-            if (this.itemData.getItemAmmount(item) > 0) {
+
+            var itemsAvaliable = this.itemData.getItemAmmount(item);
+            var cost = 1;
+            if (itemsAvaliable > 0) {
 
                 var sucess: boolean = false;
 
@@ -985,18 +993,31 @@ module joinjelly.gameplay {
                         break;
                     case Items.CLEAN:
                         sucess = this.useClean();
-                        break;
-                    case Items.REVIVE:
-                        sucess = this.useRevive();
-                        break;
+                        break
                     case Items.EVOLVE:
                         sucess = this.useEvolve();
+                        break;
+
+                    // revive cost doubles every use
+                    case Items.REVIVE:
+                        if (itemsAvaliable >= this.reviveCost)
+                            sucess = this.useRevive(this.reviveCost);
+                        else {
+                            this.pauseGame();
+                            joinjelly.JoinJelly.showStore(this);
+                        }
+                            
+                        if (sucess) {
+                            cost = this.reviveCost;
+                            this.reviveCost *= 2;
+                            this.saveGame();
+                        }
                         break;
                 }
 
                 if (sucess) {
                     // decrease item quantity
-                    this.itemData.decreaseItemAmmount(item);
+                    this.itemData.decreaseItemAmmount(item, cost);
                     //notify utem used
                     if (this.itemNotify) this.itemNotify();
 
@@ -1009,7 +1030,7 @@ module joinjelly.gameplay {
             }
 
 
-            this.updateFooter();
+            this.updateItemAmmountOnFooter();
         }
 
         // reduces jellys per time during 5 seconds.
@@ -1060,7 +1081,7 @@ module joinjelly.gameplay {
         }
 
         // revive after game end
-        protected useRevive(test = false): boolean {
+        protected useRevive(cost:number, test = false): boolean {
 
             if (this.gamestate != GameState.ended) return false;
 
@@ -1113,7 +1134,6 @@ module joinjelly.gameplay {
 
                 gameui.AudiosManager.playSound("sounditemrevive");
             }
-
             return true;
         }
 
@@ -1244,7 +1264,7 @@ module joinjelly.gameplay {
         }
 
         // update footer
-        protected updateFooter() {
+        protected updateItemAmmountOnFooter() {
             var items = ItemsData.items;
             for (var i in items)
                 this.gameFooter.setItemAmmount(items[i], this.itemData.getItemAmmount(items[i]));
@@ -1260,6 +1280,7 @@ module joinjelly.gameplay {
                 matches: this.matches,
                 score: this.score,
                 tiles: this.board.getAllTilesValues(),
+                reviveCost: this.reviveCost,
             }
 
             this.userData.saveGame(sg);
@@ -1276,9 +1297,10 @@ module joinjelly.gameplay {
             this.score = saveGame.score;
             this.matches = saveGame.matches;
             this.level = saveGame.level;
+            this.reviveCost = saveGame.reviveCost || 1;
 
             this.updateCurrentLevel();
-            this.updateFooter();
+            this.updateItemAmmountOnFooter();
             this.updateInterfaceInfos();
 
             if (this.verifyGameLoose())
@@ -1295,7 +1317,7 @@ module joinjelly.gameplay {
             var interval = setInterval(() => {
                 // document.title = (this.initialInterval + " " + this.finalInterval + " " + this.easeInterval + " " + this.getTimeInterval(this.level, this.initialInterval, this.finalInterval, this.easeInterval));
                 if (this.gamestate == GameState.paused) return;
-                this.useRevive();
+                this.useRevive(1);
                 this.useFast(true);
 
                 if (this.gamestate == GameState.win) {

@@ -294,7 +294,7 @@
                     sucess = this.useClean();
                     break;
                 case "revive":
-                    sucess = this.useRevive();
+                    sucess = this.useRevive(1);
                     break;
             }
 
@@ -305,7 +305,7 @@
             }
         }
 
-        protected updateFooter() { }
+        protected updateItemAmmountOnFooter() { }
 
         public saveGame() { }
     }

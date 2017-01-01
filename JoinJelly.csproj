@@ -578,6 +578,7 @@
     <TypeScriptCompile Include="gameui\ScreenState.ts" />
     <TypeScriptCompile Include="gameui\Transition.ts" />
     <TypeScriptCompile Include="gameui\UIItem.ts" />
+    <TypeScriptCompile Include="src\gameplay\view\ContinueFooter.ts" />
     <TypeScriptCompile Include="src\Services\AdsService.ts" />
     <TypeScriptCompile Include="src\Services\DeviceServices.ts" />
     <TypeScriptCompile Include="src\Services\InAppPurchaseServices.ts" />

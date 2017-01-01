@@ -1,11 +1,9 @@
 ﻿module joinjelly.gameplay.view {
-    export class ItemsFooter extends PIXI.Container {
+    export class ContinueFooter extends PIXI.Container {
 
         private itemsButtons: Array<ItemButton>
-        private lucky: PIXI.DisplayObject;
         private itemSize: number = 270;
         private gameMessage: view.TutoralMessage;
-        private text: PIXI.DisplayObject;
 
         constructor(items?: Array<string>) {
             super();
@@ -14,6 +12,9 @@
             this.setItems(items);
 
         }
+
+
+   
 
         // add all button items
         public setItems(items: Array<string>) {
@@ -37,24 +38,8 @@
             }
         }
 
-        public showContinue(price: number) {
-
-            // set footer items form revive
-            this.setItems([Items.REVIVE]);
-            this.unlockItem(Items.REVIVE);
-            this.highlight(Items.REVIVE);
-
-            this.text = gameui.AssetsManager.getBitmapText("x" + price, "debussyBig");
-            this.addChild(this.text);
-            this.text.y = -200;
-            this.text.x = defaultWidth/2 + 150;
-
-        }
-
         // clean buttons
         public cleanButtons() {
-            if (this.text) this.removeChild(this.text);
-
             for (var i in this.itemsButtons)
                 this.removeChild(this.itemsButtons[i]);
             this.itemsButtons = [];
@@ -67,15 +52,6 @@
             this.addChild(bg);
             bg.y = -162;
             bg.x = (defaultWidth - 1161) / 2;
-
-            // add Lucky clover
-            // TODO verify with item
-            var lucky = gameui.AssetsManager.getBitmap("lucky");
-            this.addChild(lucky);
-            lucky.y = -210;
-            lucky.x = (defaultWidth - 250)
-            lucky.scaleX = lucky.scaleY = 0.5;
-            this.lucky = lucky;
 
             this.gameMessage = new view.TutoralMessage();
             this.addChild(this.gameMessage);
@@ -104,10 +80,6 @@
         public setItemAmmount(item: string, ammount: number) {
             if (this.itemsButtons[item])
                 this.itemsButtons[item].setAmmount(ammount);
-
-            if (item == "lucky")
-                this.lucky.visible = (ammount > 0);
-
         }
 
         // show item message
