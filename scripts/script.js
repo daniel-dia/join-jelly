@@ -4769,7 +4769,7 @@ var histories = (function () {
 }());
 var testMode;
 window.onload = function () {
-    joinjelly.JoinJelly.init("gameCanvas");
+    joinjelly.JoinJelly.init("gameDiv");
 };
 var joinjelly;
 (function (joinjelly) {

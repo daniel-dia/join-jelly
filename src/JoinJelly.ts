@@ -1,6 +1,6 @@
 ﻿var testMode;
 window.onload = function () {
-    joinjelly.JoinJelly.init("gameCanvas");
+    joinjelly.JoinJelly.init("gameDiv");
 }
 module joinjelly {
     export class JoinJelly {
