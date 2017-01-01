@@ -71,9 +71,9 @@ class GameServices {
                 }
                 else if (score) {
                     console.log("score: " + score.score);
-                    this.localUserScore = score.score;// TODO set real leaderboard
+                    this.localUserScore = score.score; // TODO set real leaderboard
                 }
-            }
+            });
         }
     }
 
