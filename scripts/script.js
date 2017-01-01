@@ -1905,7 +1905,7 @@ var joinjelly;
             okButton.x = defaultWidth / 2;
             okButton.y = defaultHeight - 200;
             this.content.addChild(okButton);
-            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.50", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
+            this.footer.addChild(gameui.AssetsManager.getBitmapText("v1.51", "debussy").set({ x: 30, y: -100, scaleX: 0.7, scaleY: 0.7 }));
         }
         return About;
     }(gameui.ScreenState));
@@ -5450,11 +5450,11 @@ var GameServices = (function () {
         if (!window["Cocoon"])
             return;
         if (Cocoon.getPlatform() === 'ios') {
-            Cocoon.Social.GameCenter.init({ defaultLeaderboard: "" });
+            Cocoon.Social.GameCenter.init({ defaultLeaderboard: "leaderboards" });
             this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
         }
         else if (Cocoon.getPlatform() === 'android') {
-            Cocoon.Social.GooglePlayGames.init({ defaultLeaderboard: "" });
+            Cocoon.Social.GooglePlayGames.init({ defaultLeaderboard: "CgkI49ztp64KEAIQAg " });
             this.socialService = Cocoon.Social.GooglePlayGames.getSocialInterface();
         }
         var leaderbords = { leaderboardID: "tictactoe2" };
@@ -5484,7 +5484,7 @@ var GameServices = (function () {
                     console.log("score: " + score.score);
                     this.localUserScore = score.score;
                 }
-            }, { leaderboardID: "tictactoe2" });
+            });
         }
     };
     GameServices.prototype.showLeaderboard = function () {

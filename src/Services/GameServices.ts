@@ -11,13 +11,13 @@ class GameServices {
 
         //Get specific social service form platform
         if (Cocoon.getPlatform() === 'ios') {
-            Cocoon.Social.GameCenter.init({ defaultLeaderboard: ""});
+            Cocoon.Social.GameCenter.init({ defaultLeaderboard: "leaderboards"});
             this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
             //multiplayerService = gc.getMultiplayerInterface();
 
         }
         else if (Cocoon.getPlatform() === 'android') {
-            Cocoon.Social.GooglePlayGames.init({ defaultLeaderboard: ""});
+            Cocoon.Social.GooglePlayGames.init({ defaultLeaderboard: "CgkI49ztp64KEAIQAg "});
             this.socialService = Cocoon.Social.GooglePlayGames.getSocialInterface();
             //multiplayerService = gp.getMultiplayerInterface();
 
@@ -73,7 +73,7 @@ class GameServices {
                     console.log("score: " + score.score);
                     this.localUserScore = score.score;// TODO set real leaderboard
                 }
-            }, { leaderboardID: "tictactoe2" }) //TODO fix this
+            }
         }
     }
 
