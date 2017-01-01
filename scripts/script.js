@@ -1774,10 +1774,10 @@ var joinjelly;
                 productListItem.x = 70;
                 productListItem.on("buy", function (event) {
                     _this.lockUI();
+                    productListItem.setPurchasing();
                     var productId = event["productId"];
                     _this.inAppPurchaseServices.purchaseProduct(event["productId"], 1, function (error) {
                         _this.unlockUI();
-                        productListItem.setPurchasing();
                         console.log(JSON.stringify(event));
                         if (error) {
                             console.log("Error: " + JSON.stringify(error));

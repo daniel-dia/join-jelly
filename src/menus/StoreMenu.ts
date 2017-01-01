@@ -120,11 +120,11 @@
 
                 this.lockUI();
 
+                productListItem.setPurchasing();
                 var productId = event["productId"]
 
                 this.inAppPurchaseServices.purchaseProduct(event["productId"], 1, (error) => {
                     this.unlockUI();
-                    productListItem.setPurchasing();
 
                     
                     console.log(JSON.stringify(event));
