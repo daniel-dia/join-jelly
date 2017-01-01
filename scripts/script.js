@@ -1274,7 +1274,7 @@ var joinjelly;
                 var _this = this;
                 _super.call(this);
                 PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(fnt))$/;
-                assetscale = 0.25;
+                assetscale = 1;
                 if (window.innerWidth <= 1070)
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
