@@ -78,7 +78,7 @@ module joinjelly {
             if (this.gameScreen.currentScreen instanceof gameplay.GamePlayScreen) transition = { type: "top", time: 500 };
             if (this.gameScreen.currentScreen instanceof Jellypedia) transition = { type: "right", time: 500 };
             if (this.gameScreen.currentScreen instanceof menus.MainMenu) transition = { type: "right", time: 500 };
-            if (this.gameScreen.currentScreen instanceof menus.StoreMenu) transition = { type: "left", time: 500 };
+            if (this.gameScreen.currentScreen instanceof menus.StoreMenu) transition = { type: "right", time: 500 };
             this.gameScreen.switchScreen(new joinjelly.MainScreen(this.userData), null, transition);
         }
 
@@ -99,7 +99,7 @@ module joinjelly {
 
         public static showStore(previousScreen: gameui.ScreenState) {
             var transition;
-            if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "right", time: 500 };
+            if (this.gameScreen.currentScreen instanceof MainScreen) transition = { type: "left", time: 500 };
             this.gameScreen.switchScreen(new menus.StoreMenu(previousScreen), null, transition);
         }
 

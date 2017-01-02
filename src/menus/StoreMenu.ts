@@ -41,7 +41,7 @@
             this.content.y -= 200;
 
             // buton to close menu
-            this.okButtonAction = () => { joinjelly.JoinJelly.gameScreen.switchScreen(previousScreen); };
+            this.okButtonAction = () => { joinjelly.JoinJelly.showMainScreen(); };
 
             // add Restore Button
             this.addRestorePurchasesButton();
@@ -53,7 +53,7 @@
 
         // show that product is consumed
         private fullFillPurchase(productId: string) {
-          
+
             switch (productId) {
                 case "time5x": JoinJelly.itemData.increaseItemAmmount(Items.TIME, 5); break;
                 case "fast5x": JoinJelly.itemData.increaseItemAmmount(Items.FAST, 5); break;
@@ -126,10 +126,10 @@
                 this.inAppPurchaseServices.purchaseProduct(event["productId"], 1, (error) => {
                     this.unlockUI();
 
-                    
+
                     console.log(JSON.stringify(event));
-                    
-                    if (error){
+
+                    if (error) {
                         console.log("Error: " + JSON.stringify(error));
                         productListItem.setNormal()
 
@@ -138,7 +138,7 @@
                         console.log("Successfully purchased");
                         productListItem.setPurchased()
                         this.fullFillPurchase(productId);
-                    }
+                    }
                 });
             });
 
@@ -209,10 +209,6 @@
         }
 
         //#endregion 
-
-
-
-
     }
 
 
