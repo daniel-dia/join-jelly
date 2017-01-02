@@ -41,7 +41,7 @@
             this.content.y -= 200;
 
             // buton to close menu
-            this.okButtonAction = () => { joinjelly.JoinJelly.showMainScreen(); };
+            this.BackButtonAction = () => { joinjelly.JoinJelly.showMainScreen(); };
 
             // add Restore Button
             this.addRestorePurchasesButton();

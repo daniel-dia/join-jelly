@@ -3,7 +3,7 @@
 
         protected scrollableContent: PIXI.Container;
         protected maxScroll: number = 1700;
-        public okButtonAction: () => void;
+        public BackButtonAction: () => void;
 
         private targetY: number = 0;
         private last: number;
@@ -14,12 +14,12 @@
             super();
             this.addBackground(title);
             this.addScrollableArea();
-            this.addButton();
+            this.addBackButton();
 
 
             this.onback = () => {
-                if (this.okButtonAction)
-                    this.okButtonAction();
+                if (this.BackButtonAction)
+                    this.BackButtonAction();
                 else
                     joinjelly.JoinJelly.showMainScreen()
             }
@@ -99,10 +99,10 @@
             this.scrollableContent.y = (this.scrollableContent.y * 2 + this.targetY) / 3;
         }
         
-        private addButton() {
+        private addBackButton() {
             // add ok button
             var backbutton = new gameui.ImageButton("BtBack", () => {
-                if (this.okButtonAction) this.okButtonAction();
+                if (this.BackButtonAction) this.BackButtonAction();
                 else
                     joinjelly.JoinJelly.showMainScreen()
             });

@@ -3,7 +3,7 @@
 
         protected scrollableContent: PIXI.Container;
         protected maxScroll: number = 1700;
-        public okButtonAction: () => void;
+        public BackButtonAction: () => void;
 
         constructor() {
             super(StringResources.menus.menu);
