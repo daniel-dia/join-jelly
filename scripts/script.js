@@ -4877,6 +4877,68 @@ var joinjelly;
     }());
     joinjelly.JoinJelly = JoinJelly;
 })(joinjelly || (joinjelly = {}));
+var defaultWidth = 768 * 2;
+var defaultHeight = 1024 * 2;
+var fbAppId = "1416523228649363";
+var gameWebsite = "http://www.joinjelly.com";
+var gameWebsiteIcon = "http://www.joinjelly.com/preview.jpg";
+var contantsAndroid = {
+    ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',
+    ACH_JELLY_2: 'CgkI49ztp64KEAIQBQ',
+    ACH_JELLY_3: 'CgkI49ztp64KEAIQBg',
+    ACH_JELLY_4: 'CgkI49ztp64KEAIQBA',
+    ACH_JELLY_5: 'CgkI49ztp64KEAIQBQ',
+    ACH_JELLY_6: 'CgkI49ztp64KEAIQBg',
+    ACH_JELLY_7: 'CgkI49ztp64KEAIQBw',
+    ACH_JELLY_8: 'CgkI49ztp64KEAIQCA',
+    ACH_JELLY_9: 'CgkI49ztp64KEAIQCQ',
+    ACH_JELLY_10: 'CgkI49ztp64KEAIQCg',
+    ACH_JELLY_11: 'CgkI49ztp64KEAIQCw',
+    ACH_JELLY_12: 'CgkI49ztp64KEAIQDA',
+    ACH_JELLY_13: 'CgkI49ztp64KEAIQDQ',
+    ACH_JELLY_14: 'CgkI49ztp64KEAIQDg',
+    ACH_JELLY_15: 'CgkI49ztp64KEAIQDw',
+    ACH_JELLY_16: 'CgkI49ztp64KEAIQEA',
+    ACH_JELLY_17: 'CgkI49ztp64KEAIQEQ',
+    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
+    LEAD_LEADERBOARD: 'CgkI49ztp64KEAIQAg',
+};
+var constantsiOS = {
+    ACH_JELLY_1: 'jelly01',
+    ACH_JELLY_2: 'jelly02',
+    ACH_JELLY_3: 'jelly03',
+    ACH_JELLY_4: 'jelly04',
+    ACH_JELLY_5: 'jelly05',
+    ACH_JELLY_6: 'jelly06',
+    ACH_JELLY_7: 'jelly07',
+    ACH_JELLY_8: 'jelly08',
+    ACH_JELLY_9: 'jelly09',
+    ACH_JELLY_10: 'jelly10',
+    ACH_JELLY_11: 'jelly11',
+    ACH_JELLY_12: 'jelly12',
+    ACH_JELLY_13: 'jelly13',
+    ACH_JELLY_14: 'jelly14',
+    ACH_JELLY_15: 'jelly15',
+    ACH_JELLY_16: 'jelly16',
+    ACH_JELLY_17: 'jelly17',
+    LEAD_LEADERBOARD: 'leaderboards',
+};
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        gameplay.boardSize = 5;
+        gameplay.itemProbability = 0.003;
+        gameplay.timeByLevel = 20000;
+        gameplay.initialInterval = 800;
+        gameplay.finalInterval = 300;
+        gameplay.easeInterval = 0.98;
+        gameplay.initialDirtyProbability = 0.1;
+        gameplay.finalDirtyProbability = 0.5;
+        gameplay.easeDirtyProbability = 0.99;
+        gameplay.increasingJellyValuePerLevel = 0.008;
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
@@ -4976,262 +5038,178 @@ var joinjelly;
         })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
-var AdsServices = (function () {
-    function AdsServices() {
-    }
-    AdsServices.initialize = function () {
-        var _this = this;
-        var cocoon = window["Cocoon"];
-        document.addEventListener('deviceready', function () {
-            if (!cocoon || !cocoon.Ad || !cocoon.Ad.MoPub) {
-                _this.debug('Cocoon AdMob plugin not installed');
-                _this.status = AdsServices.STATUS.FAIL;
-                return;
-            }
-            cocoon.Ad.MoPub.configure({
-                ios: { interstitial: "1a895b1b280d48d88ab5ddce11633701" },
-                android: { interstitial: "5c4ca98862a04ee09f2f9a67c5b95d80" }
-            });
-            if (!_this.interstitial)
-                _this.interstitial = cocoon.Ad.MoPub.createInterstitial();
-            _this.setCallbacks();
-            _this.load();
-        }, false);
-    };
-    AdsServices.show = function (callback) {
-        if (!this.interstitial) {
-            if (callback)
-                callback(false, "not_Initialized");
-            return;
-        }
-        if (this.isReady()) {
-            this.debug("show");
-            this.interstitial.on("dismiss", function (e) {
-                if (callback)
-                    callback(true, "displayed");
-            });
-            this.interstitial.show();
-        }
-        else {
-            this.debug("not loaded yet");
-            this.load();
-            if (callback)
-                callback(false, "not_Loaded");
-        }
-    };
-    AdsServices.isReady = function () {
-        return (this.interstitial && this.interstitial.isReady());
-    };
-    AdsServices.getStatus = function () {
-        if (!this.interstitial)
-            return AdsServices.STATUS.NOT_AVALIABLE;
-        if (this.interstitial && this.interstitial.isReady())
-            return AdsServices.STATUS.READY;
-        return this.status;
-    };
-    AdsServices.load = function () {
-        var _this = this;
-        if (!this.interstitial)
-            return;
-        this.debug("loading");
-        this.interstitial.load();
-        this.status = AdsServices.STATUS.LOADING;
-        if (this.ad_timeout)
-            clearTimeout(this.ad_timeout);
-        this.ad_timeout = setTimeout(function () {
-            _this.debug("timeout");
-            _this.status = AdsServices.STATUS.TIMEOUT;
-        }, 60000);
-    };
-    AdsServices.setCallbacks = function () {
-        var _this = this;
-        this.interstitial.on("show", function (e) {
-            _this.debug('music paused');
-        });
-        this.interstitial.on("load", function (e) {
-            _this.debug("Interstitial loaded " + JSON.stringify(e));
-            _this.status = AdsServices.STATUS.READY;
-            clearTimeout(_this.ad_timeout);
-        });
-        this.interstitial.on("fail", function (e) {
-            _this.debug("Interstitial failed " + JSON.stringify(e));
-            _this.status = AdsServices.STATUS.FAIL;
-            if (_this.ad_timeout)
-                clearTimeout(_this.ad_timeout);
-        });
-        this.interstitial.on("dismiss", function (e) {
-            _this.debug("Interstitial dismissed " + JSON.stringify(e));
-            _this.status = AdsServices.STATUS.NOT_LOADED;
-            _this.load();
-        });
-    };
-    AdsServices.debug = function (text) {
-        console.log("ads " + text);
-    };
-    return AdsServices;
-}());
-var AdsServices;
-(function (AdsServices) {
-    (function (STATUS) {
-        STATUS[STATUS["LOADING"] = 0] = "LOADING";
-        STATUS[STATUS["READY"] = 1] = "READY";
-        STATUS[STATUS["FAIL"] = 2] = "FAIL";
-        STATUS[STATUS["NOT_LOADED"] = 3] = "NOT_LOADED";
-        STATUS[STATUS["TIMEOUT"] = 4] = "TIMEOUT";
-        STATUS[STATUS["NOT_AVALIABLE"] = 5] = "NOT_AVALIABLE";
-    })(AdsServices.STATUS || (AdsServices.STATUS = {}));
-    var STATUS = AdsServices.STATUS;
-})(AdsServices || (AdsServices = {}));
-var DeviceServices = (function () {
-    function DeviceServices() {
-    }
-    DeviceServices.getOs = function () {
-        var os = "windows";
-        if (window["Cocoon"] && Cocoon.Device.getDeviceInfo())
-            os = Cocoon.Device.getDeviceInfo().os;
-        return os;
-    };
-    DeviceServices.openURL = function (url) {
-        if (window["Cocoon"])
-            Cocoon.App.openURL(url);
-        else if (window["Windows"])
-            Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri(url));
-        else
-            window.open(url);
-    };
-    DeviceServices.prompt = function (options, callback) {
-        if (window["Cocoon"])
-            return Cocoon.Dialog.prompt(options, callback);
-        else
-            callback(prompt(options.message));
-    };
-    DeviceServices.confirm = function (options, callback) {
-        if (window["Cocoon"])
-            return Cocoon.Dialog.confirm(options, callback);
-        else if (Windows["Windows"]) {
-            var message = Windows.UI.Popups.MessageDialog(options.title, options.message);
-            message.commands.append(new Windows.UI.Popups.UICommand("Cancel", function () {
-                callback(false);
-            }));
-            message.commands.append(new Windows.UI.Popups.UICommand("Ok", function () {
-                callback(true);
-            }));
-            message.showAsync();
-        }
-        else
-            callback(confirm(options.message));
-    };
-    DeviceServices.registerBackButton = function (callback) {
-        if (window["Cocoon"])
-            Cocoon.App.exitCallback(callback);
-    };
-    DeviceServices.exit = function () {
-        if (window["Cocoon"])
-            Cocoon.App.exit();
-        else
-            ;
-    };
-    DeviceServices.initialized = false;
-    return DeviceServices;
-}());
-var InAppPurchaseServices = (function () {
-    function InAppPurchaseServices(productsIds) {
-        var _this = this;
-        this.initialized = false;
-        if (typeof Cocoon != "undefined")
-            this.inappsService = Cocoon.InApp;
-        else {
-            if (this.onError)
-                this.onError();
-            return;
-        }
-        this.productsIds = productsIds;
-        this.inappsService.initialize({ autofinish: true }, function (error) {
-            if (error) {
-                console.log("initialized Store " + error);
-                return;
-            }
-            _this.inappsService.fetchProducts(_this.productsIds, function (products, error) {
-                if (error) {
-                    console.log("product loading error " + error);
-                    return;
-                }
-                _this.products = products;
-                if (_this.onProductsLoaded)
-                    _this.onProductsLoaded(products);
-            });
-        });
-    }
-    InAppPurchaseServices.prototype.purchaseProduct = function (productId, quantity, callback) {
-        Cocoon.InApp.purchase(productId, quantity, callback);
-    };
-    InAppPurchaseServices.prototype.restorePurchases = function () {
-        if (window["Cocoon"])
-            Cocoon.InApp.restore();
-    };
-    return InAppPurchaseServices;
-}());
-var SocialServices = (function () {
-    function SocialServices() {
-    }
-    SocialServices.initialize = function () {
-        var os = DeviceServices.getOs();
-        if (navigator.onLine && window["Cocoon"]) {
-            var fb = Cocoon.Social.Facebook;
-            fb.init({ appId: fbAppId });
-            this.FBSocialService = fb.getSocialInterface();
-        }
-    };
-    SocialServices.sendMessage = function (message, callback) {
-        if (!this.isAvaliable())
-            return;
-        this.FBSocialService.publishMessageWithDialog([
-            message.shareDescription,
-            message.gameWebsiteIcon,
-            message.gameWebsite,
-            message.shareTitle,
-            message.shareCaption
-        ], callback);
-    };
-    SocialServices.isAvaliable = function () {
-        return this.FBSocialService ? true : false;
-    };
-    SocialServices.initialized = false;
-    return SocialServices;
-}());
-var StoreServices = (function () {
-    function StoreServices() {
-    }
-    StoreServices.showRating = function (storeURLs) {
-        var os = DeviceServices.getOs();
-        switch (os) {
-            case "ios":
-                DeviceServices.openURL(storeURLs.ios);
-                break;
-            case "android":
-                DeviceServices.openURL(storeURLs.android);
-                break;
-            case "windows":
-                DeviceServices.openURL(storeURLs.windows);
-                break;
-        }
-    };
-    return StoreServices;
-}());
 var joinjelly;
 (function (joinjelly) {
     var gameplay;
     (function (gameplay) {
-        gameplay.boardSize = 5;
-        gameplay.itemProbability = 0.003;
-        gameplay.timeByLevel = 20000;
-        gameplay.initialInterval = 800;
-        gameplay.finalInterval = 300;
-        gameplay.easeInterval = 0.98;
-        gameplay.initialDirtyProbability = 0.1;
-        gameplay.finalDirtyProbability = 0.5;
-        gameplay.easeDirtyProbability = 0.99;
-        gameplay.increasingJellyValuePerLevel = 0.008;
+        var view;
+        (function (view) {
+            var CountDown = (function (_super) {
+                __extends(CountDown, _super);
+                function CountDown() {
+                    _super.apply(this, arguments);
+                }
+                CountDown.prototype.countDown = function (total) {
+                    var _this = this;
+                    if (total === void 0) { total = 3; }
+                    var ns = [];
+                    var time = 1000;
+                    var transition = 200;
+                    var dk = gameui.AssetsManager.getBitmap("popupdark");
+                    this.addChild(dk);
+                    dk.scaleX = dk.scaleY = 16;
+                    dk.x = -defaultWidth / 2;
+                    dk.y = -defaultHeight;
+                    dk.alpha = 0;
+                    dk.interactive = false;
+                    dk.interactiveChildren = false;
+                    createjs.Tween.get(dk).to({ alpha: 1 }, 200);
+                    setTimeout(function () {
+                        createjs.Tween.get(dk).to({ alpha: 0 }, 200).call(function () { _this.removeChild(dk); });
+                    }, time * total + transition);
+                    setTimeout(function () {
+                        gameui.AudiosManager.playSound("Interface Sound-12");
+                    }, time * total + transition);
+                    for (var n = total; n > 0; n--) {
+                        ns[n] = gameui.AssetsManager.getBitmap("n" + n);
+                        this.addChild(ns[n]);
+                        ns[n].regX = ns[n].getBounds().width / 2;
+                        ns[n].regY = ns[n].getBounds().height / 2;
+                        ns[n].interactiveChildren = false;
+                        ns[n].interactive = false;
+                        ns[n].name = "count_n";
+                        createjs.Tween.get(ns[n])
+                            .to({ scaleX: 2, scaleY: 2, alpha: 0 })
+                            .wait((total - n) * time)
+                            .to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut)
+                            .call(function () { gameui.AudiosManager.playSound("Interface Sound-13"); })
+                            .wait(time - transition)
+                            .to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn)
+                            .call(function (obj) { _this.removeChild(obj.target); });
+                    }
+                };
+                return CountDown;
+            }(PIXI.Container));
+            view.CountDown = CountDown;
+        })(view = gameplay.view || (gameplay.view = {}));
+    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var gameplay;
+    (function (gameplay) {
+        var view;
+        (function (view) {
+            var ItemsFooter = (function (_super) {
+                __extends(ItemsFooter, _super);
+                function ItemsFooter(items) {
+                    _super.call(this);
+                    this.itemSize = 270;
+                    this.itemsButtons = [];
+                    this.addObjects();
+                    this.setItems(items);
+                }
+                ItemsFooter.prototype.setItems = function (items) {
+                    var itemSize = this.itemSize;
+                    if (items.length >= 5)
+                        itemSize = 200;
+                    this.cleanButtons();
+                    if (!items)
+                        return;
+                    for (var i = 0; i < items.length; i++)
+                        this.addItem(items[i], i);
+                    for (var i = 0; i < items.length; i++) {
+                        this.itemsButtons[items[i]].y = -150;
+                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
+                    }
+                };
+                ItemsFooter.prototype.showContinue = function (price) {
+                    this.setItems([joinjelly.Items.REVIVE]);
+                    this.unlockItem(joinjelly.Items.REVIVE);
+                    this.highlight(joinjelly.Items.REVIVE);
+                    this.text = gameui.AssetsManager.getBitmapText("x" + price, "debussyBig");
+                    this.addChild(this.text);
+                    this.text.y = -200;
+                    this.text.x = defaultWidth / 2 + 150;
+                };
+                ItemsFooter.prototype.cleanButtons = function () {
+                    if (this.text)
+                        this.removeChild(this.text);
+                    for (var i in this.itemsButtons)
+                        this.removeChild(this.itemsButtons[i]);
+                    this.itemsButtons = [];
+                };
+                ItemsFooter.prototype.addObjects = function () {
+                    var bg = gameui.AssetsManager.getBitmap("footer");
+                    this.addChild(bg);
+                    bg.y = -162;
+                    bg.x = (defaultWidth - 1161) / 2;
+                    var lucky = gameui.AssetsManager.getBitmap("lucky");
+                    this.addChild(lucky);
+                    lucky.y = -210;
+                    lucky.x = (defaultWidth - 250);
+                    lucky.scaleX = lucky.scaleY = 0.5;
+                    this.lucky = lucky;
+                    this.gameMessage = new view.TutoralMessage();
+                    this.addChild(this.gameMessage);
+                };
+                ItemsFooter.prototype.addItem = function (item, pos) {
+                    var _this = this;
+                    var bt = new view.ItemButton(item);
+                    this.addChild(bt);
+                    this.itemsButtons[item] = bt;
+                    bt.addEventListener("click", function () { _this.emit("useitem", { item: item }); });
+                    bt.addEventListener("tap", function () { _this.emit("useitem", { item: item }); });
+                };
+                ItemsFooter.prototype.getItemButton = function (item) {
+                    return this.itemsButtons[item];
+                };
+                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
+                    if (this.itemsButtons[item])
+                        this.itemsButtons[item].setAmmount(ammount);
+                    if (item == "lucky")
+                        this.lucky.visible = (ammount > 0);
+                };
+                ItemsFooter.prototype.showMessage = function (itemId, message) {
+                    this.gameMessage.x = this.getItemButton(itemId).x;
+                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
+                    this.gameMessage.show(message);
+                };
+                ItemsFooter.prototype.hideMessage = function () {
+                    this.gameMessage.fadeOut();
+                };
+                ItemsFooter.prototype.bounceItem = function (item) {
+                    this.getItemButton(item).highLight(false);
+                };
+                ItemsFooter.prototype.highlight = function (item) {
+                    this.unHighlightAll();
+                    this.getItemButton(item).highLight();
+                };
+                ItemsFooter.prototype.unHighlightAll = function () {
+                    for (var i in this.itemsButtons)
+                        this.itemsButtons[i].unHighlight();
+                };
+                ItemsFooter.prototype.lockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    if (b)
+                        b.lock();
+                };
+                ItemsFooter.prototype.unlockItem = function (itemId) {
+                    var b = this.getItemButton(itemId);
+                    b.unlock();
+                };
+                ItemsFooter.prototype.lockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].lock();
+                };
+                ItemsFooter.prototype.unlockAll = function () {
+                    for (var b in this.itemsButtons)
+                        this.itemsButtons[b].unlock();
+                };
+                return ItemsFooter;
+            }(PIXI.Container));
+            view.ItemsFooter = ItemsFooter;
+        })(view = gameplay.view || (gameplay.view = {}));
     })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
@@ -5333,6 +5311,108 @@ var joinjelly;
             return DevTest;
         }(gameui.ScreenState));
         menus.DevTest = DevTest;
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var StoryScreen = (function (_super) {
+        __extends(StoryScreen, _super);
+        function StoryScreen() {
+            _super.call(this);
+            var intro = new lib.Intro3();
+            intro.play();
+            intro.loop = false;
+            intro.addEventListener("click", function () {
+                intro.stop();
+                joinjelly.JoinJelly.startTutorial();
+            });
+            intro.addEventListener("complete", function () {
+                intro.stop();
+                joinjelly.JoinJelly.startTutorial();
+            });
+        }
+        return StoryScreen;
+    }(gameui.ScreenState));
+    joinjelly.StoryScreen = StoryScreen;
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var LeaderBoardItem = (function (_super) {
+                __extends(LeaderBoardItem, _super);
+                function LeaderBoardItem(score, name, position) {
+                    if (position === void 0) { position = 1; }
+                    _super.call(this);
+                    this.regX = 1056 / 2;
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
+                    bg.scaleY = 0.65;
+                    this.addChild(bg);
+                    var tContainer = new PIXI.Container();
+                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
+                    var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
+                    var scoreObj = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
+                    scoreObj.regX = scoreObj.getBounds().width;
+                    positionObj.y = 30;
+                    titleObj.y = 30;
+                    scoreObj.y = 30;
+                    positionObj.x = 30;
+                    titleObj.x = 150;
+                    scoreObj.x = 1000;
+                    tContainer.addChild(titleObj);
+                    tContainer.addChild(scoreObj);
+                    tContainer.addChild(positionObj);
+                    this.addChild(tContainer);
+                }
+                return LeaderBoardItem;
+            }(PIXI.Container));
+            view.LeaderBoardItem = LeaderBoardItem;
+        })(view = menus.view || (menus.view = {}));
+    })(menus = joinjelly.menus || (joinjelly.menus = {}));
+})(joinjelly || (joinjelly = {}));
+var joinjelly;
+(function (joinjelly) {
+    var menus;
+    (function (menus) {
+        var view;
+        (function (view) {
+            var PlayerNameOptions = (function (_super) {
+                __extends(PlayerNameOptions, _super);
+                function PlayerNameOptions() {
+                    _super.call(this);
+                    this.addObjects();
+                }
+                PlayerNameOptions.prototype.addObjects = function () {
+                    var _this = this;
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
+                    bg.y = -130;
+                    bg.regX = bg.getBounds().width / 2;
+                    this.addChild(bg);
+                    var title = gameui.AssetsManager.getBitmapText(StringResources.menus.playerName, "debussy");
+                    title.y = -190;
+                    title.scaleX = title.scaleY = 1.1;
+                    title.regX = title.getBounds().width / 2;
+                    this.addChild(title);
+                    var playerName = gameui.AssetsManager.getBitmapText(joinjelly.JoinJelly.userData.getPlayerName(), "debussy");
+                    this.addChild(playerName);
+                    this.playerName = playerName;
+                    playerName.x = -450;
+                    playerName.y = -60;
+                    var playerNameEdit = new gameui.ImageButton("BtSettings", function () {
+                        joinjelly.JoinJelly.userData.promptPlayerName(function () {
+                            _this.playerName.text = joinjelly.JoinJelly.userData.getPlayerName();
+                            ;
+                        });
+                    });
+                    this.addChild(playerNameEdit);
+                    playerNameEdit.x = 400;
+                };
+                return PlayerNameOptions;
+            }(PIXI.Container));
+            view.PlayerNameOptions = PlayerNameOptions;
+        })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
 var joinjelly;
@@ -5497,6 +5577,174 @@ var joinjelly;
         })(view = menus.view || (menus.view = {}));
     })(menus = joinjelly.menus || (joinjelly.menus = {}));
 })(joinjelly || (joinjelly = {}));
+var productsData = {
+    "pack1x": { icon: "Item Pack", consumable: false, share: true },
+    "time5x": { icon: "5x Snow", consumable: true },
+    "fast5x": { icon: "5x Magnet", consumable: true },
+    "revive5x": { icon: "5x Revive", consumable: true },
+    "clean5x": { icon: "5x Clean", consumable: true },
+    "pack5x": { icon: "5x Item Pack", consumable: true },
+    "pack10x": { icon: "10x Item Pack", consumable: true },
+    "lucky": { icon: "Lucky Clover", consumable: false },
+};
+var AdsServices = (function () {
+    function AdsServices() {
+    }
+    AdsServices.initialize = function () {
+        var _this = this;
+        var cocoon = window["Cocoon"];
+        document.addEventListener('deviceready', function () {
+            if (!cocoon || !cocoon.Ad || !cocoon.Ad.MoPub) {
+                _this.debug('Cocoon AdMob plugin not installed');
+                _this.status = AdsServices.STATUS.FAIL;
+                return;
+            }
+            cocoon.Ad.MoPub.configure({
+                ios: { interstitial: "1a895b1b280d48d88ab5ddce11633701" },
+                android: { interstitial: "5c4ca98862a04ee09f2f9a67c5b95d80" }
+            });
+            if (!_this.interstitial)
+                _this.interstitial = cocoon.Ad.MoPub.createInterstitial();
+            _this.setCallbacks();
+            _this.load();
+        }, false);
+    };
+    AdsServices.show = function (callback) {
+        if (!this.interstitial) {
+            if (callback)
+                callback(false, "not_Initialized");
+            return;
+        }
+        if (this.isReady()) {
+            this.debug("show");
+            this.interstitial.on("dismiss", function (e) {
+                if (callback)
+                    callback(true, "displayed");
+            });
+            this.interstitial.show();
+        }
+        else {
+            this.debug("not loaded yet");
+            this.load();
+            if (callback)
+                callback(false, "not_Loaded");
+        }
+    };
+    AdsServices.isReady = function () {
+        return (this.interstitial && this.interstitial.isReady());
+    };
+    AdsServices.getStatus = function () {
+        if (!this.interstitial)
+            return AdsServices.STATUS.NOT_AVALIABLE;
+        if (this.interstitial && this.interstitial.isReady())
+            return AdsServices.STATUS.READY;
+        return this.status;
+    };
+    AdsServices.load = function () {
+        var _this = this;
+        if (!this.interstitial)
+            return;
+        this.debug("loading");
+        this.interstitial.load();
+        this.status = AdsServices.STATUS.LOADING;
+        if (this.ad_timeout)
+            clearTimeout(this.ad_timeout);
+        this.ad_timeout = setTimeout(function () {
+            _this.debug("timeout");
+            _this.status = AdsServices.STATUS.TIMEOUT;
+        }, 60000);
+    };
+    AdsServices.setCallbacks = function () {
+        var _this = this;
+        this.interstitial.on("show", function (e) {
+            _this.debug('music paused');
+        });
+        this.interstitial.on("load", function (e) {
+            _this.debug("Interstitial loaded " + JSON.stringify(e));
+            _this.status = AdsServices.STATUS.READY;
+            clearTimeout(_this.ad_timeout);
+        });
+        this.interstitial.on("fail", function (e) {
+            _this.debug("Interstitial failed " + JSON.stringify(e));
+            _this.status = AdsServices.STATUS.FAIL;
+            if (_this.ad_timeout)
+                clearTimeout(_this.ad_timeout);
+        });
+        this.interstitial.on("dismiss", function (e) {
+            _this.debug("Interstitial dismissed " + JSON.stringify(e));
+            _this.status = AdsServices.STATUS.NOT_LOADED;
+            _this.load();
+        });
+    };
+    AdsServices.debug = function (text) {
+        console.log("ads " + text);
+    };
+    return AdsServices;
+}());
+var AdsServices;
+(function (AdsServices) {
+    (function (STATUS) {
+        STATUS[STATUS["LOADING"] = 0] = "LOADING";
+        STATUS[STATUS["READY"] = 1] = "READY";
+        STATUS[STATUS["FAIL"] = 2] = "FAIL";
+        STATUS[STATUS["NOT_LOADED"] = 3] = "NOT_LOADED";
+        STATUS[STATUS["TIMEOUT"] = 4] = "TIMEOUT";
+        STATUS[STATUS["NOT_AVALIABLE"] = 5] = "NOT_AVALIABLE";
+    })(AdsServices.STATUS || (AdsServices.STATUS = {}));
+    var STATUS = AdsServices.STATUS;
+})(AdsServices || (AdsServices = {}));
+var DeviceServices = (function () {
+    function DeviceServices() {
+    }
+    DeviceServices.getOs = function () {
+        var os = "windows";
+        if (window["Cocoon"] && Cocoon.Device.getDeviceInfo())
+            os = Cocoon.Device.getDeviceInfo().os;
+        return os;
+    };
+    DeviceServices.openURL = function (url) {
+        if (window["Cocoon"])
+            Cocoon.App.openURL(url);
+        else if (window["Windows"])
+            Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri(url));
+        else
+            window.open(url);
+    };
+    DeviceServices.prompt = function (options, callback) {
+        if (window["Cocoon"])
+            return Cocoon.Dialog.prompt(options, callback);
+        else
+            callback(prompt(options.message));
+    };
+    DeviceServices.confirm = function (options, callback) {
+        if (window["Cocoon"])
+            return Cocoon.Dialog.confirm(options, callback);
+        else if (Windows["Windows"]) {
+            var message = Windows.UI.Popups.MessageDialog(options.title, options.message);
+            message.commands.append(new Windows.UI.Popups.UICommand("Cancel", function () {
+                callback(false);
+            }));
+            message.commands.append(new Windows.UI.Popups.UICommand("Ok", function () {
+                callback(true);
+            }));
+            message.showAsync();
+        }
+        else
+            callback(confirm(options.message));
+    };
+    DeviceServices.registerBackButton = function (callback) {
+        if (window["Cocoon"])
+            Cocoon.App.exitCallback(callback);
+    };
+    DeviceServices.exit = function () {
+        if (window["Cocoon"])
+            Cocoon.App.exit();
+        else
+            ;
+    };
+    DeviceServices.initialized = false;
+    return DeviceServices;
+}());
 var GameServices = (function () {
     function GameServices() {
     }
@@ -5589,164 +5837,90 @@ var GameServices = (function () {
     };
     return GameServices;
 }());
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var CountDown = (function (_super) {
-                __extends(CountDown, _super);
-                function CountDown() {
-                    _super.apply(this, arguments);
-                }
-                CountDown.prototype.countDown = function (total) {
-                    var _this = this;
-                    if (total === void 0) { total = 3; }
-                    var ns = [];
-                    var time = 1000;
-                    var transition = 200;
-                    var dk = gameui.AssetsManager.getBitmap("popupdark");
-                    this.addChild(dk);
-                    dk.scaleX = dk.scaleY = 16;
-                    dk.x = -defaultWidth / 2;
-                    dk.y = -defaultHeight;
-                    dk.alpha = 0;
-                    dk.interactive = false;
-                    dk.interactiveChildren = false;
-                    createjs.Tween.get(dk).to({ alpha: 1 }, 200);
-                    setTimeout(function () {
-                        createjs.Tween.get(dk).to({ alpha: 0 }, 200).call(function () { _this.removeChild(dk); });
-                    }, time * total + transition);
-                    setTimeout(function () {
-                        gameui.AudiosManager.playSound("Interface Sound-12");
-                    }, time * total + transition);
-                    for (var n = total; n > 0; n--) {
-                        ns[n] = gameui.AssetsManager.getBitmap("n" + n);
-                        this.addChild(ns[n]);
-                        ns[n].regX = ns[n].getBounds().width / 2;
-                        ns[n].regY = ns[n].getBounds().height / 2;
-                        ns[n].interactiveChildren = false;
-                        ns[n].interactive = false;
-                        ns[n].name = "count_n";
-                        createjs.Tween.get(ns[n])
-                            .to({ scaleX: 2, scaleY: 2, alpha: 0 })
-                            .wait((total - n) * time)
-                            .to({ scaleX: 1, scaleY: 1, alpha: 1 }, transition, createjs.Ease.quadOut)
-                            .call(function () { gameui.AudiosManager.playSound("Interface Sound-13"); })
-                            .wait(time - transition)
-                            .to({ alpha: 0, scaleX: 0.5, scaleY: 0.5 }, transition, createjs.Ease.quadIn)
-                            .call(function (obj) { _this.removeChild(obj.target); });
-                    }
-                };
-                return CountDown;
-            }(PIXI.Container));
-            view.CountDown = CountDown;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var StoryScreen = (function (_super) {
-        __extends(StoryScreen, _super);
-        function StoryScreen() {
-            _super.call(this);
-            var intro = new lib.Intro3();
-            intro.play();
-            intro.loop = false;
-            intro.addEventListener("click", function () {
-                intro.stop();
-                joinjelly.JoinJelly.startTutorial();
-            });
-            intro.addEventListener("complete", function () {
-                intro.stop();
-                joinjelly.JoinJelly.startTutorial();
-            });
+var InAppPurchaseServices = (function () {
+    function InAppPurchaseServices(productsIds) {
+        var _this = this;
+        this.initialized = false;
+        if (typeof Cocoon != "undefined")
+            this.inappsService = Cocoon.InApp;
+        else {
+            if (this.onError)
+                this.onError();
+            return;
         }
-        return StoryScreen;
-    }(gameui.ScreenState));
-    joinjelly.StoryScreen = StoryScreen;
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var view;
-        (function (view) {
-            var LeaderBoardItem = (function (_super) {
-                __extends(LeaderBoardItem, _super);
-                function LeaderBoardItem(score, name, position) {
-                    if (position === void 0) { position = 1; }
-                    _super.call(this);
-                    this.regX = 1056 / 2;
-                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
-                    bg.scaleY = 0.65;
-                    this.addChild(bg);
-                    var tContainer = new PIXI.Container();
-                    var titleObj = gameui.AssetsManager.getBitmapText(name, "debussy");
-                    var positionObj = gameui.AssetsManager.getBitmapText(position.toString(), "debussy");
-                    var scoreObj = gameui.AssetsManager.getBitmapText(score.toString(), "debussy");
-                    scoreObj.regX = scoreObj.getBounds().width;
-                    positionObj.y = 30;
-                    titleObj.y = 30;
-                    scoreObj.y = 30;
-                    positionObj.x = 30;
-                    titleObj.x = 150;
-                    scoreObj.x = 1000;
-                    tContainer.addChild(titleObj);
-                    tContainer.addChild(scoreObj);
-                    tContainer.addChild(positionObj);
-                    this.addChild(tContainer);
+        this.productsIds = productsIds;
+        this.inappsService.initialize({ autofinish: true }, function (error) {
+            if (error) {
+                console.log("initialized Store " + error);
+                return;
+            }
+            _this.inappsService.fetchProducts(_this.productsIds, function (products, error) {
+                if (error) {
+                    console.log("product loading error " + error);
+                    return;
                 }
-                return LeaderBoardItem;
-            }(PIXI.Container));
-            view.LeaderBoardItem = LeaderBoardItem;
-        })(view = menus.view || (menus.view = {}));
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
-var joinjelly;
-(function (joinjelly) {
-    var menus;
-    (function (menus) {
-        var view;
-        (function (view) {
-            var PlayerNameOptions = (function (_super) {
-                __extends(PlayerNameOptions, _super);
-                function PlayerNameOptions() {
-                    _super.call(this);
-                    this.addObjects();
-                }
-                PlayerNameOptions.prototype.addObjects = function () {
-                    var _this = this;
-                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
-                    bg.y = -130;
-                    bg.regX = bg.getBounds().width / 2;
-                    this.addChild(bg);
-                    var title = gameui.AssetsManager.getBitmapText(StringResources.menus.playerName, "debussy");
-                    title.y = -190;
-                    title.scaleX = title.scaleY = 1.1;
-                    title.regX = title.getBounds().width / 2;
-                    this.addChild(title);
-                    var playerName = gameui.AssetsManager.getBitmapText(joinjelly.JoinJelly.userData.getPlayerName(), "debussy");
-                    this.addChild(playerName);
-                    this.playerName = playerName;
-                    playerName.x = -450;
-                    playerName.y = -60;
-                    var playerNameEdit = new gameui.ImageButton("BtSettings", function () {
-                        joinjelly.JoinJelly.userData.promptPlayerName(function () {
-                            _this.playerName.text = joinjelly.JoinJelly.userData.getPlayerName();
-                            ;
-                        });
-                    });
-                    this.addChild(playerNameEdit);
-                    playerNameEdit.x = 400;
-                };
-                return PlayerNameOptions;
-            }(PIXI.Container));
-            view.PlayerNameOptions = PlayerNameOptions;
-        })(view = menus.view || (menus.view = {}));
-    })(menus = joinjelly.menus || (joinjelly.menus = {}));
-})(joinjelly || (joinjelly = {}));
+                _this.products = products;
+                if (_this.onProductsLoaded)
+                    _this.onProductsLoaded(products);
+            });
+        });
+    }
+    InAppPurchaseServices.prototype.purchaseProduct = function (productId, quantity, callback) {
+        Cocoon.InApp.purchase(productId, quantity, callback);
+    };
+    InAppPurchaseServices.prototype.restorePurchases = function () {
+        if (window["Cocoon"])
+            Cocoon.InApp.restore();
+    };
+    return InAppPurchaseServices;
+}());
+var SocialServices = (function () {
+    function SocialServices() {
+    }
+    SocialServices.initialize = function () {
+        var os = DeviceServices.getOs();
+        if (navigator.onLine && window["Cocoon"]) {
+            var fb = Cocoon.Social.Facebook;
+            fb.init({ appId: fbAppId });
+            this.FBSocialService = fb.getSocialInterface();
+        }
+    };
+    SocialServices.sendMessage = function (message, callback) {
+        if (!this.isAvaliable())
+            return;
+        this.FBSocialService.publishMessageWithDialog([
+            message.shareDescription,
+            message.gameWebsiteIcon,
+            message.gameWebsite,
+            message.shareTitle,
+            message.shareCaption
+        ], callback);
+    };
+    SocialServices.isAvaliable = function () {
+        return this.FBSocialService ? true : false;
+    };
+    SocialServices.initialized = false;
+    return SocialServices;
+}());
+var StoreServices = (function () {
+    function StoreServices() {
+    }
+    StoreServices.showRating = function (storeURLs) {
+        var os = DeviceServices.getOs();
+        switch (os) {
+            case "ios":
+                DeviceServices.openURL(storeURLs.ios);
+                break;
+            case "android":
+                DeviceServices.openURL(storeURLs.android);
+                break;
+            case "windows":
+                DeviceServices.openURL(storeURLs.windows);
+                break;
+        }
+    };
+    return StoreServices;
+}());
 var joinjelly;
 (function (joinjelly) {
     var view;
@@ -5857,178 +6031,4 @@ var joinjelly;
         view.Effect = Effect;
     })(view = joinjelly.view || (joinjelly.view = {}));
 })(joinjelly || (joinjelly = {}));
-var defaultWidth = 768 * 2;
-var defaultHeight = 1024 * 2;
-var fbAppId = "1416523228649363";
-var gameWebsite = "http://www.joinjelly.com";
-var gameWebsiteIcon = "http://www.joinjelly.com/preview.jpg";
-var contantsAndroid = {
-    ACH_JELLY_1: 'CgkI49ztp64KEAIQBA',
-    ACH_JELLY_2: 'CgkI49ztp64KEAIQBQ',
-    ACH_JELLY_3: 'CgkI49ztp64KEAIQBg',
-    ACH_JELLY_4: 'CgkI49ztp64KEAIQBA',
-    ACH_JELLY_5: 'CgkI49ztp64KEAIQBQ',
-    ACH_JELLY_6: 'CgkI49ztp64KEAIQBg',
-    ACH_JELLY_7: 'CgkI49ztp64KEAIQBw',
-    ACH_JELLY_8: 'CgkI49ztp64KEAIQCA',
-    ACH_JELLY_9: 'CgkI49ztp64KEAIQCQ',
-    ACH_JELLY_10: 'CgkI49ztp64KEAIQCg',
-    ACH_JELLY_11: 'CgkI49ztp64KEAIQCw',
-    ACH_JELLY_12: 'CgkI49ztp64KEAIQDA',
-    ACH_JELLY_13: 'CgkI49ztp64KEAIQDQ',
-    ACH_JELLY_14: 'CgkI49ztp64KEAIQDg',
-    ACH_JELLY_15: 'CgkI49ztp64KEAIQDw',
-    ACH_JELLY_16: 'CgkI49ztp64KEAIQEA',
-    ACH_JELLY_17: 'CgkI49ztp64KEAIQEQ',
-    CLIENT_ID: '356029001315-1uh0g6avko4g7aqfsj2kpt3srs6ssiqd.apps.googleusercontent.com',
-    LEAD_LEADERBOARD: 'CgkI49ztp64KEAIQAg',
-};
-var constantsiOS = {
-    ACH_JELLY_1: 'jelly01',
-    ACH_JELLY_2: 'jelly02',
-    ACH_JELLY_3: 'jelly03',
-    ACH_JELLY_4: 'jelly04',
-    ACH_JELLY_5: 'jelly05',
-    ACH_JELLY_6: 'jelly06',
-    ACH_JELLY_7: 'jelly07',
-    ACH_JELLY_8: 'jelly08',
-    ACH_JELLY_9: 'jelly09',
-    ACH_JELLY_10: 'jelly10',
-    ACH_JELLY_11: 'jelly11',
-    ACH_JELLY_12: 'jelly12',
-    ACH_JELLY_13: 'jelly13',
-    ACH_JELLY_14: 'jelly14',
-    ACH_JELLY_15: 'jelly15',
-    ACH_JELLY_16: 'jelly16',
-    ACH_JELLY_17: 'jelly17',
-    LEAD_LEADERBOARD: 'leaderboards',
-};
-var joinjelly;
-(function (joinjelly) {
-    var gameplay;
-    (function (gameplay) {
-        var view;
-        (function (view) {
-            var ItemsFooter = (function (_super) {
-                __extends(ItemsFooter, _super);
-                function ItemsFooter(items) {
-                    _super.call(this);
-                    this.itemSize = 270;
-                    this.itemsButtons = [];
-                    this.addObjects();
-                    this.setItems(items);
-                }
-                ItemsFooter.prototype.setItems = function (items) {
-                    var itemSize = this.itemSize;
-                    if (items.length >= 5)
-                        itemSize = 200;
-                    this.cleanButtons();
-                    if (!items)
-                        return;
-                    for (var i = 0; i < items.length; i++)
-                        this.addItem(items[i], i);
-                    for (var i = 0; i < items.length; i++) {
-                        this.itemsButtons[items[i]].y = -150;
-                        this.itemsButtons[items[i]].x = (defaultWidth - (items.length - 1) * itemSize) / 2 + i * itemSize;
-                    }
-                };
-                ItemsFooter.prototype.showContinue = function (price) {
-                    this.setItems([joinjelly.Items.REVIVE]);
-                    this.unlockItem(joinjelly.Items.REVIVE);
-                    this.highlight(joinjelly.Items.REVIVE);
-                    this.text = gameui.AssetsManager.getBitmapText("x" + price, "debussyBig");
-                    this.addChild(this.text);
-                    this.text.y = -200;
-                    this.text.x = defaultWidth / 2 + 150;
-                };
-                ItemsFooter.prototype.cleanButtons = function () {
-                    if (this.text)
-                        this.removeChild(this.text);
-                    for (var i in this.itemsButtons)
-                        this.removeChild(this.itemsButtons[i]);
-                    this.itemsButtons = [];
-                };
-                ItemsFooter.prototype.addObjects = function () {
-                    var bg = gameui.AssetsManager.getBitmap("footer");
-                    this.addChild(bg);
-                    bg.y = -162;
-                    bg.x = (defaultWidth - 1161) / 2;
-                    var lucky = gameui.AssetsManager.getBitmap("lucky");
-                    this.addChild(lucky);
-                    lucky.y = -210;
-                    lucky.x = (defaultWidth - 250);
-                    lucky.scaleX = lucky.scaleY = 0.5;
-                    this.lucky = lucky;
-                    this.gameMessage = new view.TutoralMessage();
-                    this.addChild(this.gameMessage);
-                };
-                ItemsFooter.prototype.addItem = function (item, pos) {
-                    var _this = this;
-                    var bt = new view.ItemButton(item);
-                    this.addChild(bt);
-                    this.itemsButtons[item] = bt;
-                    bt.addEventListener("click", function () { _this.emit("useitem", { item: item }); });
-                    bt.addEventListener("tap", function () { _this.emit("useitem", { item: item }); });
-                };
-                ItemsFooter.prototype.getItemButton = function (item) {
-                    return this.itemsButtons[item];
-                };
-                ItemsFooter.prototype.setItemAmmount = function (item, ammount) {
-                    if (this.itemsButtons[item])
-                        this.itemsButtons[item].setAmmount(ammount);
-                    if (item == "lucky")
-                        this.lucky.visible = (ammount > 0);
-                };
-                ItemsFooter.prototype.showMessage = function (itemId, message) {
-                    this.gameMessage.x = this.getItemButton(itemId).x;
-                    this.gameMessage.y = this.getItemButton(itemId).y - 120;
-                    this.gameMessage.show(message);
-                };
-                ItemsFooter.prototype.hideMessage = function () {
-                    this.gameMessage.fadeOut();
-                };
-                ItemsFooter.prototype.bounceItem = function (item) {
-                    this.getItemButton(item).highLight(false);
-                };
-                ItemsFooter.prototype.highlight = function (item) {
-                    this.unHighlightAll();
-                    this.getItemButton(item).highLight();
-                };
-                ItemsFooter.prototype.unHighlightAll = function () {
-                    for (var i in this.itemsButtons)
-                        this.itemsButtons[i].unHighlight();
-                };
-                ItemsFooter.prototype.lockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    if (b)
-                        b.lock();
-                };
-                ItemsFooter.prototype.unlockItem = function (itemId) {
-                    var b = this.getItemButton(itemId);
-                    b.unlock();
-                };
-                ItemsFooter.prototype.lockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].lock();
-                };
-                ItemsFooter.prototype.unlockAll = function () {
-                    for (var b in this.itemsButtons)
-                        this.itemsButtons[b].unlock();
-                };
-                return ItemsFooter;
-            }(PIXI.Container));
-            view.ItemsFooter = ItemsFooter;
-        })(view = gameplay.view || (gameplay.view = {}));
-    })(gameplay = joinjelly.gameplay || (joinjelly.gameplay = {}));
-})(joinjelly || (joinjelly = {}));
-var productsData = {
-    "pack1x": { icon: "Item Pack", consumable: false, share: true },
-    "time5x": { icon: "5x Snow", consumable: true },
-    "fast5x": { icon: "5x Magnet", consumable: true },
-    "revive5x": { icon: "5x Revive", consumable: true },
-    "clean5x": { icon: "5x Clean", consumable: true },
-    "pack5x": { icon: "5x Item Pack", consumable: true },
-    "pack10x": { icon: "10x Item Pack", consumable: true },
-    "lucky": { icon: "Lucky Clover", consumable: false },
-};
 //# sourceMappingURL=script.js.map
