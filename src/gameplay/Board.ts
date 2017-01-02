@@ -33,7 +33,7 @@
             //define cache for click
             var hitArea = new PIXI.Rectangle(-200, -500, defaultWidth + 400, defaultHeight + 600);
             this.tilesContainer.hitArea = hitArea;
-            
+
             // create all tiles
             this.addTiles(boardWidth, boardHeight, tileSize, img);
             this.addMouseEvents();
@@ -46,7 +46,6 @@
 
         // add tiles on the board
         private addTiles(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
-
 
             for (var x = 0; x < boardWidth; x++)
                 for (var y = 0; y < boardHeight; y++)
@@ -86,17 +85,17 @@
             // Pess Start
             this.tilesContainer.on("touchstart", this.boardTouchStart, this);
             this.tilesContainer.on("mousedown", this.boardTouchStart, this);
-            
+
             // Press Move
             this.tilesContainer.on("touchmove", this.boardTouchMove, this);
             this.tilesContainer.on("mousemove", this.boardTouchMove, this);
-            
+
             // Press Up
             this.tilesContainer.on("touchend", this.boardTouchEnd, this);
             this.tilesContainer.on("touchendoutside", this.boardTouchEnd, this);
             this.tilesContainer.on("mouseupoutside", this.boardTouchEnd, this);
             this.tilesContainer.on("mouseup", this.boardTouchEnd, this);
-            this.tilesContainer.on("mouseout", this.boardTouchEnd, this);
+            
         }
 
         // callback to the event start
@@ -104,7 +103,7 @@
 
             var pid = this.getPointerId(e);
             var pos = e.data.getLocalPosition(this);
-            
+
             var tile = this.getTileByRawPos(pos.x, pos.y, this.tileSize);
 
             if (tile && tile.isUnlocked() && tile.isEnabled()) {
@@ -134,7 +133,7 @@
             var delta = Date.now() - this.touchDeltas[pid];
             if (delta < 15) return;
             this.touchDeltas[pid] = Date.now();
-                        
+
             //get tile by touch
             var tile = this.touchDictionary[pid];
             if (tile) {
@@ -161,7 +160,8 @@
                 tile.unlock;
                 this.releaseDrag(tile, false);
                 tile.release();
-            }}
+            }
+        }
 
         // gets a pointer id based on the interaction event
         private getPointerId(e: PIXI.interaction.InteractionEvent) {
@@ -232,10 +232,10 @@
                 y: (y + 1 / 2) * tileSize + random * (Math.random() - 0.5) * tileSize / 10 + hexaOffset - tileSize / 5
             }
         }
-        
+
         // get a tile object by its id
         public getTileById(id: number): Tile {
-            return <Tile> this.tilesContainer.getChildByName(id.toString());
+            return <Tile>this.tilesContainer.getChildByName(id.toString());
         }
 
         // release all Jellyies

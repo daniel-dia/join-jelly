@@ -3203,7 +3203,6 @@ var joinjelly;
                 this.tilesContainer.on("touchendoutside", this.boardTouchEnd, this);
                 this.tilesContainer.on("mouseupoutside", this.boardTouchEnd, this);
                 this.tilesContainer.on("mouseup", this.boardTouchEnd, this);
-                this.tilesContainer.on("mouseout", this.boardTouchEnd, this);
             };
             Board.prototype.boardTouchStart = function (e) {
                 var pid = this.getPointerId(e);
