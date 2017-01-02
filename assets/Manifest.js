@@ -89,6 +89,7 @@
        { id: "BtTextBg", src: "BtTextBg.png" },
        { id: "BtTextBgBlue", src: "BtTextBgBlue.png" },
        { id: "BtHome", src: "BtHome.png" },
+       { id: "BtBack", src: "BtBack.png" },
        { id: "BtSettings", src: "BtSettings.png" },
        { id: "BtMenu", src: "BtMenu.png" },
        { id: "BtPlusMini", src: "BtPlusMini.png" },

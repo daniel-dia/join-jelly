@@ -1,4 +1,5 @@
-﻿var images: Array<HTMLImageElement>;
+﻿
+var images: Array<HTMLImageElement>;
 
 module gameui {
 

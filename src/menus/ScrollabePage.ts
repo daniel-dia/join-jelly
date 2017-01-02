@@ -101,14 +101,14 @@
         
         private addButton() {
             // add ok button
-            var okButton = new gameui.ImageButton("BtOk", () => {
+            var backbutton = new gameui.ImageButton("BtBack", () => {
                 if (this.okButtonAction) this.okButtonAction();
                 else
                     joinjelly.JoinJelly.showMainScreen()
             });
-            okButton.x = defaultWidth * 3 / 4;
-            okButton.y = defaultHeight - 200;
-            this.content.addChild(okButton);
+            backbutton.x = 150;
+            backbutton.y = 150;
+            this.header.addChild(backbutton);
 
         }
         

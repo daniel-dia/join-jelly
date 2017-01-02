@@ -1249,15 +1249,15 @@ var joinjelly;
         };
         ScrollablePage.prototype.addButton = function () {
             var _this = this;
-            var okButton = new gameui.ImageButton("BtOk", function () {
+            var backbutton = new gameui.ImageButton("BtBack", function () {
                 if (_this.okButtonAction)
                     _this.okButtonAction();
                 else
                     joinjelly.JoinJelly.showMainScreen();
             });
-            okButton.x = defaultWidth * 3 / 4;
-            okButton.y = defaultHeight - 200;
-            this.content.addChild(okButton);
+            backbutton.x = 150;
+            backbutton.y = 150;
+            this.header.addChild(backbutton);
         };
         ScrollablePage.prototype.activate = function (parameters) {
             _super.prototype.activate.call(this, parameters);
