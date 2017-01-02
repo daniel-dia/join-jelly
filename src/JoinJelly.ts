@@ -18,9 +18,10 @@ module joinjelly {
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new ItemsData();
+            this.gameServices = new GameServices();
 
             document.addEventListener('deviceready', () => {
-                this.gameServices = new GameServices();
+                this.gameServices.initializeGameservices();   
                 var score = this.gameServices.getScore();
                 if (score) this.userData.setScore(score);
             }, false);

@@ -260,7 +260,7 @@ var gameui;
     }());
     gameui.AssetsManager = AssetsManager;
 })(gameui || (gameui = {}));
-win = false;
+notCocoon = false;
 var gameui;
 (function (gameui) {
     var PIXIrenderer;
@@ -282,20 +282,27 @@ var gameui;
             PIXIstage.addChild(this.screenContainer);
             this.resizeGameScreen(window.innerWidth, window.innerHeight);
             window.onresize = function () { _this.resizeGameScreen(window.innerWidth, window.innerHeight); };
-            if (!window["Cocoon"])
-                win = true;
-            updateFn = this.update;
             createjs.Tween["_inited"] = true;
+            if (!window["Cocoon"])
+                notCocoon = true;
+            updateFn = this.update;
             updateFn();
         }
         GameScreen.prototype.update = function (timestamp) {
+            if (!timestamp)
+                timestamp = Date.now();
             if (!this.time)
                 this.time = timestamp;
             var delta = timestamp - this.time;
             this.time = timestamp;
+            var fps = 60;
+            var delay = Math.min(1000 / fps, (1000 / fps - delta));
             createjs.Tween.tick(delta, false);
             PIXIrenderer.render(PIXIstage);
-            requestAnimationFrame(updateFn);
+            if (notCocoon)
+                setTimeout(updateFn, delay);
+            else
+                requestAnimationFrame(updateFn);
         };
         GameScreen.prototype.switchScreen = function (newScreen, parameters, transition) {
             var _this = this;
@@ -2011,7 +2018,7 @@ var joinjelly;
                 this.scrollableContent.x = defaultWidth / 2;
                 soundOptions.y = y += space;
                 var tutorial = new gameui.BitmapTextButton(StringResources.menus.tutorial, "debussy", "BtTextBg", function () {
-                    joinjelly.JoinJelly.showIntro();
+                    joinjelly.JoinJelly.startTutorial();
                 });
                 tutorial.y = y += space;
                 this.scrollableContent.addChild(tutorial);
@@ -4781,8 +4788,9 @@ var joinjelly;
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
+            this.gameServices = new GameServices();
             document.addEventListener('deviceready', function () {
-                _this.gameServices = new GameServices();
+                _this.gameServices.initializeGameservices();
                 var score = _this.gameServices.getScore();
                 if (score)
                     _this.userData.setScore(score);
@@ -5711,6 +5719,16 @@ var DeviceServices = (function () {
     DeviceServices.confirm = function (options, callback) {
         if (window["Cocoon"])
             return Cocoon.Dialog.confirm(options, callback);
+        else if (Windows["Windows"]) {
+            var message = Windows.UI.Popups.MessageDialog(options.title, options.message);
+            message.commands.append(new Windows.UI.Popups.UICommand("Cancel", function () {
+                callback(false);
+            }));
+            message.commands.append(new Windows.UI.Popups.UICommand("Ok", function () {
+                callback(true);
+            }));
+            message.showAsync();
+        }
         else
             callback(confirm(options.message));
     };
@@ -5729,25 +5747,25 @@ var DeviceServices = (function () {
 }());
 var GameServices = (function () {
     function GameServices() {
-        var _this = this;
-        if (!navigator.onLine)
-            return;
-        if (!window["Cocoon"])
-            return;
-        if (Cocoon.getPlatform() === 'ios') {
-            Cocoon.Social.GameCenter.init({ defaultLeaderboard: "leaderboards" });
-            this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
-        }
-        else if (Cocoon.getPlatform() === 'android') {
-            Cocoon.Social.GooglePlayGames.init({ defaultLeaderboard: "CgkI49ztp64KEAIQAg " });
-            this.socialService = Cocoon.Social.GooglePlayGames.getSocialInterface();
-        }
-        var leaderbords = { leaderboardID: "tictactoe2" };
-        if (this.socialService) {
-            this.socialService.on("loginStatusChanged", function (l, e) { _this.onLogin(l, e); });
-            this.loginSocialService();
-        }
     }
+    GameServices.prototype.initializeGameservices = function () {
+        var _this = this;
+        if (navigator.onLine || window["Cocoon"]) {
+            if (Cocoon.getPlatform() === 'ios') {
+                Cocoon.Social.GameCenter.init({ defaultLeaderboard: "leaderboards" });
+                this.socialService = Cocoon.Social.GameCenter.getSocialInterface();
+            }
+            else if (Cocoon.getPlatform() === 'android') {
+                Cocoon.Social.GooglePlayGames.init({ defaultLeaderboard: "CgkI49ztp64KEAIQAg " });
+                this.socialService = Cocoon.Social.GooglePlayGames.getSocialInterface();
+            }
+            var leaderbords = { leaderboardID: "tictactoe2" };
+            if (this.socialService) {
+                this.socialService.on("loginStatusChanged", function (l, e) { _this.onLogin(l, e); });
+                this.loginSocialService();
+            }
+        }
+    };
     GameServices.prototype.loginSocialService = function () {
         if (this.waitingLogin)
             return;
@@ -5773,9 +5791,7 @@ var GameServices = (function () {
         }
     };
     GameServices.prototype.showLeaderboard = function () {
-        if (!navigator.onLine)
-            return;
-        if (!this.socialService)
+        if (!navigator.onLine || !this.socialService)
             return;
         this.socialService.showLeaderboard(function (error) {
             if (error)
@@ -5783,9 +5799,7 @@ var GameServices = (function () {
         });
     };
     GameServices.prototype.showAchievements = function () {
-        if (!navigator.onLine)
-            return;
-        if (!this.socialService)
+        if (!navigator.onLine || !this.socialService)
             return;
         this.socialService.showAchievements(function (error) {
             if (error)
@@ -5793,9 +5807,7 @@ var GameServices = (function () {
         });
     };
     GameServices.prototype.submitScore = function (score) {
-        if (!this.socialService)
-            return;
-        if (!navigator.onLine)
+        if (!navigator.onLine || !this.socialService)
             return;
         this.socialService.submitScore(score.toString(), function (error) {
             if (error)
@@ -5803,9 +5815,7 @@ var GameServices = (function () {
         });
     };
     GameServices.prototype.submitAchievent = function (achievementId) {
-        if (!navigator.onLine)
-            return;
-        if (!this.socialService)
+        if (!navigator.onLine || !this.socialService)
             return;
         var id = "";
         if (Cocoon.getPlatform() === 'ios') {

@@ -23,6 +23,18 @@ class DeviceServices {
 
     static confirm(options, callback) {
         if (window["Cocoon"]) return Cocoon.Dialog.confirm(options, callback);
+        else if (Windows["Windows"]) {
+
+            var message = Windows.UI.Popups.MessageDialog(options.title, options.message);
+            message.commands.append(new Windows.UI.Popups.UICommand("Cancel", function () {
+                callback(false)
+            }));
+            message.commands.append(new Windows.UI.Popups.UICommand("Ok", function () {
+                callback(true)
+            }));
+
+            message.showAsync()
+        }
         else callback(confirm(options.message));
     }
 

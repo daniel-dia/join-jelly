@@ -23,7 +23,7 @@
         
             // add Tutorial button
             var tutorial = new gameui.BitmapTextButton(StringResources.menus.tutorial, "debussy", "BtTextBg", () => {
-                JoinJelly.showIntro();
+                JoinJelly.startTutorial();
             })
             tutorial.y = y += space;
             this.scrollableContent.addChild(tutorial);

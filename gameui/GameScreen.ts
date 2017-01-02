@@ -2,8 +2,8 @@
 declare function setMobileScale(a: number);
 declare var assetscale: number;
 declare function requestAnimationFrame(callback: any): void;
-declare var win;
-win = false;
+declare var notCocoon;
+notCocoon = false;
 //TODO remove universal variable defaultWidth and DefaultHeigth
 
 module gameui {
@@ -61,34 +61,30 @@ module gameui {
             this.resizeGameScreen(window.innerWidth, window.innerHeight);
             window.onresize = () => { this.resizeGameScreen(window.innerWidth, window.innerHeight); };
 
-            //if is not cocoon, then .. its windows
-            if (!window["Cocoon"]) win = true;
-            updateFn = this.update
             createjs.Tween["_inited"] = true;
-
-
+            
+            //if is not cocoon, then .. its windows
+            if (!window["Cocoon"]) notCocoon = true;
+            updateFn = this.update
             updateFn();
         }
 
 
         private update(timestamp: number): void {
-
+            if (!timestamp) timestamp = Date.now();
             if (!this.time) this.time = timestamp;
+
             var delta = timestamp - this.time;
             this.time = timestamp;
-
+            var fps = 60
+            var delay = Math.min(1000 / fps, (1000 / fps - delta))
+            
             createjs.Tween.tick(delta, false);
             PIXIrenderer.render(PIXIstage);
 
-            //// gambiarra para o edge dar prioridade pros toques no Windows Mobile 10
-            //if (win) setTimeout(function () {
-            //    setTimeout(function () {
-            //        requestAnimationFrame(updateFn);
-            //    }, 0);
-            //}, 0);
-            //
-            //else 
-                requestAnimationFrame(updateFn);
+            // opera de modo diferente se não for cocoon
+            if (notCocoon) setTimeout(updateFn, delay);
+            else  requestAnimationFrame(updateFn);
 
         }
 
