@@ -470,7 +470,7 @@ module joinjelly.gameplay {
             this.gamestate = GameState.paused;
             this.board.lock();
             this.gameFooter.lockAll();
-            //this.gameHeader.mouseEnabled = false;
+            //this.gameHeader.interactiveChildren = false;
             this.pauseMenuOverlay.show();
             this.gameHeader.hideButtons();
         }
@@ -487,7 +487,7 @@ module joinjelly.gameplay {
             setTimeout(() => {
                 this.gamestate = GameState.playing;
                 this.board.unlock();
-                this.gameHeader.mouseEnabled = true;
+                this.gameHeader.interactiveChildren = true;
                 this.content.mouseEnabled = true;
                 this.gameFooter.unlockAll();
                 this.gameHeader.showButtons();
@@ -519,7 +519,7 @@ module joinjelly.gameplay {
             this.board.releaseAll();
 
             // remove other ui items
-            this.gameHeader.mouseEnabled = false;
+            this.gameHeader.interactiveChildren = false;
             this.gameFooter.mouseEnabled = false;
 
             this.gameHeader.hide();
@@ -905,7 +905,7 @@ module joinjelly.gameplay {
 
             // calculate random change to win a item
             var goodChance: boolean = (Math.random() < itemProbability * lucky);
-            goodChance = true;
+            
             // if true
             if (goodChance) {
                 item = items[Math.floor(Math.random() * items.length)];
@@ -1118,7 +1118,7 @@ module joinjelly.gameplay {
             this.gameFooter.lockItem(Items.REVIVE);
 
             // remove other ui items
-            this.gameHeader.mouseEnabled = true;
+            this.gameHeader.interactiveChildren = true;
             this.gameHeader.show();
             this.gameHeader.showButtons();
 

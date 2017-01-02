@@ -31,8 +31,9 @@
             this.addChild(this.tilesContainer);
 
             //define cache for click
-            /// this.tilesContainer.hitArea = (new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, boardWidth * tileSize, (boardHeight + 0.5) * tileSize));
-
+            var hitArea = new PIXI.Rectangle(-200, -500, defaultWidth + 400, defaultHeight + 600);
+            this.tilesContainer.hitArea = hitArea;
+            
             // create all tiles
             this.addTiles(boardWidth, boardHeight, tileSize, img);
             this.addMouseEvents();
