@@ -49,48 +49,48 @@ WindowsInappsService.fetchProducts = function (products, callback) {
 
 }
 
-WindowsInappsService.purchase = function (productId, ammount) {
+WindowsInappsService.purchase = function (productId, ammount, callback) {
 
     var _this = this;
 
     // call purchase started
     _this.emit("purchase", "start", productId)
 
-    currentApp.requestProductPurchaseAsync(productId, false).then(
+    currentApp.requestProductPurchaseAsync(productId).done(
         function (purchaseResults) {
+
             // call purchase complete
-            if (purchaseResults)
+            if (purchaseResults.status == 0 || purchaseResults.status == 1) {
                 var purchaseInfo = { productId: productId, quantity: 1, transactionId: purchaseResults.transactionId }
-            else
-                var purchaseInfo = { productId: productId, quantity: 1 };
+                _this.emit("purchase", "complete", purchaseInfo);
+                if (callback) callback();
+            }
+            else {
+                // call purchased failed
+                _this.emit("purchase", "error", productId, "not completed");
+                if (callback) callback("not completed");
+            }
 
-            _this.emit("purchase", "complete", purchaseInfo);
-        },
-
-        function (error) {
-            // call purchased failed
-            _this.emit("purchase", "error", productId, error.message);
-        }
-    )
+        })
 }
 
 WindowsInappsService.consume = function (productId, ammount, callback, transactionId) {
 
     var _this = this;
-        
-    if (transactionId && productId)
-    currentApp.reportConsumableFulfillmentAsync(productId, transactionId).then(
-        function (fulfillmentResult) {
-            // call purchase started
-            //WindowsDoNativeCallback("onConsumePurchaseCompleted")(transactionId);
-            _this.emit("onConsumePurchase", "complete")
-        },
-        function (error) {
-            // call purchase started
-            //WindowsDoNativeCallback("onConsumePurchaseFailed")(transactionId, error.message);
-            _this.emit("onConsumePurchase", "error")
 
-        })
+    if (transactionId && productId)
+        currentApp.reportConsumableFulfillmentAsync(productId, transactionId).then(
+            function (fulfillmentResult) {
+                // call purchase started
+                //WindowsDoNativeCallback("onConsumePurchaseCompleted")(transactionId);
+                _this.emit("onConsumePurchase", "complete")
+            },
+            function (error) {
+                // call purchase started
+                //WindowsDoNativeCallback("onConsumePurchaseFailed")(transactionId, error.message);
+                _this.emit("onConsumePurchase", "error")
+
+            })
 }
 
 WindowsInappsService.restorePurchases = function (arguments) { // PAREI AQUI

@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * pixi.js - v4.3.0
  * Compiled Sat, 24 Dec 2016 22:27:05 UTC
  *

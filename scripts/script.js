@@ -5843,6 +5843,8 @@ var InAppPurchaseServices = (function () {
         this.initialized = false;
         if (typeof Cocoon != "undefined")
             this.inappsService = Cocoon.InApp;
+        else if (typeof Windows != "undefined")
+            this.inappsService = WindowsInappsService;
         else {
             if (this.onError)
                 this.onError();
@@ -5866,11 +5868,10 @@ var InAppPurchaseServices = (function () {
         });
     }
     InAppPurchaseServices.prototype.purchaseProduct = function (productId, quantity, callback) {
-        Cocoon.InApp.purchase(productId, quantity, callback);
+        this.inappsService.purchase(productId, quantity, callback);
     };
     InAppPurchaseServices.prototype.restorePurchases = function () {
-        if (window["Cocoon"])
-            Cocoon.InApp.restore();
+        this.inappsService.restore();
     };
     return InAppPurchaseServices;
 }());

@@ -77,8 +77,6 @@
             JoinJelly.userData.history("purchased")
         }
 
-        //#region Interface =====================================================================================
-
         // add restore purchases button
         private addRestorePurchasesButton() {
 
@@ -207,8 +205,7 @@
 
             }
         }
-
-        //#endregion 
+        
     }
 
 

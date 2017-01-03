@@ -1,4 +1,6 @@
-﻿class InAppPurchaseServices {
+﻿declare var WindowsInappsService; 
+
+class InAppPurchaseServices {
 
     private Cocoon: any;
     private initialized: boolean = false;
@@ -8,9 +10,6 @@
     private products: Array<InAppPurchaseServices.ProductInfo>;
     private productsIds: Array<string>;
     private inappsService;
-
-
-
 
     // on purchase start callback
     public onError: () => any;
@@ -24,7 +23,7 @@
 
         // if there are no store avaliable
         if (typeof Cocoon != "undefined") this.inappsService = Cocoon.InApp;
-        //else if (typeof Windows != "undefined") this.inappsService = WindowsInappsService;
+        else if (typeof Windows != "undefined") this.inappsService = WindowsInappsService;
         else {
             if (this.onError) this.onError();
             return;
@@ -56,16 +55,15 @@
     }
 
     public purchaseProduct(productId: string, quantity: number, callback: (error: string) => void) {
-        Cocoon.InApp.purchase(productId, quantity, callback);
+        this.inappsService.purchase(productId, quantity, callback);
     }
 
     public restorePurchases() {
-        if (window["Cocoon"]) Cocoon.InApp.restore();
+        this.inappsService.restore();
     }
 }
 
 module InAppPurchaseServices {
-
 
     export interface ProductInfo {
         productId: string;
@@ -73,7 +71,6 @@ module InAppPurchaseServices {
         description: string;
         localizedPrice: string;
     }
-
 
     export interface ProductListItem {
 
