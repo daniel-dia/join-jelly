@@ -1,7 +1,3 @@
-[submodule "GameUiJS"]
-	path = GameUiJS
-	url = C:/Users/artsj_000/Documents/Trabalhos/Games/gameui
-	branch = master
 [submodule "src/GameUI"]
 	path = src/GameUI
 	url = C:/Users/artsj_000/Documents/Trabalhos/Games/gameui
