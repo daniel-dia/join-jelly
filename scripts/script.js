@@ -238,8 +238,15 @@ var gameui;
         };
         AssetsManager.getLoadedImage = function (name) {
             if (this.loader)
-                if (!this.loader.resources[name])
+                if (!this.loader.resources[name]) {
+                    if (this.loader.resources["Jellies"] && this.loader.resources["Jellies"].textures && this.loader.resources["Jellies"].textures[name])
+                        return this.loader.resources["Jellies"].textures[name];
+                    if (this.loader.resources["title"] && this.loader.resources["title"].textures && this.loader.resources["title"].textures[name])
+                        return this.loader.resources["title"].textures[name];
+                    if (this.loader.resources["interfaces"] && this.loader.resources["interfaces"].textures && this.loader.resources["interfaces"].textures[name])
+                        return this.loader.resources["interfaces"].textures[name];
                     return null;
+                }
             return this.loader.resources[name].texture;
         };
         AssetsManager.getMovieClip = function (name) {
@@ -299,10 +306,7 @@ var gameui;
             var delay = Math.min(1000 / fps, (1000 / fps - delta));
             createjs.Tween.tick(delta, false);
             PIXIrenderer.render(PIXIstage);
-            if (notCocoon)
-                setTimeout(updateFn, delay);
-            else
-                requestAnimationFrame(updateFn);
+            setTimeout(updateFn, delay);
         };
         GameScreen.prototype.switchScreen = function (newScreen, parameters, transition) {
             var _this = this;
@@ -1282,12 +1286,13 @@ var joinjelly;
             function Loading() {
                 var _this = this;
                 _super.call(this);
-                PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(fnt))$/;
+                PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(json)|(fnt))$/;
                 assetscale = 1;
                 if (window.innerWidth <= 1070)
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
+                assetscale = 1;
                 var imagePath = "assets/images@" + assetscale + "x/";
                 var audioPath = "assets/sounds/";
                 if (!testMode && typeof WPAudioManager == 'undefined') {
@@ -1297,6 +1302,9 @@ var joinjelly;
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy.fnt");
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig.fnt");
+                gameui.AssetsManager.loadSpriteSheet("title", "title.json");
+                gameui.AssetsManager.loadSpriteSheet("Jellies", "Jellies.json");
+                gameui.AssetsManager.loadSpriteSheet("Interfaces", "Interfaces.json");
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 var loadinBar = new LoadingBar(imagePath);
                 this.content.addChild(loadinBar);
@@ -4796,10 +4804,12 @@ var joinjelly;
             this.itemData = new joinjelly.ItemsData();
             this.gameServices = new GameServices();
             document.addEventListener('deviceready', function () {
-                _this.gameServices.initializeGameservices();
-                var score = _this.gameServices.getScore();
-                if (score)
-                    _this.userData.setScore(score);
+                setTimeout(function () {
+                    _this.gameServices.initializeGameservices();
+                    var score = _this.gameServices.getScore();
+                    if (score)
+                        _this.userData.setScore(score);
+                }, 5000);
             }, false);
             SocialServices.initialize();
             var lang = (window.navigator["userLanguage"] || window.navigator.language).substr(0, 2).toLowerCase();

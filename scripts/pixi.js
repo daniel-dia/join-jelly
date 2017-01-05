@@ -20537,7 +20537,7 @@ var SpriteRenderer = function (_ObjectRenderer) {
 
         // step 1: first check max textures the GPU can handle.
         this.MAX_TEXTURES = Math.min(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS), _settings2.default.SPRITE_MAX_TEXTURES);
-
+        
         // step 2: check the maximum number of if statements the shader can have too..
         this.MAX_TEXTURES = (0, _checkMaxIfStatmentsInShader2.default)(this.MAX_TEXTURES, gl);
 

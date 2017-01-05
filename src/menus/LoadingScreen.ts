@@ -14,12 +14,12 @@ module joinjelly.menus {
 
         constructor() {
             super();
-            PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(fnt))$/;
+            PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(json)|(fnt))$/;
 
             assetscale = 1;
             if (window.innerWidth <= 1070) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;
-
+            assetscale = 1;
             var imagePath = "assets/images@" + assetscale + "x/";
             var audioPath = "assets/sounds/";
 
@@ -33,7 +33,10 @@ module joinjelly.menus {
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
             gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy.fnt");
             gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig.fnt");
-            
+            gameui.AssetsManager.loadSpriteSheet("title", "title.json");
+            gameui.AssetsManager.loadSpriteSheet("Jellies", "Jellies.json");
+            gameui.AssetsManager.loadSpriteSheet("Interfaces", "Interfaces.json");
+
             //gameui.AssetsManager.load();
 
             // set default sound button

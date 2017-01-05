@@ -563,6 +563,7 @@
     <Content Include="scripts\md5.js" />
     <Content Include="scripts\movieclip-0.8.1.min.js" />
     <Content Include="scripts\pixi.js" />
+    <Content Include="scripts\pixi_old.js" />
     <Content Include="scripts\PIXIpatch.js" />
     <Content Include="scripts\Plataform.js" />
     <Content Include="scripts\script.js" />

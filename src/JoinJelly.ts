@@ -14,18 +14,21 @@ module joinjelly {
 
 
         public static init(canvasName: string) {
-            
+
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new ItemsData();
             this.gameServices = new GameServices();
 
             document.addEventListener('deviceready', () => {
-                this.gameServices.initializeGameservices();   
-                var score = this.gameServices.getScore();
-                if (score) this.userData.setScore(score);
+                setTimeout(() => {
+                    this.gameServices.initializeGameservices();
+                    var score = this.gameServices.getScore();
+                    if (score) this.userData.setScore(score);
+                }, 5000)
             }, false);
-                       
+
+
 
             SocialServices.initialize();
 
@@ -44,8 +47,8 @@ module joinjelly {
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
 
             // add back button callback
-            DeviceServices.registerBackButton(() => {return this.gameScreen.sendBackButtonEvent()})
-            
+            DeviceServices.registerBackButton(() => { return this.gameScreen.sendBackButtonEvent() })
+
             var loadingScreen = new joinjelly.menus.Loading();
             this.gameScreen.switchScreen(loadingScreen);
 
@@ -63,10 +66,10 @@ module joinjelly {
                 //     //this.gameScreen.switchScreen(new menus.DevTest());
                 //     // this.startTest();
                 // }
-                
+
             }
         }
-        
+
         public static startTest() {
             var gs = new gameplay.GamePlayScreen(this.userData, this.itemData);
             this.gameScreen.switchScreen(gs);
