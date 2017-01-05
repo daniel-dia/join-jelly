@@ -2466,7 +2466,7 @@ var joinjelly;
                     this.levelText.text = "Lv. " + level.toString();
                     var value = 1;
                     if (percent != undefined)
-                        if (score != this.lastScore) {
+                        if (score != this.lastScore || typeof this.lastScore === 'undefined') {
                             value = percent / 100;
                             createjs.Tween.removeTweens(this.levelBar.mask);
                             createjs.Tween.get(this.levelBar.mask).to({ scaleX: value }, 1000, createjs.Ease.elasticOut);
