@@ -1,13 +1,12 @@
-﻿/// <reference path="gameui/uiitem.ts" />
-
-/// <reference path="gameui/AudioManager.ts" />
-/// <reference path="gameui/AssetsManager.ts" />
-/// <reference path="gameui/GameScreen.ts" />
-/// <reference path="gameui/UIItem.ts" />
-/// <reference path="gameui/Grid.ts" />
-/// <reference path="gameui/ScreenState.ts" />
-/// <reference path="gameui/Transition.ts" />
-/// <reference path="gameui/Button.ts" />
+﻿/// <reference path="src/GameUI/uiitem.ts" />
+/// <reference path="src/GameUI/AudioManager.ts" />
+/// <reference path="src/GameUI/AssetsManager.ts" />
+/// <reference path="src/GameUI/GameScreen.ts" />
+/// <reference path="src/GameUI/UIItem.ts" />
+/// <reference path="src/GameUI/Grid.ts" />
+/// <reference path="src/GameUI/ScreenState.ts" />
+/// <reference path="src/GameUI/Transition.ts" />
+/// <reference path="src/GameUI/Button.ts" />
 
 /// <reference path="src/ItemsData.ts" />
 /// <reference path="src/StringResources.ts" /> 

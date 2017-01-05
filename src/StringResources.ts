@@ -47,6 +47,7 @@
         msgItemTime: "this one make time slower",
         msgItemRevive: "if you loose, use this to revive",
         msgBoardFill: "but be careful, \ndo not let the board fill, \nthis is the end for us.",
+        msgLetsGo: "You are ready! Let's Go!",
 
     },
     jellies: {
@@ -160,6 +161,7 @@ var StringResources_pt = {
         msgItemTime: "Esse congela o tempo",
         msgItemRevive: "Se voce perder, use este para reviver",
         msgBoardFill: "Mas Tenha cuidado, se acabar \nos espaços no chão é o fim.",
+        msgLetsGo: "Você está ronto! Vamos lá!",
 
     },
     jellies: {

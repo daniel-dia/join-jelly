@@ -214,7 +214,11 @@
                     this.gameFooter.setItemAmmount(Items.FAST, 0)
                     this.tutorialWait(1000);
                 },
-
+                () => {
+ 
+                    this.showTutorialMessage(StringResources.tutorial.msgLetsGo);
+                    this.waitMessage();
+                },
                 () => {
                     JoinJelly.userData.history(histories.TUTORIAL);
                     JoinJelly.startLevel();
