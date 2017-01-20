@@ -17,9 +17,9 @@
             });
 
             //create Item
-            var bg = gameui.AssetsManager.getBitmap("itemBG");
-            var bgd = gameui.AssetsManager.getBitmap("itemBGDisabled");
-            var img = gameui.AssetsManager.getBitmap("item" + item);
+            var bg = gameui.AssetsManager.getBitmap("itemBg");
+            var bgd = gameui.AssetsManager.getBitmap("itemBgDisabled");
+            var img = gameui.AssetsManager.getBitmap("item" + item.charAt(0).toUpperCase() + item.slice(1));
             var text = gameui.AssetsManager.getBitmapText("0", "debussy");
             var name = gameui.AssetsManager.getBitmapText(StringResources.items[item], "debussy");
             var add = gameui.AssetsManager.getBitmap("BtPlusMini");

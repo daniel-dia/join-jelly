@@ -1,30 +1,33 @@
 ﻿var imageManifest = [
+        
+        { id: "Background", src: "Background.jpg" },
+        { id: "BackMain", src: "BackMain.jpg" },
 
-       { id: "bonus_bar", src: "bonus_bar.png" },
-       { id: "bonus_border", src: "bonus_border.png" },
-	   { id: "BackMain", src: "BackMain.jpg" },
-
-       { src: "DIAStudioLogo.png", id: "DIAStudioLogo" },
-	   { src: "DIAStudioIco.png", id: "DIAStudioIco" },
-
-	   { src: "e1_hanger.png", id: "e1_hanger" },
-	   { src: "e1_happy.png", id: "e1_happy" },
-	   { src: "e1_sad.png", id: "e1_sad" },
-	   { src: "movement.png", id: "movement" },
-	   { src: "movement2.png", id: "movement2" },
-	   { src: "movement_surprise.png", id: "movement_surprise" },
-
-   
-
-       { id: "loadingBall", src: "loadingBall.png" },
-       { id: "Background", src: "Background.jpg" },
-
-	   { id: "star", src: "star.png" },
-       { id: "starOff", src: "starOff.png" },
-
-       { id: "hex", src: "hex.png" },
-       { id: "powerTip", src: "powerTip.png" },
-       { id: "bonus_icon", src: "bonus_icon.png" },
+      //{ id: "bonus_bar", src: "bonus_bar.png" },
+      //{ id: "bonus_border", src: "bonus_border.png" },
+	  //
+      //
+      //{ src: "DIAStudioLogo.png", id: "DIAStudioLogo" },
+	  //{ src: "DIAStudioIco.png", id: "DIAStudioIco" },
+      //
+	  //{ src: "e1_hanger.png", id: "e1_hanger" },
+	  //{ src: "e1_happy.png", id: "e1_happy" },
+	  //{ src: "e1_sad.png", id: "e1_sad" i},
+	  //{ src: "movement.png", id: "movement" },
+	  //{ src: "movement2.png", id: "movement2" },
+	  //{ src: "movement_surprise.png", id: "movement_surprise" },
+      //
+      //
+      //
+      //{ id: "loadingBall", src: "loadingBall.png" },
+      
+      //
+	  //{ id: "star", src: "star.png" },
+      //{ id: "starOff", src: "starOff.png" },
+      //
+      //{ id: "hex", src: "hex.png" },
+      //{ id: "powerTip", src: "powerTip.png" },
+      //{ id: "bonus_icon", src: "bonus_icon.png" },
 
        //{ id: "e1", src: "e1.png" },
        //{ id: "e128", src: "e128.png" },
@@ -67,37 +70,37 @@
        //{ id: "n2", src: "n2.png" },
        //{ id: "n3", src: "n3.png" },
 
-       { id: "footer", src: "footer.png" },
-
-       { id: "shadow", src: "shadow.png" },
-       { id: "particle", src: "Particle.png" },
-
-       { id: "BtRestart", src: "BtRestart.png" },
-       { id: "BtClose", src: "BtClose.png" },
-       { id: "BtMinimize", src: "BtMinimize.png" },
-       { id: "BtPlay", src: "BtPlay.png" },
-       { id: "BtStore", src: "BtStore.png" },  
-       { id: "BtPedia", src: "BtPedia.png" },
-       { id: "BtPause", src: "BtPause.png" },
-       { id: "BtMusic", src: "BtMusic.png" },
-       { id: "BtMusicOff", src: "BtMusicOff.png" },
-       { id: "BtSound", src: "BtSound.png" },
-       { id: "BtSoundOff", src: "BtSoundOff.png" },
-       { id: "BtOk", src: "BtOk.png" }, 
-       { id: "BtTextBg", src: "BtTextBg.png" },
-       { id: "BtTextBgBlue", src: "BtTextBgBlue.png" },
-       { id: "BtHome", src: "BtHome.png" },
-       { id: "BtBack", src: "BtBack.png" },
-       { id: "BtSettings", src: "BtSettings.png" },
-       { id: "BtMenu", src: "BtMenu.png" },
-       { id: "BtPlusMini", src: "BtPlusMini.png" },
-    
-       { id: "GameOverBgJelly", src: "GameOverBgJelly.png" },
-       { id: "GameOverBgPoints", src: "GameOverBgPoints.png" },
-
-       { id: "fxJoin", src: "fxJoin.png" },
-       { id: "fxEvolve", src: "fxEvolve.png" },
-       { id: "fxPart", src: "fxPart.png" },
+      // { id: "footer", src: "footer.png" },
+      //
+      // { id: "shadow", src: "shadow.png" },
+      // { id: "particle", src: "Particle.png" },
+      //
+      // { id: "BtRestart", src: "BtRestart.png" },
+      // { id: "BtClose", src: "BtClose.png" },
+      // { id: "BtMinimize", src: "BtMinimize.png" },
+      // { id: "BtPlay", src: "BtPlay.png" },
+      // { id: "BtStore", src: "BtStore.png" },  
+      // { id: "BtPedia", src: "BtPedia.png" },
+      // { id: "BtPause", src: "BtPause.png" },
+      // { id: "BtMusic", src: "BtMusic.png" },
+      // { id: "BtMusicOff", src: "BtMusicOff.png" },
+      // { id: "BtSound", src: "BtSound.png" },
+      // { id: "BtSoundOff", src: "BtSoundOff.png" },
+      // { id: "BtOk", src: "BtOk.png" }, 
+      // { id: "BtTextBg", src: "BtTextBg.png" },
+      // { id: "BtTextBgBlue", src: "BtTextBgBlue.png" },
+      // { id: "BtHome", src: "BtHome.png" },
+      // { id: "BtBack", src: "BtBack.png" },
+      // { id: "BtSettings", src: "BtSettings.png" },
+      // { id: "BtMenu", src: "BtMenu.png" },
+      // { id: "BtPlusMini", src: "BtPlusMini.png" },
+      //
+      // { id: "GameOverBgJelly", src: "GameOverBgJelly.png" },
+      // { id: "GameOverBgPoints", src: "GameOverBgPoints.png" },
+      //
+      // { id: "fxJoin", src: "fxJoin.png" },
+      // { id: "fxEvolve", src: "fxEvolve.png" },
+      // { id: "fxPart", src: "fxPart.png" },
 
       //{ id: "title_join_1", src: "title_join_1.png" },
       //{ id: "title_join_2", src: "title_join_2.png" },
@@ -110,37 +113,36 @@
       //{ id: "title_jelly_4", src: "title_jelly_4.png" },
       //{ id: "title_jelly_5", src: "title_jelly_5.png" },
 
-       { id: "FlyBG", src: "FlyBG.png" },
-       { id: "FlyGroup", src: "FlyGroup.png" },
-
-       
-       { id: "itemclean", src: "itemClean.png" },
-       { id: "itemevolve", src: "itemEvolve.png" },
-       { id: "itemfast", src: "itemFast.png" },
-       { id: "itemrevive", src: "itemRevive.png" },
-       { id: "itemtime", src: "itemTime.png" },
-       { id: "itemPack", src: "itemPack.png" },
-       { id: "lucky", src: "lucky.png" },
-       { id: "itemBG", src: "itemBg.png" },
-       { id: "itemBGDisabled", src: "itemBgDisabled.png" },
-
-       { id: "tutorialFinger", src: "tutorialFinger.png" },
-       { id: "tutorialFingerDown", src: "tutorialFingerDown.png" },
-       { id: "ballon", src: "ballon.png" },
-       { id: "pediaItem", src: "pediaItem.png" },
-       { id: "BigBG", src: "BigBG.png" },
-       { id: "ScrollMask", src: "ScrollMask.png" },
-       
-
-       { id: "freezeEffect", src: "freezeEffect.png" },
-       { id: "fastEffect", src: "fastEffect.png" },
-       { id: "reviveEffect", src: "reviveEffect.png" },
-       { id: "cleanEffect", src: "cleanEffect.png" },
-
-       { id: "check", src: "check.png" },
-       { id: "unchecked", src: "unchecked.png" },
-       { id: "MessageBox", src: "MessageBox.png" },
-       { id: "popupdark", src: "popupdark.png" },
+      //{ id: "FlyBG", src: "FlyBG.png" },
+      //{ id: "FlyGroup", src: "FlyGroup.png" },
+      //
+      //
+      //{ id: "itemclean", src: "itemClean.png" },
+      //{ id: "itemevolve", src: "itemEvolve.png" },
+      //{ id: "itemfast", src: "itemFast.png" },
+      //{ id: "itemrevive", src: "itemRevive.png" },
+      //{ id: "itemtime", src: "itemTime.png" },
+      //{ id: "itemPack", src: "itemPack.png" },
+      //{ id: "lucky", src: "lucky.png" },
+      //{ id: "itemBG", src: "itemBg.png" },
+      //{ id: "itemBGDisabled", src: "itemBgDisabled.png" },
+      //
+      //{ id: "tutorialFinger", src: "tutorialFinger.png" },
+      //{ id: "tutorialFingerDown", src: "tutorialFingerDown.png" },
+      //{ id: "ballon", src: "ballon.png" },
+      //{ id: "pediaItem", src: "pediaItem.png" },
+      
+      //{ id: "ScrollMask", src: "ScrollMask.png" },
+      //
+      //
+      //{ id: "freezeEffect", src: "freezeEffect.png" },
+      //{ id: "fastEffect", src: "fastEffect.png" },
+      //{ id: "reviveEffect", src: "reviveEffect.png" },
+      //{ id: "cleanEffect", src: "cleanEffect.png" },
+      //
+      //{ id: "check", src: "check.png" },
+      //{ id: "unchecked", src: "unchecked.png" },
+      //{ id: "popupdark", src: "popupdark.png" },
 ]
 var audioManifest = [
 

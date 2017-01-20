@@ -1,0 +1,100 @@
+{"frames": {
+
+"BtStore":
+{
+	"frame": {"x":1,"y":391,"w":101,"h":101},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":101,"h":101},
+	"sourceSize": {"w":101,"h":101}
+},
+"fxEvolve":
+{
+	"frame": {"x":382,"y":1,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+"fxJoin":
+{
+	"frame": {"x":104,"y":391,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"itemFast":
+{
+	"frame": {"x":247,"y":328,"w":144,"h":150},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":0,"w":144,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+"itemRevive":
+{
+	"frame": {"x":393,"y":305,"w":150,"h":135},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":8,"w":150,"h":135},
+	"sourceSize": {"w":150,"h":150}
+},
+"itemTime":
+{
+	"frame": {"x":382,"y":153,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+"j2048":
+{
+	"frame": {"x":158,"y":1,"w":222,"h":185},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":222,"h":185},
+	"sourceSize": {"w":222,"h":185}
+},
+"n1":
+{
+	"frame": {"x":148,"y":200,"w":97,"h":189},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":97,"h":189},
+	"sourceSize": {"w":97,"h":189}
+},
+"n2":
+{
+	"frame": {"x":1,"y":200,"w":145,"h":189},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":145,"h":189},
+	"sourceSize": {"w":145,"h":189}
+},
+"title_jelly_4":
+{
+	"frame": {"x":1,"y":1,"w":155,"h":197},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":155,"h":197},
+	"sourceSize": {"w":155,"h":197}
+},
+"tutorialFinger":
+{
+	"frame": {"x":247,"y":188,"w":100,"h":138},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":138},
+	"sourceSize": {"w":100,"h":138}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Sprites-2@0.5x.png",
+	"format": "RGBA5555",
+	"size": {"w":544,"h":493},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:86651e72e2b87defcd6452fea482a6fd:e85b3f65bebc0616d65d67f05e88bd5d:7fa4ed2e71f817b78477da30a81c77cb$"
+}
+}

@@ -20,8 +20,8 @@ module joinjelly.menus {
             if (window.innerWidth <= 1070) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;
             assetscale = 1;
-            var imagePath = "assets/images@" + assetscale + "x/";
-            var audioPath = "assets/sounds/";
+            var imagePath = "/assets/";
+            var audioPath = "/assets/sounds/";
 
 
             //load audio
@@ -29,15 +29,18 @@ module joinjelly.menus {
                 createjs.Sound.alternateExtensions = ["mp3"];
                 createjs.Sound.registerSounds(audioManifest, audioPath);
             }
-
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
-            gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy.fnt");
-            gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig.fnt");
-            gameui.AssetsManager.loadSpriteSheet("title", "title.json");
-            gameui.AssetsManager.loadSpriteSheet("Jellies", "Jellies.json");
-            gameui.AssetsManager.loadSpriteSheet("Interfaces", "Interfaces.json");
 
-            //gameui.AssetsManager.load();
+            gameui.AssetsManager.loadFontSpriteSheet("debussy",    "debussy@1x.fnt");
+            gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig@1x.fnt");
+              
+            //gameui.AssetsManager.loader.baseUrl = "";
+
+            gameui.AssetsManager.loadSpriteSheet("Sprites-1@1x.json");
+            gameui.AssetsManager.loadSpriteSheet("Sprites-2@1x.json");
+            gameui.AssetsManager.loadSpriteSheet("Sprites-3@1x.json");
+            gameui.AssetsManager.loadSpriteSheet("Sprites-4@1x.json");
+            gameui.AssetsManager.loadSpriteSheet("Sprites-5@1x.json");
 
             // set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";
@@ -55,12 +58,16 @@ module joinjelly.menus {
             };
 
             //creates load complete action
-            gameui.AssetsManager.onComplete = () => {
-                if (this.loaded) this.loaded();
-            }
+            gameui.AssetsManager.onComplete = () => { };
 
             // Adds Background
             this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
+
+
+
+            gameui.AssetsManager.load(() => {
+                if (this.loaded) this.loaded(); 
+            });
 
         }
     }
