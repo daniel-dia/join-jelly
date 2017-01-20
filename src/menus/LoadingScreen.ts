@@ -19,28 +19,28 @@ module joinjelly.menus {
             assetscale = 1;
             if (window.innerWidth <= 1070) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;
-            assetscale = 1;
-            var imagePath = "/assets/";
+             var imagePath = "/assets/";
             var audioPath = "/assets/sounds/";
 
 
+
             //load audio
-            if (!testMode && typeof WPAudioManager== 'undefined') {
+            if (!testMode && typeof WPAudioManager == 'undefined') {
                 createjs.Sound.alternateExtensions = ["mp3"];
                 createjs.Sound.registerSounds(audioManifest, audioPath);
             }
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
 
-            gameui.AssetsManager.loadFontSpriteSheet("debussy",    "debussy@1x.fnt");
-            gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig@1x.fnt");
-              
+            gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy@" + assetscale + "x.fnt");
+            gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig@" + assetscale + "x.fnt");
+
             //gameui.AssetsManager.loader.baseUrl = "";
 
-            gameui.AssetsManager.loadSpriteSheet("Sprites-1@1x.json");
-            gameui.AssetsManager.loadSpriteSheet("Sprites-2@1x.json");
-            gameui.AssetsManager.loadSpriteSheet("Sprites-3@1x.json");
-            gameui.AssetsManager.loadSpriteSheet("Sprites-4@1x.json");
-            gameui.AssetsManager.loadSpriteSheet("Sprites-5@1x.json");
+            gameui.AssetsManager.loadSpriteSheet("Sprites-1@" + assetscale + "x.json");
+            gameui.AssetsManager.loadSpriteSheet("Sprites-2@" + assetscale + "x.json");
+            gameui.AssetsManager.loadSpriteSheet("Sprites-3@" + assetscale + "x.json");
+            gameui.AssetsManager.loadSpriteSheet("Sprites-4@" + assetscale + "x.json");
+            gameui.AssetsManager.loadSpriteSheet("Sprites-5@" + assetscale + "x.json");
 
             // set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";
@@ -66,7 +66,7 @@ module joinjelly.menus {
 
 
             gameui.AssetsManager.load(() => {
-                if (this.loaded) this.loaded(); 
+                if (this.loaded) this.loaded();
             });
 
         }
@@ -79,11 +79,11 @@ module joinjelly.menus {
         constructor(imagePath: string) {
             super();
 
-            
+
             var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
             var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
 
-            
+
             this.addChild(bg)
             this.addChild(bar);
 
@@ -99,7 +99,7 @@ module joinjelly.menus {
             //text.pivot.x = text.getLocalBounds().width / 2;
             //text.y = -100;
             //text.y = -200;
-            
+
             this.barMask = new PIXI.Graphics().beginFill(0xFF0000, 1).drawRect(0, 0, w, h).endFill();
 
             this.barMask.x = bar.x;

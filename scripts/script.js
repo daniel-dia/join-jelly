@@ -1293,7 +1293,6 @@ var joinjelly;
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
-                assetscale = 1;
                 var imagePath = "/assets/";
                 var audioPath = "/assets/sounds/";
                 if (!testMode && typeof WPAudioManager == 'undefined') {
@@ -1301,13 +1300,13 @@ var joinjelly;
                     createjs.Sound.registerSounds(audioManifest, audioPath);
                 }
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
-                gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy@1x.fnt");
-                gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig@1x.fnt");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-1@1x.json");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-2@1x.json");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-3@1x.json");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-4@1x.json");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-5@1x.json");
+                gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy@" + assetscale + "x.fnt");
+                gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig@" + assetscale + "x.fnt");
+                gameui.AssetsManager.loadSpriteSheet("Sprites-1@" + assetscale + "x.json");
+                gameui.AssetsManager.loadSpriteSheet("Sprites-2@" + assetscale + "x.json");
+                gameui.AssetsManager.loadSpriteSheet("Sprites-3@" + assetscale + "x.json");
+                gameui.AssetsManager.loadSpriteSheet("Sprites-4@" + assetscale + "x.json");
+                gameui.AssetsManager.loadSpriteSheet("Sprites-5@" + assetscale + "x.json");
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 var loadinBar = new LoadingBar(imagePath);
                 this.content.addChild(loadinBar);
