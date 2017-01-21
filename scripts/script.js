@@ -281,7 +281,7 @@ var gameui;
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
             PIXIstage = new PIXI.Container();
-            PIXIrenderer = new PIXI.WebGLRenderer(gameWidth, gameHeight);
+            PIXIrenderer = PIXI.autoDetectRenderer(gameWidth, gameHeight);
             document.getElementById(divId).appendChild(PIXIrenderer.view);
             this.screenContainer = new PIXI.Container();
             PIXIstage.addChild(this.screenContainer);
@@ -1293,6 +1293,7 @@ var joinjelly;
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
+                assetscale = 1;
                 var imagePath = "/assets/";
                 var audioPath = "/assets/sounds/";
                 if (!testMode && typeof WPAudioManager == 'undefined') {
@@ -1316,7 +1317,6 @@ var joinjelly;
                     loadinBar.update(progress);
                 };
                 gameui.AssetsManager.onComplete = function () { };
-                this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
                 gameui.AssetsManager.load(function () {
                     if (_this.loaded)
                         _this.loaded();
@@ -1329,24 +1329,8 @@ var joinjelly;
             __extends(LoadingBar, _super);
             function LoadingBar(imagePath) {
                 _super.call(this);
-                var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
-                var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
-                this.addChild(bg);
-                this.addChild(bar);
-                var w = 939;
-                var h = 57;
-                bar.x = -w / 2 - 40;
-                bar.y = 87;
-                bg.pivot.x = 1131 / 2;
-                this.barMask = new PIXI.Graphics().beginFill(0xFF0000, 1).drawRect(0, 0, w, h).endFill();
-                this.barMask.x = bar.x;
-                this.barMask.y = bar.y;
-                bar.mask = this.barMask;
-                this.addChild(this.barMask);
-                this.update(0);
             }
             LoadingBar.prototype.update = function (value) {
-                this.barMask.scale.x = value / 100;
             };
             return LoadingBar;
         }(PIXI.Container));

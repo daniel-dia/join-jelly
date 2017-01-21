@@ -19,7 +19,8 @@ module joinjelly.menus {
             assetscale = 1;
             if (window.innerWidth <= 1070) assetscale = 0.5;
             if (window.innerWidth <= 384) assetscale = 0.25;
-             var imagePath = "/assets/";
+            assetscale = 1;
+            var imagePath = "/assets/";
             var audioPath = "/assets/sounds/";
 
 
@@ -61,7 +62,7 @@ module joinjelly.menus {
             gameui.AssetsManager.onComplete = () => { };
 
             // Adds Background
-            this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
+            //this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
 
 
 
@@ -78,39 +79,39 @@ module joinjelly.menus {
 
         constructor(imagePath: string) {
             super();
-
-
-            var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
-            var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
-
-
-            this.addChild(bg)
-            this.addChild(bar);
-
-            var w = 939;
-            var h = 57;
-
-            bar.x = - w / 2 - 40;
-            bar.y = 87;
-            bg.pivot.x = 1131 / 2;
-
-            //var text = gameui.AssetsManager.getBitmapText(StringResources.menus.loading.toUpperCase(), "debussy");// defaultFontFamilyNormal, 0xFFFFFF);
-            //this.addChild(text)
-            //text.pivot.x = text.getLocalBounds().width / 2;
-            //text.y = -100;
-            //text.y = -200;
-
-            this.barMask = new PIXI.Graphics().beginFill(0xFF0000, 1).drawRect(0, 0, w, h).endFill();
-
-            this.barMask.x = bar.x;
-            this.barMask.y = bar.y;
-            bar.mask = this.barMask;
-            this.addChild(this.barMask);
-            this.update(0);
+        //
+        //
+        //    var bg = gameui.AssetsManager.getBitmap(imagePath + "bonus_border.png");
+        //    var bar = gameui.AssetsManager.getBitmap(imagePath + "bonus_bar.png");
+        //
+        //
+        //    this.addChild(bg)
+        //    this.addChild(bar);
+        //
+        //    var w = 939;
+        //    var h = 57;
+        //
+        //    bar.x = - w / 2 - 40;
+        //    bar.y = 87;
+        //    bg.pivot.x = 1131 / 2;
+        //
+        //    //var text = gameui.AssetsManager.getBitmapText(StringResources.menus.loading.toUpperCase(), "debussy");// defaultFontFamilyNormal, 0xFFFFFF);
+        //    //this.addChild(text)
+        //    //text.pivot.x = text.getLocalBounds().width / 2;
+        //    //text.y = -100;
+        //    //text.y = -200;
+        //
+        //    this.barMask = new PIXI.Graphics().beginFill(0xFF0000, 1).drawRect(0, 0, w, h).endFill();
+        //
+        //    this.barMask.x = bar.x;
+        //    this.barMask.y = bar.y;
+        //    bar.mask = this.barMask;
+        //    this.addChild(this.barMask);
+        //    this.update(0);
         }
 
         public update(value: number) {
-            this.barMask.scale.x = value / 100;
+            //this.barMask.scale.x = value / 100;
         }
     }
 }
