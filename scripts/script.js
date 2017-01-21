@@ -280,8 +280,9 @@ var gameui;
             if (fps === void 0) { fps = 60; }
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
+            PIXI["settings"].SPRITE_MAX_TEXTURES = 1;
             PIXIstage = new PIXI.Container();
-            PIXIrenderer = PIXI.autoDetectRenderer(gameWidth, gameHeight);
+            PIXIrenderer = new PIXI.WebGLRenderer(gameWidth, gameHeight);
             document.getElementById(divId).appendChild(PIXIrenderer.view);
             this.screenContainer = new PIXI.Container();
             PIXIstage.addChild(this.screenContainer);
@@ -1293,7 +1294,6 @@ var joinjelly;
                     assetscale = 0.5;
                 if (window.innerWidth <= 384)
                     assetscale = 0.25;
-                assetscale = 1;
                 var imagePath = "/assets/";
                 var audioPath = "/assets/sounds/";
                 if (!testMode && typeof WPAudioManager == 'undefined') {
