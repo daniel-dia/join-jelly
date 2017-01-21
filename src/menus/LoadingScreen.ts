@@ -60,6 +60,8 @@ module joinjelly.menus {
             //creates load complete action
             gameui.AssetsManager.onComplete = () => { };
 
+            gameui.AssetsManager.load();
+
             // Adds Background
             //this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
 
