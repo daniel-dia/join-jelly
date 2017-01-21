@@ -160,10 +160,6 @@ var gameui;
     var AssetsManager = (function () {
         function AssetsManager() {
         }
-        AssetsManager.initialize = function (path) {
-            if (path === void 0) { path = ""; }
-            this.loader = new PIXI.loaders.Loader(path);
-        };
         AssetsManager.loadAssets = function (manifest, path, spriteSheets) {
             var _this = this;
             if (path === void 0) { path = ""; }
@@ -196,14 +192,14 @@ var gameui;
         AssetsManager.reset = function () {
             this.loader.reset();
         };
+        AssetsManager.load = function () {
+            this.loader.load();
+        };
         AssetsManager.loadFontSpriteSheet = function (id, fontFile) {
             this.loader.add(id, fontFile);
         };
         AssetsManager.loadSpriteSheet = function (fontFile) {
             this.loader.add(fontFile);
-        };
-        AssetsManager.load = function (callback) {
-            this.loader.load(callback);
         };
         AssetsManager.cleanAssets = function () {
             if (images)
@@ -219,10 +215,9 @@ var gameui;
         };
         AssetsManager.getBitmap = function (name) {
             var texture = this.getLoadedImage(name);
-            if (!texture)
-                texture = PIXI.utils.TextureCache[name];
             if (texture) {
                 var imgobj = new PIXI.Sprite(texture);
+                imgobj.texture["resolution"] = assetscale;
                 imgobj.interactive = AssetsManager.defaultMouseEnabled;
                 return imgobj;
             }
@@ -234,6 +229,7 @@ var gameui;
         AssetsManager.getBitmapText = function (text, bitmapFontId, color, size) {
             if (color === void 0) { color = 0xffffff; }
             if (size === void 0) { size = 1; }
+            return new PIXI.Container();
             var bitmapText = new PIXI.extras.BitmapText(text, { font: bitmapFontId, align: 'left' });
             bitmapText.tint = color;
             bitmapText.maxLineHeight = 100;
@@ -243,8 +239,9 @@ var gameui;
         };
         AssetsManager.getLoadedImage = function (name) {
             if (this.loader)
-                if (!this.loader.resources[name])
+                if (!this.loader.resources[name]) {
                     return null;
+                }
             return this.loader.resources[name].texture;
         };
         AssetsManager.getMovieClip = function (name) {
@@ -280,7 +277,6 @@ var gameui;
             if (fps === void 0) { fps = 60; }
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
-            PIXI["settings"].SPRITE_MAX_TEXTURES = 1;
             PIXIstage = new PIXI.Container();
             PIXIrenderer = new PIXI.WebGLRenderer(gameWidth, gameHeight);
             document.getElementById(divId).appendChild(PIXIrenderer.view);
@@ -305,10 +301,7 @@ var gameui;
             var delay = Math.min(1000 / fps, (1000 / fps - delta));
             createjs.Tween.tick(delta, false);
             PIXIrenderer.render(PIXIstage);
-            if (notCocoon)
-                setTimeout(updateFn, delay);
-            else
-                requestAnimationFrame(updateFn);
+            requestAnimationFrame(updateFn);
         };
         GameScreen.prototype.switchScreen = function (newScreen, parameters, transition) {
             var _this = this;
@@ -1317,6 +1310,7 @@ var joinjelly;
                     loadinBar.update(progress);
                 };
                 gameui.AssetsManager.onComplete = function () { };
+                gameui.AssetsManager.load();
                 gameui.AssetsManager.load(function () {
                     if (_this.loaded)
                         _this.loaded();
