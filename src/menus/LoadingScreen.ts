@@ -56,6 +56,8 @@ module joinjelly.menus {
                 if (this.loaded) this.loaded();
             }
 
+            gameui.AssetsManager.load();
+
             // Adds Background
             this.background.addChild(gameui.AssetsManager.getBitmap(imagePath + "BackMain.jpg"));
 
