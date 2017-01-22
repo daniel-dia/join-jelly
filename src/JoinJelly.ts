@@ -49,7 +49,8 @@ module joinjelly {
             // add back button callback
             DeviceServices.registerBackButton(() => { return this.gameScreen.sendBackButtonEvent() })
 
-            var loadingScreen = new joinjelly.menus.Loading();
+            var scale = this.gameScreen.getCurrentScale();
+            var loadingScreen = new joinjelly.menus.Loading(scale);
             this.gameScreen.switchScreen(loadingScreen);
 
 

@@ -13,7 +13,7 @@
                 <key>scale</key>
                 <double>1</double>
                 <key>extension</key>
-                <string>@1x</string>
+                <string>1x</string>
                 <key>spriteFilter</key>
                 <string></string>
                 <key>acceptFractionalValues</key>
@@ -21,16 +21,16 @@
                 <key>maxTextureSize</key>
                 <QSize>
                     <key>width</key>
-                    <int>2048</int>
+                    <int>4096</int>
                     <key>height</key>
-                    <int>2048</int>
+                    <int>4096</int>
                 </QSize>
             </struct>
             <struct type="AutoSDSettings">
                 <key>scale</key>
                 <double>0.5</double>
                 <key>extension</key>
-                <string>@0.5x</string>
+                <string>0.5x</string>
                 <key>spriteFilter</key>
                 <string></string>
                 <key>acceptFractionalValues</key>
@@ -47,7 +47,7 @@
                 <key>scale</key>
                 <double>0.25</double>
                 <key>extension</key>
-                <string>@0.25</string>
+                <string>0.25x</string>
                 <key>spriteFilter</key>
                 <string></string>
                 <key>acceptFractionalValues</key>
@@ -92,7 +92,7 @@
         <key>jxrCompressionLevel</key>
         <uint>0</uint>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">Atkinson</enum>
+        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -110,7 +110,7 @@
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
-        <uint>1</uint>
+        <uint>0</uint>
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
@@ -118,15 +118,15 @@
         <key>atfFormats</key>
         <string></string>
         <key>textureFormat</key>
-        <enum type="SettingsBase::TextureFormat">png</enum>
+        <enum type="SettingsBase::TextureFormat">png8</enum>
         <key>borderPadding</key>
         <uint>0</uint>
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>4096</int>
             <key>height</key>
-            <int>2048</int>
+            <int>4096</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -144,18 +144,18 @@
             <key>sizeConstraints</key>
             <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
             <key>forceSquared</key>
-            <false/>
+            <true/>
             <key>maxRects</key>
             <struct type="AlgorithmMaxRectsSettings">
                 <key>heuristic</key>
-                <enum type="AlgorithmMaxRectsSettings::Heuristic">Best</enum>
+                <enum type="AlgorithmMaxRectsSettings::Heuristic">ShortSideFit</enum>
             </struct>
             <key>basic</key>
             <struct type="AlgorithmBasicSettings">
                 <key>sortBy</key>
                 <enum type="AlgorithmBasicSettings::SortBy">Best</enum>
                 <key>order</key>
-                <enum type="AlgorithmBasicSettings::Order">Ascending</enum>
+                <enum type="AlgorithmBasicSettings::Order">Descending</enum>
             </struct>
             <key>polygon</key>
             <struct type="AlgorithmPolygonSettings">
@@ -184,7 +184,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>Sprites-{n1}{v}.json</filename>
+                <filename>Sprites-{n1}@{v}.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -192,7 +192,7 @@
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>
-        <enum type="SettingsBase::OutputFormat">RGBA5555</enum>
+        <enum type="SettingsBase::OutputFormat">RGBA8888</enum>
         <key>alphaHandling</key>
         <enum type="SettingsBase::AlphaHandling">ClearTransparentPixels</enum>
         <key>contentProtection</key>
@@ -213,13 +213,13 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -231,6 +231,20 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">images/BackMain.jpg</key>
+            <key type="filename">images/Background.jpg</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>384,512,769,1024</rect>
+                <key>scale9Paddings</key>
+                <rect>384,512,769,1024</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">images/BigBG.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -768,17 +782,15 @@
                 <false/>
             </struct>
             <key type="filename">images/fastEffect.png</key>
-            <key type="filename">images/freezeEffect.png</key>
-            <key type="filename">images/reviveEffect.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>192,256,384,512</rect>
+                <rect>96,128,192,256</rect>
                 <key>scale9Paddings</key>
-                <rect>192,256,384,512</rect>
+                <rect>96,128,192,256</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -792,6 +804,20 @@
                 <rect>290,41,581,81</rect>
                 <key>scale9Paddings</key>
                 <rect>290,41,581,81</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/freezeEffect.png</key>
+            <key type="filename">images/reviveEffect.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>192,256,384,512</rect>
+                <key>scale9Paddings</key>
+                <rect>192,256,384,512</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -864,19 +890,6 @@
                 <rect>48,56,96,113</rect>
                 <key>scale9Paddings</key>
                 <rect>48,56,96,113</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">images/itemEvolve.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>35,40,70,80</rect>
-                <key>scale9Paddings</key>
-                <rect>35,40,70,80</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -1455,123 +1468,7 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>images/GameOverBgPoints.png</filename>
-            <filename>images/hex.png</filename>
-            <filename>images/itemBg.png</filename>
-            <filename>images/itemBgDisabled.png</filename>
-            <filename>images/itemClean.png</filename>
-            <filename>images/itemEvolve.png</filename>
-            <filename>images/itemFast.png</filename>
-            <filename>images/itemPack.png</filename>
-            <filename>images/itemRevive.png</filename>
-            <filename>images/itemTime.png</filename>
-            <filename>images/j1.png</filename>
-            <filename>images/j-1.png</filename>
-            <filename>images/j2.png</filename>
-            <filename>images/j4.png</filename>
-            <filename>images/j8.png</filename>
-            <filename>images/j16.png</filename>
-            <filename>images/j32.png</filename>
-            <filename>images/j64.png</filename>
-            <filename>images/j128.png</filename>
-            <filename>images/j256.png</filename>
-            <filename>images/j512.png</filename>
-            <filename>images/j1024.png</filename>
-            <filename>images/j2048.png</filename>
-            <filename>images/j4096.png</filename>
-            <filename>images/j8192.png</filename>
-            <filename>images/j8192b.png</filename>
-            <filename>images/joil.png</filename>
-            <filename>images/jsquare.png</filename>
-            <filename>images/loadingBall.png</filename>
-            <filename>images/lucky.png</filename>
-            <filename>images/motion.png</filename>
-            <filename>images/movement.png</filename>
-            <filename>images/movement_surprise.png</filename>
-            <filename>images/movement2.png</filename>
-            <filename>images/n1.png</filename>
-            <filename>images/n2.png</filename>
-            <filename>images/n3.png</filename>
-            <filename>images/Particle.png</filename>
-            <filename>images/pediaItem.png</filename>
-            <filename>images/popupdark.png</filename>
-            <filename>images/powerTip.png</filename>
-            <filename>images/reviveEffect.png</filename>
-            <filename>images/ScrollMask.png</filename>
-            <filename>images/shadow.png</filename>
-            <filename>images/star.png</filename>
-            <filename>images/starOff.png</filename>
-            <filename>images/title_jelly_1.png</filename>
-            <filename>images/title_jelly_2.png</filename>
-            <filename>images/title_jelly_3.png</filename>
-            <filename>images/title_jelly_4.png</filename>
-            <filename>images/title_jelly_5.png</filename>
-            <filename>images/title_join_1.png</filename>
-            <filename>images/title_join_2.png</filename>
-            <filename>images/title_join_3.png</filename>
-            <filename>images/title_join_4.png</filename>
-            <filename>images/tutorialFinger.png</filename>
-            <filename>images/tutorialFingerDown.png</filename>
-            <filename>images/unchecked.png</filename>
-            <filename>images/ballon.png</filename>
-            <filename>images/BigBG.png</filename>
-            <filename>images/bonus_bar.png</filename>
-            <filename>images/bonus_border.png</filename>
-            <filename>images/bonus_icon.png</filename>
-            <filename>images/BtBack.png</filename>
-            <filename>images/BtClose.png</filename>
-            <filename>images/BtHome.png</filename>
-            <filename>images/BtMenu.png</filename>
-            <filename>images/BtMinimize.png</filename>
-            <filename>images/BtMusic.png</filename>
-            <filename>images/BtMusicOff.png</filename>
-            <filename>images/BtOk.png</filename>
-            <filename>images/BtPause.png</filename>
-            <filename>images/BtPedia.png</filename>
-            <filename>images/BtPlay.png</filename>
-            <filename>images/BtPlusMini.png</filename>
-            <filename>images/BtRestart.png</filename>
-            <filename>images/BtSettings.png</filename>
-            <filename>images/BtSound.png</filename>
-            <filename>images/BtSoundOff.png</filename>
-            <filename>images/BtStore.png</filename>
-            <filename>images/BtTextBg.png</filename>
-            <filename>images/BtTextBgBlue.png</filename>
-            <filename>images/check.png</filename>
-            <filename>images/cleanEffect.png</filename>
-            <filename>images/d256.png</filename>
-            <filename>images/DIAStudioIco.png</filename>
-            <filename>images/DIAStudioLogo.png</filename>
-            <filename>images/e1.png</filename>
-            <filename>images/e-1.png</filename>
-            <filename>images/e1_hanger.png</filename>
-            <filename>images/e1_happy.png</filename>
-            <filename>images/e1_sad.png</filename>
-            <filename>images/e2.png</filename>
-            <filename>images/e4.png</filename>
-            <filename>images/e8.png</filename>
-            <filename>images/e16.png</filename>
-            <filename>images/e32.png</filename>
-            <filename>images/e64.png</filename>
-            <filename>images/e128.png</filename>
-            <filename>images/e256.png</filename>
-            <filename>images/e512.png</filename>
-            <filename>images/e1024.png</filename>
-            <filename>images/e2048.png</filename>
-            <filename>images/e4096.png</filename>
-            <filename>images/e8192.png</filename>
-            <filename>images/e8192b.png</filename>
-            <filename>images/eoil.png</filename>
-            <filename>images/esquare.png</filename>
-            <filename>images/fastEffect.png</filename>
-            <filename>images/FlyBG.png</filename>
-            <filename>images/FlyGroup.png</filename>
-            <filename>images/footer.png</filename>
-            <filename>images/freezeEffect.png</filename>
-            <filename>images/fxEvolve.png</filename>
-            <filename>images/fxJoin.png</filename>
-            <filename>images/fxPart.png</filename>
-            <filename>images/GameOverBgJelly.png</filename>
+            <filename>images</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

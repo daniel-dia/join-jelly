@@ -48,16 +48,16 @@
             this.content.addChild(this.ScrollArea);
             this.ScrollArea.addChild(this.scrollableContent);
        
-            var mask = gameui.AssetsManager.getBitmap('ScrollMask');
-            this.ScrollArea.addChild(mask);
-            mask.scaleX = mask.scaleY = 2;
-            mask.interactive = false;
-            mask.interactiveChildren = false;
+            var scrollMask = gameui.AssetsManager.getBitmap('');
+            this.content.addChild(scrollMask);
+            scrollMask.scaleX = scrollMask.scaleY = 2;
+            scrollMask.interactive = false;
+            scrollMask.interactiveChildren = false;
       
-            mask.x = (defaultWidth - 1463) / 2;
-            mask.y = (defaultHeight - 1788) / 2;
+            scrollMask.x = (defaultWidth - 1463) / 2;
+            scrollMask.y = (defaultHeight - 1788) / 2;
 
-            this.ScrollArea.mask = mask;
+            this.ScrollArea.mask = scrollMask;
 
             // add scroll event
             this.ScrollArea.addEventListener("touchmove", this.pressMoveScroll, this);

@@ -192,15 +192,18 @@ var gameui;
         AssetsManager.reset = function () {
             this.loader.reset();
         };
-        AssetsManager.load = function () {
-            this.loader.load();
-        };
         AssetsManager.loadFontSpriteSheet = function (id, fontFile) {
             this.loader.add(id, fontFile);
         };
-        AssetsManager.loadSpriteSheet = function (fontFile) {
-            this.loader.add(fontFile);
+        AssetsManager.loadSpriteSheet = function (id, fontFile) {
+            this.loader.add(id, fontFile);
         };
+        ;
+        AssetsManager.load = function (callback) {
+            if (callback)
+                this.loader.load(callback);
+        };
+        ;
         AssetsManager.cleanAssets = function () {
             if (images)
                 for (var i in images) {
@@ -215,9 +218,10 @@ var gameui;
         };
         AssetsManager.getBitmap = function (name) {
             var texture = this.getLoadedImage(name);
+            if (!texture)
+                texture = PIXI.utils.TextureCache[name];
             if (texture) {
                 var imgobj = new PIXI.Sprite(texture);
-                imgobj.texture["resolution"] = assetscale;
                 imgobj.interactive = AssetsManager.defaultMouseEnabled;
                 return imgobj;
             }
@@ -229,7 +233,6 @@ var gameui;
         AssetsManager.getBitmapText = function (text, bitmapFontId, color, size) {
             if (color === void 0) { color = 0xffffff; }
             if (size === void 0) { size = 1; }
-            return new PIXI.Container();
             var bitmapText = new PIXI.extras.BitmapText(text, { font: bitmapFontId, align: 'left' });
             bitmapText.tint = color;
             bitmapText.maxLineHeight = 100;
@@ -239,9 +242,8 @@ var gameui;
         };
         AssetsManager.getLoadedImage = function (name) {
             if (this.loader)
-                if (!this.loader.resources[name]) {
+                if (!this.loader.resources[name])
                     return null;
-                }
             return this.loader.resources[name].texture;
         };
         AssetsManager.getMovieClip = function (name) {
@@ -301,7 +303,10 @@ var gameui;
             var delay = Math.min(1000 / fps, (1000 / fps - delta));
             createjs.Tween.tick(delta, false);
             PIXIrenderer.render(PIXIstage);
-            requestAnimationFrame(updateFn);
+            if (notCocoon)
+                setTimeout(updateFn, delay);
+            else
+                requestAnimationFrame(updateFn);
         };
         GameScreen.prototype.switchScreen = function (newScreen, parameters, transition) {
             var _this = this;
@@ -384,26 +389,17 @@ var gameui;
             this.currentScreen = newScreen;
             this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
         };
-        GameScreen.prototype.resizeGameScreen = function (deviceWidth, deviceHeight, updateCSS) {
-            if (updateCSS === void 0) { updateCSS = true; }
+        GameScreen.prototype.resizeGameScreen = function (deviceWidth, deviceHeight) {
             if (this.defaultHeight) {
-                var aspect = this.defaultWidth / this.defaultHeight;
+                var defaultAspect = this.defaultWidth / this.defaultHeight;
                 var aspectReal = deviceWidth / deviceHeight;
-                if (aspectReal > aspect) {
+                if (aspectReal > defaultAspect) {
                     var s = deviceHeight / this.defaultHeight;
                     deviceWidth = this.defaultWidth * s;
                 }
             }
             PIXIrenderer.resize(deviceWidth, deviceHeight);
             this.updateViewerScale(deviceWidth, deviceHeight, this.defaultWidth, this.defaultHeight);
-        };
-        GameScreen.prototype.sendBackButtonEvent = function () {
-            if (this.currentScreen && this.currentScreen.onback && !this.currentScreen.transitioning) {
-                this.currentScreen.onback();
-                return false;
-            }
-            else
-                return true;
         };
         GameScreen.prototype.updateViewerScale = function (realWidth, realHeight, defaultWidth, defaultHeight) {
             var scale = realWidth / defaultWidth;
@@ -416,6 +412,10 @@ var gameui;
             this.screenContainer.y = this.viewerOffset = (this.currentHeight - defaultHeight) / 2 * scale;
             if (this.currentScreen)
                 this.currentScreen.redim(this.headerPosition, this.footerPosition, this.currentWidth, this.currentHeight);
+            this.currentScale = scale;
+        };
+        GameScreen.prototype.getCurrentScale = function () {
+            return this.currentScale;
         };
         GameScreen.prototype.removeOldScreen = function (oldScreen) {
             if (oldScreen != null) {
@@ -423,6 +423,14 @@ var gameui;
                 this.screenContainer.removeChild(oldScreen.view);
                 oldScreen = null;
             }
+        };
+        GameScreen.prototype.sendBackButtonEvent = function () {
+            if (this.currentScreen && this.currentScreen.onback && !this.currentScreen.transitioning) {
+                this.currentScreen.onback();
+                return false;
+            }
+            else
+                return true;
         };
         return GameScreen;
     }());
@@ -1206,14 +1214,14 @@ var joinjelly;
             this.ScrollArea = new PIXI.Container();
             this.content.addChild(this.ScrollArea);
             this.ScrollArea.addChild(this.scrollableContent);
-            var mask = gameui.AssetsManager.getBitmap('ScrollMask');
-            this.ScrollArea.addChild(mask);
-            mask.scaleX = mask.scaleY = 2;
-            mask.interactive = false;
-            mask.interactiveChildren = false;
-            mask.x = (defaultWidth - 1463) / 2;
-            mask.y = (defaultHeight - 1788) / 2;
-            this.ScrollArea.mask = mask;
+            var scrollMask = gameui.AssetsManager.getBitmap('');
+            this.content.addChild(scrollMask);
+            scrollMask.scaleX = scrollMask.scaleY = 2;
+            scrollMask.interactive = false;
+            scrollMask.interactiveChildren = false;
+            scrollMask.x = (defaultWidth - 1463) / 2;
+            scrollMask.y = (defaultHeight - 1788) / 2;
+            this.ScrollArea.mask = scrollMask;
             this.ScrollArea.addEventListener("touchmove", this.pressMoveScroll, this);
             this.ScrollArea.addEventListener("touchend", this.pressUpScroll, this);
             this.ScrollArea.addEventListener("touchstart", this.pressDownScroll, this);
@@ -1278,14 +1286,15 @@ var joinjelly;
     (function (menus) {
         var Loading = (function (_super) {
             __extends(Loading, _super);
-            function Loading() {
+            function Loading(scale) {
                 var _this = this;
                 _super.call(this);
                 PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(json)|(fnt))$/;
+                joinjelly.JoinJelly.gameScreen.currentScreen;
                 assetscale = 1;
-                if (window.innerWidth <= 1070)
+                if (scale < 0.75)
                     assetscale = 0.5;
-                if (window.innerWidth <= 384)
+                if (scale < 0.375)
                     assetscale = 0.25;
                 var imagePath = "/assets/";
                 var audioPath = "/assets/sounds/";
@@ -1296,11 +1305,11 @@ var joinjelly;
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy@" + assetscale + "x.fnt");
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig@" + assetscale + "x.fnt");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-1@" + assetscale + "x.json");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-2@" + assetscale + "x.json");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-3@" + assetscale + "x.json");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-4@" + assetscale + "x.json");
-                gameui.AssetsManager.loadSpriteSheet("Sprites-5@" + assetscale + "x.json");
+                gameui.AssetsManager.loadSpriteSheet("s1", "Sprites-1@" + assetscale + "x.json");
+                gameui.AssetsManager.loadSpriteSheet("s2", "Sprites-2@" + assetscale + "x.json");
+                gameui.AssetsManager.loadSpriteSheet("s3", "Sprites-3@" + assetscale + "x.json");
+                gameui.AssetsManager.loadSpriteSheet("s4", "Sprites-4@" + assetscale + "x.json");
+                gameui.AssetsManager.loadSpriteSheet("s5", "Sprites-5@" + assetscale + "x.json");
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 var loadinBar = new LoadingBar(imagePath);
                 this.content.addChild(loadinBar);
@@ -1310,7 +1319,7 @@ var joinjelly;
                     loadinBar.update(progress);
                 };
                 gameui.AssetsManager.onComplete = function () { };
-                gameui.AssetsManager.load();
+                gameui.AssetsManager.load(this.loaded);
                 gameui.AssetsManager.load(function () {
                     if (_this.loaded)
                         _this.loaded();
@@ -4806,7 +4815,8 @@ var joinjelly;
             }
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
             DeviceServices.registerBackButton(function () { return _this.gameScreen.sendBackButtonEvent(); });
-            var loadingScreen = new joinjelly.menus.Loading();
+            var scale = this.gameScreen.getCurrentScale();
+            var loadingScreen = new joinjelly.menus.Loading(scale);
             this.gameScreen.switchScreen(loadingScreen);
             loadingScreen.loaded = function () {
                 AdsServices.initialize();
