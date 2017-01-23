@@ -52,7 +52,7 @@
             var container = new PIXI.Container();
             
             // creates points Bg
-            var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
+            var bg = gameui.AssetsManager.getBitmap("FlyGroup");
             bg.set({ x: defaultWidth / 2, y: 565, regX: 1056 / 2 });
             container.addChild(bg);
 
