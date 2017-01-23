@@ -16,13 +16,11 @@ module joinjelly.menus {
             super();
             PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(json)|(fnt))$/;
 
-            JoinJelly.gameScreen.currentScreen
-
             assetscale = 1;
             if (scale < 0.75) assetscale = 0.5;
             if (scale < 0.375) assetscale = 0.25;
 
-            var imagePath = "/assets/";
+            var imagePath = "/assets/"; // images@"+assetscale+"x/
             var audioPath = "/assets/sounds/";  
             
             //load audio
