@@ -95,7 +95,6 @@ PIXI.DisplayObject.prototype.set = function (props) {
     for (var n in props) { this[n] = props[n]; }
     return this;
 };
- 
 PIXI.DisplayObject.prototype.setTransform = function (x, y, scaleX, scaleY, rotation, skewX, skewY, regX, regY) {
 
     this.x = x || 0;
@@ -122,7 +121,7 @@ PIXI.Container.prototype.addChild = function (child) {
 
     return this.Container_addChild(child)
 };
-
 PIXI.Container.prototype.removeAllChildren = function () {
     this.removeChildren();
-} 
+}
+ 
