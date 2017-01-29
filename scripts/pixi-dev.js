@@ -25778,6 +25778,8 @@ function sayHello(type) {
 function isWebGLSupported() {
     var contextOptions = { stencil: true, failIfMajorPerformanceCaveat: true };
 
+     
+
     try {
         if (!window.WebGLRenderingContext) {
             return false;
@@ -25786,7 +25788,7 @@ function isWebGLSupported() {
         var canvas = document.createElement('canvas');
         var gl = canvas.getContext('webgl', contextOptions) || canvas.getContext('experimental-webgl', contextOptions);
 
-        var success = !!(gl && gl.getContextAttributes().stencil);
+        var success = !!(gl);
 
         if (gl) {
             var loseContext = gl.getExtension('WEBGL_lose_context');

@@ -36,17 +36,17 @@ module joinjelly {
             if (typeof cordova !== 'undefined') {
             
                 document.addEventListener('deviceready', () => {
-                    setTimeout(() => {
-                        this.gameServices.initializeGameservices();
-                        var score = this.gameServices.getScore();
-                        if (score) this.userData.setScore(score);
-                    }, 5000)
+                   //setTimeout(() => {
+                   //    this.gameServices.initializeGameservices();
+                   //    var score = this.gameServices.getScore();
+                   //    if (score) this.userData.setScore(score);
+                   //}, 5000)
             
                     SocialServices.initialize();
             
                     // compatibility
                     if (DeviceServices.getOs() == "android") {
-                        //PIXI["settings"].SPRITE_MAX_TEXTURES = 1;
+                        PIXI["settings"].SPRITE_MAX_TEXTURES = 1;
                         //PIXI["settings"].PRECISION = PIXI.PRECISION.HIGH;
                         //PIXI.glCore.VertexArrayObject.FORCE_NATIVE = false;
                     }

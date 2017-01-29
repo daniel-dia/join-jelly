@@ -2405,22 +2405,6 @@ var joinjelly;
                     this.addChild(levelBarBorder);
                     levelBarBorder.x = 309;
                     levelBarBorder.y = 122;
-                    var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
-                    levelBar.x = 372;
-                    levelBar.y = 207;
-                    levelBar.mask = new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 939, 57).endFill();
-                    levelBar.mask.x = 372;
-                    levelBar.mask.y = 207;
-                    this.levelBar = levelBar;
-                    this.addChild(levelBar);
-                    this.addChild(levelBar.mask);
-                    var levelTip = gameui.AssetsManager.getBitmap("powerTip");
-                    levelTip.x = 372;
-                    levelTip.y = 207;
-                    levelTip.regX = 67 / 2;
-                    levelTip.regY = 77 / 2;
-                    this.levelTip = levelTip;
-                    this.addChild(levelTip);
                     var levelIcon = gameui.AssetsManager.getBitmap("bonus_icon");
                     levelIcon.x = 1288 + 213 / 2;
                     levelIcon.y = 90 + 243 / 2;
@@ -2445,6 +2429,26 @@ var joinjelly;
                     level.y = 242 - 165;
                     this.levelText = level;
                     this.addChild(level);
+                    var levelBarContainer = new PIXI.Container();
+                    levelBarContainer.x = 372;
+                    levelBarContainer.y = 207;
+                    this.addChild(levelBarContainer);
+                    var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
+                    this.levelBar = levelBar;
+                    levelBarContainer.addChild(levelBar);
+                    var mask = new PIXI.Graphics().beginFill(0xFF0000).drawPolygon([0, 0, 0, 67, 939, 67, 939, 0]).endFill();
+                    levelBar.mask = mask;
+                    mask.interactive = false;
+                    mask.interactiveChildren = false;
+                    levelBarContainer.addChild(mask);
+                    this.levelBarMask = mask;
+                    var levelTip = gameui.AssetsManager.getBitmap("powerTip");
+                    levelTip.x = 372;
+                    levelTip.y = 207;
+                    levelTip.regX = 67 / 2;
+                    levelTip.regY = 77 / 2;
+                    this.levelTip = levelTip;
+                    levelBarContainer.addChild(levelTip);
                 };
                 GameHeader.prototype.hideButtons = function () {
                     this.pauseButton.fadeOut();
@@ -2467,8 +2471,8 @@ var joinjelly;
                     if (percent != undefined)
                         if (score != this.lastScore || typeof this.lastScore === 'undefined') {
                             value = percent / 100;
-                            createjs.Tween.removeTweens(this.levelBar.mask);
-                            createjs.Tween.get(this.levelBar.mask).to({ scaleX: value }, 1000, createjs.Ease.elasticOut);
+                            createjs.Tween.removeTweens(this.levelBarMask);
+                            createjs.Tween.get(this.levelBarMask).to({ scaleX: value }, 1000, createjs.Ease.elasticOut);
                             createjs.Tween.removeTweens(this.levelTip);
                             createjs.Tween.get(this.levelTip).to({ x: value * 940 + this.levelBar.x, y: this.levelBar.y + 24 }, 1000, createjs.Ease.elasticOut);
                             createjs.Tween.get(this.levelTip).to({ scaleX: 2, scaleY: 2 }).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
@@ -2481,8 +2485,8 @@ var joinjelly;
                 GameHeader.prototype.levelUpEffect = function () {
                     var _this = this;
                     this.effect.castBoth();
-                    createjs.Tween.removeTweens(this.levelBar.mask);
-                    createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () { _this.levelBar.mask.scaleX = 0; });
+                    createjs.Tween.removeTweens(this.levelBarMask);
+                    createjs.Tween.get(this.levelBarMask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(function () { _this.levelBarMask.scaleX = 0; });
                     createjs.Tween.removeTweens(this.levelText);
                     this.levelText.set({ scaleY: 0, scaleX: 4 });
                     createjs.Tween.get(this.levelText).to({ scaleX: 1, scaleY: 1 }, 1000, createjs.Ease.elasticOut);
@@ -4804,14 +4808,9 @@ var joinjelly;
             DeviceServices.registerBackButton(function () { return _this.gameScreen.sendBackButtonEvent(); });
             if (typeof cordova !== 'undefined') {
                 document.addEventListener('deviceready', function () {
-                    setTimeout(function () {
-                        _this.gameServices.initializeGameservices();
-                        var score = _this.gameServices.getScore();
-                        if (score)
-                            _this.userData.setScore(score);
-                    }, 5000);
                     SocialServices.initialize();
                     if (DeviceServices.getOs() == "android") {
+                        PIXI["settings"].SPRITE_MAX_TEXTURES = 1;
                     }
                     _this.initScreen(canvasName);
                 }, false);

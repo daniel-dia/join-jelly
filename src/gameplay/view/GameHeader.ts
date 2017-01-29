@@ -13,6 +13,8 @@
 
         private effect: joinjelly.view.Effect;
 
+        private levelBarMask: PIXI.DisplayObject;
+
         private pauseButton: gameui.UIItem;
         constructor() {
             super();
@@ -36,24 +38,7 @@
             this.addChild(levelBarBorder);
             levelBarBorder.x = 309;
             levelBarBorder.y = 122;
-            
-            var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
-            levelBar.x = 372;
-            levelBar.y = 207;
-            levelBar.mask = new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 939, 57).endFill();
-            levelBar.mask.x = 372;
-            levelBar.mask.y = 207;
-            this.levelBar = levelBar;
-            this.addChild(levelBar);
-            this.addChild(levelBar.mask);
 
-            var levelTip = gameui.AssetsManager.getBitmap("powerTip");
-            levelTip.x = 372;
-            levelTip.y = 207;
-            levelTip.regX = 67 / 2;
-            levelTip.regY = 77 / 2;
-            this.levelTip = levelTip;
-            this.addChild(levelTip);
 
 
             var levelIcon = gameui.AssetsManager.getBitmap("bonus_icon");
@@ -87,6 +72,32 @@
             this.addChild(level);
 
 
+            // ------------- //
+            var levelBarContainer = new PIXI.Container();
+            levelBarContainer.x = 372;
+            levelBarContainer.y = 207;
+            this.addChild(levelBarContainer);
+
+         
+
+            var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
+            this.levelBar = levelBar;
+            levelBarContainer.addChild(levelBar);
+
+            var mask = new PIXI.Graphics().beginFill(0xFF0000).drawPolygon([0, 0, 0, 67, 939, 67, 939, 0]).endFill();
+            levelBar.mask = mask;
+            mask.interactive = false;
+            mask.interactiveChildren = false;
+            levelBarContainer.addChild(mask);
+            this.levelBarMask = mask;
+
+            var levelTip = gameui.AssetsManager.getBitmap("powerTip");
+            levelTip.x = 372;
+            levelTip.y = 207;
+            levelTip.regX = 67 / 2;
+            levelTip.regY = 77 / 2;
+            this.levelTip = levelTip;
+            levelBarContainer.addChild(levelTip);
         }
 
         public hideButtons() {
@@ -119,8 +130,8 @@
             if (percent != undefined)
                 if (score != this.lastScore || typeof this.lastScore === 'undefined' ) {
                     value = percent / 100;
-                    createjs.Tween.removeTweens(this.levelBar.mask);
-                    createjs.Tween.get(this.levelBar.mask).to({ scaleX: value }, 1000, createjs.Ease.elasticOut)
+                    createjs.Tween.removeTweens(this.levelBarMask);
+                    createjs.Tween.get(this.levelBarMask).to({ scaleX: value }, 1000, createjs.Ease.elasticOut)
 
                     createjs.Tween.removeTweens(this.levelTip);
                     createjs.Tween.get(this.levelTip).to({ x: value * 940 + this.levelBar.x, y: this.levelBar.y + 24 }, 1000, createjs.Ease.elasticOut)
@@ -141,9 +152,9 @@
 
             this.effect.castBoth();
 
-            //moves the bar
-            createjs.Tween.removeTweens(this.levelBar.mask);
-            createjs.Tween.get(this.levelBar.mask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(() => { this.levelBar.mask.scaleX = 0 })
+            ////moves the bar
+            createjs.Tween.removeTweens(this.levelBarMask);
+            createjs.Tween.get(this.levelBarMask).to({ scaleX: 1 }, 100, createjs.Ease.quadIn).call(() => { this.levelBarMask.scaleX = 0 })
             
             //increase number
             createjs.Tween.removeTweens(this.levelText);
