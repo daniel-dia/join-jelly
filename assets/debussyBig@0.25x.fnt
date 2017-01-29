@@ -1,5 +1,5 @@
 <font>
-  <info face="debussyBig" size="100" bold="0" italic="0" charset="" unicode="" stretchH="100" smooth="1" aa="1" padding="2,2,2,2" spacing="0,0" outline="0"/>
+  <info face="debussyBig" size="100" bold="0" italic="0" charset="" unicode="" stretchH="100" smooth="1" aa="0.25" padding="2,2,2,2" spacing="0,0" outline="0"/>
   <common lineHeight="27" base="24" scaleW="267" scaleH="512" pages="1" packed="0"/>
   <pages>
     <page id="0" file="debussyBig@0.25x.png"/>

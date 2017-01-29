@@ -20,15 +20,13 @@ module joinjelly.menus {
             if (scale < 0.75) assetscale = 0.5;
             if (scale < 0.375) assetscale = 0.25;
 
-            var imagePath = "/assets/"; // images@"+assetscale+"x/
+            var imagePath = "/assets/";
             var audioPath = "/assets/sounds/";  
             
             //load audio
-            if (!testMode && typeof WPAudioManager == 'undefined') {
-                createjs.Sound.alternateExtensions = ["mp3"];
-                createjs.Sound.registerSounds(audioManifest, audioPath);
-            }
+           
             gameui.AssetsManager.loadAssets(imageManifest, imagePath);
+            PIXI["settings"].SCALE_BITMAP_FONT = true;
 
             gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy@" + assetscale + "x.fnt");
             gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig@" + assetscale + "x.fnt");
@@ -37,9 +35,11 @@ module joinjelly.menus {
 
             gameui.AssetsManager.loadSpriteSheet("s1", "Sprites-1@" + assetscale + "x.json");
             gameui.AssetsManager.loadSpriteSheet("s2", "Sprites-2@" + assetscale + "x.json");
-            gameui.AssetsManager.loadSpriteSheet("s3", "Sprites-3@" + assetscale + "x.json");
-            gameui.AssetsManager.loadSpriteSheet("s4", "Sprites-4@" + assetscale + "x.json");
-            gameui.AssetsManager.loadSpriteSheet("s5", "Sprites-5@" + assetscale + "x.json");
+
+            if (!testMode && typeof WPAudioManager == 'undefined') {
+                createjs.Sound.alternateExtensions = ["mp3"];
+                createjs.Sound.registerSounds(audioManifest, audioPath);
+            }
 
             // set default sound button
             gameui.Button.DefaultSoundId = "Interface Sound-06";

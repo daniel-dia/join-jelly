@@ -192,8 +192,9 @@ var gameui;
         AssetsManager.reset = function () {
             this.loader.reset();
         };
-        AssetsManager.loadFontSpriteSheet = function (id, fontFile) {
-            this.loader.add(id, fontFile);
+        AssetsManager.loadFontSpriteSheet = function (id, fontFile, options) {
+            if (options === void 0) { options = null; }
+            this.loader.add(id, fontFile, options);
         };
         AssetsManager.loadSpriteSheet = function (id, fontFile) {
             this.loader.add(id, fontFile);
@@ -280,7 +281,7 @@ var gameui;
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
             PIXIstage = new PIXI.Container();
-            PIXIrenderer = new PIXI.WebGLRenderer(gameWidth, gameHeight);
+            PIXIrenderer = PIXI.autoDetectRenderer(gameWidth, gameHeight);
             document.getElementById(divId).appendChild(PIXIrenderer.view);
             this.screenContainer = new PIXI.Container();
             PIXIstage.addChild(this.screenContainer);
@@ -1214,9 +1215,12 @@ var joinjelly;
             this.ScrollArea = new PIXI.Container();
             this.content.addChild(this.ScrollArea);
             this.ScrollArea.addChild(this.scrollableContent);
-            var scrollMask = gameui.AssetsManager.getBitmap('');
+            var scrollMask = new PIXI.Graphics().beginFill(0xFF0000).drawPolygon([1417.556, 333.618, 1399.557, 264.622, 1363.559, 198.625, 1288.563, 146.128, 1197.067, 131.129,
+                1197.067, 221.124, 1179.068, 239.123, 1161.069, 254.122, 745.59, 254.122, 301.612, 254.122, 283.613, 239.123, 265.614, 221.124,
+                272.25, 131.129, 174.118, 146.128, 99.122, 198.625, 63.124, 264.622, 45.125, 333.618, 36.125, 918.589, 45.125, 1547.058, 58.624, 1593.555,
+                85.623, 1647.553, 136.62, 1701.55, 181.618, 1722.549, 717.091, 1728.553, 745.59, 1728.553, 1281.063, 1722.549, 1326.061, 1701.55,
+                1377.058, 1647.553, 1404.057, 1593.555, 1417.556, 1547.058, 1426.556, 918.589]);
             this.content.addChild(scrollMask);
-            scrollMask.scaleX = scrollMask.scaleY = 2;
             scrollMask.interactive = false;
             scrollMask.interactiveChildren = false;
             scrollMask.x = (defaultWidth - 1463) / 2;
@@ -1290,7 +1294,6 @@ var joinjelly;
                 var _this = this;
                 _super.call(this);
                 PIXI.RETINA_PREFIX = /@(.+)x.+((png)|(jpg)|(xml)|(json)|(fnt))$/;
-                joinjelly.JoinJelly.gameScreen.currentScreen;
                 assetscale = 1;
                 if (scale < 0.75)
                     assetscale = 0.5;
@@ -1298,18 +1301,16 @@ var joinjelly;
                     assetscale = 0.25;
                 var imagePath = "/assets/";
                 var audioPath = "/assets/sounds/";
-                if (!testMode && typeof WPAudioManager == 'undefined') {
-                    createjs.Sound.alternateExtensions = ["mp3"];
-                    createjs.Sound.registerSounds(audioManifest, audioPath);
-                }
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
+                PIXI["settings"].SCALE_BITMAP_FONT = true;
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy@" + assetscale + "x.fnt");
                 gameui.AssetsManager.loadFontSpriteSheet("debussyBig", "debussyBig@" + assetscale + "x.fnt");
                 gameui.AssetsManager.loadSpriteSheet("s1", "Sprites-1@" + assetscale + "x.json");
                 gameui.AssetsManager.loadSpriteSheet("s2", "Sprites-2@" + assetscale + "x.json");
-                gameui.AssetsManager.loadSpriteSheet("s3", "Sprites-3@" + assetscale + "x.json");
-                gameui.AssetsManager.loadSpriteSheet("s4", "Sprites-4@" + assetscale + "x.json");
-                gameui.AssetsManager.loadSpriteSheet("s5", "Sprites-5@" + assetscale + "x.json");
+                if (!testMode && typeof WPAudioManager == 'undefined') {
+                    createjs.Sound.alternateExtensions = ["mp3"];
+                    createjs.Sound.registerSounds(audioManifest, audioPath);
+                }
                 gameui.Button.DefaultSoundId = "Interface Sound-06";
                 var loadinBar = new LoadingBar(imagePath);
                 this.content.addChild(loadinBar);
@@ -2919,7 +2920,7 @@ var joinjelly;
                 };
                 FinishMenu.prototype.addPoints = function () {
                     var container = new PIXI.Container();
-                    var bg = gameui.AssetsManager.getBitmap("GameOverBgPoints");
+                    var bg = gameui.AssetsManager.getBitmap("FlyGroup");
                     bg.set({ x: defaultWidth / 2, y: 565, regX: 1056 / 2 });
                     container.addChild(bg);
                     var tx = gameui.AssetsManager.getBitmapText("", "debussyBig");
@@ -4793,28 +4794,39 @@ var joinjelly;
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
             this.gameServices = new GameServices();
-            document.addEventListener('deviceready', function () {
-                setTimeout(function () {
-                    _this.gameServices.initializeGameservices();
-                    var score = _this.gameServices.getScore();
-                    if (score)
-                        _this.userData.setScore(score);
-                }, 5000);
-            }, false);
-            SocialServices.initialize();
             var lang = (window.navigator["userLanguage"] || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt":
                     StringResources = StringResources_pt;
                     break;
             }
+            PIXI["settings"].BITMAP_FONT_TEXTURE_RESOLUTION = true;
+            DeviceServices.registerBackButton(function () { return _this.gameScreen.sendBackButtonEvent(); });
+            if (typeof cordova !== 'undefined') {
+                document.addEventListener('deviceready', function () {
+                    setTimeout(function () {
+                        _this.gameServices.initializeGameservices();
+                        var score = _this.gameServices.getScore();
+                        if (score)
+                            _this.userData.setScore(score);
+                    }, 5000);
+                    SocialServices.initialize();
+                    if (DeviceServices.getOs() == "android") {
+                    }
+                    _this.initScreen(canvasName);
+                }, false);
+            }
+            else
+                this.initScreen(canvasName);
+        };
+        JoinJelly.initScreen = function (canvasName) {
+            var _this = this;
             var fps = 35;
             if (window.location.search == "?test") {
                 fps = 10;
                 testMode = true;
             }
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
-            DeviceServices.registerBackButton(function () { return _this.gameScreen.sendBackButtonEvent(); });
             var scale = this.gameScreen.getCurrentScale();
             var loadingScreen = new joinjelly.menus.Loading(scale);
             this.gameScreen.switchScreen(loadingScreen);

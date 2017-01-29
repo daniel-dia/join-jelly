@@ -36,9 +36,7 @@
             this.addChild(levelBarBorder);
             levelBarBorder.x = 309;
             levelBarBorder.y = 122;
-
-
-
+            
             var levelBar = gameui.AssetsManager.getBitmap("bonus_bar");
             levelBar.x = 372;
             levelBar.y = 207;

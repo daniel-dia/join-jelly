@@ -47,13 +47,16 @@
             this.ScrollArea = new PIXI.Container();
             this.content.addChild(this.ScrollArea);
             this.ScrollArea.addChild(this.scrollableContent);
-       
-            var scrollMask = gameui.AssetsManager.getBitmap('');
+
+            var scrollMask = new PIXI.Graphics().beginFill(0xFF0000).drawPolygon([1417.556, 333.618, 1399.557, 264.622, 1363.559, 198.625, 1288.563, 146.128, 1197.067, 131.129,
+                1197.067, 221.124, 1179.068, 239.123, 1161.069, 254.122, 745.59, 254.122, 301.612, 254.122, 283.613, 239.123, 265.614, 221.124,
+                272.25, 131.129, 174.118, 146.128, 99.122, 198.625, 63.124, 264.622, 45.125, 333.618, 36.125, 918.589, 45.125, 1547.058, 58.624, 1593.555,
+                85.623, 1647.553, 136.62, 1701.55, 181.618, 1722.549, 717.091, 1728.553, 745.59, 1728.553, 1281.063, 1722.549, 1326.061, 1701.55,
+                1377.058, 1647.553, 1404.057, 1593.555, 1417.556, 1547.058, 1426.556, 918.589])
             this.content.addChild(scrollMask);
-            scrollMask.scaleX = scrollMask.scaleY = 2;
             scrollMask.interactive = false;
             scrollMask.interactiveChildren = false;
-      
+
             scrollMask.x = (defaultWidth - 1463) / 2;
             scrollMask.y = (defaultHeight - 1788) / 2;
 
@@ -67,7 +70,7 @@
             this.ScrollArea.addEventListener("mouseup", this.pressUpScroll, this);
             this.ScrollArea.addEventListener("mouseout", this.pressUpScroll, this);
             this.ScrollArea.addEventListener("mousedown", this.pressDownScroll, this);
-            
+
             this.ScrollArea.interactive = true;
             this.ScrollArea.hitArea = new PIXI.Rectangle(0, 0, defaultWidth, defaultHeight);
 
@@ -87,7 +90,7 @@
             if (this.targetY > 400) this.targetY = 400;
             if (this.targetY < -this.maxScroll) this.targetY = -this.maxScroll;
             this.last = localY;
-            
+
         }
 
         private pressUpScroll(evt) {
@@ -98,7 +101,7 @@
         private scrollTick(evt) {
             this.scrollableContent.y = (this.scrollableContent.y * 2 + this.targetY) / 3;
         }
-        
+
         private addBackButton() {
             // add ok button
             var backbutton = new gameui.ImageButton("BtBack", () => {
@@ -111,7 +114,7 @@
             this.header.addChild(backbutton);
 
         }
-        
+
         public activate(parameters?: any) {
             super.activate(parameters);
             PIXI.ticker.shared.add(this.scrollTick, this);

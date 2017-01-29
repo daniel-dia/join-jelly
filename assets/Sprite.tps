@@ -4,9 +4,9 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.3.1</string>
+        <string>4.3.3</string>
         <key>fileName</key>
-        <string>C:/Users/artsj_000/Documents/Trabalhos/Games/JoinJelly/Source/assets/Sprite.tps</string>
+        <string>//192.168.0.10/Users/artsj_000/Documents/Trabalhos/Games/JoinJelly/Source/assets/Sprite.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -92,7 +92,7 @@
         <key>jxrCompressionLevel</key>
         <uint>0</uint>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
+        <enum type="SettingsBase::DitherType">PngQuantMedium</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -106,7 +106,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>4</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -219,7 +219,7 @@
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">None</enum>
+            <enum type="SpriteSettings::TrimMode">Trim</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -401,7 +401,6 @@
                 <false/>
             </struct>
             <key type="filename">images/FlyGroup.png</key>
-            <key type="filename">images/GameOverBgPoints.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

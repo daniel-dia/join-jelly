@@ -1,4 +1,6 @@
 ﻿var testMode;
+declare var cordova;
+
 window.onload = function () {
     joinjelly.JoinJelly.init("gameDiv");
 }
@@ -20,23 +22,46 @@ module joinjelly {
             this.itemData = new ItemsData();
             this.gameServices = new GameServices();
 
-            document.addEventListener('deviceready', () => {
-                setTimeout(() => {
-                    this.gameServices.initializeGameservices();
-                    var score = this.gameServices.getScore();
-                    if (score) this.userData.setScore(score);
-                }, 5000)
-            }, false);
-
-
-
-            SocialServices.initialize();
-
             // define language
             var lang = (window.navigator["userLanguage"] || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt": StringResources = StringResources_pt; break;
             }
+
+            PIXI["settings"].BITMAP_FONT_TEXTURE_RESOLUTION = true;
+
+            // add back button callback
+            DeviceServices.registerBackButton(() => { return this.gameScreen.sendBackButtonEvent() })
+
+            if (typeof cordova !== 'undefined') {
+            
+                document.addEventListener('deviceready', () => {
+                    setTimeout(() => {
+                        this.gameServices.initializeGameservices();
+                        var score = this.gameServices.getScore();
+                        if (score) this.userData.setScore(score);
+                    }, 5000)
+            
+                    SocialServices.initialize();
+            
+                    // compatibility
+                    if (DeviceServices.getOs() == "android") {
+                        //PIXI["settings"].SPRITE_MAX_TEXTURES = 1;
+                        //PIXI["settings"].PRECISION = PIXI.PRECISION.HIGH;
+                        //PIXI.glCore.VertexArrayObject.FORCE_NATIVE = false;
+                    }
+                    
+                    this.initScreen(canvasName);
+            
+                }, false);
+            
+            }
+            
+            else
+                this.initScreen(canvasName);
+        }
+
+        private static initScreen(canvasName: string) {
 
             var fps = 35;
             if (window.location.search == "?test") {
@@ -44,15 +69,14 @@ module joinjelly {
                 testMode = true;
             }
 
+
             this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
 
-            // add back button callback
-            DeviceServices.registerBackButton(() => { return this.gameScreen.sendBackButtonEvent() })
+          
 
             var scale = this.gameScreen.getCurrentScale();
             var loadingScreen = new joinjelly.menus.Loading(scale);
             this.gameScreen.switchScreen(loadingScreen);
-
 
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
@@ -61,12 +85,6 @@ module joinjelly {
 
                 var loadedGame = this.userData.loadGame();
                 JoinJelly.showMainScreen();
-
-                // if (window.location.search == "?test") {
-                //     //JoinJelly.showTestScreen();return;
-                //     //this.gameScreen.switchScreen(new menus.DevTest());
-                //     // this.startTest();
-                // }
 
             }
         }
