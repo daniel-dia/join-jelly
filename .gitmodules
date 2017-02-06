@@ -1,8 +1,8 @@
 [submodule "src/GameUI"]
 	path = src/GameUI
-	url = C:/Users/artsj_000/Documents/Trabalhos/Games/gameui
+	url = https://github.com/artsjedi/GameUI.git
 	branch = master
 [submodule "src/ServicesJS"]
 	path = src/ServicesJS
-	url = C:/Users/artsj_000/Documents/Trabalhos/Games/GameServicesJS
+	url = https://github.com/artsjedi/CocoonServicesJS.git
 	branch = master
