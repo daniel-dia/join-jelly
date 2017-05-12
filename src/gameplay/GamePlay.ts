@@ -183,7 +183,6 @@ module joinjelly.gameplay {
                 setTimeout(() => { joinjelly.JoinJelly.startLevel(); }, 200);
             });
 
-
             this.finishMenu.addEventListener("home", () => {
                 if (this.userData) this.userData.deleteSaveGame();
                 // save high score

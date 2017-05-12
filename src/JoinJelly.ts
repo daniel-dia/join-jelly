@@ -36,13 +36,8 @@ module joinjelly {
             if (typeof cordova !== 'undefined') {
             
                 document.addEventListener('deviceready', () => {
-                   //setTimeout(() => {
-                   //    this.gameServices.initializeGameservices();
-                   //    var score = this.gameServices.getScore();
-                   //    if (score) this.userData.setScore(score);
-                   //}, 5000)
-            
-                    SocialServices.initialize();
+
+                    //SocialServices.initialize();
             
                     // compatibility
                     if (DeviceServices.getOs() == "android") {

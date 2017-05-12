@@ -58,7 +58,11 @@
             this.castSimpleInv();
         }
 
- 
+        public castBothInv() {
+            this.castSimple();
+            this.castParts();
+        }
+
         public castDistroyEffect() {
             var fx1 = <PIXI.Sprite>gameui.AssetsManager.getBitmap("fxPart");
             var src = { regX: 140 + Math.random() * 40, regY: 140 + Math.random() * 40, scaleX: 1, scaleY: 1, rotation_d: 360 / 16, alpha: 4 }

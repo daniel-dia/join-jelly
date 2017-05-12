@@ -1,4 +1,6 @@
-﻿var defaultWidth: number = 768*2;
+﻿var app_version = "71";
+
+var defaultWidth: number = 768 * 2;
 var defaultHeight: number = 1024*2;
 
 var fbAppId: string = "1416523228649363";
