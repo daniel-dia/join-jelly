@@ -1,9 +1,20 @@
 ﻿var testMode;
 declare var cordova;
 
+
+
+
 window.onload = function () {
-    joinjelly.JoinJelly.init("gameDiv");
+    if (typeof cordova !== 'undefined') {
+        document.addEventListener('deviceready', () => {joinjelly.JoinJelly.init("gameDiv"); }, false);
+    } else {
+        joinjelly.JoinJelly.init("gameDiv");
+        console.log("NormalInit")
+    }
 }
+
+
+
 module joinjelly {
     export class JoinJelly {
 
@@ -22,41 +33,21 @@ module joinjelly {
             this.itemData = new ItemsData();
             this.gameServices = new GameServices();
 
-            // define language
+            // define language // for now, it only have pt
             var lang = (window.navigator["userLanguage"] || window.navigator.language).substr(0, 2).toLowerCase();
             switch (lang) {
                 case "pt": StringResources = StringResources_pt; break;
             }
 
-            PIXI["settings"].BITMAP_FONT_TEXTURE_RESOLUTION = true;
-
             // add back button callback
             DeviceServices.registerBackButton(() => { return this.gameScreen.sendBackButtonEvent() })
 
-            if (typeof cordova !== 'undefined') {
-            
-                document.addEventListener('deviceready', () => {
+            var androidLegacy = DeviceServices.getOs() == "android"
+            this.initScreen(canvasName, androidLegacy);
 
-                    //SocialServices.initialize();
-            
-                    // compatibility
-                    if (DeviceServices.getOs() == "android") {
-                        PIXI["settings"].SPRITE_MAX_TEXTURES = 1;
-                        //PIXI["settings"].PRECISION = PIXI.PRECISION.HIGH;
-                        //PIXI.glCore.VertexArrayObject.FORCE_NATIVE = false;
-                    }
-                    
-                    this.initScreen(canvasName);
-            
-                }, false);
-            
-            }
-            
-            else
-                this.initScreen(canvasName);
         }
 
-        private static initScreen(canvasName: string) {
+        private static initScreen(canvasName: string, legacy: boolean = false) {
 
             var fps = 35;
             if (window.location.search == "?test") {
@@ -64,10 +55,7 @@ module joinjelly {
                 testMode = true;
             }
 
-
-            this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
-
-          
+            this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps, legacy);
 
             var scale = this.gameScreen.getCurrentScale();
             var loadingScreen = new joinjelly.menus.Loading(scale);
@@ -75,7 +63,6 @@ module joinjelly {
 
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
-
                 AdsServices.initialize();
 
                 var loadedGame = this.userData.loadGame();

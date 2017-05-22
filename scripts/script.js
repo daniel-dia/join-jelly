@@ -1,8 +1,13 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var gameui;
 (function (gameui) {
     var UIItem = (function (_super) {
@@ -276,13 +281,14 @@ var gameui;
     var last = 0;
     var doing = false;
     var GameScreen = (function () {
-        function GameScreen(divId, gameWidth, gameHeight, fps) {
+        function GameScreen(divId, gameWidth, gameHeight, fps, legacy) {
             if (fps === void 0) { fps = 60; }
+            if (legacy === void 0) { legacy = false; }
             var _this = this;
             this.defaultWidth = gameWidth;
             this.defaultHeight = gameHeight;
             PIXIstage = new PIXI.Container();
-            PIXIrenderer = new PIXI.WebGLRenderer(gameWidth, gameHeight);
+            PIXIrenderer = new PIXI.WebGLRenderer(gameWidth, gameHeight, { legacy: legacy });
             document.getElementById(divId).appendChild(PIXIrenderer.view);
             this.screenContainer = new PIXI.Container();
             PIXIstage.addChild(this.screenContainer);
@@ -4813,7 +4819,13 @@ histories.EVOLVE = "evolve";
 histories.FIRSTPLAY = "firstplay";
 var testMode;
 window.onload = function () {
-    joinjelly.JoinJelly.init("gameDiv");
+    if (typeof cordova !== 'undefined') {
+        document.addEventListener('deviceready', function () { joinjelly.JoinJelly.init("gameDiv"); }, false);
+    }
+    else {
+        joinjelly.JoinJelly.init("gameDiv");
+        console.log("NormalInit");
+    }
 };
 var joinjelly;
 (function (joinjelly) {
@@ -4832,27 +4844,19 @@ var joinjelly;
                     StringResources = StringResources_pt;
                     break;
             }
-            PIXI["settings"].BITMAP_FONT_TEXTURE_RESOLUTION = true;
             DeviceServices.registerBackButton(function () { return _this.gameScreen.sendBackButtonEvent(); });
-            if (typeof cordova !== 'undefined') {
-                document.addEventListener('deviceready', function () {
-                    if (DeviceServices.getOs() == "android") {
-                        PIXI["settings"].SPRITE_MAX_TEXTURES = 1;
-                    }
-                    _this.initScreen(canvasName);
-                }, false);
-            }
-            else
-                this.initScreen(canvasName);
+            var androidLegacy = DeviceServices.getOs() == "android";
+            this.initScreen(canvasName, androidLegacy);
         };
-        JoinJelly.initScreen = function (canvasName) {
+        JoinJelly.initScreen = function (canvasName, legacy) {
             var _this = this;
+            if (legacy === void 0) { legacy = false; }
             var fps = 35;
             if (window.location.search == "?test") {
                 fps = 10;
                 testMode = true;
             }
-            this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps);
+            this.gameScreen = new gameui.GameScreen(canvasName, defaultWidth, defaultHeight, fps, legacy);
             var scale = this.gameScreen.getCurrentScale();
             var loadingScreen = new joinjelly.menus.Loading(scale);
             this.gameScreen.switchScreen(loadingScreen);
@@ -4922,7 +4926,7 @@ var joinjelly;
     JoinJelly.maxJelly = 65536;
     joinjelly.JoinJelly = JoinJelly;
 })(joinjelly || (joinjelly = {}));
-var app_version = "71";
+var app_version = "73";
 var defaultWidth = 768 * 2;
 var defaultHeight = 1024 * 2;
 var fbAppId = "1416523228649363";

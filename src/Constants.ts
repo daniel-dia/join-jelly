@@ -1,7 +1,7 @@
-﻿var app_version = "71";
+﻿var app_version = "73";
 
 var defaultWidth: number = 768 * 2;
-var defaultHeight: number = 1024*2;
+var defaultHeight: number = 1024 * 2;
 
 var fbAppId: string = "1416523228649363";
 var gameWebsite: string = "http://www.joinjelly.com";

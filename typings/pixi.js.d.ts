@@ -851,6 +851,7 @@ declare module PIXI {
         clearBeforeRender?: boolean;
         preserveDrawingBuffer?: boolean;
         roundPixels?: boolean;
+        legacy?: boolean
 
     }
     export class WebGLRenderer extends SystemRenderer {
