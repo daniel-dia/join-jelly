@@ -4861,7 +4861,9 @@ var joinjelly;
             var loadingScreen = new joinjelly.menus.Loading(scale);
             this.gameScreen.switchScreen(loadingScreen);
             loadingScreen.loaded = function () {
-                AdsServices.initialize();
+                setTimeout(function () {
+                    AdsServices.initialize();
+                }, 1000);
                 var loadedGame = _this.userData.loadGame();
                 JoinJelly.showMainScreen();
             };

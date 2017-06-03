@@ -63,7 +63,10 @@ module joinjelly {
 
             // verifies if there is a savedGame
             loadingScreen.loaded = () => {
-                AdsServices.initialize();
+
+                setTimeout(() => { 
+                    AdsServices.initialize();
+                }, 1000)
 
                 var loadedGame = this.userData.loadGame();
                 JoinJelly.showMainScreen();
