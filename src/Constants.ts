@@ -1,4 +1,4 @@
-﻿var app_version = "73";
+﻿var app_version = "75";
 
 var defaultWidth: number = 768 * 2;
 var defaultHeight: number = 1024 * 2;
