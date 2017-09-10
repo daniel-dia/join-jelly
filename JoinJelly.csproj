@@ -9,13 +9,14 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>2</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <ItemGroup>
     <Content Include="assets\htmlBG.jpg" />
@@ -562,7 +563,6 @@
     <Content Include="scripts\createjs-2015.05.21.min.js" />
     <Content Include="scripts\md5.js" />
     <Content Include="scripts\movieclip-0.8.1.min.js" />
-    <Content Include="scripts\pixi-dev.js" />
     <Content Include="scripts\pixi.js" />
     <Content Include="scripts\PIXIpatch.js" />
     <Content Include="scripts\Plataform.js" />
