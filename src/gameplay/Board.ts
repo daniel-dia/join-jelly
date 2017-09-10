@@ -16,7 +16,7 @@
         private touchOffset: Array<point>;
         private touchDeltas: Array<number>;
 
-        // #region Initialization ------------------------------------------------------------------------
+        // Initialization ------------------------------------------------------------------------
 
         constructor(boardWidth: number, boardHeight: number, tileSize: number, img: boolean) {
             super();
@@ -52,7 +52,6 @@
                     this.addTile(x, y, tileSize);
         }
 
-
         // add a single tile on board
         private addTile(x: number, y: number, tileSize: number) {
 
@@ -83,19 +82,15 @@
             this.touchDeltas = new Array<number>();
 
             // Pess Start
-            this.tilesContainer.on("touchstart", this.boardTouchStart, this);
-            this.tilesContainer.on("mousedown", this.boardTouchStart, this);
+            this.tilesContainer.on("pointerdown", this.boardTouchStart, this);
 
             // Press Move
-            this.tilesContainer.on("touchmove", this.boardTouchMove, this);
-            this.tilesContainer.on("mousemove", this.boardTouchMove, this);
+            this.tilesContainer.on("pointermove", this.boardTouchMove, this);
 
             // Press Up
-            this.tilesContainer.on("touchend", this.boardTouchEnd, this);
-            this.tilesContainer.on("touchendoutside", this.boardTouchEnd, this);
-            this.tilesContainer.on("mouseupoutside", this.boardTouchEnd, this);
-            this.tilesContainer.on("mouseup", this.boardTouchEnd, this);
-            
+            this.tilesContainer.on("pointerup", this.boardTouchEnd, this);
+            this.tilesContainer.on("pointerupoutside", this.boardTouchEnd, this);
+
         }
 
         // callback to the event start
@@ -126,28 +121,27 @@
 
         // callback to the a pointer move event
         private boardTouchMove(e: PIXI.interaction.InteractionEvent) {
-            var pid = this.getPointerId(e)
-            var pos = e.data.getLocalPosition(this);
 
             // touch peformance
             var delta = Date.now() - this.touchDeltas[pid];
             if (delta < 15) return;
+
+            var pid = this.getPointerId(e)
+            var pos = e.data.getLocalPosition(this);
             this.touchDeltas[pid] = Date.now();
 
             //get tile by touch
             var tile = this.touchDictionary[pid];
             if (tile) {
 
-                tile.x = e.data.getLocalPosition(this).x + this.touchOffset[pid].x;
-                tile.y = e.data.getLocalPosition(this).y + this.touchOffset[pid].y;
+                var LocalPosition = e.data.getLocalPosition(this)
+                tile.x = LocalPosition.x + this.touchOffset[pid].x;
+                tile.y = LocalPosition.y + this.touchOffset[pid].y;
                 tile.lock();
 
-                //var targetName = this.getTileIdByPos(e.localX, e.localY, tileSize);
                 var target = this.getTileByRawPos(pos.x, pos.y, this.tileSize);
-                if (target && target.name.toString() != tile.name) {
-                    if (target.isUnlocked()) {
-                        this.emit("dragging", { originTile: tile, targetTile: target });
-                    }
+                if (target && target.name.toString() != tile.name && target.isUnlocked()) {
+                    this.emit("dragging", { originTile: tile, targetTile: target });
                 }
             }
         }
@@ -156,9 +150,10 @@
         private boardTouchEnd(e: PIXI.interaction.InteractionEvent) {
             var pid = this.getPointerId(e)
             var tile = this.touchDictionary[pid];
+
             if (tile) {
                 tile.unlock;
-                this.releaseDrag(tile, false);
+                this.releaseDrag(pid);
                 tile.release();
             }
         }
@@ -169,9 +164,9 @@
             return pid;
         }
 
-        // #endregion
 
-        // #region Tile manager ------------------------------------------------------------------------
+
+        // Tile manager ------------------------------------------------------------------------
 
         public setTiles(tiles: Array<number>) {
             this.unlock();
@@ -185,12 +180,12 @@
 
         // set a tile value
         public setTileValue(tileId, value) {
-            var t = this.getTileById(tileId)
-            if (t) t.setNumber(value);
+            var tile = this.getTileById(tileId);
+            this.resetTile(tile);
+            if (tile) tile.setNumber(value);
 
             //plays sound if is new jelly
-            if (value == 1)
-                gameui.AudiosManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
+            if (value == 1) gameui.AudiosManager.playSound("sound_s" + (Math.floor(Math.random() * 3) + 1), null, 400);
 
         }
 
@@ -240,9 +235,8 @@
 
         // release all Jellyies
         public releaseAll() {
-            for (var t in this.touchDictionary)
-                this.releaseDrag(this.touchDictionary[t]);
-
+            for (var id in this.touchDictionary)
+                this.releaseDrag(this.getTileFromTouchId(id));
         }
 
         public sumAllTiles(): number {
@@ -284,6 +278,7 @@
         public getAllTiles(): Array<Tile> {
             return this.tiles;
         }
+
         public getAllTilesValues(): Array<number> {
             var values = new Array();
 
@@ -292,6 +287,7 @@
 
             return values;
         }
+
         public getTileId(tile: Tile): number {
             return parseInt(tile.name);
         }
@@ -338,16 +334,14 @@
         }
 
         // release e tile
-        private releaseDrag(tile: Tile, match: boolean = true, target?: Tile) {
+        private releaseDrag(tile: Tile, target?: Tile) {
 
-            var index = this.touchDictionary.indexOf(tile);
-            delete this.touchDictionary[index];
+            this.removeTileFromTouchDictionary(tile);
 
             createjs.Tween.removeTweens(tile);
-            tile.scale.y = tile.scale.x = 1;
 
             //if tiles match
-            if (match && target) {
+            if (target) {
                 var pos = this.getTilePositionByCoords(target.posx, target.posy, this.tileSize);
                 this.fadeTileToPos(tile, pos.x, pos.y);
             }
@@ -375,9 +369,23 @@
 
         public unlock() { this.tilesContainer.interactive = true; }
 
-        // #endregion
+        // remove the tile from touch dictionary
+        private removeTileFromTouchDictionary(tile: Tile) {
+            for (var id in this.touchDictionary) {
+                if (this.touchDictionary[id] == tile) {
+                    delete this.touchDictionary[id];
+                    continue;
+                }
+            }
+        }
 
-        // #region behaviour ---------------------------------------------------------------------------
+        // removes a tile from the touch dictionary
+        private getTileFromTouchId(touchId: string | number) {
+            return this.touchDictionary[touchId];
+        }
+
+
+        // behaviour ---------------------------------------------------------------------------
 
         // organize all z-order
         private arrangeZOrder() {
@@ -387,8 +395,7 @@
 
         // match 2 tiles
         public match(origin: Tile, target: Tile) {
-
-            this.releaseDrag(origin, true, target);
+            this.releaseDrag(origin, target);
             gameui.AudiosManager.playSound('sound_j' + (Math.floor(Math.random() * 4) + 1));
         }
 
@@ -398,18 +405,24 @@
                 this.tiles[t].setNumber(0);
         }
 
-        // #endregion
+        // Animations --------------------------------------------------------------------------
 
-        // #region Animations --------------------------------------------------------------------------
-
+        // simple moves a tile to a position
         public fadeTileToPos(tile: Tile, posx: number, posy: number, time: number = 100, delay: number = 0, alpha: number = 0) {
             tile.lock();
             createjs.Tween.get(tile).wait(delay).to({ x: posx, y: posy, alpha: alpha }, time, createjs.Ease.quadIn).call(() => {
-                tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
+                this.resetTile(tile);
                 this.arrangeZOrder();
-                tile.unlock();
-                tile.alpha = 1;
             })
+        }
+
+        // reset a tile for its initial state
+        private resetTile(tile: Tile) {
+            createjs.Tween.removeTweens(tile);
+            tile.scale.y = tile.scale.x = 1;
+            tile.set(this.getTilePositionByCoords(tile.posx, tile.posy, this.tileSize));
+            tile.unlock();
+            tile.alpha = 1;
         }
 
         // create and execute a level up effect on tiles
@@ -475,6 +488,7 @@
             }
         }
 
+        // set shaking alarm at end of the game
         public setAlarm(alarm: boolean) {
 
             if (alarm) {
@@ -494,8 +508,5 @@
             this.alarming = alarm;
 
         }
-
-        // #endregion
-
     }
 }
