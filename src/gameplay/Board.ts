@@ -149,17 +149,16 @@
         // callback to the event end
         private boardTouchEnd(e: PIXI.interaction.InteractionEvent) {
             var pid = this.getPointerId(e)
-            var tile = this.touchDictionary[pid];
+            var tile = this.getTileFromTouchId(pid);
 
-            if (tile) {
-                tile.unlock;
-                this.releaseDrag(pid);
+            if (tile && tile instanceof Tile) {
                 tile.release();
+                this.releaseDrag(tile);
             }
         }
 
         // gets a pointer id based on the interaction event
-        private getPointerId(e: PIXI.interaction.InteractionEvent) {
+        private getPointerId(e: PIXI.interaction.InteractionEvent): string | number {
             var pid = e.data["identifier"] || e.data.originalEvent["pointerId"] || 0;
             return pid;
         }
