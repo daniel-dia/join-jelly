@@ -1,19 +1,17 @@
 ﻿var testMode;
 declare var cordova;
 
-
-
-
 window.onload = function () {
     if (typeof cordova !== 'undefined') {
-        document.addEventListener('deviceready', () => {joinjelly.JoinJelly.init("gameDiv"); }, false);
+        document.addEventListener('deviceready', () => {
+            joinjelly.JoinJelly.init("gameDiv");
+            console.log("Cordova Init")
+        }, false);
     } else {
         joinjelly.JoinJelly.init("gameDiv");
-        console.log("NormalInit")
+        console.log("Normal Init")
     }
 }
-
-
 
 module joinjelly {
     export class JoinJelly {
