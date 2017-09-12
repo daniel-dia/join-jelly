@@ -35540,7 +35540,7 @@ var InteractionManager = function (_EventEmitter) {
     InteractionManager.prototype.normalizeToPointerData = function normalizeToPointerData(event) {
         var normalizedEvents = [];
 
-        if (this.supportsTouchEvents && event instanceof TouchEvent) {
+        if (this.supportsTouchEvents && event.changedTouches) {
             for (var i = 0, li = event.changedTouches.length; i < li; i++) {
                 var touch = event.changedTouches[i];
 

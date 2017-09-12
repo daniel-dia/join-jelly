@@ -11,8 +11,10 @@ window.onload = function () {
         joinjelly.JoinJelly.init("gameDiv");
         console.log("Normal Init")
     }
-}
 
+    joinjelly.JoinJelly.init("gameDiv");
+}
+ 
 module joinjelly {
     export class JoinJelly {
 
@@ -38,11 +40,10 @@ module joinjelly {
             }
 
             // add back button callback
-            DeviceServices.registerBackButton(() => { return this.gameScreen.sendBackButtonEvent() })
+            // DeviceServices.registerBackButton(() => { return this.gameScreen.sendBackButtonEvent() })
 
             var androidLegacy = DeviceServices.getOs() == "android"
             this.initScreen(canvasName, androidLegacy);
-
         }
 
         private static initScreen(canvasName: string, legacy: boolean = false) {

@@ -4832,6 +4832,7 @@ window.onload = function () {
         joinjelly.JoinJelly.init("gameDiv");
         console.log("Normal Init");
     }
+    joinjelly.JoinJelly.init("gameDiv");
 };
 var joinjelly;
 (function (joinjelly) {
@@ -4839,7 +4840,6 @@ var joinjelly;
         function JoinJelly() {
         }
         JoinJelly.init = function (canvasName) {
-            var _this = this;
             this.userData = new UserData();
             this.analytics = new Analytics();
             this.itemData = new joinjelly.ItemsData();
@@ -4850,7 +4850,6 @@ var joinjelly;
                     StringResources = StringResources_pt;
                     break;
             }
-            DeviceServices.registerBackButton(function () { return _this.gameScreen.sendBackButtonEvent(); });
             var androidLegacy = DeviceServices.getOs() == "android";
             this.initScreen(canvasName, androidLegacy);
         };
