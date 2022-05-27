@@ -12,7 +12,7 @@ window.onload = function () {
         console.log("Normal Init")
     }
 
-    joinjelly.JoinJelly.init("gameDiv");
+    // joinjelly.JoinJelly.init("gameDiv");
 }
  
 module joinjelly {
