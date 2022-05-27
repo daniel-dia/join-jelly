@@ -1305,8 +1305,8 @@ var joinjelly;
                     assetscale = 0.5;
                 if (scale < 0.375)
                     assetscale = 0.25;
-                var imagePath = "/assets/";
-                var audioPath = "/assets/sounds/";
+                var imagePath = "assets/";
+                var audioPath = "assets/sounds/";
                 gameui.AssetsManager.loadAssets(imageManifest, imagePath);
                 PIXI["settings"].SCALE_BITMAP_FONT = true;
                 gameui.AssetsManager.loadFontSpriteSheet("debussy", "debussy@" + assetscale + "x.fnt");

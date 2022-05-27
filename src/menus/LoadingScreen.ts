@@ -20,8 +20,8 @@ module joinjelly.menus {
             if (scale < 0.75) assetscale = 0.5;
             if (scale < 0.375) assetscale = 0.25;
 
-            var imagePath = "/assets/";
-            var audioPath = "/assets/sounds/";  
+            var imagePath = "assets/";
+            var audioPath = "assets/sounds/";  
             
             //load audio
            
