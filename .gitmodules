@@ -1,5 +1,5 @@
 [submodule "src/GameUI"]
-	path = src/GameUI
+	path = src/GameUI_tmp/
 	url = https://github.com/artsjedi/GameUI.git
 	branch = master
 [submodule "src/ServicesJS"]
